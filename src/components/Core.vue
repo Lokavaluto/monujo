@@ -10,27 +10,8 @@
         <LeftCol/>
         <RightCol/>
       </div>
+      <SendAskMoney/>
       <!-- fin des conteneurs des colonnes de gauche et droite -->
-      <!-- début card envoyer et demander de l'argent  -->
-      <div
-        class="action-footer card custom-card is-flex is-justify-content-space-evenly is-align-items-center pb-5 pt-5 "
-      >
-        <div class="is-flex is-justify-content-center">
-          <button
-            class="button custom-button custom-button-send-receive-money is-rounded action"
-          >
-            Envoyer de l'argent
-          </button>
-        </div>
-        <div class="is-flex is-justify-content-center">
-          <button
-            class="button custom-button custom-button-send-receive-money is-rounded action"
-          >
-            Demander de l'argent
-          </button>
-        </div>
-      </div>
-      <!-- fin card envoyer et demander de l'argent  -->
     </div>
   </main>
 </template>
@@ -39,13 +20,15 @@
 import { Options, Vue } from "vue-class-component";
 import LeftCol from "./core/LeftCol.vue"
 import RightCol from "./core/RightCol.vue"
+import SendAskMoney from "./sendAskMoney/SendAskMoney.vue"
 @Options({
   props: {
     msg: String,
   },
   components: {
       LeftCol,
-      RightCol
+      RightCol,
+      SendAskMoney
   }
 })
 export default class Core extends Vue {
