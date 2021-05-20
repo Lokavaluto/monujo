@@ -5,11 +5,6 @@
     <hr />
     <TransactionSubCard picto="Transaction"/>
     <div class="is-flex is-justify-content-center mt-4">
-      <button
-        class="button custom-button custom-button-end-card is-rounded action mt-6"
-      >
-        Voir tout
-      </button>
     </div>
     <!-- fin card semaine dernière -->
 </template>

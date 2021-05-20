@@ -6,7 +6,6 @@
                 >
                 <TransactionPicto v-if="picto =='Transaction'"/>
                 <QRPicto v-else-if="picto == 'QR'"/>
-                <!-- mettre un if pour les pictos -->
                 </div>
                 <div class="is-flex-direction-column">
                   <h3 class="custom-card-destinataire has-text-danger">
