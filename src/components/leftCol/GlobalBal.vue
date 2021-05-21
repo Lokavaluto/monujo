@@ -5,7 +5,7 @@
           >
             <div class="left-card">
               <h2 class="custom-card-title">Solde global</h2>
-              <h3 class="custom-card-content">1200 U</h3>
+              <h3 class="custom-card-content">{{bal}} U</h3>
             </div>
             <div class="right-card">
               <button class="button custom-button is-rounded action">
@@ -16,8 +16,14 @@
           <!-- fin card solde globale -->
 </template>
 
-<script>
+<script lang="ts">
+import store from "../../store"
 export default {
-    name:"GlobalBal"
+    name:"GlobalBal",
+    data(): {bal:number} {
+        return {
+            bal:store.state.profile.bal
+        }
+    }
 }
 </script>
