@@ -1,9 +1,9 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
+      <div class="overlay" @click="$emit('close')"></div>
       <div class="modal-wrapper">
         <div class="modal-container">
-
           <div class="modal-header">
             <slot name="header">
               default header
@@ -32,6 +32,11 @@
 
 <script>
 export default {
-    name:"MyModal"
-}
+  name: "MyModal",
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+};
 </script>

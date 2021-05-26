@@ -5,7 +5,7 @@
         <img
           class="is-rounded"
           style="max-height:none !important"
-          src="http://monnaie-locale-complementaire-citoyenne.net/wp-content/uploads/2019/07/LogoNational.png"
+          src="https://lokavaluto.fr/web/image/res.company/1/logo?unique=2eaba5c"
           width="80"
           height="80"
         />
@@ -39,6 +39,9 @@
             </router-link>
             <router-link to="/login" class="button is-light">
               Se connecter
+            </router-link>
+               <router-link to="/profile" class="button is-light">
+              Profile
             </router-link>
           </div>
         </div>

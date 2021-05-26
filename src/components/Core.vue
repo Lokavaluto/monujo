@@ -28,7 +28,7 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue"
   components: {
       LeftCol,
       RightCol,
-      SendAskMoney
+      SendAskMoney,
   }
 })
 export default class Core extends Vue {

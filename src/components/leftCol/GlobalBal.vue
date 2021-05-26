@@ -22,7 +22,7 @@ export default {
     name:"GlobalBal",
     data(): {bal:number} {
         return {
-            bal:store.state.profile.bal
+            bal:1200
         }
     }
 }

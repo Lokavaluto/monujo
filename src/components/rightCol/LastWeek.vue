@@ -4,8 +4,6 @@
     <TransactionSubCard picto="QR"/>
     <hr />
     <TransactionSubCard picto="Transaction"/>
-    <div class="is-flex is-justify-content-center mt-4">
-    </div>
     <!-- fin card semaine dernière -->
 </template>
 
