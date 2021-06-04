@@ -275,6 +275,11 @@
 }
 
 .modal-body {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.modal-body-frame-send-money {
   margin: 20px 0;
   height: 70%;
   display: flex;
@@ -340,6 +345,89 @@
   background-color: inherit;
   border: none;
   cursor: pointer;
+}
+
+.custom-search-bar {
+  width: 89%;
+}
+
+.custom-search-bar input {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 24px;
+  width: 100% !important;
+}
+
+.custom-pictogram-search svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.custom-pictogram-search path,
+rect {
+  fill: #009688 !important;
+  background: #009688 !important;
+}
+
+.custom-button-pictogram {
+  background-color: inherit !important;
+  border: none;
+  cursor: pointer;
+}
+
+// tabs-anchor-début
+
+.tabs {
+  width: 100% !important;
+}
+
+$tabs-border-bottom-color: white;
+
+$tabs-border-bottom-width: 4px;
+
+$tabs-link-hover-border-bottom-color: #009688;
+
+$tabs-link-active-color: rgba(0, 0, 0, 0.8);
+
+$tabs-link-active-border-bottom-color: #009688;
+
+$tabs-link-color: rgba(0, 0, 0, 0.6);
+
+.tabs a {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  text-transform: uppercase;
+  justify-content: space-evenly;
+  &:hover > p {
+    color: rgba(0, 0, 0, 0.8) !important;
+  }
+  &:hover > span {
+    color: #ffb800 !important;
+  }
+}
+
+.is-active span {
+  color: #ffb800 !important;
+}
+
+// tabs anchor fin
+
+.custom-heavy-line-separator {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.custom-line-separator {
+  display: flex;
+  justify-content: flex-end;
+  height: 2px;
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.custom-width-send-money {
+  width: 80% !important;
 }
 
 /* // Bulma Import */
