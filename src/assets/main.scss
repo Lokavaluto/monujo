@@ -1,5 +1,5 @@
 /* // Customizations Here (Optional) */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
 .top-bar {
   background-color: #15b6a7;
@@ -428,6 +428,133 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
 
 .custom-width-send-money {
   width: 80% !important;
+}
+
+.custom-user-select {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 24px;
+
+  h4 {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 20px;
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.frame3-title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: rgba(0, 0, 0, 0.4);
+}
+.custom-montant-input {
+  width: 89%;
+
+  .frame3-sub-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  input,
+  input:focus-visible,
+  input:focus-within,
+  input:focus {
+    border: 1px solid #009688 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    text-align: right !important;
+    outline: none !important;
+    color: #009688;
+    text-shadow: 0px 0px 0px black;
+    -webkit-text-fill-color: transparent;
+    height: 31px !important;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  textarea,
+  textarea:focus-visible {
+    outline: none !important;
+    border: none !important;
+    resize: vertical;
+    max-height: 30px !important;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+// début modal sécurité
+
+.pinBox {
+  overflow: hidden;
+  position: relative;
+  width: 80% !important;
+  &:before {
+    content: "";
+    pointer-events: none;
+    display: block;
+    height: 24px;
+    position: absolute;
+    // width: 87px;
+    border: 1px solid #009688;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        transparent 18px,
+        #ccc 18px,
+        #ccc 19px,
+        #fff 20px,
+        #fff 39px
+      )
+      repeat-x;
+    background-size: 24px 25px;
+  }
+}
+.pinEntry {
+  // padding: 4px 5px;
+  border: none;
+  outline: none;
+  width: 100% !important;
+  letter-spacing: 1em;
+  background-color: transparent;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 50px;
+  line-height: 28px;
+  text-align: center;
+}
+
+#pincode {
+  padding: 0 !important;
+}
+
+.custom-pin-width {
+  width: 60% !important;
 }
 
 /* // Bulma Import */
