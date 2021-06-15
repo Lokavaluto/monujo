@@ -24,7 +24,7 @@
       </button>
     </div>
     <!-- modal frame 1 -->
-    <MyModal v-if="showModalFrame1" @close="showModalFrame1 = false">
+    <MyModal :first="true" v-if="showModalFrame1" @close="showModalFrame1 = false">
       <template v-slot:header>
         <div
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"

@@ -245,6 +245,15 @@
   right: 0;
 }
 
+.invisible-overlay {
+  background-color: rgba(0, 0, 0, 0.0);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
@@ -261,6 +270,16 @@
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-container-no-shadow {
+  width: 100%;
+  height: 100%;
+  margin: 0px auto;
+  background-color: #fff;
+  border-radius: 16px;
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
