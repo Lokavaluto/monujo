@@ -271,8 +271,8 @@
             <input type="number" min="0" class="p-2" />
             <textarea
               v-model="message"
-              class="mt-6 mb-6"
-              placeholder="&nbsp Ajoutez un texte (optionnel)"
+              class="custom-textarea textarea mt-5"
+              placeholder="Ajoutez un texte (optionnel)"
             ></textarea>
             <div class="is-flex is-justify-content-flex-end mt-6">
               <button
@@ -334,17 +334,21 @@
           >
             <h2>Veuillez saisir votre code confidentiel</h2>
             <p>pour valider l'opération</p>
-              <div class="mt-6 pinbox is-flex is-justify-centent-center " id="pincode">
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  maxlength="4"
-                  class="pinEntry"
-                />
-              </div>
+            <div
+              class="mt-6 ml-6 mr-6 pinbox is-flex is-justify-content-center is-align-items-center has-text-centered"
+              id="pincode"
+            >
+              <input
+                type="password"
+                id="password"
+                name="password"
+                maxlength="4"
+                class="pinEntry"
+              />
+            </div>
             <button
-              class="button container is-fluid custom-button is-rounded action is-uppercase mt-6"
+              class="button container custom-button is-rounded action is-uppercase mt-6"
+              id="pincode"
             >
               Valider
             </button>
@@ -362,6 +366,7 @@
 <script>
 import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
+// import PincodeInput from "../../../node_modules/vue-pincode-input";
 
 export default {
   name: "SendAskMoney",

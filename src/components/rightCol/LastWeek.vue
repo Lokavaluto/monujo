@@ -4,6 +4,10 @@
     <TransactionSubCard picto="QR"/>
     <hr />
     <TransactionSubCard picto="Transaction"/>
+     <hr />
+    <TransactionSubCard picto="Transaction"/>
+     <hr />
+
     <!-- fin card semaine dernière -->
 </template>
 
