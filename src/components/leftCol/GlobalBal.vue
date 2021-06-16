@@ -5,10 +5,10 @@
           >
             <div class="left-card">
               <h2 class="custom-card-title">Solde global</h2>
-              <h3 class="custom-card-content">{{bal}} U</h3>
+              <h3 class="custom-card-content">{{infoBal}} U</h3>
             </div>
             <div class="right-card">
-              <button class="button custom-button is-rounded action">
+              <button v-on:click="greet" class="button custom-button is-rounded action">
                 Créditer
               </button>
             </div>
@@ -20,10 +20,17 @@
 import store from "../../store"
 export default {
     name:"GlobalBal",
-    data(): {bal:number} {
-        return {
-            bal:1200
-        }
+    computed: {
+       infoBal(): number {
+         return store.state.bal
+       }
+  
+    },
+    methods: {
+    greet: function () :void {
+        store.dispatch('increment')
+        console.log(store.state.bal)
+      }
     }
 }
 </script>
