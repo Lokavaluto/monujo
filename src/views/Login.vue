@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref } from "vue";
+import { inject, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
 // const app = Vue.createApp({})
@@ -56,57 +56,27 @@ import { useRouter } from "vue-router";
 // import router from './router'
 
 export default {
-  name: "Login",
-  setup(): { data: { email: string; password: string; message: string; }; submit: any } {
-    const data = reactive({
-      email: "",
-      password: "",
-      message: "",
-    });
+    name: "Login",
+    setup(): { data: { email: string; password: string; }; submit: any } {
+        const $store : any = inject('$store')
+        const data = reactive({
+            email: "",
+            password: "",
+        });
 
-    var raw = JSON.stringify({
-      db: "laroue.v12.dev.myceliandre.fr",
-      params: ["lcc_app"],
-    });
-
-    const routeur = useRouter();
-    // https://laroue.v12.dev.myceliandre.fr/lokavaluto_api/public/auth/authenticate
-
-    // https://odoo12.dev.lokavaluto.fr/lokavaluto_api/public/auth/authenticate
-
-    const submit = async (): Promise<void> => {
-      const myHeaders = new Headers();
-      myHeaders.append("username", data.email);
-      myHeaders.append("password", data.password);
-      myHeaders.append("Content-Type", "application/json");
-
-      // console.log(JSON.stringify(myHeaders));
-
-      const res = await fetch("http://51.91.248.166:1111/auth", {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-      })
-        .then((resolve): void => {
-          resolve.json().then((json): void => {
-            localStorage.setItem("api_token", json.token);
-            // var retrieveToken = localStorage.getItem("api_token");
-            // console.log(retrieveToken);
-            if (json.token != undefined) {
-              routeur.push("/profile");
+        const routeur = useRouter();
+        const submit = async (): Promise<void> => {
+            try {
+                await $store.dispatch('login', { login: data.email, password: data.password })
+            } catch (e) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+                console.log('Login failed', e.message)
             }
-            else {
-              data.message = 'Identifiant ou mot de passe incorrect';
-            }
-          });
-        })
-        .catch((error) => console.log("error", error));
-    };
+        };
 
-    return {
-      data,
-      submit,
-    };
+        return {
+            data,
+            submit,
+        };
   },
 
   // const URL_PARTNER = 'https://laroue.v12.dev.myceliandre.fr/lokavaluto_api/private/partner/?name=a%20patons%20rompus';
