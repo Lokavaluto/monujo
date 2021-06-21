@@ -17,4 +17,5 @@ require("@/assets/main.scss");
 createApp(App)
   .use(store)
   .use(router)
+  .provide('$store', store)
   .mount("#app");
