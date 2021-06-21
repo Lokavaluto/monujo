@@ -1,12 +1,12 @@
 <template>
-  <div class="is-flex-direction-column">
+  <div class="is-flex-direction-column mb-3">
     <div class="is-flex">
       <img :src="'/src/assets/media/' + { cardtype }" alt="credit_card" />
       <h3 class="custom-card-content-2">
         {{ fullName }}
       </h3>
     </div>
-    <h4>{{ cardNumber }}</h4>
+    <h4 class="mt-1">{{ cardNumber }}</h4>
   </div>
 </template>
 <script lang="ts">
