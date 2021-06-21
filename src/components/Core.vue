@@ -7,10 +7,10 @@
       </section>
       <!-- conteneur des colonnes de gauche et droite où se situent les cards -->
       <div class="column is-flex is-justify-content-space-between pl-0 pr-0">
-        <LeftCol/>
-        <RightCol/>
+        <LeftCol />
+        <RightCol />
       </div>
-      <SendAskMoney/>
+      <SendAskMoney />
       <!-- fin des conteneurs des colonnes de gauche et droite -->
     </div>
   </main>
@@ -18,22 +18,21 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import LeftCol from "./core/LeftCol.vue"
-import RightCol from "./core/RightCol.vue"
-import SendAskMoney from "./sendAskMoney/SendAskMoney.vue"
+import LeftCol from "./core/LeftCol.vue";
+import RightCol from "./core/RightCol.vue";
+import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
   props: {
     msg: String,
   },
   components: {
-      LeftCol,
-      RightCol,
-      SendAskMoney,
-  }
+    LeftCol,
+    RightCol,
+    SendAskMoney,
+  },
 })
 export default class Core extends Vue {
   msg!: string;
-  
 }
 </script>
 

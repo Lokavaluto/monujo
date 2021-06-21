@@ -1,6 +1,8 @@
 <template>
   <section class="hero is-halfheight">
-    <div class="hero-body is-justify-content-center mt-6 is-flex-direction-column">
+    <div
+      class="hero-body is-justify-content-center mt-6 is-flex-direction-column"
+    >
       <div class="box p-6 m-6 ">
         <form @submit.prevent="submit">
           <div class="field">
@@ -32,15 +34,16 @@
             </p>
           </div>
           <div class="field">
-            <p class="control">
+            <p class="control has-text-centered">
               <button type="submit" class="button is-success">
                 Se connecter
               </button>
             </p>
           </div>
+          <p class="has-text-danger has-text-centered" v-if="data.fail">{{ data.fail }}</p>
+          <p class="has-text-success has-text-centered" v-if="data.success">{{ data.success }}</p>
         </form>
       </div>
-      <p class="has-text-danger" v-if="data.message"> {{ data.message }} </p>
     </div>
     <router-view></router-view>
   </section>
@@ -56,27 +59,39 @@ import { useRouter } from "vue-router";
 // import router from './router'
 
 export default {
-    name: "Login",
-    setup(): { data: { email: string; password: string; }; submit: any } {
-        const $store : any = inject('$store')
-        const data = reactive({
-            email: "",
-            password: "",
+  name: "Login",
+  setup(): {
+    data: { email: string; password: string; fail: string; success: string; };
+    submit: any;
+  } {
+    const $store: any = inject("$store");
+    const data = reactive({
+      email: "",
+      password: "",
+      fail: "",
+      success: "",
+    });
+
+    const routeur = useRouter();
+    const submit = async (): Promise<void> => {
+      try {
+        await $store.dispatch("login", {
+          login: data.email,
+          password: data.password,
         });
+        data.success = "Connection réussi";
+        setTimeout( () => routeur.push({ path: '/profile'}), 3000);
+      } catch (e) {
+        // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+        console.log("Login failed", e.message);
+        data.fail = "Identifiant ou mot de passe incorrect";
+      }
+    };
 
-        const routeur = useRouter();
-        const submit = async (): Promise<void> => {
-            try {
-                await $store.dispatch('login', { login: data.email, password: data.password })
-            } catch (e) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-                console.log('Login failed', e.message)
-            }
-        };
-
-        return {
-            data,
-            submit,
-        };
+    return {
+      data,
+      submit,
+    };
   },
 
   // const URL_PARTNER = 'https://laroue.v12.dev.myceliandre.fr/lokavaluto_api/private/partner/?name=a%20patons%20rompus';
