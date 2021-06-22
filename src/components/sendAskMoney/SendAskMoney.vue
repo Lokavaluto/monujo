@@ -996,12 +996,7 @@ export default {
       }
     },
 
-    methods: {
-      setFocus():void {
-        console.log(this.$refs)
-      }
-    },
-
+   
   data(): {
     showModalFrame1: boolean,
     showModalFrame2: boolean,
