@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { inject, reactive, ref } from "vue";
+import { inject, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 // const app = Vue.createApp({})
@@ -62,8 +62,10 @@ export default {
   name: "Login",
   setup(): {
     data: { email: string; password: string; fail: string; success: string; };
+    // eslint-disable-next-line
     submit: any;
   } {
+    // eslint-disable-next-line
     const $store: any = inject("$store");
     const data = reactive({
       email: "",
@@ -79,7 +81,7 @@ export default {
           login: data.email,
           password: data.password,
         });
-        data.success = "Connection réussi";
+        data.success = "Connection réussie";
         setTimeout( () => routeur.push({ path: '/profile'}), 3000);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}

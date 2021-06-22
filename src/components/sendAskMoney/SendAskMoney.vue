@@ -286,7 +286,7 @@
             <div class="is-flex is-justify-content-flex-end mt-6">
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="showModalFrame4 = true"
+                @click="showModalFrame4 = true; setFocus()"
               >
                 Suivant
               </button>
@@ -348,6 +348,7 @@
               id="pincode"
             >
               <input
+                ref = "pincode"
                 type="password"
                 id="password"
                 name="password"
@@ -630,6 +631,7 @@
               id="pincode"
             >
               <input
+                ref = "pincode"
                 type="password"
                 id="password"
                 name="password"
@@ -968,11 +970,11 @@
   </MyModal>
 </template>
 
-<script>
+<script lang="ts">
 import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
-
+ import { ref, onUpdated } from 'vue'
 export default {
   name: "SendAskMoney",
   components: {
@@ -980,7 +982,42 @@ export default {
     QRPicto,
     AddPayCard,
   },
-  data() {
+
+  setup():any {
+      const pincode = ref()
+      onUpdated(() => {
+        if (pincode.value) {
+          pincode.value.focus()
+        }
+      })
+
+      return {
+        pincode
+      }
+    },
+
+    methods: {
+      setFocus():void {
+        console.log(this.$refs)
+      }
+    },
+
+  data():{showModalFrame1: boolean,
+      showModalFrame2: boolean,
+      showModalFrame3: boolean,
+      showModalFrame4: boolean,
+      showModalFrame2Pro: boolean,
+      showModalFrame3Pro: boolean,
+      showModalFrame4Pro: boolean,
+      showModalFrameAskMoney1: boolean,
+      showModalFrameAskMoney2: boolean,
+      showModalFrameCreditMoney1: boolean,
+      showModalFrameCreditMoney2: boolean,
+      showModalFrameCreditMoney3: boolean,
+      showModalFrameCreditMoney4: boolean,
+      warning: boolean,
+      activeClass: boolean,
+      favoris: boolean,} {
     return {
       showModalFrame1: false,
       showModalFrame2: false,
