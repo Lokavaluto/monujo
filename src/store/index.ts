@@ -71,10 +71,17 @@ var lokAPI = new LokAPI(
 
 
 const moduleLokAPI = {
-  state: () => ({
+  // state: () => ({
+  //   status: '',
+  //   token: localStorage.getItem('lokapiToken') || '',
+  //   userData: null
+  // }),
+
+  state: {
     status: '',
     token: localStorage.getItem('lokapiToken') || '',
-  }),
+    userData: null
+  }  ,
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
       let { login, password } = credentials
@@ -89,7 +96,8 @@ const moduleLokAPI = {
       }
       localStorage.setItem('lokapiToken', lokAPI.apiToken)
       commit('auth_success', lokAPI.apiToken)
-    }
+    },
+    
   },
   mutations: {
     auth_request(state: any) {
@@ -98,6 +106,7 @@ const moduleLokAPI = {
     auth_success(state: any, token: string) {
       state.status = 'success'
       state.token = token
+      state.userData = lokAPI.userData
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -108,13 +117,18 @@ const moduleLokAPI = {
     },
   },
   getters: {
+    getUserData: (state:any) => {
+      return function():any {
+        return state.userData
+        }
+      }
   }
 }
 
 
 export default createStore({
   state: {
-    bal:1200
+    bal:1200,
   },
   mutations: {
     increment (state) {

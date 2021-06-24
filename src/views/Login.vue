@@ -82,7 +82,7 @@ export default {
           password: data.password,
         });
         data.success = "Connection réussie";
-        setTimeout( () => routeur.push({ path: '/profile'}), 3000);
+        setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         console.log("Login failed", e.message);

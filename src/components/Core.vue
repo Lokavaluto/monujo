@@ -3,7 +3,7 @@
     <div class="container-fluid top-bar"></div>
     <div class="container mt-5">
       <section class="top-column column">
-        <h1 class="welcome-user">Bienvenue Ivan MANCEL</h1>
+        <h1 class="welcome-user">Bienvenue Ivan MANCEL {{myLogin}}</h1>
       </section>
       <!-- conteneur des colonnes de gauche et droite où se situent les cards -->
       <div class="column is-flex is-justify-content-space-between pl-0 pr-0">
@@ -18,10 +18,28 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import {inject} from "vue"
 import LeftCol from "./core/LeftCol.vue";
 import RightCol from "./core/RightCol.vue";
 import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
+  data() {
+    return {
+      userData:null
+    }
+  },
+  computed: {
+      myLogin(): string {
+         return this.userData
+       }
+    },
+
+  mounted() {
+    const $store: any = inject("$store");
+    this.userData = $store.getters.getUserData()
+    console.log(this.userData)
+  },
+  
   props: {
     msg: String,
   },
