@@ -24,9 +24,10 @@ import RightCol from "./core/RightCol.vue";
 import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
   data() {
+    const $store: any = inject("$store");
     return {
-      userData:null,
-      userProfile:null
+      userData:$store.getters.getUserData(),
+      userProfile:$store.getters.getUserProfile()
     }
   },
   computed: {
@@ -34,15 +35,6 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
          return this.userData
        }
     },
-
-  mounted() {
-    const $store: any = inject("$store");
-    this.userData = $store.getters.getUserData()
-    this.userProfile = $store.getters.getUserProfile()
-    console.log(this.userProfile)
-    console.log(this.userData)
-  },
-  
   props: {
     msg: String,
   },
