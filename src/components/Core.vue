@@ -25,7 +25,8 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
   data() {
     return {
-      userData:null
+      userData:null,
+      userProfile:null
     }
   },
   computed: {
@@ -37,6 +38,8 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
   mounted() {
     const $store: any = inject("$store");
     this.userData = $store.getters.getUserData()
+    this.userProfile = $store.getters.getUserProfile()
+    console.log(this.userProfile)
     console.log(this.userData)
   },
   

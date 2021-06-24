@@ -80,7 +80,8 @@ const moduleLokAPI = {
   state: {
     status: '',
     token: localStorage.getItem('lokapiToken') || '',
-    userData: null
+    userData: null,
+    userProfile:null
   }  ,
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -107,6 +108,8 @@ const moduleLokAPI = {
       state.status = 'success'
       state.token = token
       state.userData = lokAPI.userData
+      state.userProfile = lokAPI.userProfile
+      console.log(lokAPI.apiToken)
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -121,7 +124,12 @@ const moduleLokAPI = {
       return function():any {
         return state.userData
         }
-      }
+    },
+    getUserProfile: (state:any) => {
+      return function():any {
+        return state.userProfile
+        }
+    }
   }
 }
 
