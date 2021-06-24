@@ -827,38 +827,41 @@
                 <AddPayCard
                   fullName="M. Ivan MANCEL"
                   cardNumber="5441 xxxx xxx xx92"
-                  cardtype="mastercard"
+                  cardtype="mastercard.svg"
                 />
 
                 <AddPayCard
                   fullName="M. Ivan MANCEL"
                   cardNumber="5618 xxxx xxx xx12"
-                  cardtype="visa"
+                  cardtype="visa.svg"
                 />
               </div>
               <div class="column">
                 <h3 class="custom-card-title">Nouvelle carte</h3>
                 <div class="is-flex">
                   <figure class="image is-96x96">
-                    <img
+                    <img :src="require(`@/assets/media/CB.svg`)">
+                    <!-- <img
                       src="/src/assets/media/CB.svg"
                       alt=""
                       style="width: 90px; height:90px"
-                    />
+                    /> -->
                   </figure>
                   <figure class="image is-96x96">
-                    <img
+                    <img :src="require(`@/assets/media/visa.svg`)">
+                    <!-- <img
                       src="/src/assets/media/visa.svg"
                       alt=""
                       style="width: 90px; height:90px"
-                    />
+                    /> -->
                   </figure>
                   <figure class="image is-96x96">
-                    <img
+                    <img :src="require(`@/assets/media/mastercard.svg`)">
+                    <!-- <img
                       src="/src/assets/media/mastercard.svg"
                       alt=""
                       style="width: 90px; height:90px"
-                    />
+                    /> -->
                   </figure>
                 </div>
               </div>

@@ -1,7 +1,8 @@
 <template>
   <div class="is-flex-direction-column mb-3">
     <div class="is-flex">
-      <img :src="'/src/assets/media/' + { cardtype }" alt="credit_card" />
+      <!-- <img :src="'/src/assets/media/' + { cardtype }" alt="credit_card" /> -->
+      <img :src="require(`@/assets/media/${cardtype}`)">
       <h3 class="custom-card-content-2">
         {{ fullName }}
       </h3>
