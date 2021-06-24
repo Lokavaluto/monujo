@@ -7,11 +7,10 @@
         <form @submit.prevent="submit">
           <div class="field">
             <p class="control has-icons-left has-icons-right">
-                <!-- v-model="data.email" -->
               <input
+                v-model="data.email"
                 class="input"
                 placeholder="Courriel"
-                value="gestion@lokavaluto.fr"
               />
               <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
@@ -23,12 +22,11 @@
           </div>
           <div class="field">
             <p class="control has-icons-left">
-                <!-- v-model="data.password" -->
               <input
+                v-model="data.password"
                 class="input"
                 type="password"
                 placeholder="Mot de passe"
-                value="#v3#5HK$Qe!4"
               />
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>

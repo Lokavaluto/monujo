@@ -24,17 +24,27 @@ import RightCol from "./core/RightCol.vue";
 import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
   data() {
-    const $store: any = inject("$store");
     return {
-      userData:$store.getters.getUserData(),
-      userProfile:$store.getters.getUserProfile()
+      userData:null,
+      userProfile:null
     }
   },
   computed: {
       myLogin(): string {
+        console.log(this.userData)
          return this.userData
        }
     },
+
+  mounted() {
+    // eslint-disable-next-line
+    const $store: any = inject("$store");
+    this.userData = $store.getters.getUserData()
+    this.userProfile = $store.getters.getUserProfile()
+    console.log(this.userProfile)
+    console.log(this.userData)
+  },
+  
   props: {
     msg: String,
   },
