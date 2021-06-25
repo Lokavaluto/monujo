@@ -3,7 +3,7 @@
     <div class="container-fluid top-bar"></div>
     <div class="container mt-5">
       <section class="top-column column">
-        <h1 class="welcome-user">Bienvenue Ivan MANCEL {{myLogin}}</h1>
+        <h1 class="welcome-user">Bienvenue {{myProfile ? myProfile.name : null}}</h1>
       </section>
       <!-- conteneur des colonnes de gauche et droite où se situent les cards -->
       <div class="column is-flex is-justify-content-space-between pl-0 pr-0">
@@ -24,27 +24,24 @@ import RightCol from "./core/RightCol.vue";
 import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
   data() {
+    // eslint-disable-next-line
+    const $store: any = inject("$store");
+    console.log($store.getters.getUserProfile())
+    console.log($store.getters.getApiToken())
+    console.log($store.getters.getUserData())
     return {
-      userData:null,
-      userProfile:null
+      userData:$store.getters.getUserData(),
+      userProfile:$store.getters.getUserProfile(),
+      apiToken:$store.getters.getApiToken()
     }
   },
   computed: {
-      myLogin(): string {
-        console.log(this.userData)
-         return this.userData
+      myProfile(): string {
+          return this.userProfile
        }
     },
 
-  mounted() {
-    // eslint-disable-next-line
-    const $store: any = inject("$store");
-    this.userData = $store.getters.getUserData()
-    this.userProfile = $store.getters.getUserProfile()
-    console.log(this.userProfile)
-    console.log(this.userData)
-  },
-  
+
   props: {
     msg: String,
   },

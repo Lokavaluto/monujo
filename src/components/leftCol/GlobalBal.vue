@@ -29,7 +29,6 @@ export default {
     methods: {
     greet: function () :void {
         store.dispatch('superIncrement',100)
-        console.log(store.state.bal)
       }
     }
 }

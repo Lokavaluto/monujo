@@ -79,6 +79,7 @@ const moduleLokAPI = {
 
   state: {
     status: '',
+    apiToken:"",
     token: localStorage.getItem('lokapiToken') || '',
     userData: null,
     userProfile:null
@@ -109,6 +110,7 @@ const moduleLokAPI = {
       state.token = token
       state.userData = lokAPI.userData
       state.userProfile = lokAPI.userProfile
+      state.apiToken = lokAPI.apiToken
       console.log(lokAPI.apiToken)
     },
     auth_error(state: any) {
@@ -129,7 +131,13 @@ const moduleLokAPI = {
       return function():any {
         return state.userProfile
         }
-    }
+    },
+    getApiToken: (state:any) => {
+      return function():any {
+        return state.apiToken
+        }
+    },
+
   }
 }
 
