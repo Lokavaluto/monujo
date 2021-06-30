@@ -11,7 +11,10 @@ import { LokAPI, e as LokAPIExc, t as LokAPIType } from "lokapi"
 
 let coreHttpRequest: LokAPIType.IHttpRequest = {
   request: (opts: LokAPIType.coreHttpOpts) => {
-    const httpsOpts: LokAPIType.coreHttpOpts = {
+    if (opts.protocol !== 'https') {
+      throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
+    }
+    const httpsOpts = {
       host: opts.host,
       path: opts.path,
       method: opts.method,
@@ -79,11 +82,11 @@ const moduleLokAPI = {
 
   state: {
     status: '',
-    apiToken:"",
+    apiToken: "",
     token: localStorage.getItem('lokapiToken') || '',
     userData: null,
-    userProfile:null
-  }  ,
+    userProfile: null
+  },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
       let { login, password } = credentials
@@ -96,10 +99,9 @@ const moduleLokAPI = {
         localStorage.removeItem('token')
         throw err
       }
-      localStorage.setItem('lokapiToken', lokAPI.apiToken)
-      commit('auth_success', lokAPI.apiToken)
+      localStorage.setItem('lokapiToken', lokAPI.odoo.apiToken)
+      commit('auth_success', lokAPI.odoo.apiToken)
     },
-    
   },
   mutations: {
     auth_request(state: any) {
@@ -109,9 +111,9 @@ const moduleLokAPI = {
       state.status = 'success'
       state.token = token
       state.userData = lokAPI.userData
-      state.userProfile = lokAPI.userProfile
-      state.apiToken = lokAPI.apiToken
-      console.log(lokAPI.apiToken)
+      state.userProfile = lokAPI.odoo.userProfile
+      state.apiToken = lokAPI.odoo.apiToken
+      console.log(lokAPI.odoo.apiToken)
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -122,20 +124,20 @@ const moduleLokAPI = {
     },
   },
   getters: {
-    getUserData: (state:any) => {
-      return function():any {
+    getUserData: (state: any) => {
+      return function(): any {
         return state.userData
-        }
+      }
     },
-    getUserProfile: (state:any) => {
-      return function():any {
+    getUserProfile: (state: any) => {
+      return function(): any {
         return state.userProfile
-        }
+      }
     },
-    getApiToken: (state:any) => {
-      return function():any {
+    getApiToken: (state: any) => {
+      return function(): any {
         return state.apiToken
-        }
+      }
     },
 
   }
@@ -144,10 +146,10 @@ const moduleLokAPI = {
 
 export default createStore({
   state: {
-    bal:1200,
+    bal: 1200,
   },
   mutations: {
-    increment (state) {
+    increment(state) {
       state.bal++
     },
     superIncrement(state, i) {
@@ -155,10 +157,10 @@ export default createStore({
     }
   },
   actions: {
-    increment (context) {
+    increment(context) {
       context.commit('increment')
     },
-    superIncrement (context, i) {
+    superIncrement(context, i) {
       context.commit('superIncrement', i)
     }
   },
