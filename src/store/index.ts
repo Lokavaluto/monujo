@@ -6,11 +6,10 @@
 import https from "https"
 
 import { createStore } from 'vuex'
-import { LokAPI, e as LokAPIExc, t as LokAPIType } from "lokapi"
+import { LokAPIAbstract, e as LokAPIExc, t as LokAPIType } from "lokapi"
 
-
-let coreHttpRequest: LokAPIType.IHttpRequest = {
-  request: (opts: LokAPIType.coreHttpOpts) => {
+class LokAPI extends LokAPIAbstract {
+  request = (opts: LokAPIType.coreHttpOpts) => {
     if (opts.protocol !== 'https') {
       throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
     }
@@ -47,8 +46,8 @@ let coreHttpRequest: LokAPIType.IHttpRequest = {
         reject(new LokAPIExc.RequestFailed(err.message))
       });
     })
-
-  },
+  }
+  base64encode = (s: string) => Buffer.from(s).toString('base64')
 }
 
 
@@ -66,10 +65,6 @@ if (!process.env.VUE_APP_LOKAPI_DB) {
 var lokAPI = new LokAPI(
   process.env.VUE_APP_LOKAPI_HOST,
   process.env.VUE_APP_LOKAPI_DB,
-  {
-    httpRequest: coreHttpRequest,
-    base64encode: (s: string) => Buffer.from(s).toString('base64'),
-  }
 )
 
 
@@ -110,7 +105,7 @@ const moduleLokAPI = {
     auth_success(state: any, token: string) {
       state.status = 'success'
       state.token = token
-      state.userData = lokAPI.userData
+      state.userData = lokAPI.odoo.userData
       state.userProfile = lokAPI.odoo.userProfile
       state.apiToken = lokAPI.odoo.apiToken
       console.log(lokAPI.odoo.apiToken)
