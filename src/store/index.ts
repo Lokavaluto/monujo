@@ -9,7 +9,7 @@ import { createStore } from 'vuex'
 import { LokAPIAbstract, e as LokAPIExc, t as LokAPIType } from "lokapi"
 
 class LokAPI extends LokAPIAbstract {
-  request = (opts: LokAPIType.coreHttpOpts) => {
+  httpRequest = (opts: LokAPIType.coreHttpOpts) => {
     if (opts.protocol !== 'https') {
       throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
     }
@@ -47,7 +47,7 @@ class LokAPI extends LokAPIAbstract {
       });
     })
   }
-  base64encode = (s: string) => Buffer.from(s).toString('base64')
+  base64Encode = (s: string) => Buffer.from(s).toString('base64')
 }
 
 
@@ -89,13 +89,18 @@ const moduleLokAPI = {
       try {
         await lokAPI.login(login, password)
       } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-        console.log('Login failed: ', err.message)
+        console.log('Login failed:', err.message)
         commit('auth_error')
         localStorage.removeItem('token')
         throw err
       }
-      localStorage.setItem('lokapiToken', lokAPI.odoo.apiToken)
-      commit('auth_success', lokAPI.odoo.apiToken)
+      localStorage.setItem('lokapiToken', lokAPI.apiToken)
+      console.log(lokAPI.apiToken)
+      console.log('lokAPI:', lokAPI)
+      let accounts = await lokAPI.backends[0].accounts
+      console.log('amount:', accounts[0].balance)
+      console.log('currency:', accounts[0].symbol)
+      commit('auth_success', lokAPI.apiToken)
     },
   },
   mutations: {
@@ -105,10 +110,9 @@ const moduleLokAPI = {
     auth_success(state: any, token: string) {
       state.status = 'success'
       state.token = token
-      state.userData = lokAPI.odoo.userData
-      state.userProfile = lokAPI.odoo.userProfile
-      state.apiToken = lokAPI.odoo.apiToken
-      console.log(lokAPI.odoo.apiToken)
+      state.userData = lokAPI.userData
+      state.userProfile = lokAPI.userProfile
+      state.apiToken = lokAPI.apiToken
     },
     auth_error(state: any) {
       state.status = 'error'
