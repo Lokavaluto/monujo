@@ -81,6 +81,7 @@ const moduleLokAPI = {
     token: localStorage.getItem('lokapiToken') || '',
     userData: null,
     userProfile: null
+    
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
