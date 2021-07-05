@@ -6,11 +6,10 @@
 import https from "https"
 
 import { createStore } from 'vuex'
-import { LokAPI, e as LokAPIExc, t as LokAPIType } from "lokapi"
+import { LokAPIAbstract, e as LokAPIExc, t as LokAPIType } from "lokapi"
 
-
-let coreHttpRequest: LokAPIType.IHttpRequest = {
-  request: (opts: LokAPIType.coreHttpOpts) => {
+class LokAPI extends LokAPIAbstract {
+  httpRequest = (opts: LokAPIType.coreHttpOpts) => {
     if (opts.protocol !== 'https') {
       throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
     }
@@ -47,8 +46,8 @@ let coreHttpRequest: LokAPIType.IHttpRequest = {
         reject(new LokAPIExc.RequestFailed(err.message))
       });
     })
-
-  },
+  }
+  base64Encode = (s: string) => Buffer.from(s).toString('base64')
 }
 
 
@@ -66,10 +65,6 @@ if (!process.env.VUE_APP_LOKAPI_DB) {
 var lokAPI = new LokAPI(
   process.env.VUE_APP_LOKAPI_HOST,
   process.env.VUE_APP_LOKAPI_DB,
-  {
-    httpRequest: coreHttpRequest,
-    base64encode: (s: string) => Buffer.from(s).toString('base64'),
-  }
 )
 
 
@@ -94,13 +89,18 @@ const moduleLokAPI = {
       try {
         await lokAPI.login(login, password)
       } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-        console.log('Login failed: ', err.message)
+        console.log('Login failed:', err.message)
         commit('auth_error')
         localStorage.removeItem('token')
         throw err
       }
-      localStorage.setItem('lokapiToken', lokAPI.odoo.apiToken)
-      commit('auth_success', lokAPI.odoo.apiToken)
+      localStorage.setItem('lokapiToken', lokAPI.apiToken)
+      console.log(lokAPI.apiToken)
+      console.log('lokAPI:', lokAPI)
+      let accounts = await lokAPI.backends[0].accounts
+      console.log('amount:', accounts[0].balance)
+      console.log('currency:', accounts[0].symbol)
+      commit('auth_success', lokAPI.apiToken)
     },
   },
   mutations: {
@@ -111,9 +111,8 @@ const moduleLokAPI = {
       state.status = 'success'
       state.token = token
       state.userData = lokAPI.userData
-      state.userProfile = lokAPI.odoo.userProfile
-      state.apiToken = lokAPI.odoo.apiToken
-      console.log(lokAPI.odoo.apiToken)
+      state.userProfile = lokAPI.userProfile
+      state.apiToken = lokAPI.apiToken
     },
     auth_error(state: any) {
       state.status = 'error'
