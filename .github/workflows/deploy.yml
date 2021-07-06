@@ -4,8 +4,8 @@ on:
     branches:
       - main
     paths-ignore:
-      - '.github/**'
       - 'README*'
+
 jobs:
   deploy:
     name: Deploy
@@ -22,7 +22,10 @@ jobs:
           npm install
       - name: 🔨 Build
         run: |
+          echo 'VUE_APP_LOKAPI_HOST="odoo12.dev.lokavaluto.fr"' > .env
+          echo 'VUE_APP_LOKAPI_DB="odoodev12"' >> .env
           npm run build
+
       - name: "📂 SFTP Sync files"
         uses: swillner/sftp-sync-action@v1.0
         with:
