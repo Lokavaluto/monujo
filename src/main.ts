@@ -24,3 +24,6 @@ createApp(App)
   .mount("#app");
 
 VueCookieNext.config({ expire: '7d' })
+console.log(VueCookieNext.getCookie("user_session"))
+store.dispatch("setTokenWithCookie", VueCookieNext.getCookie("user_session"))
+console.log("in store", store.getters.getApiToken())
