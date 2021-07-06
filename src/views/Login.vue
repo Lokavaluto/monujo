@@ -84,8 +84,7 @@ export default {
           password: data.password,
         });
         data.success = "Connection réussie";
-        $cookie.setCookie('user_session', '75442486-0878-440c-9db1-a7006c25a39f')
-        console.log("test",$cookie.getCookie("user_session"))
+        $cookie.setCookie('user_session', $store.getters.getApiToken())
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}

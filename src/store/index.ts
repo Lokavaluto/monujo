@@ -78,7 +78,7 @@ const moduleLokAPI = {
   state: {
     status: '',
     apiToken: "",
-    token: localStorage.getItem('lokapiToken') || '',
+    token: '',
     userData: null,
     userProfile: null
     
@@ -96,13 +96,16 @@ const moduleLokAPI = {
         throw err
       }
       localStorage.setItem('lokapiToken', lokAPI.apiToken)
-      console.log(lokAPI.apiToken)
       console.log('lokAPI:', lokAPI)
       let accounts = await lokAPI.backends[0].accounts
       console.log('amount:', accounts[0].balance)
       console.log('currency:', accounts[0].symbol)
       commit('auth_success', lokAPI.apiToken)
     },
+    setTokenWithCookie({ commit }: any, cookie:string):void {
+      console.log("cookie", cookie)
+      commit("setToken", cookie)
+    }
   },
   mutations: {
     auth_request(state: any) {
@@ -120,8 +123,11 @@ const moduleLokAPI = {
     },
     logout(state: any) {
       state.status = ''
-      state.token = ''
+      state.apiToken = ''
     },
+    setToken(state:any, cookie:string) {
+      state.apiToken = cookie
+    }
   },
   getters: {
     getUserData: (state: any) => {
