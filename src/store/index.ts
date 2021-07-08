@@ -6,7 +6,25 @@
 import https from "https"
 
 import { createStore } from 'vuex'
+import { VueCookieNext } from 'vue-cookie-next'
 import { LokAPIAbstract, e as LokAPIExc, t as LokAPIType } from "lokapi"
+
+
+class cookieStore implements LokAPIType.IPersistentStore {
+  constructor() {
+    VueCookieNext.config({ expire: '7d' })
+  }
+  get(key: string, defaultValue?: string): string {
+    return VueCookieNext.getCookie("lokapi_" + key)
+  }
+  set(key: string, value: string): void {
+    VueCookieNext.setCookie("lokapi_" + key, value)
+  }
+  del(key: string): void {
+    VueCookieNext.removeCookie("lokapi_" + key)
+  }
+}
+
 
 class LokAPI extends LokAPIAbstract {
   httpRequest = (opts: LokAPIType.coreHttpOpts) => {
@@ -30,7 +48,7 @@ class LokAPI extends LokAPIAbstract {
         res.on('end', () => {
           if (!statusCode || statusCode.toString().slice(0, 1) !== '2') {
             res.resume();
-            reject(new LokAPIExc.HttpError(statusCode, res.statusMessage, "", res))
+            reject(new LokAPIExc.HttpError(statusCode, res.statusMessage, rawData, res))
             return
           } else {
             resolve(rawData)
@@ -48,6 +66,11 @@ class LokAPI extends LokAPIAbstract {
     })
   }
   base64Encode = (s: string) => Buffer.from(s).toString('base64')
+  persistentStore = new cookieStore()
+  requestLogin() {
+    console.log("Login requested !")
+  }
+
 }
 
 
@@ -69,19 +92,9 @@ var lokAPI = new LokAPI(
 
 
 const moduleLokAPI = {
-  // state: () => ({
-  //   status: '',
-  //   token: localStorage.getItem('lokapiToken') || '',
-  //   userData: null
-  // }),
-
   state: {
     status: '',
-    apiToken: "",
-    token: '',
-    userData: null,
     userProfile: null
-    
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -92,31 +105,32 @@ const moduleLokAPI = {
       } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         console.log('Login failed:', err.message)
         commit('auth_error')
-        localStorage.removeItem('token')
         throw err
       }
-      localStorage.setItem('lokapiToken', lokAPI.apiToken)
-      console.log('lokAPI:', lokAPI)
-      let accounts = await lokAPI.backends[0].accounts
-      console.log('amount:', accounts[0].balance)
-      console.log('currency:', accounts[0].symbol)
-      commit('auth_success', lokAPI.apiToken)
+      let accounts: any
+      try {
+        accounts = await lokAPI.getAccounts()
+        console.log('getAccounts WORKED', accounts)
+        console.log('Account[0] internalId:', accounts[0].internalId)
+      } catch (err) {
+        console.log('getAccounts failed', err)
+      }
+      let balance = await accounts[0].getBalance()
+      let symbol = await accounts[0].getSymbol()
+
+      console.log('amount:', balance)
+      console.log('currency:', symbol)
+
+      commit('auth_success')
     },
-    setTokenWithCookie({ commit }: any, cookie:string):void {
-      console.log("cookie", cookie)
-      commit("setToken", cookie)
-    }
   },
   mutations: {
     auth_request(state: any) {
       state.status = 'loading'
     },
-    auth_success(state: any, token: string) {
+    auth_success(state: any) {
       state.status = 'success'
-      state.token = token
-      state.userData = lokAPI.userData
       state.userProfile = lokAPI.userProfile
-      state.apiToken = lokAPI.apiToken
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -125,16 +139,8 @@ const moduleLokAPI = {
       state.status = ''
       state.apiToken = ''
     },
-    setToken(state:any, cookie:string) {
-      state.apiToken = cookie
-    }
   },
   getters: {
-    getUserData: (state: any) => {
-      return function(): any {
-        return state.userData
-      }
-    },
     getUserProfile: (state: any) => {
       return function(): any {
         return state.userProfile

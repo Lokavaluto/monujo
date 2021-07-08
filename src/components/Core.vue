@@ -26,13 +26,9 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
   data() {
     // eslint-disable-next-line
     const $store: any = inject("$store");
-    console.log($store.getters.getUserProfile())
-    console.log($store.getters.getApiToken())
-    console.log($store.getters.getUserData())
+    console.log('User profile:', $store.getters.getUserProfile())
     return {
-      userData:$store.getters.getUserData(),
       userProfile:$store.getters.getUserProfile(),
-      apiToken:$store.getters.getApiToken()
     }
   },
   computed: {
