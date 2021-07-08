@@ -195,7 +195,7 @@
                 </span>
               </div>
               <i class="fas fa-history mr-5"></i>
-              <div class="p-2 is-clickable" @click=" setRecipient()">
+              <div class="p-2 is-clickable" @click=" setRecipient(), this.showModalFrame3 = true">
                 <p class="custom-card-destinataire mr-5">
                   Édith Orial
                 </p>
@@ -280,7 +280,7 @@
         >
           <div class="is-flex is-flex-direction-column custom-montant-input">
             <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-            <input type="number" min="0" class="p-2" />
+            <input v-model="amount" type="number" min="0" class="p-2" />
             <textarea
               v-model="message"
               class="custom-textarea textarea mt-5"
@@ -289,7 +289,7 @@
             <div class="is-flex is-justify-content-flex-end mt-6">
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="showModalFrame4 = true;"
+                @click="sendTransaction()"
               >
                 Suivant
               </button>
@@ -981,6 +981,7 @@ import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import {inject , defineComponent} from 'vue'
+const $store : any = inject("$store")
 export default defineComponent({
   name: "SendAskMoney",
   components: {
@@ -1005,8 +1006,12 @@ export default defineComponent({
     warning: boolean,
     activeClass: boolean,
     favoris: boolean,
-    searchName:string } 
-    {
+    searchName:string, 
+    amount:number,
+    message:string,
+    partners:any,
+    accounts:any
+    } {
     return {
       showModalFrame1: false,
       showModalFrame2: false,
@@ -1024,7 +1029,11 @@ export default defineComponent({
       warning: true,
       activeClass: true,
       favoris: false,
-      searchName:""
+      searchName:"",
+      amount:0, 
+      message:"",
+      partners:[],
+      accounts:[]
     };
   },
 
@@ -1042,16 +1051,34 @@ export default defineComponent({
       console.log(this.searchName)
     },
     async setRecipient():Promise<void> {
-      
-      let partners
+      var partners
       try {
         partners = await this.lokapi.searchRecipient("Edith")
         console.log('getPartners WORKED', partners)
-        this.store.state.recipient = partners[0]
+        this.partners = partners
       } catch (err) {
         console.log('getAccounts failed', err)
       }
-      this.showModalFrame3 = true
+    },
+    async sendTransaction():Promise<void> {
+
+      var accounts: any
+        try {
+          accounts = await this.lokapi.getAccounts()
+          console.log('getAccounts WORKED', accounts)
+          this.accounts = accounts
+        } catch (err) {
+          console.log('getAccounts failed', err)
+        }
+
+      console.log (this.accounts[0], this.partners[0], this.amount.toString(), this.message)
+      try {
+          await this.lokapi.transfer(this.accounts[0], this.partners[0], this.amount.toString(), this.message)
+        } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+          console.log('Payment failed:', err.message)
+          // commit('payment_error')
+          throw err
+        }
     }
   },
 

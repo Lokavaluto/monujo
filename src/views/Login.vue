@@ -89,6 +89,7 @@ export default {
           console.log('getAccounts WORKED', accounts)
           console.log('Account[0] internalId:', accounts[0].internalId)
           $store.state.accounts = accounts
+          console.log("in store", $store.state.accounts)
         } catch (err) {
           console.log('getAccounts failed', err)
         }
