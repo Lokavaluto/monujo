@@ -130,7 +130,7 @@
           >
             <p class="control has-icons-left custom-search-bar">
               <input
-                v-model="message"
+                v-model="searchName"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -141,7 +141,7 @@
             </p>
             <button
               class="icon is-medium is-right custom-pictogram-search p-1 custom-button-pictogram"
-              @click="fireSearch()"
+              v-on:click="fireSearch"
             >
               <QRPicto></QRPicto>
             </button>
@@ -180,8 +180,9 @@
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
           >
-            <div class="is-flex is-align-items-center">
+            <div  v-if="searchName=='Edith Orial'" class="is-flex is-align-items-center">
               <div
+              
                 class="mr-5 p-2 is-clickable"
                 :class="[favoris ? 'is-active' : '']"
                 @click="favoris = !favoris"
@@ -194,7 +195,7 @@
                 </span>
               </div>
               <i class="fas fa-history mr-5"></i>
-              <div class="p-2 is-clickable" @click="showModalFrame3 = true">
+              <div class="p-2 is-clickable" @click=" setRecipient()">
                 <p class="custom-card-destinataire mr-5">
                   Édith Orial
                 </p>
@@ -231,7 +232,7 @@
               />
             </a>
             <h3 class="custom-header-send-money-title ml-4">
-              Envoyer à Arthur Gepleindeflouze
+              Envoyer à Edith Orial
             </h3>
           </div>
           <a
@@ -264,7 +265,7 @@
                     src="https://bulma.io/images/placeholders/128x128.png"
                   />
                 </figure>
-                <h4 class="ml-1">Arthur Gepleindeflouze</h4>
+                <h4 class="ml-1">Edith Orial</h4>
               </div>
               <div class="mr-3">
                 <i class="fas fa-check" style="color: #46B020"></i>
@@ -288,7 +289,7 @@
             <div class="is-flex is-justify-content-flex-end mt-6">
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="showModalFrame4 = true; setFocus()"
+                @click="showModalFrame4 = true;"
               >
                 Suivant
               </button>
@@ -979,15 +980,15 @@
 import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
-import { ref, onUpdated, inject } from 'vue'
-export default {
+import {inject , defineComponent} from 'vue'
+export default defineComponent({
   name: "SendAskMoney",
   components: {
     MyModal: MyModal,
     QRPicto,
     AddPayCard,
   },
-   data(): {
+   data :function (): {
     showModalFrame1: boolean,
     showModalFrame2: boolean,
     showModalFrame3: boolean,
@@ -1004,7 +1005,8 @@ export default {
     warning: boolean,
     activeClass: boolean,
     favoris: boolean,
-    message:string} {
+    searchName:string } 
+    {
     return {
       showModalFrame1: false,
       showModalFrame2: false,
@@ -1022,17 +1024,35 @@ export default {
       warning: true,
       activeClass: true,
       favoris: false,
-      message:""
+      searchName:""
     };
   },
 
-  methods: {
-    fireSearch():void {
-      // eslint-disable-next-line
-      const $lokapi: any = inject("$lokapi");
-      console.log(this.message)
+  setup(): any{
+    const $lokapi: any = inject("$lokapi");
+    const $store:any = inject("$store")
+    return {
+      lokapi: $lokapi,
+      store:$store
     }
-   
+  },
+
+  methods: {
+    fireSearch : function ():void {
+      console.log(this.searchName)
+    },
+    async setRecipient():Promise<void> {
+      
+      let partners
+      try {
+        partners = await this.lokapi.searchRecipient("Edith")
+        console.log('getPartners WORKED', partners)
+        this.store.state.recipient = partners[0]
+      } catch (err) {
+        console.log('getAccounts failed', err)
+      }
+      this.showModalFrame3 = true
+    }
   },
 
 
@@ -1051,5 +1071,5 @@ export default {
 
    
  
-};
+});
 </script>

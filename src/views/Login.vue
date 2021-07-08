@@ -65,8 +65,8 @@ export default {
     submit: any;
   } {
     // eslint-disable-next-line
-    // eslint-disable-next-line
     const $store: any = inject("$store");
+    // eslint-disable-next-line
     const $lokapi: any = inject("$lokapi");
     const data = reactive({
       email: "",

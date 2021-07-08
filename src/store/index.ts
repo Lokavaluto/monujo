@@ -7,11 +7,30 @@ import { createStore } from 'vuex'
 import { moduleLokAPI } from './lokapi'
 
 
+const moduleTransactionHandler = {
+  state:{
+    accounts:[],
+    recipient:""
+  },
+  mutations: {
+
+  },
+  actions: {
+
+  },
+  getters: {
+    getAccs: (state: any) => {
+      return function(): Array<any> {
+        return state.accounts
+      }
+    },
+  }
+}
+
 export default createStore({
   state: {
     bal: 0,
     curr:"",
-    accounts:[]
   },
   mutations: {
     
@@ -21,6 +40,7 @@ export default createStore({
   },
   modules: {
     lokapi: moduleLokAPI,
+    transactionHandler: moduleTransactionHandler
   },
   getters: {
     getBal: (state: any) => {
@@ -31,11 +51,6 @@ export default createStore({
     getCurr: (state: any) => {
       return function(): string {
         return state.curr
-      }
-    },
-    getAccs: (state: any) => {
-      return function(): Array<any> {
-        return state.accounts
       }
     },
   }
