@@ -28,10 +28,10 @@ export default {
     },
     computed: {
       getBal(): number {
-         return store.state.bal
+         return store.getters.getBal()
       },
       getCurr(): string {
-         return store.state.curr
+         return store.getters.getCurr()
       }
     }
 }

@@ -88,6 +88,7 @@ export default {
           accounts = await $lokapi.getAccounts()
           console.log('getAccounts WORKED', accounts)
           console.log('Account[0] internalId:', accounts[0].internalId)
+          $store.state.accounts = accounts
         } catch (err) {
           console.log('getAccounts failed', err)
         }
@@ -107,13 +108,13 @@ export default {
           console.log('getAccounts failed', err)
         }
 
-        try {
-          await $lokapi.transfer(accounts[0], partners[0], "0.07", "testing lokapi v0.0.8")
-        } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-          console.log('Payment failed:', err.message)
-          // commit('payment_error')
-          throw err
-        }
+        // try {
+        //   await $lokapi.transfer(accounts[0], partners[0], "0.07", "testing lokapi v0.0.8")
+        // } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+        //   console.log('Payment failed:', err.message)
+        //   // commit('payment_error')
+        //   throw err
+        // }
         data.success = "Connection réussie";
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
