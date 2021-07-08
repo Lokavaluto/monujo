@@ -4,7 +4,7 @@
 ///<reference types="lokapi"/>
 
 import { createStore } from 'vuex'
-import { lokAPI, moduleLokAPI } from './lokapi'
+import { moduleLokAPI } from './lokapi'
 
 
 export default createStore({
