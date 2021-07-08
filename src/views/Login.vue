@@ -41,7 +41,6 @@
             </p>
           </div>
           <p class="has-text-danger has-text-centered" v-if="data.fail">{{ data.fail }}</p>
-          <p class="has-text-success has-text-centered" v-if="data.success">{{ data.success }}</p>
         </form>
       </div>
     </div>
@@ -61,7 +60,7 @@ import { useRouter } from "vue-router";
 export default {
   name: "Login",
   setup(): {
-    data: { email: string; password: string; fail: string; success: string; };
+    data: { email: string; password: string; fail: string; };
     // eslint-disable-next-line
     submit: any;
   } {
@@ -71,8 +70,7 @@ export default {
     const data = reactive({
       email: "",
       password: "",
-      fail: "",
-      success: "",
+      fail: ""
     });
 
     const routeur = useRouter();
@@ -82,7 +80,7 @@ export default {
           login: data.email,
           password: data.password,
         });
-        data.success = "Connection réussie";
+        $cookie.setCookie('user_session', $store.getters.getApiToken())
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}

@@ -2,7 +2,9 @@
   <div class="is-flex-direction-column mb-3">
     <div class="is-flex">
       <!-- <img :src="'/src/assets/media/' + { cardtype }" alt="credit_card" /> -->
-      <img :src="require(`@/assets/media/${cardtype}`)">
+      <figure class="image is-24x24 is-flex is-align-items-center">
+        <img :src="require(`@/assets/media/${cardtype}`)" />
+      </figure>
       <h3 class="custom-card-content-2">
         {{ fullName }}
       </h3>
@@ -18,12 +20,12 @@ export default {
     cardNumber: String,
     cardtype: String,
   },
-  data () {
+  data() {
     return {
-      mastercard: '/src/assets/media/mastercard.svg',
-      visa: '/src/assets/media/visa.svg',
-      cb: '/src/assets/media/CB.svg'
-    }
-  }
+      mastercard: "/src/assets/media/mastercard.svg",
+      visa: "/src/assets/media/visa.svg",
+      cb: "/src/assets/media/CB.svg",
+    };
+  },
 };
 </script>

@@ -11,36 +11,34 @@
         />
       </router-link>
 
-      <a
+      <div
         role="button"
         class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
         data-target="navbarBasicExample"
+        @click="showNav = !showNav"
+        :class="{ 'is-active': showNav }"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
-      </a>
+      </div>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <router-link to="/" class="navbar-item">
-          Accueil
-        </router-link>
-      </div>
+    <div
+      id="navbarBasicExample"
+      class="navbar-menu"
+      :class="{ 'is-active': showNav }"
+    >
 
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <router-link to="/register" class="button is-primary">
-              <strong>S'inscrire</strong>
-            </router-link>
-            <router-link to="/login" class="button is-light">
+            <router-link to="/" class="button is-light">
               Se connecter
             </router-link>
-               <router-link to="/profile" class="button is-light">
+            <router-link to="/profile" class="button is-light">
               Profile
             </router-link>
           </div>
@@ -53,5 +51,13 @@
 <script lang="ts">
 export default {
   name: "Nav",
+
+  data(): {
+    showNav: boolean;
+  } {
+    return {
+      showNav: false,
+    };
+  },
 };
 </script>
