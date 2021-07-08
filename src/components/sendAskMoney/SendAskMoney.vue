@@ -156,7 +156,7 @@
                 :class="[activeClass ? 'is-active' : '']"
                 @click="activeClass = true"
               >
-                <a>tous</a>
+                <a>recherche</a>
               </li>
               <li
                 class="is-flex is-align-items-center"
@@ -300,7 +300,7 @@
     </MyModal>
     <!-- fin modal frame 3 -->
     <!-- début modal frame 4 code confidentiel -->
-    <MyModal v-if="showModalFrame4" @close="showModalFrame4 = false">
+    <!-- <MyModal v-if="showModalFrame4" @close="showModalFrame4 = false">
       <template v-slot:header>
         <div
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
@@ -368,7 +368,7 @@
       <template v-slot:footer>
         <div></div>
       </template>
-    </MyModal>
+    </MyModal> -->
     <!-- début modal frame 4 code confidentiel particulier -->
     <!-- MODALS envoyer à un pro -->
     <!-- début frame 2 pro -->
@@ -436,7 +436,7 @@
                 :class="[activeClass ? 'is-active' : '']"
                 @click="activeClass = true"
               >
-                <a>tous</a>
+                <a>recherche</a>
               </li>
               <li
                 class="is-flex is-align-items-center"
@@ -583,7 +583,7 @@
     </MyModal>
     <!-- fin frame 3 pro -->
     <!-- début frame 4 pro -->
-    <MyModal v-if="showModalFrame4Pro" @close="showModalFrame4Pro = false">
+    <!-- <MyModal v-if="showModalFrame4Pro" @close="showModalFrame4Pro = false">
       <template v-slot:header>
         <div
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
@@ -651,7 +651,7 @@
       <template v-slot:footer>
         <div></div>
       </template>
-    </MyModal>
+    </MyModal> -->
     <!-- Fin MODALS pro -->
     <!-- début MODALS demander de l'argent -->
     <!-- Frame 1 -->
@@ -986,18 +986,18 @@ export default {
     AddPayCard,
   },
 
-  setup():any {
-      const pincode = ref()
-      onUpdated(() => {
-        if (pincode.value) {
-          pincode.value.focus()
-        }
-      })
+  // setup():any {
+  //     const pincode = ref()
+  //     onUpdated(() => {
+  //       if (pincode.value) {
+  //         pincode.value.focus()
+  //       }
+  //     })
 
-      return {
-        pincode
-      }
-    },
+  //     return {
+  //       pincode
+  //     }
+  //   },
 
    
   data(): {
