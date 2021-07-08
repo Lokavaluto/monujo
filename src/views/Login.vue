@@ -96,6 +96,8 @@ export default {
 
         console.log('amount:', balance)
         console.log('currency:', symbol)
+        $store.state.bal = balance
+        $store.state.curr = symbol
 
         let partners
         try {

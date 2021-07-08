@@ -7,7 +7,7 @@
                      default name
                 </slot>
               </h3>
-              <h3 class="custom-card-content">{{bal}} U</h3>
+              <h3 class="custom-card-content">{{bal}} {{curr}}</h3>
               <button class="button custom-button is-rounded action">
                 Voir
               </button>
@@ -19,7 +19,8 @@ export default {
     name:"Acc",
     props: {
         name:String,
-        bal:Number
+        bal:Number,
+        curr:String
     }
 }
 </script>
