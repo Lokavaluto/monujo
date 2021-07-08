@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import { lokAPI } from "./store/lokapi";
 require("@/assets/main.scss");
 
 // import { library } from "@fortawesome/fontawesome-svg-core";
@@ -18,5 +19,6 @@ require("@/assets/main.scss");
 createApp(App)
   .use(store)
   .use(router)
+  .provide('$lokapi', lokAPI)
   .provide('$store', store)
   .mount("#app");
