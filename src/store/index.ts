@@ -92,17 +92,9 @@ var lokAPI = new LokAPI(
 
 
 const moduleLokAPI = {
-  // state: () => ({
-  //   status: '',
-  //   token: localStorage.getItem('lokapiToken') || '',
-  // }),
-
   state: {
     status: '',
-    apiToken: "",
-    token: '',
     userProfile: null
-
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -113,35 +105,32 @@ const moduleLokAPI = {
       } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         console.log('Login failed:', err.message)
         commit('auth_error')
-        localStorage.removeItem('token')
         throw err
       }
       let accounts: any
       try {
         accounts = await lokAPI.getAccounts()
         console.log('getAccounts WORKED', accounts)
-        console.log('internalId', accounts[0].internalId)
+        console.log('Account[0] internalId:', accounts[0].internalId)
       } catch (err) {
         console.log('getAccounts failed', err)
       }
-      console.log('amount:', accounts[0].balance)
-      console.log('currency:', accounts[0].symbol)
-      commit('auth_success', lokAPI.apiToken)
+      let balance = await accounts[0].getBalance()
+      let symbol = await accounts[0].getSymbol()
+
+      console.log('amount:', balance)
+      console.log('currency:', symbol)
+
+      commit('auth_success')
     },
-    setTokenWithCookie({ commit }: any, cookie:string):void {
-      console.log("cookie", cookie)
-      commit("setToken", cookie)
-    }
   },
   mutations: {
     auth_request(state: any) {
       state.status = 'loading'
     },
-    auth_success(state: any, token: string) {
+    auth_success(state: any) {
       state.status = 'success'
-      state.token = token
       state.userProfile = lokAPI.userProfile
-      state.apiToken = lokAPI.apiToken
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -150,9 +139,6 @@ const moduleLokAPI = {
       state.status = ''
       state.apiToken = ''
     },
-    setToken(state: any, cookie: string) {
-      state.apiToken = cookie
-    }
   },
   getters: {
     getUserProfile: (state: any) => {

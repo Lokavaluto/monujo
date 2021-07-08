@@ -66,7 +66,6 @@ export default {
     submit: any;
   } {
     // eslint-disable-next-line
-    const $cookie: any = inject("$cookie");
     // eslint-disable-next-line
     const $store: any = inject("$store");
     const data = reactive({
@@ -84,7 +83,6 @@ export default {
           password: data.password,
         });
         data.success = "Connection réussie";
-        $cookie.setCookie('user_session', $store.getters.getApiToken())
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
@@ -171,9 +169,7 @@ export default {
   //         }
   //     );
   //     }
-  //     console.log('token info : ', res);
   //     const api_token = res.response.api_token;
-  //     console.log('api_token : ', api_token);
 };
 </script>
 
