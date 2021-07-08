@@ -130,6 +130,7 @@
           >
             <p class="control has-icons-left custom-search-bar">
               <input
+                v-model="message"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -140,6 +141,7 @@
             </p>
             <button
               class="icon is-medium is-right custom-pictogram-search p-1 custom-button-pictogram"
+              @click="fireSearch()"
             >
               <QRPicto></QRPicto>
             </button>
@@ -194,7 +196,7 @@
               <i class="fas fa-history mr-5"></i>
               <div class="p-2 is-clickable" @click="showModalFrame3 = true">
                 <p class="custom-card-destinataire mr-5">
-                  Arthur Gepleindeflouze
+                  Édith Orial
                 </p>
               </div>
             </div>
@@ -977,7 +979,7 @@
 import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
- import { ref, onUpdated } from 'vue'
+import { ref, onUpdated, inject } from 'vue'
 export default {
   name: "SendAskMoney",
   components: {
@@ -985,22 +987,7 @@ export default {
     QRPicto,
     AddPayCard,
   },
-
-  // setup():any {
-  //     const pincode = ref()
-  //     onUpdated(() => {
-  //       if (pincode.value) {
-  //         pincode.value.focus()
-  //       }
-  //     })
-
-  //     return {
-  //       pincode
-  //     }
-  //   },
-
-   
-  data(): {
+   data(): {
     showModalFrame1: boolean,
     showModalFrame2: boolean,
     showModalFrame3: boolean,
@@ -1016,7 +1003,8 @@ export default {
     showModalFrameCreditMoney4: boolean,
     warning: boolean,
     activeClass: boolean,
-    favoris: boolean,} {
+    favoris: boolean,
+    message:string} {
     return {
       showModalFrame1: false,
       showModalFrame2: false,
@@ -1034,7 +1022,34 @@ export default {
       warning: true,
       activeClass: true,
       favoris: false,
+      message:""
     };
   },
+
+  methods: {
+    fireSearch():void {
+      // eslint-disable-next-line
+      const $lokapi: any = inject("$lokapi");
+      console.log(this.message)
+    }
+   
+  },
+
+
+  // setup():any {
+  //     const pincode = ref()
+  //     onUpdated(() => {
+  //       if (pincode.value) {
+  //         pincode.value.focus()
+  //       }
+  //     })
+
+  //     return {
+  //       pincode
+  //     }
+  //   },
+
+   
+ 
 };
 </script>
