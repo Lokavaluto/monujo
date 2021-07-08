@@ -80,7 +80,6 @@ export default {
           login: data.email,
           password: data.password,
         });
-        $cookie.setCookie('user_session', $store.getters.getApiToken())
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
