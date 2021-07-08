@@ -68,6 +68,7 @@ export default {
     // eslint-disable-next-line
     // eslint-disable-next-line
     const $store: any = inject("$store");
+    const $lokapi: any = inject("$lokapi");
     const data = reactive({
       email: "",
       password: "",
@@ -82,6 +83,36 @@ export default {
           login: data.email,
           password: data.password,
         });
+
+        let accounts: any
+        try {
+          accounts = await $lokapi.getAccounts()
+          console.log('getAccounts WORKED', accounts)
+          console.log('Account[0] internalId:', accounts[0].internalId)
+        } catch (err) {
+          console.log('getAccounts failed', err)
+        }
+        let balance = await accounts[0].getBalance()
+        let symbol = await accounts[0].getSymbol()
+
+        console.log('amount:', balance)
+        console.log('currency:', symbol)
+
+        let partners
+        try {
+          partners = await $lokapi.searchRecipient("Edith")
+          console.log('getPartners WORKED', partners)
+        } catch (err) {
+          console.log('getAccounts failed', err)
+        }
+
+        try {
+          await $lokapi.transfer(accounts[0], partners[0], "0.07", "testing lokapi v0.0.8")
+        } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+          console.log('Payment failed:', err.message)
+          // commit('payment_error')
+          throw err
+        }
         data.success = "Connection réussie";
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
