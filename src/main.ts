@@ -16,9 +16,18 @@ require("@/assets/main.scss");
 //   .component("font-awesome-icon", FontAwesomeIcon)
 //   .mount("#app");
 
-createApp(App)
-  .use(store)
-  .use(router)
-  .provide('$lokapi', lokAPI)
-  .provide('$store', store)
-  .mount("#app");
+const app = createApp(App)
+  app.use(store)
+  app.use(router)
+  app.provide('$lokapi', lokAPI)
+  app.provide('$store', store)
+  app.mount("#app");
+
+// createApp(App)
+//   .use(store)
+//   .use(router)
+//   .provide('$lokapi', lokAPI)
+//   .provide('$store', store)
+//   .mount("#app");
+
+
