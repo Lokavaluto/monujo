@@ -180,7 +180,7 @@
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
           >
-            <div  v-if="searchName=='Edith Orial'" class="is-flex is-align-items-center">
+            <div v-if="searchName=='Edith Orial'" class="is-flex is-align-items-center">
               <div
               
                 class="mr-5 p-2 is-clickable"
@@ -982,6 +982,7 @@
 import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
+import { useStore } from 'vuex'
 import {inject , defineComponent} from 'vue'
 export default defineComponent({
   name: "SendAskMoney",
@@ -1009,9 +1010,7 @@ export default defineComponent({
     favoris: boolean,
     searchName:string, 
     amount:number,
-    message:string,
-    partners:any,
-    accounts:any,
+    message:string
     } 
     {
     return {
@@ -1033,17 +1032,16 @@ export default defineComponent({
       favoris: false,
       searchName:"",
       amount:0, 
-      message:"",
-      partners:[],
-      accounts:[],
+      message:""
     };
   },
 
   setup(): any{
     const $lokapi: any = inject("$lokapi");
-    const $store : any = inject("$store")
+    const store = useStore()
     return {
       lokapi: $lokapi,
+      $store:store
     }
   },
 
@@ -1056,28 +1054,25 @@ export default defineComponent({
       try {
         partners = await this.lokapi.searchRecipient(this.searchName)
         console.log('getPartners WORKED', partners)
-        this.partners = partners
+        this.$store.state.recipient = partners[0]
       } catch (err) {
         console.log('getAccounts failed', err)
       }
     },
     async sendTransaction():Promise<void> {
-      var accounts: any
-        try {
-          accounts = await this.lokapi.getAccounts()
-          console.log('getAccounts WORKED', accounts)
-          this.accounts = accounts
-        } catch (err) {
-          console.log('getAccounts failed', err)
-        }
-
+      let accs = this.$store.state.accounts
+      let part = this.$store.state.recipient
       try {
-          await this.lokapi.transfer(this.accounts[0], this.partners[0], this.amount.toString(), this.message)
+          await this.lokapi.transfer(accs[0], part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
           console.log('Payment failed:', err.message)
           // commit('payment_error')
           throw err
         }
+        let accounts = await this.lokapi.getAccounts()
+        let bal = await accounts[0].getBalance()
+        this.$store.state.bal = bal
+        
     }
   },
 

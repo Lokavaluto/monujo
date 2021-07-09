@@ -51,7 +51,7 @@
 <script lang="ts">
 import { inject, reactive } from "vue";
 import { useRouter } from "vue-router";
-
+import { useStore } from 'vuex'
 // const app = Vue.createApp({})
 // app.use(router)
 // app.mount('#app')
@@ -63,9 +63,10 @@ export default {
     data: { email: string; password: string; fail: string; };
     // eslint-disable-next-line
     submit: any;
+    $store:any
   } {
     // eslint-disable-next-line
-    const $store: any = inject("$store");
+    const $store: any = useStore()
     // eslint-disable-next-line
     const $lokapi: any = inject("$lokapi");
     const data = reactive({
@@ -128,6 +129,7 @@ export default {
     return {
       data,
       submit,
+      $store
     };
   },
 

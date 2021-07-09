@@ -11,16 +11,15 @@ require("@/assets/main.scss");
 
 
 // library.add(faCoffee);
-
 // createApp(App)
 //   .component("font-awesome-icon", FontAwesomeIcon)
 //   .mount("#app");
-
 const app = createApp(App)
   app.use(store)
   app.use(router)
   app.provide('$lokapi', lokAPI)
   app.provide('$store', store)
+  // app.config.globalProperties.$store = store
   app.mount("#app");
 
 // createApp(App)

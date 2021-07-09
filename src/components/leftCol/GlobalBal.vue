@@ -17,16 +17,21 @@
 </template>
 
 <script lang="ts">
-import store from "../../store"
-export default {
+import {defineComponent} from "vue"
+import { useStore } from 'vuex'
+export default defineComponent({
+    setup () {
+      const store = useStore()
+      return {store}
+    },
     name:"GlobalBal",
     computed: {
       getBal(): number {
-         return store.getters.getBal()
+         return this.store.getters.getBal()
       },
       getCurr(): string {
-         return store.getters.getCurr()
+         return this.store.getters.getCurr()
       }
     },
-}
+})
 </script>
