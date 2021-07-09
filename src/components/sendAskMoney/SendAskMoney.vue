@@ -289,9 +289,11 @@
             <div class="is-flex is-justify-content-flex-end mt-6">
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="sendTransaction()"
+                @click="sendTransaction(), (showModalFrame2 = false),
+                (showModalFrame1 = false),
+                (showModalFrame3 = false)"
               >
-                Suivant
+                Envoyer
               </button>
             </div>
           </div>
@@ -981,7 +983,6 @@ import MyModal from "../modal/MyModal.vue";
 import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import {inject , defineComponent} from 'vue'
-const $store : any = inject("$store")
 export default defineComponent({
   name: "SendAskMoney",
   components: {
@@ -1010,8 +1011,9 @@ export default defineComponent({
     amount:number,
     message:string,
     partners:any,
-    accounts:any
-    } {
+    accounts:any,
+    } 
+    {
     return {
       showModalFrame1: false,
       showModalFrame2: false,
@@ -1033,16 +1035,15 @@ export default defineComponent({
       amount:0, 
       message:"",
       partners:[],
-      accounts:[]
+      accounts:[],
     };
   },
 
   setup(): any{
     const $lokapi: any = inject("$lokapi");
-    const $store:any = inject("$store")
+    const $store : any = inject("$store")
     return {
       lokapi: $lokapi,
-      store:$store
     }
   },
 
@@ -1053,7 +1054,7 @@ export default defineComponent({
     async setRecipient():Promise<void> {
       var partners
       try {
-        partners = await this.lokapi.searchRecipient("Edith")
+        partners = await this.lokapi.searchRecipient(this.searchName)
         console.log('getPartners WORKED', partners)
         this.partners = partners
       } catch (err) {
@@ -1061,7 +1062,6 @@ export default defineComponent({
       }
     },
     async sendTransaction():Promise<void> {
-
       var accounts: any
         try {
           accounts = await this.lokapi.getAccounts()
@@ -1071,7 +1071,6 @@ export default defineComponent({
           console.log('getAccounts failed', err)
         }
 
-      console.log (this.accounts[0], this.partners[0], this.amount.toString(), this.message)
       try {
           await this.lokapi.transfer(this.accounts[0], this.partners[0], this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}

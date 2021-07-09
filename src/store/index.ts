@@ -7,25 +7,25 @@ import { createStore } from 'vuex'
 import { moduleLokAPI } from './lokapi'
 
 
-const moduleTransactionHandler = {
-  state:{
-    accounts:[],
-    recipient:""
-  },
-  mutations: {
+// const moduleTransactionHandler = {
+//   state:{
+//     accounts:[],
+//     recipient:""
+//   },
+//   mutations: {
 
-  },
-  actions: {
+//   },
+//   actions: {
 
-  },
-  getters: {
-    getAccs: (state: any) => {
-      return function(): Array<any> {
-        return state.accounts
-      }
-    },
-  }
-}
+//   },
+//   getters: {
+//     getAccs: (state: any) => {
+//       return function(): Array<any> {
+//         return state.accounts
+//       }
+//     },
+//   }
+// }
 
 export default createStore({
   state: {
@@ -40,7 +40,7 @@ export default createStore({
   },
   modules: {
     lokapi: moduleLokAPI,
-    transactionHandler: moduleTransactionHandler
+    // transactionHandler: moduleTransactionHandler
   },
   getters: {
     getBal: (state: any) => {
