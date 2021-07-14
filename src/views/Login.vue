@@ -63,10 +63,10 @@ export default {
     data: { email: string; password: string; fail: string; };
     // eslint-disable-next-line
     submit: any;
-    $store:any
+    store:any
   } {
     // eslint-disable-next-line
-    const $store: any = useStore()
+    const store: any = useStore()
     // eslint-disable-next-line
     const $lokapi: any = inject("$lokapi");
     const data = reactive({
@@ -79,7 +79,7 @@ export default {
     const routeur = useRouter();
     const submit = async (): Promise<void> => {
       try {
-        await $store.dispatch("login", {
+        await store.dispatch("login", {
           login: data.email,
           password: data.password,
         });
@@ -89,8 +89,8 @@ export default {
           accounts = await $lokapi.getAccounts()
           console.log('getAccounts WORKED', accounts)
           console.log('Account[0] internalId:', accounts[0].internalId)
-          $store.state.accounts = accounts
-          console.log("in store", $store.state.accounts)
+          store.state.accounts = accounts
+          console.log("in store", store.state.accounts)
         } catch (err) {
           console.log('getAccounts failed', err)
         }
@@ -99,8 +99,8 @@ export default {
 
         console.log('amount:', balance)
         console.log('currency:', symbol)
-        $store.state.bal = balance
-        $store.state.curr = symbol
+        store.state.bal = balance
+        store.state.curr = symbol
 
         let partners
         try {
@@ -129,7 +129,7 @@ export default {
     return {
       data,
       submit,
-      $store
+      store
     };
   },
 
