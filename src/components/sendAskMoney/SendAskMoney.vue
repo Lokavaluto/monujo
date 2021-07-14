@@ -179,10 +179,12 @@
         <div class="container custom-width-send-money mt-4">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
+            v-for="partner in partners"
+            :key="partner.jsonData"
           >
-            <div v-if="searchName=='Edith Orial'" class="is-flex is-align-items-center">
+            <div
+            class="is-flex is-align-items-center">
               <div
-              
                 class="mr-5 p-2 is-clickable"
                 :class="[favoris ? 'is-active' : '']"
                 @click="favoris = !favoris"
@@ -195,12 +197,16 @@
                 </span>
               </div>
               <i class="fas fa-history mr-5"></i>
-              <div class="p-2 is-clickable" @click=" setRecipient(), this.showModalFrame3 = true">
+              <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3 = true">
                 <p class="custom-card-destinataire mr-5">
-                  Édith Orial
+                  {{partner.jsonData.name}}
                 </p>
               </div>
             </div>
+
+
+
+
             <div class="is-flex">
               <i class="fas fa-ellipsis-v"></i>
             </div>
@@ -1010,7 +1016,8 @@ export default defineComponent({
     favoris: boolean,
     searchName:string, 
     amount:number,
-    message:string
+    message:string,
+    partners:Array<any>
     } 
     {
     return {
@@ -1032,36 +1039,40 @@ export default defineComponent({
       favoris: false,
       searchName:"",
       amount:0, 
-      message:""
+      message:"",
+      partners:[]
     };
   },
 
   setup(): any{
-    const $lokapi: any = inject("$lokapi");
-    const store = useStore()
+    const lokapi: any = inject("$lokapi");
+    const store : any = useStore()
     return {
-      lokapi: $lokapi,
-      $store:store
+      lokapi: lokapi,
+      store: store
     }
   },
 
   methods: {
-    fireSearch : function ():void {
+    fireSearch : async function ():Promise<void> {
       console.log(this.searchName)
-    },
-    async setRecipient():Promise<void> {
       var partners
       try {
         partners = await this.lokapi.searchRecipient(this.searchName)
-        console.log('getPartners WORKED', partners)
-        this.$store.state.recipient = partners[0]
+        console.log('getPartners WORKED', partners[0].jsonData)
+        this.store.state.recipient = partners[0]
+        this.partners = partners
       } catch (err) {
         console.log('getAccounts failed', err)
       }
     },
+    setRecipient(partner:any):void {
+        this.store.state.recipient = partner
+        console.log("set",this.store.state.recipient)
+    },
     async sendTransaction():Promise<void> {
-      let accs = this.$store.state.accounts
-      let part = this.$store.state.recipient
+      let accs = this.store.state.accounts
+      let part = this.store.state.recipient
       try {
           await this.lokapi.transfer(accs[0], part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
@@ -1071,7 +1082,7 @@ export default defineComponent({
         }
         let accounts = await this.lokapi.getAccounts()
         let bal = await accounts[0].getBalance()
-        this.$store.state.bal = bal
+        this.store.state.bal = bal
         
     }
   },
