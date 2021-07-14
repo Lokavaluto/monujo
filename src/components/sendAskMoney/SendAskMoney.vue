@@ -236,7 +236,7 @@
               />
             </a>
             <h3 class="custom-header-send-money-title ml-4">
-              Envoyer à Edith Orial
+              Envoyer à {{recipientName}}
             </h3>
           </div>
           <a
@@ -269,7 +269,7 @@
                     src="https://bulma.io/images/placeholders/128x128.png"
                   />
                 </figure>
-                <h4 class="ml-1">Edith Orial</h4>
+                <h4 class="ml-1">{{recipientName}}</h4>
               </div>
               <div class="mr-3">
                 <i class="fas fa-check" style="color: #46B020"></i>
@@ -1015,7 +1015,8 @@ export default defineComponent({
     searchName:string, 
     amount:number,
     message:string,
-    partners:Array<any>
+    partners:Array<any>,
+    recipientName:string
     } 
     {
     return {
@@ -1038,7 +1039,8 @@ export default defineComponent({
       searchName:"",
       amount:0, 
       message:"",
-      partners:[]
+      partners:[],
+      recipientName:""
     };
   },
 
@@ -1083,6 +1085,7 @@ export default defineComponent({
     },
     setRecipient(partner:any):void {
         this.store.state.recipient = partner
+        this.recipientName = partner.name
         console.log("set",this.store.state.recipient)
     },
     async sendTransaction():Promise<void> {
