@@ -176,11 +176,12 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
-        <div class="container custom-width-send-money mt-4">
+        <div class="container custom-width-send-money mt-4"
+             v-for="partner in partners"
+             :key="partner.jsonData">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
-            v-for="partner in partners"
-            :key="partner.jsonData"
+            
           >
             <div
             class="is-flex is-align-items-center">
@@ -203,10 +204,6 @@
                 </p>
               </div>
             </div>
-
-
-
-
             <div class="is-flex">
               <i class="fas fa-ellipsis-v"></i>
             </div>
