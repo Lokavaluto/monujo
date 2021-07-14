@@ -131,6 +131,7 @@
             <p class="control has-icons-left custom-search-bar">
               <input
                 v-model="searchName"
+                v-on:input="delayedSearch()"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -1051,17 +1052,34 @@ export default defineComponent({
   },
 
   methods: {
-    fireSearch : async function ():Promise<void> {
-      console.log(this.searchName)
-      var partners
-      try {
-        partners = await this.lokapi.searchRecipient(this.searchName)
-        console.log('getPartners WORKED', partners[0].jsonData)
-        this.store.state.recipient = partners[0]
-        this.partners = partners
-      } catch (err) {
-        console.log('getAccounts failed', err)
-      }
+    // fireSearch : async function ():Promise<void> {
+    //   console.log(this.searchName)
+    //   var partners
+    //   try {
+    //     partners = await this.lokapi.searchRecipient(this.searchName)
+    //     console.log('getPartners WORKED', partners[0].jsonData)
+    //     this.store.state.recipient = partners[0]
+    //     this.partners = partners
+    //   } catch (err) {
+    //     console.log('getAccounts failed', err)
+    //   }
+    // },
+    async delayedSearch() :Promise<void> {
+      var cached = this.searchName
+      setTimeout(async () =>{
+        if (cached == this.searchName) {
+          console.log(this.searchName)
+          var partners
+          try {
+            partners = await this.lokapi.searchRecipient(this.searchName)
+            console.log('getPartners WORKED', partners[0].jsonData)
+            this.store.state.recipient = partners[0]
+            this.partners = partners
+          } catch (err) {
+            console.log('getAccounts failed', err)
+          }
+        }
+       }, 800);
     },
     setRecipient(partner:any):void {
         this.store.state.recipient = partner
