@@ -1068,14 +1068,13 @@ export default defineComponent({
     // },
     async delayedSearch() :Promise<void> {
       var cached = this.searchName
-      setTimeout(async () =>{
+      setTimeout(async () => {
         if (cached == this.searchName) {
           console.log(this.searchName)
           var partners
           try {
             partners = await this.lokapi.searchRecipient(this.searchName)
             console.log('getPartners WORKED', partners[0].jsonData)
-            this.store.state.recipient = partners[0]
             this.partners = partners
           } catch (err) {
             console.log('getAccounts failed', err)
