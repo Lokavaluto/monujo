@@ -93,7 +93,9 @@ export var lokAPI = new LokAPI(
 export var moduleLokAPI = {
   state: {
     status: '',
-    userProfile: null
+    userProfile: null,
+    transactions: null,
+    thisWeektransactions:null
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -112,9 +114,11 @@ export var moduleLokAPI = {
         commit('auth_error')
         throw err
       }
-
+      commit("setThisWeekTransactions")
       commit('auth_success')
     },
+
+
   },
   mutations: {
     auth_request(state: any) {
@@ -131,6 +135,24 @@ export var moduleLokAPI = {
       state.status = ''
       state.apiToken = ''
     },
+   
+    async setThisWeekTransactions (state:any) {
+      let transactions = await lokAPI.getTransactions()
+      state.transactions = transactions 
+      var maxTransactions = 5
+      let trs = []
+      for (let el of transactions) {
+          if (el.jsonData.relatedUser) {
+              trs.push(el)
+              if (maxTransactions === 1) {
+                  break;
+              }
+              maxTransactions -= 1
+          }
+      }
+      console.log(trs)
+      state.thisWeektransactions = trs
+    }
   },
   getters: {
     getUserProfile: (state: any) => {
@@ -143,7 +165,16 @@ export var moduleLokAPI = {
         return state.apiToken
       }
     },
-
+    getTransactions: (state: any) => {
+      return function(): any {
+        return state.transactions
+      }
+    },
+    getThisWeektransactions: (state: any) => {
+      return function(): any {
+        return state.thisWeektransactions
+      }
+    }
   }
 }
 

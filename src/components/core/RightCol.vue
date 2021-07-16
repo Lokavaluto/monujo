@@ -6,7 +6,7 @@
     >
       <OperationsSelector />
       <ThisWeek />
-      <LastWeek />
+      <!-- <LastWeek /> -->
       <MyModal v-if="showModal" @close="showModal = false">
         <template v-slot:header>
           <h3>custom HEAD</h3>
@@ -28,20 +28,24 @@
 <script lang="ts">
 import OperationsSelector from "../rightCol/OperationsSelector.vue";
 import ThisWeek from "../rightCol/ThisWeek.vue";
-import LastWeek from "../rightCol/LastWeek.vue";
+// import LastWeek from "../rightCol/LastWeek.vue";
 import MyModal from "../modal/MyModal.vue";
-export default {
+import {defineComponent, inject} from "vue"
+
+export default defineComponent({
   name: "RightCol",
   components: {
     OperationsSelector,
     ThisWeek,
-    LastWeek,
+    // LastWeek,
     MyModal,
   },
-  data(): { showModal: boolean } {
+  data(): { showModal: boolean , lokapi:any} {
+    const lokapi: any = inject("$lokapi");
     return {
       showModal: false,
+      lokapi:lokapi
     };
   },
-};
+});
 </script>

@@ -11,12 +11,23 @@
     <!-- fin card semaine dernière -->
 </template>
 
-<script>
+<script lang="ts">
 import TransactionSubCard from "./TransactionSubCard.vue"
-export default {
+import {defineComponent} from "vue"
+import {useStore} from "vuex"
+export default defineComponent({
     name:"LastWeek.vue",
-     components: {
+    data() {
+        const store: any = useStore()
+        return {
+            store
+        }
+    },
+    mounted: function () {
+        console.log("mount")
+    },
+    components: {
         TransactionSubCard
     }
-}
+})
 </script>
