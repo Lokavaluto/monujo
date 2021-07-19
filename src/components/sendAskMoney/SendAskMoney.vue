@@ -1100,6 +1100,10 @@ export default defineComponent({
         let accounts = await this.lokapi.getAccounts()
         let bal = await accounts[0].getBalance()
         this.store.state.bal = bal
+        // let transactions = await this.lokapi.getTransactions()
+        // console.log(transactions)
+        await this.store.dispatch("resetTRS")
+
         
     }
   },

@@ -117,6 +117,9 @@ export var moduleLokAPI = {
       commit("setThisWeekTransactions")
       commit('auth_success')
     },
+    async resetTRS({commit} :any) {
+      await commit("setThisWeekTransactions")
+    }
 
 
   },

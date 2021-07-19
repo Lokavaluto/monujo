@@ -1,7 +1,7 @@
 <template>
      <!-- card cette semaine  -->
             <h2 class="custom-card-sub-title">Cette semaine</h2>
-            <TransactionSubCard v-for="transaction in transactions"
+            <TransactionSubCard v-for="transaction in getTrs"
              :key="transaction.jsonData" :amount="transaction.jsonData.amount" 
              :symbol="transaction.jsonData.currency"
              :desc="transaction.jsonData.description"
@@ -27,6 +27,12 @@ export default defineComponent({
             transactions:store.state.lokapi.thisWeektransactions
         }
     },
+    computed: {
+        getTrs(): number {
+            return this.store.getters.getThisWeektransactions()
+        }
+    },
+   
     methods : { 
         dateFormated(badDate:string) :string {
             var date = new Date(badDate);
