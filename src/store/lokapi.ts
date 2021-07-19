@@ -119,6 +119,9 @@ export var moduleLokAPI = {
     },
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
+    },
+    initAutoLogin({commit}:any) {
+      commit("autoLogin")
     }
 
 
@@ -137,6 +140,11 @@ export var moduleLokAPI = {
     logout(state: any) {
       state.status = ''
       state.apiToken = ''
+    },
+
+
+    async autoLogin(state:any) {
+      state.userProfile = lokAPI.getUserProfile(8)
     },
    
     async setThisWeekTransactions (state:any) {
