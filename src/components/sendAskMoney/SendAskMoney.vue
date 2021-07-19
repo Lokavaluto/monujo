@@ -1080,7 +1080,7 @@ export default defineComponent({
             console.log('getAccounts failed', err)
           }
         }
-       }, 800);
+       }, 200);
     },
     setRecipient(partner:any):void {
         this.store.state.recipient = partner
