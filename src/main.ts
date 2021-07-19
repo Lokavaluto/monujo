@@ -3,8 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import { lokAPI } from "./store/lokapi";
+import Toaster from "@meforma/vue-toaster";
 require("@/assets/main.scss");
-
 // import { library } from "@fortawesome/fontawesome-svg-core";
 // import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -17,8 +17,10 @@ require("@/assets/main.scss");
 const app = createApp(App)
   app.use(store)
   app.use(router)
+  app.use(Toaster)
   app.provide('$lokapi', lokAPI)
   app.provide('$store', store)
+  app.provide('$Toaster', Toaster)
   // app.config.globalProperties.$store = store
   app.mount("#app");
 
