@@ -6,6 +6,7 @@
              :symbol="transaction.jsonData.currency"
              :desc="transaction.jsonData.description"
              :date="dateFormated(transaction.jsonData.date)"
+             :unformatedDate="transaction.jsonData.date"
              :name="transaction.jsonData.relatedUser.display"
              picto="QR"/>
             <!-- fin card cette semaine -->
