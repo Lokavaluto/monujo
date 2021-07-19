@@ -20,7 +20,6 @@ const app = createApp(App)
   app.use(Toaster)
   app.provide('$lokapi', lokAPI)
   app.provide('$store', store)
-  app.provide('$Toaster', Toaster)
   // app.config.globalProperties.$store = store
   app.mount("#app");
 

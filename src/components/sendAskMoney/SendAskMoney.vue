@@ -1103,7 +1103,7 @@ export default defineComponent({
         // let transactions = await this.lokapi.getTransactions()
         // console.log(transactions)
         await this.store.dispatch("resetTRS")
-
+        this.$toast.success(`Hey! I'm here`);
         
     }
   },
