@@ -144,7 +144,7 @@ export var moduleLokAPI = {
 
 
     async autoLogin(state:any) {
-      state.userProfile = lokAPI.getUserProfile(8)
+      state.userProfile = lokAPI.getUserProfile()
     },
    
     async setThisWeekTransactions (state:any) {

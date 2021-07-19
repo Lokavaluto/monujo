@@ -49,15 +49,17 @@ export default defineComponent({
         this.userProfile = result
         console.log(result)
         console.log("relogin !")
-        // let accounts: any
-        // try {
-        //   accounts = await this.lokapi.getAccounts()
-        //   console.log('getAccounts WORKED', accounts)
-        //   console.log('Account[0] internalId:', accounts[0].internalId)
-        //   console.log("in store", this.store.state.accounts)
-        // } catch (err) {
-        //   console.log('getAccounts failed', err)
-        // }
+        let accounts: any
+        try {
+          accounts = await this.lokapi.getAccounts()
+          let balance = await accounts[0].getBalance()
+          let symbol = await accounts[0].getSymbol()
+          this.store.state.bal = balance
+          this.store.state.curr = symbol
+          this.store.dispatch("resetTRS")
+        } catch (err) {
+          console.log('getAccounts failed', err)
+        }
   })
     
   },
