@@ -30,10 +30,8 @@ export default defineComponent({
  
     setup(): any {
       const store : any = useStore()
-      const lokapi: any = inject("$lokapi");
       return {
-        store: store,
-        lokapi: lokapi
+        store: store
       }
     },
     data():any {
