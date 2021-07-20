@@ -26,7 +26,7 @@ export default defineComponent({
     },
     name:"GlobalBal",
     computed: {
-      getBal(): number {
+      getBal(): string {
          return this.store.getters.getBal()
       },
       getCurr(): string {
