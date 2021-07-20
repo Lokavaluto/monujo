@@ -95,7 +95,11 @@ export var moduleLokAPI = {
     status: '',
     userProfile: null,
     transactions: null,
-    thisWeektransactions:null
+    thisWeektransactions:null,
+    bal: 0,
+    curr:"",
+    accounts:[],
+    recipient:""
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -122,6 +126,10 @@ export var moduleLokAPI = {
     },
     initAutoLogin({commit}:any) {
       commit("autoLogin")
+    },
+    async setAccounts({commit}:any) {
+      await commit("setBalCurr")
+      await commit("setThisWeekTransactions")
     }
 
 
@@ -142,6 +150,20 @@ export var moduleLokAPI = {
       state.apiToken = ''
     },
 
+    async setBalCurr(state:any) {
+      let accounts: any;
+      try {
+        accounts = await lokAPI.getAccounts();
+        let balance = await accounts[0].getBalance();
+        let symbol = await accounts[0].getSymbol();
+        state.bal = balance;
+        state.curr = symbol;
+        state.accounts = accounts
+        
+      } catch (err) {
+        console.log('getAccounts failed', err);
+      }
+    },
 
     async autoLogin(state:any) {
       state.userProfile = lokAPI.getUserProfile(0)
@@ -167,6 +189,22 @@ export var moduleLokAPI = {
     }
   },
   getters: {
+    getBal: (state: any) => {
+      return function(): number {
+        return state.bal
+      }
+    },
+    getCurr: (state: any) => {
+      return function(): string {
+        return state.curr
+      }
+    },
+    getAccs: (state: any) => {
+      return function(): Array<any> {
+        return state.accounts
+      }
+    },
+
     getUserProfile: (state: any) => {
       return function(): any {
         return state.userProfile

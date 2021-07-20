@@ -44,24 +44,16 @@ export default defineComponent({
     },
 
   mounted() {
-    this.store.dispatch("initAutoLogin")
-    this.store.getters.getUserProfile().then(async (result:any) => {
-        this.userProfile = result
-        console.log(result)
-        console.log("relogin !")
-        let accounts: any
-        try {
-          accounts = await this.lokapi.getAccounts()
-          let balance = await accounts[0].getBalance()
-          let symbol = await accounts[0].getSymbol()
-          this.store.state.bal = balance
-          this.store.state.curr = symbol
+    if(!this.userProfile) {
+      this.store.dispatch("initAutoLogin")
+        this.store.getters.getUserProfile().then(async (result:any) => {
+          this.userProfile = result
+          console.log(result)
+          console.log("relogin !")
           this.store.dispatch("resetTRS")
-        } catch (err) {
-          console.log('getAccounts failed', err)
-        }
-  })
-    
+          this.store.dispatch("setAccounts")
+        })
+    }
   },
 
   computed: {

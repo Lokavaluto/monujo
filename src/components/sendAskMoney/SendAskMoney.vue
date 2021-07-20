@@ -1083,13 +1083,13 @@ export default defineComponent({
        }, 200);
     },
     setRecipient(partner:any):void {
-        this.store.state.recipient = partner
+        this.store.state.lokapi.recipient = partner
         this.recipientName = partner.name
         console.log("set",this.store.state.recipient)
     },
     async sendTransaction():Promise<void> {
-      let accs = this.store.state.accounts
-      let part = this.store.state.recipient
+      let accs = this.store.state.lokapi.accounts
+      let part = this.store.state.lokapi.recipient
       try {
           await this.lokapi.transfer(accs[0], part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
@@ -1099,7 +1099,7 @@ export default defineComponent({
         }
         let accounts = await this.lokapi.getAccounts()
         let bal = await accounts[0].getBalance()
-        this.store.state.bal = bal
+        this.store.state.lokapi.bal = bal
         // let transactions = await this.lokapi.getTransactions()
         // console.log(transactions)
         await this.store.dispatch("resetTRS")
