@@ -1074,7 +1074,7 @@ export default defineComponent({
           var partners
           try {
             partners = await this.lokapi.searchRecipient(this.searchName)
-            console.log('getPartners WORKED', partners[0].jsonData)
+            console.log('getPartners WORKED', partners)
             this.partners = partners
           } catch (err) {
             console.log('getAccounts failed', err)
@@ -1104,7 +1104,7 @@ export default defineComponent({
         // console.log(transactions)
         await this.store.dispatch("resetTRS")
         this.$toast.success(
-          `Payement effectué à ${this.recipientName}`,
+          `Paiement  effectué à ${this.recipientName}`,
           {
             position:
             "top-right"
