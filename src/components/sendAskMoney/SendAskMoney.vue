@@ -157,14 +157,14 @@
             <ul class="is-justify-content-space-evenly">
               <li
                 :class="[activeClass ? 'is-active' : '']"
-                @click="activeClass = true"
+                @click="activeClass = true , displayFavoritesOnly = false, fastSearch()"
               >
                 <a>recherche</a>
               </li>
               <li
                 class="is-flex is-align-items-center"
                 :class="[!activeClass ? 'is-active' : '']"
-                @click="activeClass = false"
+                @click="activeClass = false , displayFavoritesOnly = true, fastSearch()"
               >
                 <a class="custom-pictogram-star"
                   ><span class="icon is-small is-left mr-5">
@@ -988,6 +988,17 @@ import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import { useStore } from 'vuex'
 import {inject , defineComponent} from 'vue'
+
+function returnFavoritesOnly(partners:any): any{
+  var ret = []
+  for (let el of partners) {
+    if (el.jsonData.is_favorite == true) {
+      ret.push(el)
+    }
+  }
+  return ret
+}
+
 export default defineComponent({
   name: "SendAskMoney",
   components: {
@@ -1016,7 +1027,8 @@ export default defineComponent({
     amount:number,
     message:string,
     partners:Array<any>,
-    recipientName:string
+    recipientName:string,
+    displayFavoritesOnly:boolean
     } 
     {
     return {
@@ -1040,7 +1052,8 @@ export default defineComponent({
       amount:0, 
       message:"",
       partners:[],
-      recipientName:""
+      recipientName:"",
+      displayFavoritesOnly:false
     };
   },
 
@@ -1057,7 +1070,20 @@ export default defineComponent({
     async toggleFavorite(partner:any):Promise<void> {
       this.lokapi.toggleFavorite(partner)
     },
+
+    async fastSearch() :Promise<void> {
+      var partners
+      try {
+        partners = await this.lokapi.searchRecipient(this.searchName)
+        console.log('getPartners WORKED', partners)
+        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(partners) : partners
+      } catch (err) {
+        console.log('getAccounts failed', err)
+      }
+    },
+
     async delayedSearch() :Promise<void> {
+      console.log("test")
       var cached = this.searchName
       setTimeout(async () => {
         if (cached == this.searchName) {
@@ -1066,12 +1092,12 @@ export default defineComponent({
           try {
             partners = await this.lokapi.searchRecipient(this.searchName)
             console.log('getPartners WORKED', partners)
-            this.partners = partners
+            this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(partners) : partners
           } catch (err) {
             console.log('getAccounts failed', err)
           }
         }
-       }, 200);
+       }, 100);
     },
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner
