@@ -188,13 +188,13 @@
             class="is-flex is-align-items-center">
               <div
                 class="mr-5 p-2 is-clickable"
-                :class="[favoris ? 'is-active' : '']"
-                @click="favoris = !favoris"
+                :class="[partner.jsonData.is_favorite ? 'is-active' : '']"
+                @click="toggleFavorite(partner), partner.jsonData.is_favorite = partner.jsonData.is_favorite ? false : true"
               >
                 <span>
                   <i
                     class="far fa-star"
-                    :class="[favoris ? 'fas fa-star' : '']"
+                    :class="[partner.jsonData.is_favorite ? 'fas fa-star' : '']"
                   ></i>
                 </span>
               </div>
@@ -1054,18 +1054,9 @@ export default defineComponent({
   },
 
   methods: {
-    // fireSearch : async function ():Promise<void> {
-    //   console.log(this.searchName)
-    //   var partners
-    //   try {
-    //     partners = await this.lokapi.searchRecipient(this.searchName)
-    //     console.log('getPartners WORKED', partners[0].jsonData)
-    //     this.store.state.recipient = partners[0]
-    //     this.partners = partners
-    //   } catch (err) {
-    //     console.log('getAccounts failed', err)
-    //   }
-    // },
+    async toggleFavorite(partner:any):Promise<void> {
+      this.lokapi.toggleFavorite(partner)
+    },
     async delayedSearch() :Promise<void> {
       var cached = this.searchName
       setTimeout(async () => {
