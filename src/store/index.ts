@@ -11,6 +11,7 @@ import { moduleLokAPI } from './lokapi'
 
 export default createStore({
   state: {
+    
   },
   mutations: {
   },

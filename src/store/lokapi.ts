@@ -6,6 +6,8 @@
 import http from "http"
 import https from "https"
 
+import router from "../router/index"
+
 import { VueCookieNext } from 'vue-cookie-next'
 import { LokAPIAbstract, e as LokAPIExc, t as LokAPIType } from "lokapi"
 
@@ -71,6 +73,7 @@ class LokAPI extends LokAPIAbstract {
   base64Encode = (s: string) => Buffer.from(s).toString('base64')
   persistentStore = new cookieStore()
   requestLogin() {
+    router.push("/")
     console.log("Login requested !")
   }
 
@@ -103,7 +106,8 @@ export var moduleLokAPI = {
     bal: 0,
     curr:"",
     accounts:[],
-    recipient:""
+    recipient:"",
+    isLog:false
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {

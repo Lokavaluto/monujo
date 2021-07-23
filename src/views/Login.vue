@@ -77,6 +77,7 @@ export default {
         });
         store.dispatch("setAccounts")
         data.success = "Connection réussie";
+        store.state.lokapi.isLog = true
         setTimeout( () => routeur.push({ path: '/profile'}), 300);
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}

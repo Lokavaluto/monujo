@@ -38,7 +38,7 @@
             <router-link to="/" class="button is-light">
               Se connecter
             </router-link>
-            <router-link to="/profile" class="button is-light">
+            <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
           </div>
@@ -49,15 +49,24 @@
 </template>
 
 <script lang="ts">
-export default {
+import { useStore } from 'vuex'
+import {defineComponent} from "vue"
+export default defineComponent({
   name: "Nav",
-
   data(): {
     showNav: boolean;
+    store:any;
   } {
+    const store = useStore()
     return {
       showNav: false,
+      store:store
     };
   },
-};
+  computed: {
+      getLog(): string {
+         return this.store.state.lokapi.isLog
+      },
+    },
+});
 </script>

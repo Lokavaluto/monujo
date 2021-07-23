@@ -18,7 +18,7 @@
 
 <script lang="ts">
 
-import {defineComponent, inject} from "vue"
+import {defineComponent} from "vue"
 import {useStore} from "vuex"
 import LeftCol from "./core/LeftCol.vue";
 import RightCol from "./core/RightCol.vue";
@@ -50,6 +50,7 @@ export default defineComponent({
           console.log("relogin !")
           this.store.dispatch("resetTRS")
           this.store.dispatch("setAccounts")
+          this.store.state.lokapi.isLog = true
         })
     }
   },
