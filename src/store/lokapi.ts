@@ -3,6 +3,7 @@
 ///<reference types="@types/node"/>
 ///<reference types="lokapi"/>
 
+import http from "http"
 import https from "https"
 
 import { VueCookieNext } from 'vue-cookie-next'
@@ -24,26 +25,29 @@ class cookieStore implements LokAPIType.IPersistentStore {
   }
 }
 
+const requesters: any = { http, https }
 
 class LokAPI extends LokAPIAbstract {
   httpRequest = (opts: LokAPIType.coreHttpOpts) => {
-    if (opts.protocol !== 'https') {
-      throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
-    }
     const httpsOpts = {
       host: opts.host,
       path: opts.path,
       method: opts.method,
-      headers: opts.headers,
+      ...opts.headers && { headers: opts.headers },
+      ...opts.port && { port: opts.port }
+    }
+    const requester = requesters[opts.protocol]
+    if (!requester) {
+      throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
     }
     return new Promise((resolve, reject) => {
 
-      let req = https.request(httpsOpts, (res) => {
+      let req = requester.request(httpsOpts, (res: any) => {
         const { statusCode } = res
 
         let rawData = ''
 
-        res.on('data', (chunk) => { rawData += chunk })
+        res.on('data', (chunk: any) => { rawData += chunk })
         res.on('end', () => {
           if (!statusCode || statusCode.toString().slice(0, 1) !== '2') {
             res.resume();
@@ -52,16 +56,16 @@ class LokAPI extends LokAPIAbstract {
           } else {
             resolve(rawData)
           }
-        });
+        })
       })
 
       if (opts.data) req.write(JSON.stringify(opts.data))
 
-      req.end();
-      req.on('error', (err) => {
+      req.end()
+      req.on('error', (err: any) => {
         console.error(`Encountered an error trying to make a request: ${err.message}`);
         reject(new LokAPIExc.RequestFailed(err.message))
-      });
+      })
     })
   }
   base64Encode = (s: string) => Buffer.from(s).toString('base64')
