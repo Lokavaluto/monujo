@@ -43,7 +43,8 @@ export default defineComponent({
 
   mounted() {
     if(!this.userProfile) {
-      this.store.dispatch("initAutoLogin")
+      try {
+        this.store.dispatch("initAutoLogin")
         this.store.getters.getUserProfile().then(async (result:any) => {
           this.userProfile = result
           console.log(result)
@@ -52,6 +53,10 @@ export default defineComponent({
           this.store.dispatch("setAccounts")
           this.store.state.lokapi.isLog = true
         })
+      } catch(e) {
+        console.log(e)
+      }
+      
     }
   },
 

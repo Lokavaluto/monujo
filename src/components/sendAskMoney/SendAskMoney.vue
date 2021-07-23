@@ -159,7 +159,7 @@
                 :class="[activeClass ? 'is-active' : '']"
                 @click="activeClass = true , displayFavoritesOnly = false, fastSearch()"
               >
-                <a>recherche</a>
+                <a>tous</a>
               </li>
               <li
                 class="is-flex is-align-items-center"
