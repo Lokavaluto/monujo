@@ -113,11 +113,12 @@ export var moduleLokAPI = {
     async login({ commit }: any, credentials: { login: string, password: string }) {
       let { login, password } = credentials
       commit('auth_request')
+      let partners: any
       try {
-        let partners = await lokAPI.searchRecipient("Al")
-        console.log('getPartners WORKED', partners)
+        partners = await lokAPI.searchRecipients("Al")
+        console.log('searchRecipients WORKED', partners)
       } catch (err) {
-        console.log('getAccounts failed', err)
+        console.log('searchRecipients failed', err)
       }
       try {
         await lokAPI.login(login, password)
@@ -173,9 +174,8 @@ export var moduleLokAPI = {
       }
     },
 
-    async autoLogin(state:any) {
-      state.userProfile = lokAPI.getUserProfile(0)
-      //todo retirer arg
+    async autoLogin(state: any) {
+      state.userProfile = lokAPI.getMyContact()
     },
    
     async setThisWeekTransactions (state:any) {
@@ -184,7 +184,7 @@ export var moduleLokAPI = {
       var maxTransactions = 5
       let trs = []
       for (let el of transactions) {
-          if (el.jsonData.relatedUser) {
+          if (el.relatedUser) {
               trs.push(el)
               if (maxTransactions === 1) {
                   break;

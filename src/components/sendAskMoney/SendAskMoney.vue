@@ -179,7 +179,7 @@
         <div class="container is-fluid custom-heavy-line-separator"></div>
         <div class="container custom-width-send-money mt-4"
              v-for="partner in partners"
-             :key="partner.jsonData">
+             :key="partner">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
             
@@ -188,20 +188,20 @@
             class="is-flex is-align-items-center">
               <div
                 class="mr-5 p-2 is-clickable"
-                :class="[partner.jsonData.is_favorite ? 'is-active' : '']"
-                @click="toggleFavorite(partner), partner.jsonData.is_favorite = partner.jsonData.is_favorite ? false : true"
+                :class="[partner.is_favorite ? 'is-active' : '']"
+                @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
               >
                 <span>
                   <i
                     class="far fa-star"
-                    :class="[partner.jsonData.is_favorite ? 'fas fa-star' : '']"
+                    :class="[partner.is_favorite ? 'fas fa-star' : '']"
                   ></i>
                 </span>
               </div>
               <i class="fas fa-history mr-5"></i>
               <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3 = true">
                 <p class="custom-card-destinataire mr-5">
-                  {{partner.jsonData.name}}
+                  {{partner.name}}
                 </p>
               </div>
             </div>
@@ -992,7 +992,7 @@ import {inject , defineComponent} from 'vue'
 function returnFavoritesOnly(partners:any): any{
   var ret = []
   for (let el of partners) {
-    if (el.jsonData.is_favorite == true) {
+    if (el.is_favorite == true) {
       ret.push(el)
     }
   }
@@ -1067,19 +1067,19 @@ export default defineComponent({
   },
 
   methods: {
-    async toggleFavorite(partner:any):Promise<void> {
-      this.lokapi.toggleFavorite(partner)
+    async toggleFavorite(contact:any):Promise<void> {
+      contact.toggleFavorite()
     },
 
     async fastSearch() :Promise<void> {
-      var partners
+      var recipients
       try {
-        partners = await this.lokapi.searchRecipient(this.searchName)
-        console.log('getPartners WORKED', partners)
-        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(partners) : partners
+        recipients = await this.lokapi.searchRecipients(this.searchName)
+        console.log('searchRecipients() WORKED', recipients)
       } catch (err) {
-        console.log('getAccounts failed', err)
+        console.log('searchRecipients() Failed', err)
       }
+        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
     },
 
     async delayedSearch() :Promise<void> {
@@ -1088,14 +1088,14 @@ export default defineComponent({
       setTimeout(async () => {
         if (cached == this.searchName) {
           console.log(this.searchName)
-          var partners
+          var recipients
           try {
-            partners = await this.lokapi.searchRecipient(this.searchName)
-            console.log('getPartners WORKED', partners)
-            this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(partners) : partners
+            recipients = await this.lokapi.searchRecipients(this.searchName)
+            console.log('searchRecipients() WORKED', recipients)
           } catch (err) {
-            console.log('getAccounts failed', err)
+            console.log('searchRecipients() FAILED', err)
           }
+            this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
         }
        }, 100);
     },
@@ -1108,7 +1108,7 @@ export default defineComponent({
       let accs = this.store.state.lokapi.accounts
       let part = this.store.state.lokapi.recipient
       try {
-          await this.lokapi.transfer(accs[0], part, this.amount.toString(), this.message)
+          await accs[0].transfer(part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
           console.log('Payment failed:', err.message)
           // commit('payment_error')

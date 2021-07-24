@@ -2,12 +2,12 @@
      <!-- card cette semaine  -->
             <h2 class="custom-card-sub-title">Cette semaine</h2>
             <TransactionSubCard v-for="transaction in getTrs"
-             :key="transaction.jsonData" :amount="transaction.jsonData.amount" 
-             :symbol="transaction.jsonData.currency"
-             :desc="transaction.jsonData.description"
-             :date="dateFormated(transaction.jsonData.date)"
-             :unformatedDate="transaction.jsonData.date"
-             :name="transaction.jsonData.relatedUser.display"
+             :key="transaction" :amount="transaction.amount" 
+             :symbol="transaction.currency"
+             :desc="transaction.description"
+             :date="dateFormated(transaction.date)"
+             :unformatedDate="transaction.date"
+             :name="transaction.relatedUser.display"
              picto="QR"/>
             <!-- fin card cette semaine -->
 </template>
@@ -48,7 +48,7 @@ export default defineComponent({
     //     let transactions = this.store.getters.getTransactions()
     //     var maxTransactions = 5
     //     for (let el of transactions) {
-    //         if (el.jsonData.relatedUser) {
+    //         if (el.relatedUser) {
     //             this.transactions.push(el)
     //             if (maxTransactions === 1) {
     //                 break;
