@@ -35,11 +35,14 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <router-link to="/" class="button is-light">
+            <router-link v-if="!getLog" to="/" class="button is-light">
               Se connecter
             </router-link>
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
+            </router-link>
+            <router-link v-if="getLog" to="/" @click="getLog = false" class="button is-light">
+              Déconnexion
             </router-link>
           </div>
         </div>

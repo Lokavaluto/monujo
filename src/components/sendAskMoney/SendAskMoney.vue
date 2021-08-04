@@ -144,7 +144,6 @@
               class="icon is-medium is-right custom-pictogram-search p-1 custom-button-pictogram"
               v-on:click="fireSearch"
             >
-              <QRPicto></QRPicto>
             </button>
           </div>
         </div>
@@ -430,7 +429,6 @@
             <button
               class="icon is-medium is-right custom-pictogram-search p-1 custom-button-pictogram"
             >
-              <QRPicto></QRPicto>
             </button>
           </div>
         </div>
@@ -984,7 +982,6 @@
 
 <script lang="ts">
 import MyModal from "../modal/MyModal.vue";
-import QRPicto from "../rightCol/pictos/QRPicto.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import { useStore } from 'vuex'
 import {inject , defineComponent} from 'vue'
@@ -1003,7 +1000,6 @@ export default defineComponent({
   name: "SendAskMoney",
   components: {
     MyModal: MyModal,
-    QRPicto,
     AddPayCard,
   },
    data :function (): {
