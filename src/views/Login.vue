@@ -40,7 +40,9 @@
               </button>
             </p>
           </div>
-          <p class="has-text-danger has-text-centered" v-if="data.fail">{{ data.fail }}</p>
+          <p class="has-text-danger has-text-centered" v-if="data.fail">
+            {{ data.fail }}
+          </p>
         </form>
       </div>
     </div>
@@ -49,23 +51,23 @@
 </template>
 
 <script lang="ts">
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from 'vuex'
+import { useStore } from "vuex";
 
 export default {
   name: "Login",
   setup(): {
-    data: { email: string; password: string; fail: string; };
+    data: { email: string; password: string; fail: string };
     submit: any;
-    store:any
+    store: any;
   } {
-    const store: any = useStore()
+    const store: any = useStore();
     const data = reactive({
       email: "",
       password: "",
       fail: "",
-      success:""
+      success: "",
     });
 
     const routeur = useRouter();
@@ -75,10 +77,10 @@ export default {
           login: data.email,
           password: data.password,
         });
-        store.dispatch("setAccounts")
+        store.dispatch("setAccounts");
         data.success = "Connection réussie";
-        store.state.lokapi.isLog = true
-        routeur.push({ path: '/profile'})
+        store.state.lokapi.isLog = true;
+        routeur.push({ path: "/profile" });
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         console.log("Login failed", e.message);
@@ -86,10 +88,16 @@ export default {
       }
     };
 
+    // routeur.beforeEach((to, from, next) => {
+    //   if (to.name === "Login" && (store.state.lokapi.isLog = true))
+    //     next({ name: "Profile" });
+    //   else next();
+    // });
+
     return {
       data,
       submit,
-      store
+      store,
     };
   },
 };

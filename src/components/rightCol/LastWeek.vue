@@ -1,30 +1,53 @@
 <template>
-    <!-- début card semaine dernière -->
-    <h2 class="custom-card-sub-title mt-6">La semaine dernière</h2>
-    <TransactionSubCard picto="QR"/>
-    <hr />
-    <TransactionSubCard picto="Transaction"/>
-     <hr />
-    <TransactionSubCard picto="Transaction"/>
-     <hr />
+  <!-- début card semaine dernière -->
+  <div class="mt-6">
+    <TransactionSubCard
+      v-for="transaction in getTrs"
+      :key="transaction.jsonData"
+      :amount="transaction.jsonData.amount"
+      :symbol="transaction.jsonData.currency"
+      :desc="transaction.jsonData.description"
+      :date="dateFormated(transaction.jsonData.date)"
+      :unformatedDate="transaction.jsonData.date"
+      :name="transaction.jsonData.relatedUser.display"
+      picto="QR"
+    />
+  </div>
 
-    <!-- fin card semaine dernière -->
+  <!-- fin card semaine dernière -->
 </template>
 
 <script lang="ts">
-import TransactionSubCard from "./TransactionSubCard.vue"
-import {defineComponent} from "vue"
-import {useStore} from "vuex"
+import TransactionSubCard from "./TransactionSubCard.vue";
+import { defineComponent } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
-    name:"LastWeek.vue",
-    data() {
-        const store: any = useStore()
-        return {
-            store
-        }
+  name: "LastWeek.vue",
+  components: {
+    TransactionSubCard,
+  },
+  data(): { store: any; transactions: Array<any> } {
+    const store: any = useStore();
+    return {
+      store: store,
+      transactions: store.state.lokapi.getTransactions,
+    };
+  },
+  computed: {
+    getTrs(): number {
+      return this.store.getters.getTransactions();
     },
-    components: {
-        TransactionSubCard
-    }
-})
+  },
+
+  methods: {
+    dateFormated(badDate: string): string {
+      var date = new Date(badDate);
+      var options = { weekday: "long", day: "numeric", month: "numeric" };
+      // eslint-disable-next-line
+      //@ts-ignore-next-line
+      const DateFr = new Intl.DateTimeFormat("fr-FR", options).format(date);
+      return DateFr;
+    },
+  },
+});
 </script>
