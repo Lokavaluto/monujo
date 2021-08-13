@@ -23,9 +23,6 @@ export default defineComponent({
             store
         }
     },
-    mounted: function () {
-        console.log("mount")
-    },
     components: {
         TransactionSubCard
     }

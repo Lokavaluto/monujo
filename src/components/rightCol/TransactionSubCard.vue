@@ -39,10 +39,10 @@ export default defineComponent({
     },
     methods: {
       calcDays(date:string):string {
-        const day = 864000000
         const now = Date.now();
         const parsedDate = new Date(date).getTime();
-        const switcher = Math.trunc(now / day) - Math.trunc(parsedDate / day)
+        var Difference_In_Time = now - parsedDate
+        var switcher = Difference_In_Time / (1000 * 3600 * 24);
         switch (true) {
           case switcher === 0:
             return("Aujourd'hui")

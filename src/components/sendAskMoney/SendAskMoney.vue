@@ -1083,11 +1083,6 @@ export default defineComponent({
     },
 
     async delayedSearch() :Promise<void> {
-      console.log("test")
-      var cached = this.searchName
-      setTimeout(async () => {
-        if (cached == this.searchName) {
-          console.log(this.searchName)
           var recipients
           try {
             recipients = await this.lokapi.searchRecipients(this.searchName)
@@ -1095,9 +1090,7 @@ export default defineComponent({
           } catch (err) {
             console.log('searchRecipients() FAILED', err)
           }
-            this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-        }
-       }, 100);
+          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
     },
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner
