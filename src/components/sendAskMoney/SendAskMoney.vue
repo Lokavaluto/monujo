@@ -691,7 +691,7 @@
         >
           <div class="is-flex is-flex-direction-column custom-montant-input">
             <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-            <input type="number" min="0" class="p-2" />
+            <input type="number" min="0" class="p-2" v-model="amountAsked"/>
             <textarea
               v-model="message"
               class="custom-textarea textarea mt-5"
@@ -700,7 +700,7 @@
             <div class="is-flex is-justify-content-center mt-6">
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
-                @click="showModalFrameAskMoney2 = true"
+                @click="genLink()"
               >
                 <img src="../../../src/assets/media/Plane.svg" />
                 <p class="ml-4">
@@ -708,6 +708,21 @@
                 </p>
               </button>
             </div>
+
+            <div v-if="linkGenerated"
+              class="is-flex is-justify-content-center is-align-items-center mt-6"
+            >
+              <p class="mr-4">{{myLink}}</p>
+              <button
+                class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
+              >
+                <img src="../../../src/assets/media/copy.svg" />
+                <p class="ml-4">
+                  copier le lien
+                </p>
+              </button>
+            </div>
+
             <div class="container custom-width-send-money mt-5">
               <p class="has-text-centered">
                 vous pourrez partager ce lien par mail à vos contacts. Ils
@@ -724,7 +739,7 @@
     </MyModal>
     <!-- fin frame 1 -->
     <!-- début frame 2 -->
-    <MyModal
+    <!-- <MyModal
       v-if="showModalFrameAskMoney2"
       @close="showModalFrameAskMoney2 = false"
     >
@@ -791,7 +806,7 @@
       <template v-slot:footer>
         <div></div>
       </template>
-    </MyModal>
+    </MyModal> -->
     <!-- fin MODALS demander de l'argent  -->
     <!-- début MODALS créditer un compte -->
     <!-- début frame 1 crédit -->
@@ -1024,7 +1039,9 @@ export default defineComponent({
     message:string,
     partners:Array<any>,
     recipientName:string,
-    displayFavoritesOnly:boolean
+    displayFavoritesOnly:boolean,
+    amountAsked:number,
+    linkGenerated:boolean
     } 
     {
     return {
@@ -1049,7 +1066,9 @@ export default defineComponent({
       message:"",
       partners:[],
       recipientName:"",
-      displayFavoritesOnly:false
+      displayFavoritesOnly:false,
+      amountAsked:0,
+      linkGenerated:false
     };
   },
 
@@ -1062,7 +1081,22 @@ export default defineComponent({
     }
   },
 
+  computed: {
+    myLink(): string {
+       return this.store.state.lokapi.paymentUrl.order_url
+    }
+  },
+
   methods: {
+
+    async genLink():Promise<void> {
+      if (this.amountAsked > 0) {
+        console.log(this.amountAsked)
+        await this.store.dispatch("genPaymentLink",this.amountAsked)
+        this.linkGenerated = true
+      }
+    },
+
     async toggleFavorite(contact:any):Promise<void> {
       contact.toggleFavorite()
     },

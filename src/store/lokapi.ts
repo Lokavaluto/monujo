@@ -107,7 +107,8 @@ export var moduleLokAPI = {
     curr:"",
     accounts:[],
     recipient:"",
-    isLog:false
+    isLog:false,
+    paymentUrl: ""
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -139,11 +140,16 @@ export var moduleLokAPI = {
     async setAccounts({commit}:any) {
       await commit("setBalCurr")
       await commit("setThisWeekTransactions")
+    },
+    async genPaymentLink({commit}:any,amount:number) {
+      await commit("genPaymentLink", amount)
     }
-
-
   },
   mutations: {
+    async genPaymentLink(state: any, amount:number) {
+      state.paymentUrl = await state.accounts[0].getCreditUrl(amount)
+      // console.log("paymentUrl url =", state.paymentUrl.order_url)
+    },
     auth_request(state: any) {
       state.status = 'loading'
     },
