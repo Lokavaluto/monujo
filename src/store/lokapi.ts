@@ -143,6 +143,9 @@ export var moduleLokAPI = {
     },
     async genPaymentLink({commit}:any,amount:number) {
       await commit("genPaymentLink", amount)
+    },
+    askLogOut({commit}:any) {
+      commit("logout")
     }
   },
   mutations: {
@@ -161,8 +164,19 @@ export var moduleLokAPI = {
       state.status = 'error'
     },
     logout(state: any) {
+      console.log("test")
       state.status = ''
       state.apiToken = ''
+      state.status= ''
+      state.userProfile= null
+      state.transactions=null
+      state.thisWeektransactions=null
+      state.bal= 0
+      state.curr=""
+      state.accounts=[]
+      state.recipient=""
+      state.isLog=false
+      state.paymentUrl=""
     },
 
     async setBalCurr(state:any) {

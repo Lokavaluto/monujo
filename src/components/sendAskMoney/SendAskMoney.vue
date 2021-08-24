@@ -712,8 +712,9 @@
             <div v-if="linkGenerated"
               class="is-flex is-justify-content-center is-align-items-center mt-6"
             >
-              <p class="mr-4">{{myLink}}</p>
+              <p @change="someHandler" class="mr-4" ref="mylink">{{myLink}}</p>
               <button
+                @click="copyUrl"
                 class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
               >
                 <img src="../../../src/assets/media/copy.svg" />
@@ -999,7 +1000,7 @@
 import MyModal from "../modal/MyModal.vue";
 import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import { useStore } from 'vuex'
-import {inject , defineComponent} from 'vue'
+import {inject , defineComponent, ref} from 'vue'
 
 function returnFavoritesOnly(partners:any): any{
   var ret = []
@@ -1041,7 +1042,7 @@ export default defineComponent({
     recipientName:string,
     displayFavoritesOnly:boolean,
     amountAsked:number,
-    linkGenerated:boolean
+    linkGenerated:boolean,
     } 
     {
     return {
@@ -1083,17 +1084,38 @@ export default defineComponent({
 
   computed: {
     myLink(): string {
-       return this.store.state.lokapi.paymentUrl.order_url
+      return this.store.state.lokapi.paymentUrl.order_url
     }
   },
 
   methods: {
 
+    someHandler() {
+      console.log("test")
+    },
+
+    copyUrl() {
+      
+      const el = document.createElement('textarea');
+      el.value = this.store.state.lokapi.paymentUrl.order_url;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      
+    },
+
     async genLink():Promise<void> {
+      this.store.state.lokapi.paymentUrl.order_url= ""
       if (this.amountAsked > 0) {
         console.log(this.amountAsked)
-        await this.store.dispatch("genPaymentLink",this.amountAsked)
-        this.linkGenerated = true
+        await this.store.dispatch("genPaymentLink",this.amountAsked).then(() => {
+          this.linkGenerated = true
+      });
+        
       }
     },
 

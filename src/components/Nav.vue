@@ -41,7 +41,7 @@
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
-            <router-link v-if="getLog" to="/" @click="getLog = false" class="button is-light">
+            <router-link v-if="getLog" to="/" @click="logout" class="button is-light">
               Déconnexion
             </router-link>
           </div>
@@ -65,6 +65,11 @@ export default defineComponent({
       showNav: false,
       store:store
     };
+  },
+  methods : {
+    logout() {
+      this.store.dispatch("askLogOut")
+    }
   },
   computed: {
       getLog(): string {
