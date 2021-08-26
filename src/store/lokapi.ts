@@ -108,7 +108,8 @@ export var moduleLokAPI = {
     accounts:[],
     recipient:"",
     isLog:false,
-    paymentUrl: ""
+    paymentUrl: "",
+    recipientHistory:[]
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -164,7 +165,6 @@ export var moduleLokAPI = {
       state.status = 'error'
     },
     logout(state: any) {
-      console.log("test")
       state.status = ''
       state.apiToken = ''
       state.status= ''
@@ -203,16 +203,19 @@ export var moduleLokAPI = {
       state.transactions = transactions 
       var maxTransactions = 5
       let trs = []
+      let history = []
       for (let el of transactions) {
           if (el.relatedUser) {
               trs.push(el)
+              history.push(el.jsonData.cyclos.relatedUser.display)
               if (maxTransactions === 1) {
                   break;
               }
               maxTransactions -= 1
           }
       }
-      console.log(trs)
+      console.log(trs, history)
+      state.recipientHistory = [...new Set(history)];
       state.thisWeektransactions = trs
     }
   },

@@ -155,15 +155,23 @@
           <div class="tabs is-centered">
             <ul class="is-justify-content-space-evenly">
               <li
-                :class="[activeClass ? 'is-active' : '']"
-                @click="activeClass = true , displayFavoritesOnly = false, fastSearch()"
+                :class="[activeClass == 0 ? 'is-active' : '']"
+                @click="activeClass = 0 , displayFavoritesOnly = false, fastSearch()"
               >
                 <a>tous</a>
               </li>
+
+              <li
+                :class="[activeClass == 1 ? 'is-active' : '']"
+                @click="activeClass = 1 , displayFavoritesOnly = false, searchRecipientHistory()"
+              >
+                <a>récents</a>
+              </li>
+
               <li
                 class="is-flex is-align-items-center"
-                :class="[!activeClass ? 'is-active' : '']"
-                @click="activeClass = false , displayFavoritesOnly = true, fastSearch()"
+                :class="[activeClass == 2 ? 'is-active' : '']"
+                @click="activeClass = 2 , displayFavoritesOnly = true, fastSearch()"
               >
                 <a class="custom-pictogram-star"
                   ><span class="icon is-small is-left mr-5">
@@ -176,6 +184,7 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
+
         <div class="container custom-width-send-money mt-4"
              v-for="partner in partners"
              :key="partner">
@@ -211,7 +220,9 @@
           <div class="is-flex is-justify-content-flex-end">
             <span class="custom-line-separator mt-4"></span>
           </div>
-        </div>
+
+
+      </div>
       </template>
       <template v-slot:footer>
         <div></div>
@@ -822,7 +833,7 @@
         >
           <div class="is-flex is-align-items-center ml-5">
             <h3 class="custom-header-send-money-title ml-6 pl-5">
-              Demander de l'argent
+              Créditer mon compte
             </h3>
           </div>
           <a class="mr-5 p-2" @click="showModalFrameCreditMoney1 = false">
@@ -1033,7 +1044,7 @@ export default defineComponent({
     showModalFrameCreditMoney3: boolean,
     showModalFrameCreditMoney4: boolean,
     warning: boolean,
-    activeClass: boolean,
+    activeClass: number,
     favoris: boolean,
     searchName:string, 
     amount:number,
@@ -1043,6 +1054,7 @@ export default defineComponent({
     displayFavoritesOnly:boolean,
     amountAsked:number,
     linkGenerated:boolean,
+    history:Array<any>
     } 
     {
     return {
@@ -1060,7 +1072,7 @@ export default defineComponent({
       showModalFrameCreditMoney3: false,
       showModalFrameCreditMoney4: false,
       warning: true,
-      activeClass: true,
+      activeClass: 0,
       favoris: false,
       searchName:"",
       amount:0, 
@@ -1069,7 +1081,8 @@ export default defineComponent({
       recipientName:"",
       displayFavoritesOnly:false,
       amountAsked:0,
-      linkGenerated:false
+      linkGenerated:false,
+      history:[]
     };
   },
 
@@ -1095,7 +1108,6 @@ export default defineComponent({
     },
 
     copyUrl() {
-      
       const el = document.createElement('textarea');
       el.value = this.store.state.lokapi.paymentUrl.order_url;
       el.setAttribute('readonly', '');
@@ -1121,6 +1133,22 @@ export default defineComponent({
 
     async toggleFavorite(contact:any):Promise<void> {
       contact.toggleFavorite()
+    },
+
+    async searchRecipientHistory() :Promise<void> {
+      let h = []
+      for (let i = 0; i < this.store.state.lokapi.recipientHistory.length; i++) {
+        console.log(this.store.state.lokapi.recipientHistory[i])
+        var recipient
+        try {
+          recipient = await this.lokapi.searchRecipients(this.store.state.lokapi.recipientHistory[i])
+          h.push(recipient[0])
+        } catch (err) {
+          console.log('searchRecipients() Failed', err)
+        }
+      }
+      console.log(h)
+      this.partners = h
     },
 
     async fastSearch() :Promise<void> {
