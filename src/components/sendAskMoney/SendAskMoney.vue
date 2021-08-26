@@ -723,7 +723,7 @@
             <div v-if="linkGenerated"
               class="is-flex is-justify-content-center is-align-items-center mt-6"
             >
-              <p @change="someHandler" class="mr-4" ref="mylink">{{myLink}}</p>
+              <p class="mr-4" ref="mylink">{{myLink}}</p>
               <button
                 @click="copyUrl"
                 class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
@@ -853,7 +853,7 @@
             <h2 class="frame3-sub-title mt-3 mb-3">
               Montant à créditer
             </h2>
-            <input type="number" min="0" class="p-2" />
+            <input v-model="amountForCredit" type="number" min="0" class="p-2" />
             <h2 class="mt-6 mb-6 frame3-sub-title">Mode de paiement</h2>
             <div class="columns">
               <div class="column">
@@ -907,7 +907,7 @@
           <div class="column is-flex is-justify-content-center">
             <button
               class="button custom-button custom-button-send-receive-money is-rounded action"
-              @click="showModalFrameCreditMoney2 = true"
+              @click="newLinkTab()"
             >
               Suivant
             </button>
@@ -921,7 +921,7 @@
   </div>
   <!-- Fin frame 1 crédit -->
   <!-- début frame 2 crédit -->
-  <MyModal
+  <!-- <MyModal
     v-if="showModalFrameCreditMoney2"
     @close="showModalFrameCreditMoney2 = false"
   >
@@ -1004,7 +1004,7 @@
     <template v-slot:footer>
       <div></div>
     </template>
-  </MyModal>
+  </MyModal> -->
 </template>
 
 <script lang="ts">
@@ -1054,7 +1054,8 @@ export default defineComponent({
     displayFavoritesOnly:boolean,
     amountAsked:number,
     linkGenerated:boolean,
-    history:Array<any>
+    history:Array<any>,
+    amountForCredit:number
     } 
     {
     return {
@@ -1082,7 +1083,8 @@ export default defineComponent({
       displayFavoritesOnly:false,
       amountAsked:0,
       linkGenerated:false,
-      history:[]
+      history:[],
+      amountForCredit:0
     };
   },
 
@@ -1103,8 +1105,11 @@ export default defineComponent({
 
   methods: {
 
-    someHandler() {
-      console.log("test")
+    async newLinkTab() {
+      if (this.amountForCredit > 0) {
+        let url = await this.store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
+        window.open(url.order_url, '_blank')!.focus();
+      }
     },
 
     copyUrl() {
@@ -1121,13 +1126,12 @@ export default defineComponent({
     },
 
     async genLink():Promise<void> {
-      this.store.state.lokapi.paymentUrl.order_url= ""
+      this.store.state.lokapi.paymentUrl= null
       if (this.amountAsked > 0) {
         console.log(this.amountAsked)
         await this.store.dispatch("genPaymentLink",this.amountAsked).then(() => {
           this.linkGenerated = true
-      });
-        
+        });
       }
     },
 
