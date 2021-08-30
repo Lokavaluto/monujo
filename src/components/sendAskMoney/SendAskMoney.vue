@@ -854,8 +854,10 @@
               Montant à créditer
             </h2>
             <input v-model="amountForCredit" type="number" min="0" class="p-2" />
-            <h2 class="mt-6 mb-6 frame3-sub-title">Mode de paiement</h2>
-            <div class="columns">
+            <h2 v-if="myHyperLink.length > 1" class="mt-6 mb-2 frame3-sub-title">Vous n'avez pas été redirigé ?</h2>
+            <a class="mt-6" :href="urlForHyperlink">{{urlForHyperlink}}</a>
+            <!-- <h2 class="mt-6 mb-6 frame3-sub-title">Mode de paiement</h2> -->
+            <!-- <div class="columns">
               <div class="column">
                 <h2 class="custom-card-title">Vos cartes enregistrees</h2>
                 <AddPayCard
@@ -875,38 +877,26 @@
                 <div class="is-flex">
                   <figure class="image is-96x96">
                     <img :src="require(`@/assets/media/CB.svg`)">
-                    <!-- <img
-                      src="/src/assets/media/CB.svg"
-                      alt=""
-                      style="width: 90px; height:90px"
-                    /> -->
+                
                   </figure>
                   <figure class="image is-96x96">
                     <img :src="require(`@/assets/media/visa.svg`)">
-                    <!-- <img
-                      src="/src/assets/media/visa.svg"
-                      alt=""
-                      style="width: 90px; height:90px"
-                    /> -->
+                  
                   </figure>
                   <figure class="image is-96x96">
                     <img :src="require(`@/assets/media/mastercard.svg`)">
-                    <!-- <img
-                      src="/src/assets/media/mastercard.svg"
-                      alt=""
-                      style="width: 90px; height:90px"
-                    /> -->
+                    
                   </figure>
                 </div>
-              </div>
-            </div>
+              </div> 
+              </div> -->
           </div>
         </div>
         <div class="columns">
           <div class="column"></div>
           <div class="column is-flex is-justify-content-center">
             <button
-              class="button custom-button custom-button-send-receive-money is-rounded action"
+              class="button custom-button custom-button-send-receive-money is-rounded action mt-6"
               @click="newLinkTab()"
             >
               Suivant
@@ -1009,7 +999,7 @@
 
 <script lang="ts">
 import MyModal from "../modal/MyModal.vue";
-import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
+//import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import { useStore } from 'vuex'
 import {inject , defineComponent, ref} from 'vue'
 
@@ -1027,7 +1017,7 @@ export default defineComponent({
   name: "SendAskMoney",
   components: {
     MyModal: MyModal,
-    AddPayCard,
+    //AddPayCard,
   },
    data :function (): {
     showModalFrame1: boolean,
@@ -1055,7 +1045,8 @@ export default defineComponent({
     amountAsked:number,
     linkGenerated:boolean,
     history:Array<any>,
-    amountForCredit:number
+    amountForCredit:number,
+    urlForHyperlink:string
     } 
     {
     return {
@@ -1084,7 +1075,8 @@ export default defineComponent({
       amountAsked:0,
       linkGenerated:false,
       history:[],
-      amountForCredit:0
+      amountForCredit:0,
+      urlForHyperlink:""
     };
   },
 
@@ -1100,7 +1092,11 @@ export default defineComponent({
   computed: {
     myLink(): string {
       return this.store.state.lokapi.paymentUrl.order_url
+    },
+    myHyperLink():string {
+      return this.urlForHyperlink
     }
+    
   },
 
   methods: {
@@ -1109,6 +1105,7 @@ export default defineComponent({
       if (this.amountForCredit > 0) {
         let url = await this.store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
         window.open(url.order_url, '_blank')!.focus();
+        this.urlForHyperlink = url.order_url
       }
     },
 
