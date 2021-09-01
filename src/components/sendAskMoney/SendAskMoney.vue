@@ -1104,8 +1104,12 @@ export default defineComponent({
     async newLinkTab() {
       if (this.amountForCredit > 0) {
         let url = await this.store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
-        window.open(url.order_url, '_blank')!.focus();
-        this.urlForHyperlink = url.order_url
+        try {
+          window.open(url.order_url, '_blank')!.focus();
+          this.urlForHyperlink = url.order_url
+        } catch(e) {
+          this.urlForHyperlink = url.order_url
+        }
       }
     },
 
