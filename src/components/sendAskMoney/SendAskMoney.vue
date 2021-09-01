@@ -13,9 +13,10 @@
     </div>
     <div class="is-flex is-justify-content-center custom-width-send-money">
       <button
+        disabled
         class="button custom-button custom-button-send-receive-money is-rounded action"
-        @click="showModalFrameAskMoney1 = true"
       >
+        <!-- @click="showModalFrameAskMoney1 = true" -->
         Demander de l'argent
       </button>
     </div>
