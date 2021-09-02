@@ -1,5 +1,6 @@
 /* eslint-disable */
-declare module '@meforma/vue-toaster' 
+declare module '@meforma/vue-toaster'
+declare module "./useSwal"
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'

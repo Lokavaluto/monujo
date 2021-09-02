@@ -1181,7 +1181,6 @@ export default defineComponent({
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner
         this.recipientName = partner.name
-        console.log("set",this.store.state.recipient)
     },
     async sendTransaction():Promise<void> {
       let accs = this.store.state.lokapi.accounts
@@ -1196,16 +1195,26 @@ export default defineComponent({
         let accounts = await this.lokapi.getAccounts()
         let bal = await accounts[0].getBalance()
         this.store.state.lokapi.bal = bal
-        // let transactions = await this.lokapi.getTransactions()
-        // console.log(transactions)
-        await this.store.dispatch("resetTRS")
         this.$toast.success(
           `Paiement  effectué à ${this.recipientName}`,
           {
             position:
             "top-right"
           });
-        
+        if (!part.is_favorite) {
+          this.$Swal.fire({
+          title: `Voulez vous ajouter ${this.recipientName} aux favoris ?`,
+          showDenyButton: true,
+          confirmButtonText: `Ajouter`,
+          denyButtonText: `Plus tard`,
+        }).then((result:any) => {
+          if (result.isConfirmed) {
+            this.toggleFavorite(part)
+            this.$Swal.fire(`${this.recipientName} a bien été ajouté en favori`, '', 'success')
+          }
+        })
+        }
+        await this.store.dispatch("resetTRS")
     }
   },
 

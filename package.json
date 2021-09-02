@@ -17,6 +17,7 @@
     "vue-cookie-next": "^1.0.3",
     "vue-pincode-input": "^0.4.0",
     "vue-router": "^4.0.0-0",
+    "vue-sweetalert2": "^5.0.2",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
