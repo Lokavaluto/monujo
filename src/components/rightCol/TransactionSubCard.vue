@@ -41,8 +41,9 @@ export default defineComponent({
       calcDays(date:string):string {
         const now = Date.now();
         const parsedDate = new Date(date).getTime();
+        console.log(now, parsedDate)
         var Difference_In_Time = now - parsedDate
-        var switcher = Difference_In_Time / (1000 * 3600 * 24);
+        var switcher = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
         switch (true) {
           case switcher === 0:
             return("Aujourd'hui")
