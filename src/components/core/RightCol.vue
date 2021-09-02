@@ -15,7 +15,8 @@
             class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
           >
            <h2 class="custom-card-sub-title-fixed-top">La semaine dernière</h2>
-            <LastWeek />
+            <!-- <LastWeek /> -->
+            <AllTrs/>
           </div>
         </template>
         <template v-slot:footer>
@@ -38,7 +39,8 @@
 <script lang="ts">
 import OperationsSelector from "../rightCol/OperationsSelector.vue";
 import ThisWeek from "../rightCol/ThisWeek.vue";
-import LastWeek from "../rightCol/LastWeek.vue";
+//import LastWeek from "../rightCol/LastWeek.vue";
+import AllTrs from "../rightCol/AllTrs.vue";
 import MyModal from "../modal/MyModal.vue";
 import { defineComponent, inject } from "vue";
 
@@ -47,7 +49,8 @@ export default defineComponent({
   components: {
     OperationsSelector,
     ThisWeek,
-    LastWeek,
+    //LastWeek,
+    AllTrs,
     MyModal,
   },
   data(): { showModal: boolean; lokapi: any } {

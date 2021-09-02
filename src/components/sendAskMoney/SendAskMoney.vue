@@ -1002,7 +1002,7 @@
 import MyModal from "../modal/MyModal.vue";
 //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 import { useStore } from 'vuex'
-import {inject , defineComponent, ref} from 'vue'
+import {inject , defineComponent} from 'vue'
 
 function returnFavoritesOnly(partners:any): any{
   var ret = []
