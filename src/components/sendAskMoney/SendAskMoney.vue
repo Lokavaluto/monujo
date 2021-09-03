@@ -65,7 +65,7 @@
               A un commercant / pro
             </button>
             <button
-              @click="(showModalFrame2 = true), (warning = true)"
+              @click="(showModalFrame2 = true), (warning = true), searchRecipientHistory()"
               class="button container is-fluid custom-button is-rounded action is-uppercase"
             >
               a un particulier
@@ -132,7 +132,7 @@
             <p class="control has-icons-left custom-search-bar">
               <input
                 v-model="searchName"
-                v-on:input="delayedSearch()"
+                v-on:input="fastSearch()"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -162,12 +162,12 @@
                 <a>tous</a>
               </li>
 
-              <li
+              <!-- <li
                 :class="[activeClass == 1 ? 'is-active' : '']"
                 @click="activeClass = 1 , displayFavoritesOnly = false, searchRecipientHistory()"
               >
                 <a>récents</a>
-              </li>
+              </li> -->
 
               <li
                 class="is-flex is-align-items-center"
@@ -282,9 +282,9 @@
                 </figure>
                 <h4 class="ml-1">{{recipientName}}</h4>
               </div>
-              <div class="mr-3">
+              <!-- <div class="mr-3">
                 <i class="fas fa-check" style="color: #46B020"></i>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -1102,6 +1102,21 @@ export default defineComponent({
 
   methods: {
 
+    // isHistory(recipient:any) :boolean {
+    //   var i, r = false , l = this.history.length;
+    //   for (i = 0; i < l; i++)
+    //   {
+    //     if ((r = this.history[i]) == recipient)
+    //     {
+    //       r = true
+    //       break;
+    //     }
+    //     else r = false;
+    //   }
+    //   console.log(r)
+    //   return(r)
+    // },
+
     async newLinkTab() {
       if (this.amountForCredit > 0) {
         let url = await this.store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
@@ -1130,7 +1145,6 @@ export default defineComponent({
     async genLink():Promise<void> {
       this.store.state.lokapi.paymentUrl= null
       if (this.amountAsked > 0) {
-        console.log(this.amountAsked)
         await this.store.dispatch("genPaymentLink",this.amountAsked).then(() => {
           this.linkGenerated = true
         });
@@ -1144,7 +1158,6 @@ export default defineComponent({
     async searchRecipientHistory() :Promise<void> {
       let h = []
       for (let i = 0; i < this.store.state.lokapi.recipientHistory.length; i++) {
-        console.log(this.store.state.lokapi.recipientHistory[i])
         var recipient
         try {
           recipient = await this.lokapi.searchRecipients(this.store.state.lokapi.recipientHistory[i])
@@ -1153,35 +1166,38 @@ export default defineComponent({
           console.log('searchRecipients() Failed', err)
         }
       }
-      console.log(h)
       this.partners = h
     },
 
     async fastSearch() :Promise<void> {
-      var recipients
+      console.log(this.searchName)
+      if(this.searchName == "") {
+        this.searchRecipientHistory()
+      } else {
+        var recipients
       try {
         recipients = await this.lokapi.searchRecipients(this.searchName)
-        console.log('searchRecipients() WORKED', recipients)
       } catch (err) {
         console.log('searchRecipients() Failed', err)
       }
         this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+      }
     },
 
-    async delayedSearch() :Promise<void> {
-          var recipients
-          try {
-            recipients = await this.lokapi.searchRecipients(this.searchName)
-            console.log('searchRecipients() WORKED', recipients)
-          } catch (err) {
-            console.log('searchRecipients() FAILED', err)
-          }
-          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-    },
+    // async delayedSearch() :Promise<void> {
+    //       var recipients
+    //       try {
+    //         recipients = await this.lokapi.searchRecipients(this.searchName)
+    //       } catch (err) {
+    //         console.log('searchRecipients() FAILED', err)
+    //       }
+    //       this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+    // },
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner
         this.recipientName = partner.name
     },
+
     async sendTransaction():Promise<void> {
       let accs = this.store.state.lokapi.accounts
       let part = this.store.state.lokapi.recipient
@@ -1189,7 +1205,6 @@ export default defineComponent({
           await accs[0].transfer(part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
           console.log('Payment failed:', err.message)
-          // commit('payment_error')
           throw err
         }
         let accounts = await this.lokapi.getAccounts()
@@ -1215,6 +1230,10 @@ export default defineComponent({
         })
         }
         await this.store.dispatch("resetTRS")
+        this.searchName = ""
+        this.partners = []
+        this.amount = 0
+        this.activeClass = 0
     }
   },
 

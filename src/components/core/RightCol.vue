@@ -6,7 +6,7 @@
     >
       <OperationsSelector />
       <ThisWeek />
-      <MyModal v-if="showModal" @close="showModal = false">
+      <MyModal :first="true" v-if="showModal" @close="showModal = false">
         <template v-slot:header>
          <div></div>
         </template>
@@ -14,7 +14,7 @@
           <div
             class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
           >
-           <h2 class="custom-card-sub-title-fixed-top">La semaine dernière</h2>
+           <!-- <h2 class="custom-card-sub-title-fixed-top">La semaine dernière</h2> -->
             <!-- <LastWeek /> -->
             <AllTrs/>
           </div>
