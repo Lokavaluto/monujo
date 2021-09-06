@@ -42,7 +42,8 @@ import ThisWeek from "../rightCol/ThisWeek.vue";
 //import LastWeek from "../rightCol/LastWeek.vue";
 import AllTrs from "../rightCol/AllTrs.vue";
 import MyModal from "../modal/MyModal.vue";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
+import {useStore} from "vuex"
 
 export default defineComponent({
   name: "RightCol",
@@ -53,12 +54,23 @@ export default defineComponent({
     AllTrs,
     MyModal,
   },
-  data(): { showModal: boolean; lokapi: any } {
-    const lokapi: any = inject("$lokapi");
+
+  setup(): {store:any} {
+        const store : any = useStore()
+        return {
+            store: store
+        }
+    },
+
+  data(): { showModal: boolean} {
     return {
-      showModal: false,
-      lokapi: lokapi,
+      showModal: false
     };
+  },
+  computed: {
+    opSel(): number {
+      return this.store.state.OperationsSelector
+    },
   },
 });
 </script>

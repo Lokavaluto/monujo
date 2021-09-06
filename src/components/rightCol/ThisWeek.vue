@@ -29,8 +29,12 @@ export default defineComponent({
         }
     },
     computed: {
-        getTrs(): number {
-            return this.store.getters.getThisWeektransactions()
+        getTrs(): any {
+            if (this.store.state.OperationsSelector == 0) {
+                return this.store.getters.getThisWeektransactions()
+            } else {
+                return []
+            }
         }
     },
    
