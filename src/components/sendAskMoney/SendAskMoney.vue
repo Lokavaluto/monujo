@@ -132,7 +132,7 @@
             <p class="control has-icons-left custom-search-bar">
               <input
                 v-model="searchName"
-                v-on:input="fastSearch()"
+                v-on:input="delayedSearch()"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -1184,15 +1184,15 @@ export default defineComponent({
       }
     },
 
-    // async delayedSearch() :Promise<void> {
-    //       var recipients
-    //       try {
-    //         recipients = await this.lokapi.searchRecipients(this.searchName)
-    //       } catch (err) {
-    //         console.log('searchRecipients() FAILED', err)
-    //       }
-    //       this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-    // },
+    async delayedSearch() :Promise<void> {
+          var recipients
+          try {
+            recipients = await this.lokapi.searchRecipients(this.searchName)
+          } catch (err) {
+            console.log('searchRecipients() FAILED', err)
+          }
+          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+    },
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner
         this.recipientName = partner.name
