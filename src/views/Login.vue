@@ -1,5 +1,9 @@
 <template>
   <section class="hero is-halfheight">
+    <loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :on-cancel="onCancel"
+                 :is-full-page="fullPage"/>
     <div
       class="hero-body is-justify-content-center mt-6 is-flex-direction-column"
     >
@@ -35,7 +39,7 @@
           </div>
           <div class="field">
             <p class="control has-text-centered">
-              <button type="submit" class="button is-success">
+              <button @click="load" type="submit" class="button is-success">
                 Se connecter
               </button>
             </p>
@@ -51,12 +55,26 @@
 </template>
 
 <script lang="ts">
-import { computed, reactive } from "vue";
+import {reactive, defineComponent} from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
-export default {
+export default defineComponent({
   name: "Login",
+  components :{Loading:Loading},
+  data(): {isLoading: boolean,fullPage: boolean} {
+    return {
+      isLoading: false,
+      fullPage: true
+    }
+  },
+  methods: {
+    load():void {
+      this.isLoading = true
+    }
+  },
   setup(): {
     data: { email: string; password: string; fail: string };
     submit: any;
@@ -100,5 +118,5 @@ export default {
       store,
     };
   },
-};
+});
 </script>
