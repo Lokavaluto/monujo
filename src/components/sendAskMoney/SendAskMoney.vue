@@ -1171,7 +1171,7 @@ export default defineComponent({
 
     async fastSearch() :Promise<void> {
       console.log(this.searchName)
-      if(this.searchName == "") {
+      if(this.searchName == "" && !this.displayFavoritesOnly) {
         this.searchRecipientHistory()
       } else {
         var recipients

@@ -206,13 +206,16 @@ export var moduleLokAPI = {
       let history = []
       for (let el of transactions) {
         trs.push(el)
-        history.push(el.relatedUser ? el.relatedUser.display : el.related.type.name )
+        history.push(el.relatedUser ? el.relatedUser.display : null)
         if (maxTransactions === 1) {
             break;
         }
         maxTransactions -= 1
       }
-      state.recipientHistory = [...new Set(history)];
+      var filtered = history.filter(function (el) {
+        return el != null;
+      });
+      state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
     }
   },
