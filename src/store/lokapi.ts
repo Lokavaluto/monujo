@@ -124,7 +124,7 @@ export var moduleLokAPI = {
       }
       try {
         await lokAPI.login(login, password)
-      } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+      } catch (err:any) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         console.log('Login failed:', err.message)
         commit('auth_error')
         throw err
@@ -205,16 +205,13 @@ export var moduleLokAPI = {
       let trs = []
       let history = []
       for (let el of transactions) {
-          if (el.relatedUser) {
-              trs.push(el)
-              history.push(el.jsonData.cyclos.relatedUser.display)
-              if (maxTransactions === 1) {
-                  break;
-              }
-              maxTransactions -= 1
-          }
+        trs.push(el)
+        history.push(el.relatedUser ? el.relatedUser.display : el.related.type.name )
+        if (maxTransactions === 1) {
+            break;
+        }
+        maxTransactions -= 1
       }
-      console.log(trs, history)
       state.recipientHistory = [...new Set(history)];
       state.thisWeektransactions = trs
     }

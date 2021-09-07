@@ -6,7 +6,7 @@
              :desc="transaction.description"
              :date="dateFormated(transaction.date)"
              :unformatedDate="transaction.date"
-             :name="transaction.relatedUser.display"
+             :name="transaction.relatedUser ? transaction.relatedUser.display : transaction.related.type.name "
              picto="QR"/>
 </div>
 </template>

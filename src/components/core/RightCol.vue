@@ -57,6 +57,7 @@ export default defineComponent({
 
   setup(): {store:any} {
         const store : any = useStore()
+        console.log(store.state.lokapi.transactions)
         return {
             store: store
         }
