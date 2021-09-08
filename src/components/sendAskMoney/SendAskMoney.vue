@@ -430,6 +430,8 @@
           >
             <p class="control has-icons-left custom-search-bar">
               <input
+                v-model="searchName"
+                v-on:input="delayedProSearch()"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -440,6 +442,7 @@
             </p>
             <button
               class="icon is-medium is-right custom-pictogram-search p-1 custom-button-pictogram"
+              v-on:click="fireSearch"
             >
             </button>
           </div>
@@ -453,14 +456,14 @@
             <ul class="is-justify-content-space-evenly">
               <li
                 :class="[activeClass ? 'is-active' : '']"
-                @click="activeClass = true"
+                @click="activeClass = true , displayFavoritesOnly = false, fastProSearch()"
               >
                 <a>recherche</a>
               </li>
               <li
                 class="is-flex is-align-items-center"
                 :class="[!activeClass ? 'is-active' : '']"
-                @click="activeClass = false"
+                @click="activeClass = false , displayFavoritesOnly = false, fastProSearch()"
               >
                 <a class="custom-pictogram-star"
                   ><span class="icon is-small is-left mr-5">
@@ -473,15 +476,17 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
-        <div class="container custom-width-send-money mt-4">
+        <div class="container custom-width-send-money mt-4"
+             v-for="partner in partners"
+             :key="partner">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
           >
             <div class="is-flex is-align-items-center">
               <div
                 class="mr-5 p-2 is-clickable"
-                :class="[favoris ? 'is-active' : '']"
-                @click="favoris = !favoris"
+                :class="[partner.is_favorite ? 'is-active' : '']"
+                @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
               >
                 <span>
                   <i
@@ -491,13 +496,10 @@
                 </span>
               </div>
               <i class="fas fa-history mr-5"></i>
-              <div class="p-2 is-clickable" @click="showModalFrame3Pro = true">
+              <div class="p-2 is-clickable" @click=" setRecipient(partner), showModalFrame3Pro = true">
                 <p class="custom-card-destinataire mr-5">
-                  La Patate
+                  {{partner.name}}
                 </p>
-                <h5 class="card-paiement-defaut-carte mt-1">
-                  Friterie Belge une fois
-                </h5>
               </div>
             </div>
             <div class="is-flex">
@@ -1184,6 +1186,17 @@ export default defineComponent({
       }
     },
 
+    async fastProSearch() :Promise<void> {
+      var recipients
+      try {
+        recipients = await this.lokapi.searchProRecipients(this.searchName)
+        console.log('searchProRecipients() WORKED', recipients)
+      } catch (err) {
+        console.log('searchProRecipients() Failed', err)
+      }
+        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+    },
+
     async delayedSearch() :Promise<void> {
           var recipients
           try {
@@ -1192,6 +1205,17 @@ export default defineComponent({
             console.log('searchRecipients() FAILED', err)
           }
           this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+    },
+
+    async delayedProSearch() :Promise<void> {
+        var recipients
+        try {
+            recipients = await this.lokapi.searchProRecipients(this.searchName)
+            console.log('searchProRecipients() WORKED', recipients)
+        } catch (err) {
+            console.log('searchProRecipients() FAILED', err)
+        }
+        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
     },
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner
