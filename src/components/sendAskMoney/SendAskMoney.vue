@@ -839,7 +839,7 @@
               Créditer mon compte
             </h3>
           </div>
-          <a class="mr-5 p-2" @click="showModalFrameCreditMoney1 = false">
+          <a class="mr-5 p-2" @click="showModalFrameCreditMoney1 = false, resetCredit()">
             <img
               class="cross-shape"
               src="../../assets/media/Cross-Shape.png"
@@ -1104,20 +1104,11 @@ export default defineComponent({
 
   methods: {
 
-    // isHistory(recipient:any) :boolean {
-    //   var i, r = false , l = this.history.length;
-    //   for (i = 0; i < l; i++)
-    //   {
-    //     if ((r = this.history[i]) == recipient)
-    //     {
-    //       r = true
-    //       break;
-    //     }
-    //     else r = false;
-    //   }
-    //   console.log(r)
-    //   return(r)
-    // },
+    resetCredit() :void {
+      this.urlForHyperlink= ""
+      this.linkGenerated= false
+      this.amountForCredit = 0
+    },
 
     async newLinkTab() {
       if (this.amountForCredit > 0) {

@@ -73,12 +73,29 @@ export default defineComponent({
   methods: {
     load():void {
       this.isLoading = true
+    },
+    async submit(): Promise<void> {
+      try {
+        await this.store.dispatch("login", {
+          login: this.data.email,
+          password: this.data.password,
+        });
+        this.store.dispatch("setAccounts");
+        this.data.success = "Connection réussie";
+        this.store.state.lokapi.isLog = true;
+        this.routeur.push({ path: "/profile" });
+      } catch (e) {
+        // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+        this.isLoading = false
+        console.log("Login failed", e.message);
+        this.data.fail = "Identifiant ou mot de passe incorrect";
+      }
     }
   },
   setup(): {
-    data: { email: string; password: string; fail: string };
-    submit: any;
+    data: { email: string; password: string; fail: string ,success:string};
     store: any;
+    routeur:any;
   } {
     const store: any = useStore();
     const data = reactive({
@@ -89,33 +106,10 @@ export default defineComponent({
     });
 
     const routeur = useRouter();
-    const submit = async (): Promise<void> => {
-      try {
-        await store.dispatch("login", {
-          login: data.email,
-          password: data.password,
-        });
-        store.dispatch("setAccounts");
-        data.success = "Connection réussie";
-        store.state.lokapi.isLog = true;
-        routeur.push({ path: "/profile" });
-      } catch (e) {
-        // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-        console.log("Login failed", e.message);
-        data.fail = "Identifiant ou mot de passe incorrect";
-      }
-    };
-
-    // routeur.beforeEach((to, from, next) => {
-    //   if (to.name === "Login" && (store.state.lokapi.isLog = true))
-    //     next({ name: "Profile" });
-    //   else next();
-    // });
-
     return {
       data,
-      submit,
       store,
+      routeur
     };
   },
 });
