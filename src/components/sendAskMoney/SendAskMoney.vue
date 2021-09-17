@@ -457,7 +457,7 @@
             <ul class="is-justify-content-space-evenly">
               <li
                 :class="[activeClass == 0 ? 'is-active' : '']"
-                @click="activeClass = 0 , displayFavoritesOnly = false, fastProSearch()"
+                @click="partners = [] ,activeClass = 0 , displayFavoritesOnly = false, fastProSearch()"
               >
                 <a>tous</a>
               </li>
@@ -1211,17 +1211,20 @@ export default defineComponent({
     },
 
     async delayedSearch() :Promise<void> {
-      var recipients
-      try {
-        recipients = await this.lokapi.searchRecipients(this.searchName)
-        console.log("serach", recipients)
-      } catch (err) {
-        console.log('searchRecipients() FAILED', err)
+      if (this.searchName != "") {
+        var recipients
+        try {
+          recipients = await this.lokapi.searchRecipients(this.searchName)
+          console.log("serach", recipients)
+        } catch (err) {
+          console.log('searchRecipients() FAILED', err)
+        }
+        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
       }
-      this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
     },
 
     async delayedProSearch() :Promise<void> {
+      if (this.searchName != "") {
         var recipients
         try {
             recipients = await this.lokapi.searchProRecipients(this.searchName)
@@ -1230,6 +1233,9 @@ export default defineComponent({
             console.log('searchProRecipients() FAILED', err)
         }
         this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+      } else {
+        this.partners = []
+      }
     },
     setRecipient(partner:any):void {
         this.store.state.lokapi.recipient = partner

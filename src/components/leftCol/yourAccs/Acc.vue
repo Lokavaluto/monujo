@@ -8,7 +8,7 @@
                 </slot>
               </h3>
               <h3 class="custom-card-content">{{bal}} {{curr}}</h3>
-              <button class="button custom-button is-rounded action">
+              <button disabled class="button custom-button is-rounded action">
                 Voir
               </button>
             </div>
