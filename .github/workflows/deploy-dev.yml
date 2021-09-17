@@ -1,8 +1,8 @@
-name: "🚀 deploy 'prod' on 'monujo'"
+name: "🚀 deploy 'main' on 'monujo-test'"
 on:
   push:
     branches:
-      - prod
+      - main
     paths-ignore:
       - 'README*'
 
@@ -47,5 +47,5 @@ jobs:
             KZz9xhmtjOL20gOktVcTWy2iZxdB3Oq35ROPVwdjXFquS/lF05i8kEdeSK+64wIB\
             1DJGKeIYoYSbBzPgSBw=="
           local: ./dist/
-          remote: /monujo.dev.lokavaluto.fr
+          remote: /monujo-test.dev.lokavaluto.fr
           mirror_options: "--verbose"
