@@ -60,12 +60,12 @@
             </h3>
             <button
               class="button container is-fluid custom-button is-rounded action is-uppercase mb-5"
-              @click="showModalFrame2Pro = true, partners = []"
+              @click="showModalFrame2Pro = true, partners = [], searchName='' "
             >
               A un commercant / pro
             </button>
             <button
-              @click="partners = [] ,(showModalFrame2 = true), (warning = true), searchRecipientHistory()"
+              @click="partners = [] ,(showModalFrame2 = true), (warning = true), searchRecipientHistory(), partners = [], searchName=''"
               class="button container is-fluid custom-button is-rounded action is-uppercase"
             >
               a un particulier
