@@ -60,12 +60,12 @@
             </h3>
             <button
               class="button container is-fluid custom-button is-rounded action is-uppercase mb-5"
-              @click="showModalFrame2Pro = true"
+              @click="showModalFrame2Pro = true, partners = []"
             >
               A un commercant / pro
             </button>
             <button
-              @click="(showModalFrame2 = true), (warning = true), searchRecipientHistory()"
+              @click="partners = [] ,(showModalFrame2 = true), (warning = true), searchRecipientHistory()"
               class="button container is-fluid custom-button is-rounded action is-uppercase"
             >
               a un particulier
@@ -185,7 +185,7 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
-
+      <div v-if="partners">
         <div class="container custom-width-send-money mt-4"
              v-for="partner in partners"
              :key="partner">
@@ -223,6 +223,7 @@
           </div>
 
 
+        </div>
       </div>
       </template>
       <template v-slot:footer>
@@ -408,12 +409,12 @@
               />
             </a>
             <h3 class="custom-header-send-money-title ml-4">
-              Envoyer à un professionnel
+              Envoyer à un pro
             </h3>
           </div>
           <a
             class="mr-5 p-2"
-            @click="(showModalFrame2Pro = false), (showModalFrame1 = false)"
+            @click="(showModalFrame2Pro = false), (showModalFrame1Pro = false)"
           >
             <img
               class="cross-shape"
@@ -455,15 +456,23 @@
           <div class="tabs is-centered">
             <ul class="is-justify-content-space-evenly">
               <li
-                :class="[activeClass ? 'is-active' : '']"
-                @click="activeClass = true , displayFavoritesOnly = false, fastProSearch()"
+                :class="[activeClass == 0 ? 'is-active' : '']"
+                @click="activeClass = 0 , displayFavoritesOnly = false, fastProSearch()"
               >
-                <a>recherche</a>
+                <a>tous</a>
               </li>
+
+              <!-- <li
+                :class="[activeClass == 1 ? 'is-active' : '']"
+                @click="activeClass = 1 , displayFavoritesOnly = false, searchRecipientHistory()"
+              >
+                <a>récents</a>
+              </li> -->
+
               <li
                 class="is-flex is-align-items-center"
-                :class="[!activeClass ? 'is-active' : '']"
-                @click="activeClass = false , displayFavoritesOnly = false, fastProSearch()"
+                :class="[activeClass == 2 ? 'is-active' : '']"
+                @click="activeClass = 2 , displayFavoritesOnly = true, fastProSearch()"
               >
                 <a class="custom-pictogram-star"
                   ><span class="icon is-small is-left mr-5">
@@ -476,13 +485,16 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
+
         <div class="container custom-width-send-money mt-4"
              v-for="partner in partners"
              :key="partner">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
+            
           >
-            <div class="is-flex is-align-items-center">
+            <div
+            class="is-flex is-align-items-center">
               <div
                 class="mr-5 p-2 is-clickable"
                 :class="[partner.is_favorite ? 'is-active' : '']"
@@ -491,12 +503,12 @@
                 <span>
                   <i
                     class="far fa-star"
-                    :class="[favoris ? 'fas fa-star' : '']"
+                    :class="[partner.is_favorite ? 'fas fa-star' : '']"
                   ></i>
                 </span>
               </div>
               <i class="fas fa-history mr-5"></i>
-              <div class="p-2 is-clickable" @click=" setRecipient(partner), showModalFrame3Pro = true">
+              <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3Pro = true">
                 <p class="custom-card-destinataire mr-5">
                   {{partner.name}}
                 </p>
@@ -509,7 +521,9 @@
           <div class="is-flex is-justify-content-flex-end">
             <span class="custom-line-separator mt-4"></span>
           </div>
-        </div>
+
+
+      </div>
       </template>
       <template v-slot:footer>
         <div></div>
@@ -533,7 +547,7 @@
               />
             </a>
             <h3 class="custom-header-send-money-title ml-4">
-              Envoyer à La Patate
+              Envoyer à {{recipientName}}
             </h3>
           </div>
           <a
@@ -566,11 +580,11 @@
                     src="https://bulma.io/images/placeholders/128x128.png"
                   />
                 </figure>
-                <h4 class="ml-1">La Patate</h4>
+                <h4 class="ml-1">{{recipientName}}</h4>
               </div>
-              <div class="mr-3">
+              <!-- <div class="mr-3">
                 <i class="fas fa-check" style="color: #46B020"></i>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -581,7 +595,7 @@
         >
           <div class="is-flex is-flex-direction-column custom-montant-input">
             <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-            <input type="number" min="0" class="p-2" />
+            <input v-model="amount" type="number" min="0" class="p-2" />
             <textarea
               v-model="message"
               class="custom-textarea textarea mt-5"
@@ -590,9 +604,11 @@
             <div class="is-flex is-justify-content-flex-end mt-6">
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="showModalFrame4Pro = true"
+                @click="sendTransaction(), (showModalFrame2Pro = false),
+                (showModalFrame1 = false),
+                (showModalFrame3Pro = false)"
               >
-                Suivant
+                Envoyer
               </button>
             </div>
           </div>
@@ -1159,17 +1175,17 @@ export default defineComponent({
           console.log('searchRecipients() Failed', err)
         }
       }
-      this.partners = h
+      //this.partners = h
     },
 
     async fastSearch() :Promise<void> {
-      console.log(this.searchName)
       if(this.searchName == "" && !this.displayFavoritesOnly) {
         this.searchRecipientHistory()
       } else {
-        var recipients
+      var recipients
       try {
         recipients = await this.lokapi.searchRecipients(this.searchName)
+        console.log(recipients)
       } catch (err) {
         console.log('searchRecipients() Failed', err)
       }
@@ -1178,24 +1194,28 @@ export default defineComponent({
     },
 
     async fastProSearch() :Promise<void> {
-      var recipients
+      if(this.searchName == "" && !this.displayFavoritesOnly) {
+        this.searchRecipientHistory()
+      } else {
+        var recipients
       try {
         recipients = await this.lokapi.searchProRecipients(this.searchName)
-        console.log('searchProRecipients() WORKED', recipients)
       } catch (err) {
-        console.log('searchProRecipients() Failed', err)
+        console.log('searchRecipients() Failed', err)
       }
         this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+      }
     },
 
     async delayedSearch() :Promise<void> {
-          var recipients
-          try {
-            recipients = await this.lokapi.searchRecipients(this.searchName)
-          } catch (err) {
-            console.log('searchRecipients() FAILED', err)
-          }
-          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+      var recipients
+      try {
+        recipients = await this.lokapi.searchRecipients(this.searchName)
+        console.log("serach", recipients)
+      } catch (err) {
+        console.log('searchRecipients() FAILED', err)
+      }
+      this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
     },
 
     async delayedProSearch() :Promise<void> {
@@ -1251,22 +1271,5 @@ export default defineComponent({
         this.activeClass = 0
     }
   },
-
-
-  // setup():any {
-  //     const pincode = ref()
-  //     onUpdated(() => {
-  //       if (pincode.value) {
-  //         pincode.value.focus()
-  //       }
-  //     })
-
-  //     return {
-  //       pincode
-  //     }
-  //   },
-
-   
- 
 });
 </script>
