@@ -8,7 +8,7 @@
               <h3 class="custom-card-content">{{getBal}} {{getCurr}}</h3>
             </div>
             <div class="right-card">
-              <button class="button custom-button is-rounded action">
+              <button @click="modal()" class="button custom-button is-rounded action">
                 Créditer
               </button>
             </div>
@@ -25,6 +25,11 @@ export default defineComponent({
       return {store}
     },
     name:"GlobalBal",
+    methods : {
+      modal() {
+        this.store.state.showCredit = true
+      }
+    },
     computed: {
       getBal(): string {
          return this.store.getters.getBal()

@@ -843,7 +843,7 @@
     <!-- début frame 1 crédit -->
     <MyModal
       :first="true"
-      v-if="showModalFrameCreditMoney1"
+      v-if="showModalFrameCreditMoney1 || globalBalCall"
       @close="showModalFrameCreditMoney1 = false"
     >
       <template v-slot:header>
@@ -1114,13 +1114,16 @@ export default defineComponent({
     },
     myHyperLink():string {
       return this.urlForHyperlink
+    },
+    globalBalCall():boolean {
+      return this.store.state.showCredit
     }
-    
   },
 
   methods: {
 
     resetCredit() :void {
+      this.store.state.showCredit = false
       this.urlForHyperlink= ""
       this.linkGenerated= false
       this.amountForCredit = 0

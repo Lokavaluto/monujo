@@ -9,7 +9,8 @@ import { moduleLokAPI } from './lokapi'
 
 export default createStore({
   state: {
-    operationSelector:0
+    operationSelector:0,
+    showCredit:false
   },
   mutations: {
   },
