@@ -1,4 +1,5 @@
 <template>
+<h2 class="custom-card-sub-title has-text-centered">Toutes les opérations</h2>
 <div>
     <TransactionSubCard v-for="transaction in getTrs"
              :key="transaction" :amount="transaction.amount" 

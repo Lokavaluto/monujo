@@ -1,5 +1,5 @@
 <template>
-    <div class=" is-flex is-justify-content-space-between pb-5 mb-5">
+    <div class=" is-flex is-justify-content-space-between pb-3 pt-3">
       <div class="is-flex">
         <div
           class="custom-pictogram is-flex is-justify-content-center is-align-items-center mr-4"
@@ -24,7 +24,7 @@
         </h5>
       </div>
     </div>
-   
+   <span class="custom-line-separator mb-4 mt-4"></span>
 </template>
 
 <script lang="ts">
