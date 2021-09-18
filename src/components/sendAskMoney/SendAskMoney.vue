@@ -5,7 +5,7 @@
   >
     <div class="is-flex is-justify-content-center custom-width-send-money">
       <button
-        @click="showModalFrame1 = true"
+        @click="showModalFrame1 = true, resetSendMoney()"
         class="button custom-button custom-button-send-receive-money is-rounded action"
       >
         Envoyer de l'argent
@@ -60,12 +60,12 @@
             </h3>
             <button
               class="button container is-fluid custom-button is-rounded action is-uppercase mb-5"
-              @click="showModalFrame2Pro = true, partners = [], searchName='' "
+              @click="showModalFrame2Pro = true"
             >
               A un commercant / pro
             </button>
             <button
-              @click="partners = [] ,(showModalFrame2 = true), (warning = true), searchRecipientHistory(), partners = [], searchName=''"
+              @click="(showModalFrame2 = true), (warning = true), searchRecipientHistory()"
               class="button container is-fluid custom-button is-rounded action is-uppercase"
             >
               a un particulier
@@ -1129,6 +1129,13 @@ export default defineComponent({
       this.amountForCredit = 0
     },
 
+    resetSendMoney():void{
+      this.amount = 0
+      this.message = ""
+      this.searchName = ""
+      this.activeClass = 0
+    },
+
     async newLinkTab() {
       if (this.amountForCredit > 0) {
         let url = await this.store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
@@ -1182,6 +1189,7 @@ export default defineComponent({
     },
 
     async fastSearch() :Promise<void> {
+      this.partners = []
       if(this.searchName == "" && !this.displayFavoritesOnly) {
         this.searchRecipientHistory()
       } else {
@@ -1197,6 +1205,7 @@ export default defineComponent({
     },
 
     async fastProSearch() :Promise<void> {
+      this.partners = []
       if(this.searchName == "" && !this.displayFavoritesOnly) {
         this.searchRecipientHistory()
       } else {
@@ -1211,7 +1220,7 @@ export default defineComponent({
     },
 
     async delayedSearch() :Promise<void> {
-      if (this.searchName != "") {
+      if (this.searchName != "" && !this.displayFavoritesOnly) {
         var recipients
         try {
           recipients = await this.lokapi.searchRecipients(this.searchName)
@@ -1220,11 +1229,13 @@ export default defineComponent({
           console.log('searchRecipients() FAILED', err)
         }
         this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+      } else {
+        this.partners = []
       }
     },
 
     async delayedProSearch() :Promise<void> {
-      if (this.searchName != "") {
+      if (this.searchName != "" && !this.displayFavoritesOnly) {
         var recipients
         try {
             recipients = await this.lokapi.searchProRecipients(this.searchName)
