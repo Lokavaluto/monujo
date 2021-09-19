@@ -874,7 +874,7 @@
             </h2>
             <input v-model="amountForCredit" type="number" min="0" class="p-2" />
             <h2 v-if="myHyperLink.length > 1" class="mt-6 mb-2 frame3-sub-title">Vous n'avez pas été redirigé ?</h2>
-            <a class="mt-6" :href="urlForHyperlink">{{urlForHyperlink}}</a>
+            <a class="mt-6" target="_blank" :href="urlForHyperlink">{{urlForHyperlink}}</a>
             <!-- <h2 class="mt-6 mb-6 frame3-sub-title">Mode de paiement</h2> -->
             <!-- <div class="columns">
               <div class="column">
