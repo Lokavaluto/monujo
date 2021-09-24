@@ -8,7 +8,8 @@
         <QRPicto v-else-if="picto == 'QR'"/>
         </div>
         <div class="is-flex-direction-column">
-          <h3 class="custom-card-destinataire has-text-danger">
+          
+          <h3 :class="[amount.charAt(0) == '-' ? 'custom-card-destinataire has-text-danger' : 'custom-card-destinataire has-text-success']">
             {{amount}} {{symbol}}
           </h3>
           <h4 class="custom-card-destinataire">{{name}}</h4>
@@ -31,6 +32,8 @@
 import TransactionPicto from "./pictos/TransactionPicto.vue"
 import QRPicto from "./pictos/QRPicto.vue"
 import {defineComponent} from "vue"
+import moment from 'moment'
+
 export default defineComponent({
     name:"TransactionSubCard",
     components: {
@@ -39,22 +42,9 @@ export default defineComponent({
     },
     methods: {
       calcDays(date:string):string {
-        const now = Date.now();
-        const parsedDate = new Date(date).getTime();
-        var Difference_In_Time = now - parsedDate
-        var switcher = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
-        switch (true) {
-          case switcher === 0:
-            return("Aujourd'hui")
-          case switcher === 1:
-            return("Hier")
-          case switcher === 2:
-            return("Il y a 2 jours")
-          case switcher >=3 && switcher < 7:
-            return("Il y a moins d'une semaine")
-          default:
-            return("Il y a plus d'une semaine")
-        }
+        moment.locale('fr');
+        var test = moment(date).fromNow()
+        return test
       }
     },
     props: {
