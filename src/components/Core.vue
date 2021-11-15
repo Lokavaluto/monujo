@@ -49,7 +49,6 @@ export default defineComponent({
           this.userProfile = result
           console.log(result)
           console.log("relogin !")
-          this.store.dispatch("resetTRS")
           this.store.dispatch("setAccounts")
           this.store.state.lokapi.isLog = true
         })
