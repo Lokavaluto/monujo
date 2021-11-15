@@ -199,7 +199,14 @@ export var moduleLokAPI = {
     },
    
     async setThisWeekTransactions (state:any) {
-      let transactions = await lokAPI.getTransactions()
+      let transactionsGen = lokAPI.getTransactions()
+
+      let transactions = []
+      let next = await transactionsGen.next()
+      while (!next.done) {
+        transactions.push(<any>next.value)
+        next = await transactionsGen.next()
+      }
       state.transactions = transactions 
       var maxTransactions = 5
       let trs = []
