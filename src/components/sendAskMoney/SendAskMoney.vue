@@ -1266,7 +1266,7 @@ export default defineComponent({
         let bal = await accounts[0].getBalance()
         this.store.state.lokapi.bal = bal
         this.$toast.success(
-          `Paiement  effectué à ${this.recipientName}`,
+          `Paiement effectué à ${this.recipientName}`,
           {
             position:
             "top-right"
