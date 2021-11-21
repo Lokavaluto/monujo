@@ -41,6 +41,12 @@
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
+            <router-link v-if="getLog && hasWallet" to="/create-wallet" class="button is-light">
+              Créer mon portefeuille
+            </router-link>
+            <router-link v-if="getLog && isAdmin" to="/admin" class="button is-light">
+              Administration
+            </router-link>
             <router-link v-if="getLog" to="/" @click="logout" class="button is-light">
               Déconnexion
             </router-link>
@@ -74,6 +80,12 @@ export default defineComponent({
   computed: {
       getLog(): string {
          return this.store.state.lokapi.isLog
+      },
+      isAdmin(): boolean {
+         return true // TODO : add call to LokAPI
+      },
+      hasWallet(): boolean {
+         return true // TODO : add call to LokAPI
       },
     },
 });
