@@ -17,6 +17,7 @@
 
 <script lang="ts">
     import {defineComponent} from "vue"
+    import moment from 'moment'
     export default defineComponent({
         name:"WalletValidationRequest",
         props: {
@@ -24,14 +25,11 @@
             date: String,
             unformatedDate:String
         },
-        methods : { 
-            dateFormated(badDate:string) :string {
-                var date = new Date(badDate);
-                var options = {weekday: "long", day: "numeric", month: "numeric"};
-                // eslint-disable-next-line
-                //@ts-ignore-next-line
-                const DateFr = new Intl.DateTimeFormat('fr-FR', options).format(date)
-                return DateFr
+        methods : {
+            calcDays(date:string):string {
+                moment.locale('fr');
+                var test = moment(date).fromNow()
+                return test
             }
         },
     })
