@@ -1,0 +1,38 @@
+<template>
+    <div class=" is-flex is-justify-content-space-between pb-3 pt-3">
+        <div class="is-flex">
+            <div class="is-flex-direction-column">
+                <h4 class="custom-card-destinataire">Stéphan Sainléger</h4>
+            </div>
+        </div>
+        <div>
+            <h5 class="custom-card-destinataire">22-11-2021</h5>
+            <h5 class="card-paiement-defaut-carte has-text-right mt-1">
+                {{calcDays(unformatedDate)}}
+            </h5>
+        </div>
+    </div>
+    <span class="custom-line-separator mb-4 mt-4"></span>
+</template>
+
+<script lang="ts">
+    import {defineComponent} from "vue"
+    export default defineComponent({
+        name:"WalletValidationRequest",
+        props: {
+            username: String,
+            date: String,
+            unformatedDate:String
+        },
+        methods : { 
+            dateFormated(badDate:string) :string {
+                var date = new Date(badDate);
+                var options = {weekday: "long", day: "numeric", month: "numeric"};
+                // eslint-disable-next-line
+                //@ts-ignore-next-line
+                const DateFr = new Intl.DateTimeFormat('fr-FR', options).format(date)
+                return DateFr
+            }
+        },
+    })
+</script>
