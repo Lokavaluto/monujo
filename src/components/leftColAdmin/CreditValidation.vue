@@ -20,13 +20,13 @@
             const store: any = useStore()
             return {
                 store:store,
-                creditValidationRequests:[] // store.state.lokapi.creditValidationRequests
+                creditValidationRequests: store.state.lokapi.creditValidationRequests
             }
         },
         computed: {
             getCreditValidationRequests(): any {
                 if (this.store.state.OperationsSelector == 0) {
-                    return [] // this.store.getters.creditValidationRequests()  
+                    return this.store.getters.getCreditValidationRequests()
                 } else {
                     return []
                 }

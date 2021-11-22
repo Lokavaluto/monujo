@@ -103,6 +103,8 @@ export var moduleLokAPI = {
     userProfile: null,
     transactions: null,
     thisWeektransactions:null,
+    creditValidationRequests:null,
+    walletValidationRequests:null,
     bal: 0,
     curr:"",
     accounts:[],
@@ -171,6 +173,8 @@ export var moduleLokAPI = {
       state.userProfile= null
       state.transactions=null
       state.thisWeektransactions=null
+      state.creditValidationRequests=null
+      state.walletValidationRequests=null
       state.bal= 0
       state.curr=""
       state.accounts=[]
@@ -254,6 +258,16 @@ export var moduleLokAPI = {
     getThisWeektransactions: (state: any) => {
       return function(): any {
         return state.thisWeektransactions
+      }
+    },
+    getCreditValidationRequests: (state: any) => {
+      return function(): any {
+        return state.creditValidationRequests
+      }
+    },
+    getWalletValidationRequests: (state: any) => {
+      return function(): any {
+        return state.walletValidationRequests
       }
     }
   }

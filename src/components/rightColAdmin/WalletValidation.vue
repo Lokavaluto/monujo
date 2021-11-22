@@ -20,13 +20,13 @@
             const store: any = useStore()
             return {
                 store:store,
-                walletValidationRequests:[] // store.state.lokapi.walletValidationRequests
+                walletValidationRequests: store.state.lokapi.walletValidationRequests
             }
         },
         computed: {
             getWalletValidationRequests(): any {
                 if (this.store.state.OperationsSelector == 0) {
-                    return [] // this.store.getters.getWalletValidationRequests()  
+                    return this.store.getters.getWalletValidationRequests()
                 } else {
                     return []
                 }
