@@ -1,9 +1,9 @@
 <template>
     <h2 class="custom-card-sub-title">Créations de portefeuilles à valider</h2>
-    <WalletValidationRequest v-for="walletValidationRequest in getWalletValidationRequests"
-             :key="walletValidationRequest"
-             :date="dateFormated(walletValidationRequest.date)"
-             :unformatedDate="walletValidationRequest.date"
+    <WalletValidationRequest v-for="request in getWalletValidationRequests"
+             :key="request"
+             :date="dateFormated(request.date)"
+             :unformatedDate="request.date"
              :name="Test"/>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
     <h2 class="custom-card-sub-title">Demandes de crédits à valider</h2>
-    <CreditValidationRequest v-for="creditValidationRequest in getCreditValidationRequests"
-             :key="creditValidationRequest"
-             :date="dateFormated(creditValidationRequest.date)"
-             :unformatedDate="creditValidationRequest.date"
+    <CreditValidationRequest v-for="request in getCreditValidationRequests"
+             :key="request"
+             :date="dateFormated(request.date)"
+             :unformatedDate="request.date"
              :name="Test"/>
 </template>
 
