@@ -210,7 +210,7 @@
               <i class="fas fa-history mr-5"></i>
               <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3 = true">
                 <p class="custom-card-destinataire mr-5">
-                  {{partner.name}}
+                  {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
                 </p>
               </div>
             </div>
@@ -510,7 +510,7 @@
               <i class="fas fa-history mr-5"></i>
               <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3Pro = true">
                 <p class="custom-card-destinataire mr-5">
-                  {{partner.name}}
+                  {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
                 </p>
               </div>
             </div>
@@ -1259,6 +1259,15 @@ export default defineComponent({
       try {
           await accs[0].transfer(part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+          if (err.message === 'User canceled the dialog box') {
+          this.$toast.warning(
+            `Transaction en cours annulée`,
+            {
+              position:
+              "top-right"
+            });
+            return
+          }
           console.log('Payment failed:', err.message)
           throw err
         }

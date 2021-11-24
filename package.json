@@ -8,11 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@lokavaluto/lokapi-backend-comchain": "^0.0.1",
+    "@lokavaluto/lokapi-backend-cyclos": "^0.0.1",
+    "@lokavaluto/lokapi-browser": "^0.0.2",
     "@meforma/vue-toaster": "^1.2.2",
     "bulma": "^0.9.2",
     "core-js": "^3.6.5",
-    "lokapi": "0.0.16",
     "moment": "^2.29.1",
+    "sweetalert2": "^11.1.10",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-cookie-next": "^1.0.3",

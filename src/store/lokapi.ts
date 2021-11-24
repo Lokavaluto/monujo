@@ -1,77 +1,52 @@
 /* eslint-disable */
 
 ///<reference types="@types/node"/>
-///<reference types="lokapi"/>
-
-import http from "http"
-import https from "https"
 
 import router from "../router/index"
 
-import { VueCookieNext } from 'vue-cookie-next'
-import { LokAPIAbstract, e as LokAPIExc, t as LokAPIType } from "lokapi"
+import LokAPIBrowserAbstract from '@lokavaluto/lokapi-browser'
+
+import comchain from '@lokavaluto/lokapi-backend-comchain'
+import cyclos from '@lokavaluto/lokapi-backend-cyclos'
+
+import Swal from "sweetalert2"
 
 
-class cookieStore implements LokAPIType.IPersistentStore {
-  constructor() {
-    VueCookieNext.config({ expire: '7d' })
-  }
-  get(key: string, defaultValue?: string): string {
-    return VueCookieNext.getCookie("lokapi_" + key)
-  }
-  set(key: string, value: string): void {
-    VueCookieNext.setCookie("lokapi_" + key, value)
-  }
-  del(key: string): void {
-    VueCookieNext.removeCookie("lokapi_" + key)
-  }
-}
+class LokAPI extends LokAPIBrowserAbstract {
 
-const requesters: any = { http, https }
+  BackendFactories = {
+    comchain,
+    cyclos
+  }
 
-class LokAPI extends LokAPIAbstract {
-  httpRequest = (opts: LokAPIType.coreHttpOpts) => {
-    const httpsOpts = {
-      host: opts.host,
-      path: opts.path,
-      method: opts.method,
-      ...opts.headers && { headers: opts.headers },
-      ...opts.port && { port: opts.port }
+  requestLocalPassword = async function (state: string) {
+    let text
+    if (state === 'firstTry') {
+      text = ''  // XXXvlab: need i16n
+    } else if (state === 'failedUnlock') {
+      text = 'Échec du déchiffrage. ' +
+        'Le mot de passe était probablement incorrect. '+
+        'Ré-essayez une nouvelle fois'  // XXXvlab: need i16n
     }
-    const requester = requesters[opts.protocol]
-    if (!requester) {
-      throw new Error(`Protocol ${opts.protocol} unsupported by this implementation`)
-    }
-    return new Promise((resolve, reject) => {
-
-      let req = requester.request(httpsOpts, (res: any) => {
-        const { statusCode } = res
-
-        let rawData = ''
-
-        res.on('data', (chunk: any) => { rawData += chunk })
-        res.on('end', () => {
-          if (!statusCode || statusCode.toString().slice(0, 1) !== '2') {
-            res.resume();
-            reject(new LokAPIExc.HttpError(statusCode, res.statusMessage, rawData, res))
-            return
-          } else {
-            resolve(rawData)
-          }
-        })
-      })
-
-      if (opts.data) req.write(JSON.stringify(opts.data))
-
-      req.end()
-      req.on('error', (err: any) => {
-        console.error(`Encountered an error trying to make a request: ${err.message}`);
-        reject(new LokAPIExc.RequestFailed(err.message))
-      })
+    const ret = await Swal.fire({
+      title: 'Entrez votre mot de passe',  // XXXvlab: need i16n
+      text,
+      showCloseButton: true,
+      input: 'password',
+      inputLabel: 'Mot de passe du portefeuille',  // XXXvlab: need i16n
+      inputPlaceholder: 'Votre mot de passe',  // XXXvlab: need i16n
+      inputAttributes: {
+        maxlength: '32',
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      }
     })
+    if (ret.isConfirmed) {
+      return ret.value
+    }
+    throw new Error('User canceled the dialog box')
   }
-  base64Encode = (s: string) => Buffer.from(s).toString('base64')
-  persistentStore = new cookieStore()
+
   requestLogin() {
     router.push("/")
     console.log("Login requested !")
