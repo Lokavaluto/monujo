@@ -22,7 +22,7 @@
     </div>
     <div class="is-flex is-justify-content-center custom-width-send-money">
       <button
-        class="button custom-button is-uppercase is-rounded action"
+        class="button custom-button custom-button-credit-money is-rounded action"
         @click="showModalFrameCreditMoney1 = true"
       >
         crediter mon compte
