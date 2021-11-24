@@ -1,6 +1,5 @@
 <template>
   <main class="main pb-4">
-    <div class="container-fluid top-bar"></div>
     <div class="container mt-5">
       <section class="top-column column">
         <h1 class="welcome-user">Bienvenue {{userProfile ? userProfile.name : null}}</h1>
