@@ -12,7 +12,7 @@
           <div class="field">
             <p class="control has-icons-left has-icons-right">
               <input
-                v-model="data.email"
+                v-model="email"
                 class="input"
                 placeholder="Courriel"
               />
@@ -27,7 +27,7 @@
           <div class="field">
             <p class="control has-icons-left">
               <input
-                v-model="data.password"
+                v-model="password"
                 class="input"
                 type="password"
                 placeholder="Mot de passe"
@@ -44,8 +44,8 @@
               </button>
             </p>
           </div>
-          <p class="has-text-danger has-text-centered" v-if="data.fail">
-            {{ data.fail }}
+          <p class="has-text-danger has-text-centered" v-if="fail">
+            {{ fail }}
           </p>
         </form>
       </div>
@@ -55,19 +55,21 @@
 </template>
 
 <script lang="ts">
-import {reactive, defineComponent} from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { Options, Vue } from 'vue-class-component';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
-export default defineComponent({
+@Options({
   name: "Login",
-  components :{Loading:Loading},
-  data(): {isLoading: boolean,fullPage: boolean} {
+  components :{ Loading: Loading },
+  data() {
     return {
       isLoading: false,
-      fullPage: true
+      fullPage: true,
+      email: "",
+      password: "",
+      fail: "",
+      success: ""
     }
   },
   methods: {
@@ -76,41 +78,22 @@ export default defineComponent({
     },
     async submit(): Promise<void> {
       try {
-        await this.store.dispatch("login", {
-          login: this.data.email,
-          password: this.data.password,
+        await this.$store.dispatch("login", {
+          login: this.email,
+          password: this.password,
         });
-        this.store.dispatch("setAccounts");
-        this.data.success = "Connection réussie";
-        this.store.state.lokapi.isLog = true;
-        this.routeur.push({ path: "/profile" });
+        this.$store.dispatch("setAccounts");
+        this.success = "Connection réussie";
+        this.$store.state.lokapi.isLog = true;
+        this.$router.push({ path: "/profile" });
       } catch (e) {
         // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         this.isLoading = false
         console.log("Login failed", e.message);
-        this.data.fail = "Identifiant ou mot de passe incorrect";
+        this.fail = "Identifiant ou mot de passe incorrect";
       }
     }
   },
-  setup(): {
-    data: { email: string; password: string; fail: string ,success:string};
-    store: any;
-    routeur:any;
-  } {
-    const store: any = useStore();
-    const data = reactive({
-      email: "",
-      password: "",
-      fail: "",
-      success: "",
-    });
-
-    const routeur = useRouter();
-    return {
-      data,
-      store,
-      routeur
-    };
-  },
-});
+})
+export default class Login extends Vue {}
 </script>
