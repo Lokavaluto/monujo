@@ -17,26 +17,23 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue"
-import { useStore } from 'vuex'
-export default defineComponent({
-    setup () {
-      const store = useStore()
-      return {store}
-    },
+import { Options, Vue } from 'vue-class-component';
+
+@Options({
     name:"GlobalBal",
     methods : {
       modal() {
-        this.store.state.showCredit = true
+        this.$store.state.showCredit = true
       }
     },
     computed: {
       getBal(): string {
-         return this.store.getters.getBal()
+         return this.$store.getters.getBal()
       },
       getCurr(): string {
-         return this.store.getters.getCurr()
+         return this.$store.getters.getCurr()
       }
     },
 })
+export default class GlobalBal extends Vue {}
 </script>
