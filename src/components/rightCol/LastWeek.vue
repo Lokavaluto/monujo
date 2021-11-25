@@ -18,24 +18,17 @@
 </template>
 
 <script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import TransactionSubCard from "./TransactionSubCard.vue";
-import { defineComponent } from "vue";
-import { useStore } from "vuex";
-export default defineComponent({
-  name: "LastWeek.vue",
+
+@Options({
+  name: "LastWeek",
   components: {
     TransactionSubCard,
   },
-  data(): { store: any; transactions: Array<any> } {
-    const store: any = useStore();
-    return {
-      store: store,
-      transactions: store.state.lokapi.getTransactions,
-    };
-  },
   computed: {
     getTrs(): number {
-      return this.store.getters.getTransactions();
+      return this.$store.getters.getTransactions();
     },
   },
 
@@ -49,5 +42,6 @@ export default defineComponent({
       return DateFr;
     },
   },
-});
+})
+export default class LastWeek extends Vue {}
 </script>
