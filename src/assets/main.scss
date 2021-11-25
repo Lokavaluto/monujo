@@ -152,15 +152,7 @@
   color: rgba(0, 0, 0, 0.6);
   border-radius: 47px !important;
   font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 19px;
   border: none !important;
-  padding-right: 4em !important;
-  padding-left: 4em !important;
-  padding-top: 1em !important;
-  padding-bottom: 1em !important;
 }
 
 .custom-tabs-switch a:hover {
@@ -171,7 +163,7 @@
 .custom-tabs-switch-div {
   border-radius: 47px !important;
   background: #f1f1f1 !important;
-  padding: 1px !important;
+  // padding: 1px !important;
 }
 
 .custom-is-active {
