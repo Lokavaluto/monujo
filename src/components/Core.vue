@@ -1,5 +1,5 @@
 <template>
-  <main class="main pb-4">
+  <main class="main">
     <div class="container mt-5">
       <section class="top-column column">
         <h1 class="welcome-user">Bienvenue {{userProfile ? userProfile.name : null}}</h1>
@@ -9,8 +9,12 @@
         <LeftCol />
         <RightCol />
       </div>
-      <SendAskMoney />
       <!-- fin des conteneurs des colonnes de gauche et droite -->
+    </div>
+    <div class="action-footer-container">
+      <div class="container">
+        <SendAskMoney />
+      </div>
     </div>
   </main>
 </template>
