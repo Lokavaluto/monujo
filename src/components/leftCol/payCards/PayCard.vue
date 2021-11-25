@@ -12,12 +12,15 @@
             </div>
 </template>
 <script lang="ts">
-export default {
+import { Options, Vue } from 'vue-class-component';
+
+@Options({
     name:"PayCard",
     props: {
         fullName:String,
         cardNumber:String,
         isDefault:Boolean
     }
-}
+})
+export default class PayCard extends Vue {}
 </script>
