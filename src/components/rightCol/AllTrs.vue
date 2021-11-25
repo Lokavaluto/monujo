@@ -12,26 +12,18 @@
 </div>
 </template>
 <script lang="ts">
-import { useStore } from 'vuex'
-import {inject , defineComponent} from 'vue'
-import TransactionSubCard from "./TransactionSubCard.vue"
-export default  defineComponent({
+import { Options, Vue } from 'vue-class-component';
+import TransactionSubCard from "./TransactionSubCard.vue";
+
+@Options({
 
     name:"AllTrs",
     components: {
         TransactionSubCard
     },
-    setup(): any{
-        const lokapi: any = inject("$lokapi");
-        const store : any = useStore()
-        return {
-            lokapi: lokapi,
-            store: store
-        }
-    },
     computed: {
         getTrs(): number {
-            return this.store.getters.getTransactions()
+            return this.$store.getters.getTransactions()
         }
     },
     methods : { 
@@ -44,5 +36,6 @@ export default  defineComponent({
             return DateFr
         }
     },
-});
+})
+export default class AllTrs extends Vue {}
 </script>
