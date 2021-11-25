@@ -37,15 +37,14 @@
 </template>
 
 <script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import OperationsSelector from "../rightCol/OperationsSelector.vue";
 import ThisWeek from "../rightCol/ThisWeek.vue";
 //import LastWeek from "../rightCol/LastWeek.vue";
 import AllTrs from "../rightCol/AllTrs.vue";
 import MyModal from "../modal/MyModal.vue";
-import { defineComponent } from "vue";
-import {useStore} from "vuex"
 
-export default defineComponent({
+@Options({
   name: "RightCol",
   components: {
     OperationsSelector,
@@ -55,23 +54,16 @@ export default defineComponent({
     MyModal,
   },
 
-  setup(): {store:any} {
-        const store : any = useStore()
-        console.log(store.state.lokapi.transactions)
-        return {
-            store: store
-        }
-    },
-
-  data(): { showModal: boolean} {
+  data() {
     return {
       showModal: false
     };
   },
   computed: {
     opSel(): number {
-      return this.store.state.OperationsSelector
+      return this.$store.state.OperationsSelector
     },
   },
-});
+})
+export default class RightCol extends Vue {}
 </script>

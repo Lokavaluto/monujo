@@ -13,25 +13,21 @@
 </template>
 
 <script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import TransactionSubCard from "./TransactionSubCard.vue"
-import {defineComponent} from "vue"
-import {useStore} from "vuex"
-export default defineComponent({
+
+@Options({
     name:"ThisWeek",
     components: {
         TransactionSubCard
     },
-    data() :{store:any, transactions:Array<any>} {
-        const store: any = useStore()
-        return {
-            store:store,
-            transactions:store.state.lokapi.thisWeektransactions
-        }
+    data() {
+        return {}
     },
     computed: {
         getTrs(): any {
-            if (this.store.state.OperationsSelector == 0) {
-                return this.store.getters.getThisWeektransactions()
+            if (this.$store.state.OperationsSelector == 0) {
+                return this.$store.getters.getThisWeektransactions()
             } else {
                 return []
             }
@@ -49,7 +45,7 @@ export default defineComponent({
         }
     },
     // mounted: async function () {
-    //     let transactions = this.store.getters.getTransactions()
+    //     let transactions = this.$store.getters.getTransactions()
     //     var maxTransactions = 5
     //     for (let el of transactions) {
     //         if (el.relatedUser) {
@@ -63,4 +59,5 @@ export default defineComponent({
     //     console.log(this.transactions
     // }
 })
+export default class ThisWeek extends Vue {}
 </script>

@@ -14,34 +14,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useStore } from 'vuex'
-export default defineComponent({
-    name:"OperationsSelector",
-    setup(): {store:any} {
-        const store : any = useStore()
-        return {
-            store: store
-        }
-    },
-    mounted: function () {
+import { Options, Vue } from 'vue-class-component';
+
+// @TODO: il y a un souci, le troisième tab du sélecteur n'apparaît pas (mais est bien rendu dans le DOM)
+@Options({
+    name: "OperationsSelector",
+    mounted() {
       this.$nextTick(()=> {
-        this.store.state.OperationsSelector = 0
+        // @TODO
+        // Ca n'est pas terrible ça...
+        // Ce n'est pas une très bonne idée de muter le state du store directement 
+        // depuis un composant.
+        // Mieux vaut passer par un commit (this.$store.commit) ou une action (this.$store.dispatch).
+        this.$store.state.OperationsSelector = 0
       })
     },
 
     computed: {
       activeClass(): number {
-        return this.store.state.OperationsSelector
+        return this.$store.state.OperationsSelector
       },
     },
 
 
     methods: {
       chgOpSlct(value:number):void {
-        this.store.state.OperationsSelector = value
-        console.log(this.store.state.OperationsSelector)
+        this.$store.state.OperationsSelector = value
+        console.log(this.$store.state.OperationsSelector)
       }
     }
-});
+})
+export default class OperationsSelector extends Vue {}
 </script>

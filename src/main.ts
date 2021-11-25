@@ -20,9 +20,8 @@ const app = createApp(App)
   app.use(router)
   app.use(Swal)
   app.use(Toaster)
-  app.provide('$lokapi', lokAPI)
   app.provide('$store', store)
-  // app.config.globalProperties.$store = store
+  app.config.globalProperties.$lokapi = lokAPI
   app.mount("#app");
 
 // createApp(App)

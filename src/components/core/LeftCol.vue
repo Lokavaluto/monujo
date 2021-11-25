@@ -9,15 +9,18 @@
 </template>
 
 <script lang="ts">
-import GlobalBal from "../leftCol/GlobalBal.vue"
-import YourAccs from "../leftCol/YourAccs.vue"
+import { Options, Vue } from 'vue-class-component';
+import GlobalBal from "../leftCol/GlobalBal.vue";
+import YourAccs from "../leftCol/YourAccs.vue";
 //import PayCards from "../leftCol/PayCards.vue"
-export default {
+
+@Options({
   name: "LeftCol",
   components: {
     GlobalBal,
     YourAccs,
     // PayCards
   }
-};
+})
+export default class LeftCol extends Vue {}
 </script>

@@ -14,13 +14,16 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+
+@Options({
     name:"Acc",
     props: {
         name:String,
         bal:Number,
         curr:String
     }
-}
+})
+export default class Acc extends Vue {}
 </script>

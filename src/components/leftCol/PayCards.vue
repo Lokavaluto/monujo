@@ -18,12 +18,15 @@
           <!-- fin card vos cartes de paiement -->
 </template>
 
-<script>
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import PayCard from "./payCards/PayCard.vue"
-export default {
+
+@Options({
     name:"PayCards",
     components: {
         PayCard
     }
-}
+})
+export default class PayCards extends Vue {}
 </script>

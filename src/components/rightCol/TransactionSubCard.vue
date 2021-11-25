@@ -29,12 +29,12 @@
 </template>
 
 <script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import TransactionPicto from "./pictos/TransactionPicto.vue"
 import QRPicto from "./pictos/QRPicto.vue"
-import {defineComponent} from "vue"
 import moment from 'moment'
 
-export default defineComponent({
+@Options({
     name:"TransactionSubCard",
     components: {
         TransactionPicto,
@@ -57,4 +57,5 @@ export default defineComponent({
         unformatedDate:String
     },
 })
+export default class TransactionSubCard extends Vue {}
 </script>

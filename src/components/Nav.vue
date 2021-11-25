@@ -52,29 +52,25 @@
 </template>
 
 <script lang="ts">
-import { useStore } from 'vuex'
-import {defineComponent} from "vue"
-export default defineComponent({
+import { Options, Vue } from 'vue-class-component';
+
+@Options({
   name: "Nav",
-  data(): {
-    showNav: boolean;
-    store:any;
-  } {
-    const store = useStore()
+  data() {
     return {
-      showNav: false,
-      store:store
+      showNav: false
     };
   },
   methods : {
     logout() {
-      this.store.dispatch("askLogOut")
+      this.$store.dispatch("askLogOut")
     }
   },
   computed: {
       getLog(): string {
-         return this.store.state.lokapi.isLog
+         return this.$store.state.lokapi.isLog
       },
     },
-});
+})
+export default class Nav extends Vue {}
 </script>

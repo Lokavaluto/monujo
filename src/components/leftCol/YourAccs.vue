@@ -19,20 +19,22 @@
 </template>
 
 <script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import Acc from "./yourAccs/Acc.vue"
-import store from "../../store"
-export default {
+
+@Options({
     name:"YourAccs",
     components: {
         Acc
     },
     computed: {
       getBal(): number {
-         return store.getters.getBal()
+         return this.$store.getters.getBal()
       },
       getCurr(): string {
-         return store.getters.getCurr()
+         return this.$store.getters.getCurr()
       }
     }
-}
+})
+export default class YourAccs extends Vue {}
 </script>
