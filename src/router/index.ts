@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Profile from "../views/Profile.vue";
 import Login from "../views/Login.vue";
-import { useStore } from "vuex";
 
 const routes: Array<RouteRecordRaw> = [
   {
