@@ -16,40 +16,23 @@
 </template>
 
 <script lang="ts">
-
-import {defineComponent} from "vue"
-import {useStore} from "vuex"
+import { Options, Vue } from 'vue-class-component';
 import LeftCol from "./core/LeftCol.vue";
 import RightCol from "./core/RightCol.vue";
 import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 
-
-export default defineComponent({
-    name:"core",
- 
-    setup(): any {
-      const store : any = useStore()
-      return {
-        store: store
-      }
-    },
-    data():any {
-      const store : any = useStore()
-      return {
-        userProfile: store.getters.getUserProfile()
-      }
-    },
-
+@Options({
+  name:"core",
   mounted() {
     if(!this.userProfile) {
       try {
-        this.store.dispatch("initAutoLogin")
-        this.store.getters.getUserProfile().then(async (result:any) => {
+        this.$store.dispatch("initAutoLogin")
+        this.$store.getters.getUserProfile().then(async (result:any) => {
           this.userProfile = result
           console.log(result)
           console.log("relogin !")
-          this.store.dispatch("setAccounts")
-          this.store.state.lokapi.isLog = true
+          this.$store.dispatch("setAccounts")
+          this.$store.state.lokapi.isLog = true
         })
       } catch(e) {
         console.log(e)
@@ -57,13 +40,11 @@ export default defineComponent({
       
     }
   },
-
   computed: {
-      myProfile(): string {
-          return this.userProfile
-       }
-    },
-
+    myProfile(): string {
+      return this.userProfile
+    }
+  },
   props: {
     msg: String,
   },
@@ -73,9 +54,7 @@ export default defineComponent({
     SendAskMoney,
   },
 })
-
-
-
+export default class Core extends Vue {}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
