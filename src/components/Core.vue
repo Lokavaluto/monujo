@@ -2,7 +2,7 @@
   <main class="main pb-4">
     <div class="container mt-5">
       <section class="top-column column">
-        <h1 class="welcome-user">Bienvenue {{userProfile ? userProfile.name : null}}</h1>
+        <h1 class="welcome-user">Bienvenue {{userProfile ? userProfile.name : 'inconnu'}}</h1>
       </section>
       <!-- conteneur des colonnes de gauche et droite où se situent les cards -->
       <div class="column is-flex is-justify-content-space-between pl-0 pr-0">
@@ -24,6 +24,9 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
 @Options({
   name:"core",
   mounted() {
+    // If this component is loaded, we already are logged in, so
+    // the store already contains the logged in user informations...
+    // Maybe all the following is not useful ?
     if(!this.userProfile) {
       try {
         this.$store.dispatch("initAutoLogin")
@@ -37,12 +40,14 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
       } catch(e) {
         console.log(e)
       }
-      
     }
   },
   computed: {
-    myProfile(): string {
-      return this.userProfile
+    // We do not have to rely on an extra db call to get the
+    // information, just use a computed property on the store state (or getter if needed)
+    // and the vuejs magic happens !
+    userProfile(): string {
+      return this.$store.state.lokapi.userProfile
     }
   },
   props: {
