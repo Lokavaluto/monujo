@@ -1,32 +1,34 @@
 <template>
   <!-- début card envoyer et demander de l'argent  -->
   <div
-    class="action-footer card custom-card is-flex is-justify-content-space-evenly is-align-items-center pb-5 pt-5 "
+    class="action-footer"
   >
-    <div class="is-flex is-justify-content-center custom-width-send-money">
-      <button
-        @click="showModalFrame1 = true, resetSendMoney()"
-        class="button custom-button custom-button-send-receive-money is-rounded action"
-      >
-        Envoyer de l'argent
-      </button>
-    </div>
-    <div class="is-flex is-justify-content-center custom-width-send-money">
-      <button
-        disabled
-        class="button custom-button custom-button-send-receive-money is-rounded action"
-      >
-        <!-- @click="showModalFrameAskMoney1 = true" -->
-        Demander de l'argent
-      </button>
-    </div>
-    <div class="is-flex is-justify-content-center custom-width-send-money">
-      <button
-        class="button custom-button custom-button-credit-money is-rounded action"
-        @click="showModalFrameCreditMoney1 = true"
-      >
-        crediter mon compte
-      </button>
+    <div class="columns menu">
+      <div class="column is-tablet">
+        <button
+          @click="showModalFrame1 = true, resetSendMoney()"
+          class="button custom-btn custom-inverted is-rounded action"
+        >
+          Envoyer de l'argent
+        </button>
+      </div>
+      <div class="column is-tablet">
+        <button
+          disabled
+          class="button custom-btn custom-inverted is-rounded action"
+        >
+          <!-- @click="showModalFrameAskMoney1 = true" -->
+          Demander de l'argent
+        </button>
+      </div>
+      <div class="column is-tablet">
+        <button
+          class="button custom-btn is-rounded action"
+          @click="showModalFrameCreditMoney1 = true"
+        >
+          crediter mon compte
+        </button>
+      </div>
     </div>
     <!-- modal frame 1 -->
     <MyModal

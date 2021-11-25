@@ -1,3 +1,6 @@
+/* // Bulma Import */
+@import "~bulma";
+
 /* // Customizations Here (Optional) */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
@@ -12,9 +15,7 @@ body {
 #app {
   min-height: 100vh;
   background-color: #e4f2f1;
-}
-
-.main {
+  padding-bottom: 140px;
 }
 
 .welcome-user {
@@ -234,10 +235,41 @@ body {
 
 // action-footer-anchor
 
-.action-footer {
-  position: sticky !important;
+.action-footer-container {
+  position: fixed !important;
   bottom: 20px !important;
+  width: 100%;
+}
+.action-footer {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
   box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.25) !important;
+
+  .menu {
+    .column {
+      padding: 0;
+
+      .custom-btn {
+        background-color: inherit !important;
+        text-transform: uppercase !important;
+        color: #009688 !important;
+        border-color: #009688 !important;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px !important;
+        line-height: 23px !important;
+
+        &.custom-inverted {
+          text-transform: uppercase !important;
+          background: #009688 !important;
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
 }
 
 // action-footer-anchor-fin
@@ -642,6 +674,3 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
 .custom-pin-width {
   width: 60% !important;
 }
-
-/* // Bulma Import */
-@import "~bulma";
