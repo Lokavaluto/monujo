@@ -20,8 +20,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+
+@Options({
   name: "Modal",
   props: {
     value: {
@@ -33,5 +35,6 @@ export default {
       this.$emit("input", !this.value);
     },
   },
-};
+})
+export default class Modal extends Vue {}
 </script>
