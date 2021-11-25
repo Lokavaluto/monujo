@@ -1,7 +1,7 @@
 <template>
     <h2 class="custom-card-title">Operations</h2>
             <div
-              class="x-scroll-disabled tabs is-toggle is-toggle-rounded custom-tabs-switch-div"
+              class="x-scroll-disabled tabs is-toggle is-toggle-rounded is-medium custom-tabs-switch-div is-fullwidth"
             >
               <ul class="is-justify-content-space-between">
                 <li @click="chgOpSlct(0)" :class="[activeClass == 0 ? 'custom-is-active' : '']" class="custom-tabs-switch">
