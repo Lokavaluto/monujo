@@ -15,7 +15,11 @@ body {
 #app {
   min-height: 100vh;
   background-color: #e4f2f1;
-  padding-bottom: 140px;
+  padding-bottom: 220px;
+
+  @media screen and (min-width: 768px) {
+    padding-bottom: 140px;
+  }
 }
 
 .welcome-user {
