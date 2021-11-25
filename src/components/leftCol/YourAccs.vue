@@ -1,7 +1,7 @@
 <template>
     <!-- card vos comptes -->
           <div
-            class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
+            class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding"
           >
             <h2 class="custom-card-title">vos comptes</h2>
             <Acc :bal="getBal" :curr="getCurr">

@@ -1,8 +1,8 @@
 <template>
   <!-- colonne de droite -->
-  <div class="right-column column is-half">
+  <div class="column">
     <div
-      class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
+      class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding"
     >
       <OperationsSelector />
       <ThisWeek />

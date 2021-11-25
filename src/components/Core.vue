@@ -5,7 +5,7 @@
         <h1 class="welcome-user">Bienvenue {{userProfile ? userProfile.name : null}}</h1>
       </section>
       <!-- conteneur des colonnes de gauche et droite où se situent les cards -->
-      <div class="column is-flex is-justify-content-space-between pl-0 pr-0">
+      <div class="columns is-tablet">
         <LeftCol />
         <RightCol />
       </div>

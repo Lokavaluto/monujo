@@ -1,7 +1,7 @@
 <template>
   <!-- colonne de gauche -->
-        <div class="left-column column is-half">
-          <GlobalBal/>
+        <div class="column">
+          <GlobalBal class="mb-4"/>
           <YourAccs/>
           <!-- <PayCards/> -->
         </div>

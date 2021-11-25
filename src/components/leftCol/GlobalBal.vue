@@ -1,7 +1,7 @@
 <template>
      <!-- card solde globale -->
           <div
-            class="card custom-card is-flex is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
+            class="card custom-card is-flex is-align-items-center is-justify-content-space-between custom-card-padding"
           >
             <div class="left-card">
               <h2 class="custom-card-title">Solde global</h2>
