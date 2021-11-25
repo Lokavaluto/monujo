@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Nav from "@/components/Nav";
+import Nav from "@/components/Nav.vue";
 
 @Options({
   components: { Nav }

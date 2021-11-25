@@ -2,7 +2,6 @@
   <section class="hero is-halfheight">
     <loading v-model:active="isLoading"
                  :can-cancel="false"
-                 :on-cancel="onCancel"
                  :is-full-page="fullPage"/>
     <div
       class="hero-body is-justify-content-center mt-6 is-flex-direction-column"
