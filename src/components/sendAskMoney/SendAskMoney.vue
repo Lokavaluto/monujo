@@ -1017,10 +1017,9 @@
 </template>
 
 <script lang="ts">
+import { Options, Vue } from 'vue-class-component';
 import MyModal from "../modal/MyModal.vue";
 //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
-import { useStore } from 'vuex'
-import {inject , defineComponent} from 'vue'
 
 function returnFavoritesOnly(partners:any): any{
   var ret = []
@@ -1032,42 +1031,13 @@ function returnFavoritesOnly(partners:any): any{
   return ret
 }
 
-export default defineComponent({
+@Options({
   name: "SendAskMoney",
   components: {
     MyModal: MyModal,
     //AddPayCard,
   },
-   data :function (): {
-    showModalFrame1: boolean,
-    showModalFrame2: boolean,
-    showModalFrame3: boolean,
-    showModalFrame4: boolean,
-    showModalFrame2Pro: boolean,
-    showModalFrame3Pro: boolean,
-    showModalFrame4Pro: boolean,
-    showModalFrameAskMoney1: boolean,
-    showModalFrameAskMoney2: boolean,
-    showModalFrameCreditMoney1: boolean,
-    showModalFrameCreditMoney2: boolean,
-    showModalFrameCreditMoney3: boolean,
-    showModalFrameCreditMoney4: boolean,
-    warning: boolean,
-    activeClass: number,
-    favoris: boolean,
-    searchName:string, 
-    amount:number,
-    message:string,
-    partners:Array<any>,
-    recipientName:string,
-    displayFavoritesOnly:boolean,
-    amountAsked:number,
-    linkGenerated:boolean,
-    history:Array<any>,
-    amountForCredit:number,
-    urlForHyperlink:string
-    } 
-    {
+  data() {
     return {
       showModalFrame1: false,
       showModalFrame2: false,
@@ -1096,34 +1066,25 @@ export default defineComponent({
       history:[],
       amountForCredit:0,
       urlForHyperlink:""
-    };
-  },
-
-  setup(): any{
-    const lokapi: any = inject("$lokapi");
-    const store : any = useStore()
-    return {
-      lokapi: lokapi,
-      store: store
     }
   },
 
   computed: {
     myLink(): string {
-      return this.store.state.lokapi.paymentUrl.order_url
+      return this.$store.state.lokapi.paymentUrl.order_url
     },
     myHyperLink():string {
       return this.urlForHyperlink
     },
     globalBalCall():boolean {
-      return this.store.state.showCredit
+      return this.$store.state.showCredit
     }
   },
 
   methods: {
 
     resetCredit() :void {
-      this.store.state.showCredit = false
+      this.$store.state.showCredit = false
       this.urlForHyperlink= ""
       this.linkGenerated= false
       this.amountForCredit = 0
@@ -1138,7 +1099,7 @@ export default defineComponent({
 
     async newLinkTab() {
       if (this.amountForCredit > 0) {
-        let url = await this.store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
+        let url = await this.$store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
         try {
           window.open(url.order_url, '_blank')!.focus();
           this.urlForHyperlink = url.order_url
@@ -1150,7 +1111,7 @@ export default defineComponent({
 
     copyUrl() {
       const el = document.createElement('textarea');
-      el.value = this.store.state.lokapi.paymentUrl.order_url;
+      el.value = this.$store.state.lokapi.paymentUrl.order_url;
       el.setAttribute('readonly', '');
       el.style.position = 'absolute';
       el.style.left = '-9999px';
@@ -1162,9 +1123,9 @@ export default defineComponent({
     },
 
     async genLink():Promise<void> {
-      this.store.state.lokapi.paymentUrl= null
+      this.$store.state.lokapi.paymentUrl= null
       if (this.amountAsked > 0) {
-        await this.store.dispatch("genPaymentLink",this.amountAsked).then(() => {
+        await this.$store.dispatch("genPaymentLink",this.amountAsked).then(() => {
           this.linkGenerated = true
         });
       }
@@ -1176,10 +1137,10 @@ export default defineComponent({
 
     async searchRecipientHistory() :Promise<void> {
       let h = []
-      for (let i = 0; i < this.store.state.lokapi.recipientHistory.length; i++) {
+      for (let i = 0; i < this.$store.state.lokapi.recipientHistory.length; i++) {
         var recipient
         try {
-          recipient = await this.lokapi.searchRecipients(this.store.state.lokapi.recipientHistory[i])
+          recipient = await this.$lokapi.searchRecipients(this.$store.state.lokapi.recipientHistory[i])
           h.push(recipient[0])
         } catch (err) {
           console.log('searchRecipients() Failed', err)
@@ -1195,7 +1156,7 @@ export default defineComponent({
       } else {
       var recipients
       try {
-        recipients = await this.lokapi.searchRecipients(this.searchName)
+        recipients = await this.$lokapi.searchRecipients(this.searchName)
         console.log(recipients)
       } catch (err) {
         console.log('searchRecipients() Failed', err)
@@ -1211,7 +1172,7 @@ export default defineComponent({
       } else {
         var recipients
       try {
-        recipients = await this.lokapi.searchProRecipients(this.searchName)
+        recipients = await this.$lokapi.searchProRecipients(this.searchName)
       } catch (err) {
         console.log('searchRecipients() Failed', err)
       }
@@ -1223,7 +1184,7 @@ export default defineComponent({
       if (this.searchName != "" && !this.displayFavoritesOnly) {
         var recipients
         try {
-          recipients = await this.lokapi.searchRecipients(this.searchName)
+          recipients = await this.$lokapi.searchRecipients(this.searchName)
           console.log("serach", recipients)
         } catch (err) {
           console.log('searchRecipients() FAILED', err)
@@ -1238,7 +1199,7 @@ export default defineComponent({
       if (this.searchName != "" && !this.displayFavoritesOnly) {
         var recipients
         try {
-            recipients = await this.lokapi.searchProRecipients(this.searchName)
+            recipients = await this.$lokapi.searchProRecipients(this.searchName)
             console.log('searchProRecipients() WORKED', recipients)
         } catch (err) {
             console.log('searchProRecipients() FAILED', err)
@@ -1249,13 +1210,13 @@ export default defineComponent({
       }
     },
     setRecipient(partner:any):void {
-        this.store.state.lokapi.recipient = partner
+        this.$store.state.lokapi.recipient = partner
         this.recipientName = partner.name
     },
 
     async sendTransaction():Promise<void> {
-      let accs = this.store.state.lokapi.accounts
-      let part = this.store.state.lokapi.recipient
+      let accs = this.$store.state.lokapi.accounts
+      let part = this.$store.state.lokapi.recipient
       try {
           await accs[0].transfer(part, this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
@@ -1271,9 +1232,9 @@ export default defineComponent({
           console.log('Payment failed:', err.message)
           throw err
         }
-        let accounts = await this.lokapi.getAccounts()
+        let accounts = await this.$lokapi.getAccounts()
         let bal = await accounts[0].getBalance()
-        this.store.state.lokapi.bal = bal
+        this.$store.state.lokapi.bal = bal
         this.$toast.success(
           `Paiement effectué à ${this.recipientName}`,
           {
@@ -1293,12 +1254,13 @@ export default defineComponent({
           }
         })
         }
-        await this.store.dispatch("resetTRS")
+        await this.$store.dispatch("resetTRS")
         this.searchName = ""
         this.partners = []
         this.amount = 0
         this.activeClass = 0
     }
   },
-});
+})
+export default class SendAskMoney extends Vue {}
 </script>
