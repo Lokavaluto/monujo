@@ -3,6 +3,8 @@ import comchain from '@lokavaluto/lokapi-backend-comchain'
 import cyclos from '@lokavaluto/lokapi-backend-cyclos'
 import Swal from "sweetalert2"
 
+import router from "../router/index"
+
 class LokAPI extends LokAPIBrowserAbstract {
 
   BackendFactories = {
@@ -40,6 +42,7 @@ class LokAPI extends LokAPIBrowserAbstract {
 
   requestLogin() {
     console.log("Login requested !")
+    router.push('/')
   }
 
 }
