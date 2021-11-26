@@ -1,16 +1,18 @@
 <template>
   <div
-    class="card custom-inner-card custom-card-padding is-flex is-justify-content-space-around is-align-items-center mb-4"
+    class="card custom-inner-card custom-card-padding is-flex is-justify-content-space-between is-align-items-center mb-4"
     >
-      <h3 class="custom-card-content-2">
-        <slot name="name">
-          default name
-        </slot>
-      </h3>
-      <h3 class="custom-card-content">{{bal}} {{curr}}</h3>
-      <button disabled class="button custom-button is-rounded action">
-        Voir
-      </button>
+      <div>
+        <span class="is-size-5">
+          <slot name="name">default name</slot>
+        </span>
+      </div>
+      <div>
+        <span class="is-size-4 has-text-grey-darker">{{bal}} {{curr}}</span>
+      </div>
+      <div>
+        <button disabled class="button custom-button is-rounded action">Voir</button>
+      </div>
     </div>
 </template>
 
