@@ -9,12 +9,8 @@ require("@/assets/main.scss");
 // import { library } from "@fortawesome/fontawesome-svg-core";
 // import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-
 // library.add(faCoffee);
-// createApp(App)
-//   .component("font-awesome-icon", FontAwesomeIcon)
-//   .mount("#app");
+
 const app = createApp(App)
   app.use(store)
   app.use(router)
@@ -23,12 +19,3 @@ const app = createApp(App)
   app.provide('$store', store)
   app.config.globalProperties.$lokapi = lokAPI
   app.mount("#app");
-
-// createApp(App)
-//   .use(store)
-//   .use(router)
-//   .provide('$lokapi', lokAPI)
-//   .provide('$store', store)
-//   .mount("#app");
-
-
