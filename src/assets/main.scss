@@ -163,6 +163,8 @@ body {
 // tabs-anchor
 
 .custom-tabs-switch a {
+  font-size: $size-6;
+  line-height: $size-2;
   color: rgba(0, 0, 0, 0.6);
   border-radius: 47px !important;
   border: none !important;
