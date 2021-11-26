@@ -25,7 +25,7 @@
         </h5>
       </div>
     </div>
-   <span class="custom-line-separator mb-4 mt-4"></span>
+   <span class="custom-line-separator has-background-white-ter mb-2 mt-1"></span>
 </template>
 
 <script lang="ts">
