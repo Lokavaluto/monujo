@@ -93,14 +93,32 @@ export var moduleLokAPI = {
       let accounts: any;
       try {
         accounts = await lokApiService.getAccounts();
-        let balance = await accounts[0].getBalance();
-        let symbol = await accounts[0].getSymbol();
-        state.bal = balance;
-        state.curr = symbol;
+        if (accounts.length > 0) {
+          // Compute a global moneyAccount balance
+          Promise.allSettled(accounts.map((a:any) => {
+            return a.getBalance()
+          }))
+          .then((balances:any) => {
+            state.bal = balances.reduce((s:number, b:any) => {
+              return s + parseFloat(b.value)
+            }, 0);
+          })
+          // See if all accounts have same currency ?
+          Promise.allSettled(accounts.map((a:any) => {
+            return a.getSymbol()
+          }))
+          state.curr = await accounts.reduce((c:string, a:any) => {
+            let s = a.value
+            if (s !== c) {
+              return 'mixed currencies'
+            }
+            return s
+          }, '');
+        }
+        // accounts can be an empty array
         state.accounts = accounts
-        
       } catch (err) {
-        console.log('getAccounts failed', err);
+        console.error('getAccounts failed', err);
       }
     },
 
