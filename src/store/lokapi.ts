@@ -116,7 +116,12 @@ export var moduleLokAPI = {
           }, '');
         }
         // accounts can be an empty array
-        state.accounts = accounts
+        for (var i = 0; i < accounts.length; i++) {
+          state.accounts[i] = { name: '', bal: 0, curr: '' }
+          state.accounts[i].name = accounts[i].internalId
+          state.accounts[i].bal = parseFloat(await accounts[i].getBalance())
+          state.accounts[i].curr = await accounts[i].getSymbol()
+        }
       } catch (err) {
         console.error('getAccounts failed', err);
       }
