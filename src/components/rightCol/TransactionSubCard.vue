@@ -13,7 +13,7 @@
             {{amount}} {{symbol}}
           </h3>
           <h4 class="custom-card-destinataire">{{name}}</h4>
-          <h5 class="custom-card-intitule">
+          <h5 class="has-text-grey-light">
             {{desc}}
           </h5>
         </div>

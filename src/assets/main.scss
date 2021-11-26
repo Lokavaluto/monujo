@@ -53,7 +53,6 @@ body {
   font-style: normal;
   font-weight: normal;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.8);
   // font-size: 14px;
   line-height: 16px;
   padding-bottom: 1em !important;
@@ -63,7 +62,6 @@ body {
   font-style: normal;
   font-weight: normal;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.4);
   // font-size: 18px;
   line-height: 21px;
   padding-bottom: 1em !important;
@@ -208,19 +206,8 @@ body {
 // card-opération-anchor
 
 .custom-card-destinataire {
-  font-style: normal;
-  font-weight: normal;
-  // font-size: 16px;
-  line-height: 19px;
-  color: #353535;
-}
-
-.custom-card-intitule {
-  font-style: normal;
-  font-weight: 300;
-  // font-size: 14px;
-  line-height: 16px;
-  color: #353535;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
 }
 
 // card-opération-anchor-fin
