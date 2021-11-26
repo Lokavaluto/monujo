@@ -4,16 +4,9 @@
             class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding"
           >
             <h2 class="custom-card-title">vos comptes</h2>
-            <Acc :bal="getBal" :curr="getCurr">
-              <template v-slot:name>
-                Compte<br/> principal
-              </template>
+            <Acc v-for="account in moneyAccounts" :bal="account.bal" :curr="account.curr">
+              <template v-slot:name>{{ account.name.split(':')[0] }}</template>
             </Acc>
-            <!-- <Acc :bal="infoBal">
-              <template v-slot:name>
-                Crédit de<br/> confiance
-              </template>
-            </Acc> -->
           </div>
           <!-- fin card vos comptes -->
 </template>
@@ -28,11 +21,8 @@ import Acc from "./yourAccs/Acc.vue"
         Acc
     },
     computed: {
-      getBal(): number {
-         return this.$store.getters.getBal()
-      },
-      getCurr(): string {
-         return this.$store.getters.getCurr()
+      moneyAccounts(): any {
+        return this.$store.state.lokapi.accounts
       }
     }
 })
