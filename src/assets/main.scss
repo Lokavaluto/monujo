@@ -10,6 +10,7 @@ html {
 
 body {
   min-height: 100%;
+  font-family: Roboto;
 }
 
 #app {
@@ -25,7 +26,6 @@ body {
 
 .welcome-user {
   color: rgba(0, 0, 0, 0.6);
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -54,7 +54,6 @@ body {
 }
 
 .custom-card-title {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   text-transform: uppercase;
@@ -65,7 +64,6 @@ body {
 }
 
 .custom-card-sub-title {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   color: rgba(0, 0, 0, 0.4);
@@ -79,7 +77,6 @@ body {
 }
 
 .custom-card-sub-title-fixed-top {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   color: rgba(0, 0, 0, 0.4);
@@ -91,7 +88,6 @@ body {
 
 .custom-card-content {
   color: #000000;
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 30px;
@@ -100,7 +96,6 @@ body {
 
 .custom-card-content-2 {
   color: #000000;
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -115,7 +110,6 @@ body {
 .custom-button {
   color: #009688 !important;
   border-color: #009688 !important;
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 20px !important;
@@ -134,7 +128,6 @@ body {
   background: #009688 !important;
   text-transform: uppercase !important;
   color: #ffffff !important;
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 20px !important;
@@ -146,7 +139,6 @@ body {
   text-transform: uppercase !important;
   color: #009688 !important;
   border-color: #009688 !important;
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 20px !important;
@@ -154,7 +146,6 @@ body {
 }
 
 .card-paiement-defaut-carte {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -169,7 +160,6 @@ body {
 .custom-tabs-switch a {
   color: rgba(0, 0, 0, 0.6);
   border-radius: 47px !important;
-  font-family: Roboto;
   border: none !important;
 }
 
@@ -219,7 +209,6 @@ body {
 // card-opération-anchor
 
 .custom-card-destinataire {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -228,7 +217,6 @@ body {
 }
 
 .custom-card-intitule {
-  font-family: Roboto;
   font-style: normal;
   font-weight: 300;
   font-size: 14px;
@@ -261,7 +249,6 @@ body {
         text-transform: uppercase !important;
         color: #009688 !important;
         border-color: #009688 !important;
-        font-family: Roboto;
         font-style: normal;
         font-weight: normal;
         font-size: 20px !important;
@@ -334,7 +321,6 @@ body {
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -362,7 +348,6 @@ body {
   background-color: #fff;
   border-radius: 16px;
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -373,7 +358,6 @@ body {
 }
 
 .modal-header h3 {
-  font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -501,7 +485,6 @@ $tabs-link-active-border-bottom-color: #009688;
 $tabs-link-color: rgba(0, 0, 0, 0.6);
 
 .tabs a {
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   text-transform: uppercase;
@@ -543,7 +526,6 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
   border-radius: 24px;
 
   h4 {
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -553,7 +535,6 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
 }
 
 .frame3-title {
-  font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
@@ -564,7 +545,6 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
   width: 89%;
 
   .frame3-sub-title {
-    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
@@ -589,7 +569,6 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
     text-shadow: 0px 0px 0px black;
     -webkit-text-fill-color: transparent;
     height: 31px !important;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
@@ -663,7 +642,6 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
   width: 65% !important;
   letter-spacing: 1em;
   background-color: transparent;
-  font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 50px;
