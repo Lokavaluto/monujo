@@ -2,10 +2,12 @@
   <!-- colonne de droite -->
   <div class="column">
     <div
-      class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding"
+      class="card custom-card custom-card-padding"
     >
-      <OperationsSelector />
-      <ThisWeek />
+      <div class="is-flex-direction-column is-align-items-center is-justify-content-space-between">
+        <OperationsSelector />
+        <ThisWeek />
+      </div>
       <MyModal :first="true" v-if="showModal" @close="showModal = false">
         <template v-slot:header>
          <div></div>
@@ -23,10 +25,10 @@
           <div></div>
         </template>
       </MyModal>
-      <div class="is-flex is-justify-content-center mt-4">
+      <div class="has-text-centered mt-5">
         <button
           @click="showModal = true"
-          class="button custom-button custom-button-end-card is-rounded action mt-6"
+          class="button custom-button custom-inverted"
         >
           Voir tout
         </button>
