@@ -4,26 +4,26 @@
     class="action-footer"
   >
     <div class="columns menu">
-      <div class="column is-tablet">
+      <div class="column is-tablet has-text-centered mb-2">
         <button
           @click="showModalFrame1 = true, resetSendMoney()"
-          class="button custom-btn custom-inverted is-rounded action"
+          class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
           Envoyer de l'argent
         </button>
       </div>
-      <div class="column is-tablet">
+      <div class="column is-tablet has-text-centered mb-2">
         <button
           disabled
-          class="button custom-btn custom-inverted is-rounded action"
+          class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
           <!-- @click="showModalFrameAskMoney1 = true" -->
           Demander de l'argent
         </button>
       </div>
-      <div class="column is-tablet">
+      <div class="column is-tablet has-text-centered mb-2">
         <button
-          class="button custom-btn is-rounded action"
+          class="button custom-button has-text-weight-medium is-rounded action"
           @click="showModalFrameCreditMoney1 = true"
         >
           crediter mon compte

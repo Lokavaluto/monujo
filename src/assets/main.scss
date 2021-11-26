@@ -219,10 +219,24 @@ body {
   bottom: 20px !important;
   width: 100%;
 }
+
+.custom-button {
+  text-transform: uppercase !important;
+  text-transform: uppercase !important;
+  background-color: inherit !important;
+  color: #009688 !important;
+  border-color: #009688 !important;
+
+  &.custom-inverted {
+    background: #009688 !important;
+    color: #ffffff !important;
+  }
+}
+
 .action-footer {
   background: white;
   border-radius: 16px;
-  padding: 32px;
+  padding: 2rem 2rem 1.5rem 2rem;
   width: 100%;
   box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.25) !important;
 
@@ -230,21 +244,9 @@ body {
     .column {
       padding: 0;
 
-      .custom-btn {
-        background-color: inherit !important;
-        text-transform: uppercase !important;
-        color: #009688 !important;
-        border-color: #009688 !important;
-        font-style: normal;
-        font-weight: normal;
-        // font-size: 20px !important;
-        line-height: 23px !important;
+      .custom-button {
+        padding: 1.6em;
 
-        &.custom-inverted {
-          text-transform: uppercase !important;
-          background: #009688 !important;
-          color: #ffffff !important;
-        }
       }
     }
   }
