@@ -1,16 +1,18 @@
 <template>
      <!-- card solde globale -->
           <div
-            class="card custom-card is-flex is-align-items-center is-justify-content-space-between custom-card-padding"
+            class="card custom-card custom-card-padding"
           >
-            <div class="left-card">
-              <h2 class="custom-card-title">Solde global</h2>
-              <h3 class="custom-card-content">{{getBal}} {{getCurr}}</h3>
-            </div>
-            <div class="right-card">
-              <button @click="modal()" class="button custom-button is-rounded action">
-                Créditer
-              </button>
+            <h2 class="custom-card-title">Solde global</h2>
+            <div class="is-flex is-justify-content-space-between">
+              <div class="has-text-left pl-5">
+                <div class="custom-card-content is-size-3">{{getBal}} {{getCurr}}</div>
+              </div>
+              <div class="has-text-right">
+                <button @click="modal()" class="button custom-button has-text-weight-medium custom-inverted action">
+                  Créditer
+                </button>
+              </div>
             </div>
           </div>
           <!-- fin card solde globale -->
