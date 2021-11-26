@@ -70,6 +70,7 @@ body {
 .custom-card-sub-title {
   font-style: normal;
   font-weight: normal;
+  text-transform: uppercase;
   color: rgba(0, 0, 0, 0.4);
   // font-size: 18px;
   line-height: 21px;
@@ -491,7 +492,7 @@ $tabs-link-color: rgba(0, 0, 0, 0.6);
 .tabs a {
   font-style: normal;
   font-weight: normal;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   justify-content: space-evenly;
   &:hover > p {
     color: rgba(0, 0, 0, 0.8) !important;
