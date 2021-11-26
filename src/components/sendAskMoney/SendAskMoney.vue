@@ -40,7 +40,7 @@
         <div
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
         >
-          <h3 class="custom-header-send-money-title ml-6 pl-5">
+          <h3 class="is-size-4 ml-6 pl-5">
             Envoyer de l'argent
           </h3>
           <a class="mr-5 p-2" @click="showModalFrame1 = false">
@@ -96,7 +96,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Envoyer à un particulier
             </h3>
           </div>
@@ -156,7 +156,7 @@
           class="is-flex is-justify-content-space-evenly is-align-items-center mt-5"
         >
           <div class="tabs is-centered">
-            <ul class="is-justify-content-space-evenly">
+            <ul class="is-uppercase is-justify-content-space-evenly">
               <li
                 :class="[activeClass == 0 ? 'is-active' : '']"
                 @click="activeClass = 0 , displayFavoritesOnly = false, fastSearch()"
@@ -249,7 +249,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Envoyer à {{recipientName}}
             </h3>
           </div>
@@ -338,7 +338,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Sécurité
             </h3>
           </div>
@@ -410,7 +410,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Envoyer à un pro
             </h3>
           </div>
@@ -548,7 +548,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Envoyer à {{recipientName}}
             </h3>
           </div>
@@ -637,7 +637,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Sécurité
             </h3>
           </div>
@@ -704,7 +704,7 @@
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
         >
           <div class="is-flex is-align-items-center ml-5">
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Demander de l'argent
             </h3>
           </div>
@@ -781,7 +781,7 @@
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
         >
           <div class="is-flex is-align-items-center ml-5">
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Demander de l'argent
             </h3>
           </div>
@@ -853,7 +853,7 @@
           class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
         >
           <div class="is-flex is-align-items-center ml-5">
-            <h3 class="custom-header-send-money-title ml-6 pl-5">
+            <h3 class="is-size-4 ml-6 pl-5">
               Créditer mon compte
             </h3>
           </div>
@@ -954,7 +954,7 @@
                 alt="arrow_shape"
               />
             </a>
-            <h3 class="custom-header-send-money-title ml-4">
+            <h3 class="is-size-4 ml-4">
               Ajouter une carte
             </h3>
           </div>
