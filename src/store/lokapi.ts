@@ -3,73 +3,8 @@
 ///<reference types="@types/node"/>
 
 import router from "../router/index"
-
-import LokAPIBrowserAbstract from '@lokavaluto/lokapi-browser'
-
-import comchain from '@lokavaluto/lokapi-backend-comchain'
-import cyclos from '@lokavaluto/lokapi-backend-cyclos'
-
 import Swal from "sweetalert2"
-
-
-class LokAPI extends LokAPIBrowserAbstract {
-
-  BackendFactories = {
-    comchain,
-    cyclos
-  }
-
-  requestLocalPassword = async function (state: string) {
-    let text
-    if (state === 'firstTry') {
-      text = ''  // XXXvlab: need i16n
-    } else if (state === 'failedUnlock') {
-      text = 'Échec du déchiffrage. ' +
-        'Le mot de passe était probablement incorrect. '+
-        'Ré-essayez une nouvelle fois'  // XXXvlab: need i16n
-    }
-    const ret = await Swal.fire({
-      title: 'Entrez votre mot de passe',  // XXXvlab: need i16n
-      text,
-      showCloseButton: true,
-      input: 'password',
-      inputLabel: 'Mot de passe du portefeuille',  // XXXvlab: need i16n
-      inputPlaceholder: 'Votre mot de passe',  // XXXvlab: need i16n
-      inputAttributes: {
-        maxlength: '32',
-        autocapitalize: 'off',
-        autocorrect: 'off'
-      }
-    })
-    if (ret.isConfirmed) {
-      return ret.value
-    }
-    throw new Error('User canceled the dialog box')
-  }
-
-  requestLogin() {
-    router.push("/")
-    console.log("Login requested !")
-  }
-
-}
-
-
-if (!process.env.VUE_APP_LOKAPI_HOST) {
-  throw new Error("Please specify VUE_APP_LOKAPI_HOST in '.env'")
-}
-
-
-if (!process.env.VUE_APP_LOKAPI_DB) {
-  throw new Error("Please specify VUE_APP_LOKAPI_DB in '.env'")
-}
-
-
-
-export var lokAPI = new LokAPI(
-  process.env.VUE_APP_LOKAPI_HOST,
-  process.env.VUE_APP_LOKAPI_DB,
-)
+import { lokApiService } from "../services/lokapiService"
 
 
 export var moduleLokAPI = {
@@ -92,13 +27,13 @@ export var moduleLokAPI = {
       commit('auth_request')
       let partners: any
       try {
-        partners = await lokAPI.searchRecipients("Al")
+        partners = await lokApiService.searchRecipients("Al")
         console.log('searchRecipients WORKED', partners)
       } catch (err) {
         console.log('searchRecipients failed', err)
       }
       try {
-        await lokAPI.login(login, password)
+        await lokApiService.login(login, password)
       } catch (err:any) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
         console.log('Login failed:', err.message)
         commit('auth_error')
@@ -134,7 +69,7 @@ export var moduleLokAPI = {
     },
     auth_success(state: any) {
       state.status = 'success'
-      state.userProfile = lokAPI.userProfile
+      state.userProfile = lokApiService.userProfile
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -157,7 +92,7 @@ export var moduleLokAPI = {
     async setBalCurr(state:any) {
       let accounts: any;
       try {
-        accounts = await lokAPI.getAccounts();
+        accounts = await lokApiService.getAccounts();
         let balance = await accounts[0].getBalance();
         let symbol = await accounts[0].getSymbol();
         state.bal = balance;
@@ -170,11 +105,11 @@ export var moduleLokAPI = {
     },
 
     async autoLogin(state: any) {
-      state.userProfile = lokAPI.getMyContact()
+      state.userProfile = lokApiService.getMyContact()
     },
    
     async setThisWeekTransactions (state:any) {
-      let transactionsGen = lokAPI.getTransactions()
+      let transactionsGen = lokApiService.getTransactions()
 
       let transactions = []
       let next = await transactionsGen.next()
