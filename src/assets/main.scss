@@ -1,7 +1,11 @@
-/* // Bulma Import */
-@import "~bulma";
-
-/* // Customizations Here (Optional) */
+// Bulma initial viariables and utils
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+// Bulma override variables
+@import "custom-variables";
+// Bulma Import */
+@import "~bulma/bulma";
+// Roboto
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
 html {
