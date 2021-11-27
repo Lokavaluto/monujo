@@ -33,6 +33,21 @@
         </div>
       </div>
     </div>
+    <div class="container">
+      <div class="columns is-tablet">
+        <div class="column">
+          <div class="card">
+            <div class="card-content">
+              <p class="mb-3">Veuillez renseigner un mot de passe (et le confirmer) pour votre nouveau compte {{ form.walletBackend }}.</p>
+              <p class="mb-3">Ce mot de passe est différent de votre mot de passe Monetujo, il concerne uniquement votre portefeuille {{ form.walletBackend }}.</p>
+              <p class="notification is-danger">
+                Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder dans un endroit sûr et accessible.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
