@@ -46,6 +46,42 @@
             </div>
           </div>
         </div>
+        <div class="column">
+          <div class="card">
+            <div class="card-content">
+              <div class="field">
+                <label class="label">Mot de passe</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input"
+                    autocomplete="new-password"
+                    type="password"
+                    placeholder="Mot de passe"
+                    v-model="form.walletPassword"
+                  >
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-key"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Confirmation du mot de passe</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input"
+                    autocomplete="new-password"
+                    type="password"
+                    placeholder="Confirmation du mot de passe"
+                    v-model="form.walletPasswordConfirm"
+                  >
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-key"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -65,6 +101,8 @@ import { Options, Vue } from 'vue-class-component';
     return {
       form: {
         walletBackend: 'comchain',
+        walletPassword: '',
+        walletPasswordConfirm: '',
       }
     }
   },
