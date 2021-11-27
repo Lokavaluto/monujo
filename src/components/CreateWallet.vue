@@ -98,8 +98,13 @@
                   <span v-if="hasError('walletPasswordConfirm')" class="icon is-small is-right">
                     <i class="fas fa-exclamation-triangle"></i>
                   </span>
+                </div>
                 <p v-if="hasError('walletPasswordConfirm')" class="help is-danger">{{ form.errors.walletPasswordConfirm[0] }}</p>
+              </div>
 
+              <div class="field" v-if="!hasFieldErrors">
+                <div class="control">
+                  <button class="button is-primary" @click="createTheWallet()">Créer mon portefeuille</button>
                 </div>
               </div>
 

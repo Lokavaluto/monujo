@@ -74,6 +74,9 @@ export var moduleLokAPI = {
       // @TODO
       // Delete the isStrongEnoughPassword function when the real lokapi call is in place
       // (see at the bottom of this file)
+    },
+    async createAccount({commit}:any, { backend, password }:any) {
+      console.log('store.createAccount(): sending data to backend', { backend, password })
     }
   },
   mutations: {
