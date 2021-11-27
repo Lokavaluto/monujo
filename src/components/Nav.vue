@@ -41,6 +41,9 @@
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
+            <router-link v-if="getLog && isAdmin" to="/admin" class="button is-light">
+              Administration
+            </router-link>
             <router-link v-if="getLog" to="/" @click="logout" class="button is-light">
               Déconnexion
             </router-link>
@@ -69,6 +72,9 @@ import { Options, Vue } from 'vue-class-component';
   computed: {
       getLog(): string {
          return this.$store.state.lokapi.isLog
+      },
+      isAdmin(): boolean {
+         return true // TODO : add call to LokAPI
       },
     },
 })
