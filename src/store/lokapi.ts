@@ -65,6 +65,15 @@ export var moduleLokAPI = {
       } catch (err:any) {
         console.error('Error getting backend credentials')
       }
+    },
+    async checkPasswordStrength({commit}:any, password:string) {
+      // @TODO
+      // Call this from the lokapi
+      // return translatePwdFieldErrors(lokApiService.isStrongEnoughPassword(password))
+      return translatePwdFieldErrors(isStrongEnoughPassword(password))
+      // @TODO
+      // Delete the isStrongEnoughPassword function when the real lokapi call is in place
+      // (see at the bottom of this file)
     }
   },
   mutations: {
@@ -200,3 +209,55 @@ export var moduleLokAPI = {
   }
 }
 
+function translatePwdFieldErrors(errors: string[]) {
+  return errors.map((e: string) => {
+    if (e.indexOf('tooShort') > -1) {
+      let segments = e.split(':')
+      return "Le mot de passe doit faire au moins " + segments[1] + ' caractères'
+    } else if (e === 'noLowerCase') {
+      return "Le mot de passe doit contenir au moins une lettre minuscule"
+    } else if (e === 'noUpperCase') {
+      return "Le mot de passe doit contenir au moins une lettre majuscule"
+    } else if (e === 'noDigit') {
+      return "Le mot de passe doit contenir au moins un nombre"
+    } else if (e === 'noSymbol') {
+      return "Le mot de passe doit contenir au moins un caractère spécial"
+    }
+  })
+}
+
+// @TODO
+// Don't forget to delete this function when
+// the lokapi call above will be effective
+function isStrongEnoughPassword(pwd: string): string[] {
+  let errors = new Array()
+  /* at least 8 characters */
+  if (! /.{8,}/.test(pwd) ) {
+    errors.push('tooShort:8')
+  }
+  // /* bonus if longer */
+  // if (! /.{12,}/.test(pwd)) {
+  // }
+
+  /* a lower letter */
+  if (! /[a-z]/.test(pwd)) {
+    errors.push('noLowerCase')
+  }
+
+  /* a upper letter */
+  if (! /[A-Z]/.test(pwd)) {
+    errors.push('noUpperCase')
+  }
+
+  /* a digit */
+  if (! /\d/.test(pwd)) {
+    errors.push('noDigit')
+  }
+
+  /* a special character */
+  if (! /[^A-Za-z0-9]/.test(pwd)) {
+    errors.push('noSymbol')
+  }
+
+  return errors
+}
