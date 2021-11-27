@@ -1,4 +1,4 @@
-import LokAPIBrowserAbstract from '@lokavaluto/lokapi-browser'
+import { LokAPIBrowserAbstract } from '@lokavaluto/lokapi-browser'
 import comchain from '@lokavaluto/lokapi-backend-comchain'
 import cyclos from '@lokavaluto/lokapi-backend-cyclos'
 import Swal from "sweetalert2"

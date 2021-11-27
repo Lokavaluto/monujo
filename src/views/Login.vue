@@ -54,9 +54,11 @@
 </template>
 
 <script lang="ts">
+
 import { Options, Vue } from 'vue-class-component';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import { RestExc } from '@lokavaluto/lokapi-browser';
 
 @Options({
   name: "Login",
@@ -86,10 +88,17 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         this.$store.state.lokapi.isLog = true;
         this.$router.push({ path: "/profile" });
       } catch (e) {
-        // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-        this.isLoading = false
-        console.log("Login failed", e.message);
-        this.fail = "Identifiant ou mot de passe incorrect";
+        // { APIRequestFailed, InvalidCredentials }
+        if (e instanceof RestExc.APIRequestFailed) {
+          this.isLoading = false
+          this.fail = "Refus du serveur distant, contactez votre administrateur";
+          return
+        }
+        if (e instanceof RestExc.InvalidCredentials) {
+          this.isLoading = false
+          this.fail = "Identifiant ou mot de passe incorrect";
+          return
+        }
       }
     }
   },

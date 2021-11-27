@@ -20,6 +20,7 @@ jobs:
       - name: 🚚 Get deps
         run: |
           npm install
+          npm ls -a
       - name: 🔨 Build
         run: |
           echo 'VUE_APP_LOKAPI_HOST="odoo12.dev.lokavaluto.fr"' > .env

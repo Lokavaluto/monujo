@@ -25,17 +25,10 @@ export var moduleLokAPI = {
     async login({ commit }: any, credentials: { login: string, password: string }) {
       let { login, password } = credentials
       commit('auth_request')
-      let partners: any
-      try {
-        partners = await lokApiService.searchRecipients("Al")
-        console.log('searchRecipients WORKED', partners)
-      } catch (err) {
-        console.log('searchRecipients failed', err)
-      }
       try {
         await lokApiService.login(login, password)
-      } catch (err:any) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-        console.log('Login failed:', err.message)
+      } catch (err:any) {
+        // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
         throw err
       }
