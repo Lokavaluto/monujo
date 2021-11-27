@@ -19,7 +19,11 @@ export var moduleLokAPI = {
     recipient:"",
     isLog:false,
     paymentUrl: "",
-    recipientHistory:[]
+    recipientHistory:[],
+    // @TODO
+    // Pull the available backends from the lokapi
+    availableBackends: ['comchain', 'cyclos'],
+    backendCredentials: {}
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -164,6 +168,19 @@ export var moduleLokAPI = {
     getThisWeektransactions: (state: any) => {
       return function(): any {
         return state.thisWeektransactions
+      }
+    },
+    hasUnconfiguredBackends: (state: any, getters: any) => {
+      return function(): any {
+        let unconfiguredBackends = getters.getUnconfiguredBackends()
+        return unconfiguredBackends.length > 0
+      }
+    },
+    getUnconfiguredBackends: (state: any) => {
+      return function(): object {
+        return state.availableBackends.filter((ab: string) => {
+          return Object.keys(state.backendCredentials).indexOf(ab) === -1
+        })
       }
     }
   }

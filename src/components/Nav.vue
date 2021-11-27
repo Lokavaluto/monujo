@@ -41,6 +41,9 @@
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
+            <router-link v-if="getLog && hasUnconfiguredBackend" to="/create-wallet" class="button is-light">
+              Créer mon portefeuille
+            </router-link>
             <router-link v-if="getLog && isAdmin" to="/admin" class="button is-light">
               Administration
             </router-link>
@@ -75,6 +78,10 @@ import { Options, Vue } from 'vue-class-component';
       },
       isAdmin(): boolean {
          return true // TODO : add call to LokAPI
+      },
+      hasUnconfiguredBackend(): boolean {
+        // On n'affiche le bouton de création que s'il y a un backend non configuré
+        return this.$store.getters.hasUnconfiguredBackends()
       },
     },
 })
