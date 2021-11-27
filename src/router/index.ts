@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Profile from "../views/Profile.vue";
 import Login from "../views/Login.vue";
+import Administration from "../views/Administration.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,6 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     meta: { title: "Connection" },
     component: Login,
+  },
+  {
+    path: "/admin",
+    name: "Administration",
+    meta: { title: "Administration" },
+    component: Administration,
   },
 ];
 
