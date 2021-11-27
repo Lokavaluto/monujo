@@ -142,6 +142,9 @@ export var moduleLokAPI = {
       });
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
+    },
+    set_backend_credentials(state:any, credentials:object) {
+      state.backendCredentials = credentials
     }
   },
   getters: {
