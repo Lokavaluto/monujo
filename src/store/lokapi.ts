@@ -54,6 +54,17 @@ export var moduleLokAPI = {
     },
     askLogOut({commit}:any) {
       commit("logout")
+    },
+    async getBackendCredentials({commit}:any) {
+      try {
+        // @TODO
+        // Call this from the lokapi
+        // let credentials = await lokapiService.getBackendCredentials()
+        let credentials = {} 
+        commit('set_backend_credentials', credentials)
+      } catch (err:any) {
+        console.error('Error getting backend credentials')
+      }
     }
   },
   mutations: {
