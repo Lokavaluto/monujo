@@ -27,8 +27,8 @@ export var moduleLokAPI = {
       commit('auth_request')
       try {
         await lokApiService.login(login, password)
-      } catch (err:any) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
-        console.log('Login failed:', err.message)
+      } catch (err:any) {
+        // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
         throw err
       }
