@@ -1,0 +1,6 @@
+{
+	"appId": "org.lokavaluto.monujo",
+	"appName": "Monujo",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

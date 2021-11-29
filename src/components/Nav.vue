@@ -1,10 +1,14 @@
 <template>
-  <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-fixed-top"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <div class="navbar-brand">
       <router-link to="/" class="navbar-item">
         <img
           class="is-rounded"
-          style="max-height:none !important"
+          style="max-height: none !important"
           src="https://lokavaluto.fr/web/image/res.company/1/logo?unique=2eaba5c"
           width="80"
           height="80"
@@ -31,17 +35,24 @@
       class="navbar-menu"
       :class="{ 'is-active': showNav }"
     >
-
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
             <router-link v-if="!getLog" to="/" class="button is-light">
               Se connecter
             </router-link>
+            <router-link to="/carto" class="button is-light">
+              Carto
+            </router-link>
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
-            <router-link v-if="getLog" to="/" @click="logout" class="button is-light">
+            <router-link
+              v-if="getLog"
+              to="/"
+              @click="logout"
+              class="button is-light"
+            >
               Déconnexion
             </router-link>
           </div>
@@ -52,25 +63,25 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue } from "vue-class-component";
 
 @Options({
   name: "Nav",
   data() {
     return {
-      showNav: false
+      showNav: false,
     };
   },
-  methods : {
+  methods: {
     logout() {
-      this.$store.dispatch("askLogOut")
-    }
+      this.$store.dispatch("askLogOut");
+    },
   },
   computed: {
-      getLog(): string {
-         return this.$store.state.lokapi.isLog
-      },
+    getLog(): string {
+      return this.$store.state.lokapi.isLog;
     },
+  },
 })
 export default class Nav extends Vue {}
 </script>
