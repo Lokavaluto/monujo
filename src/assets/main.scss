@@ -626,3 +626,36 @@ rect {
 .custom-pin-width {
   width: 60% !important;
 }
+
+
+.account {
+
+    min-width: 30em;
+
+    .account-backend {
+        font-size: 0.6em;
+        font-weight: bold;
+        color: #009688;
+        opacity: 0.8;
+    }
+
+
+    .account-name {
+        width: 30%;
+    }
+
+
+    .account-bal {
+        width: 20%;
+        text-align: right;
+    }
+
+    .account-curr {
+        width: 20%;
+        text-align: left;
+    }
+
+    .account-type {
+    }
+
+}
