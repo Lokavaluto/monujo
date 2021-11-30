@@ -63,3 +63,19 @@ export var lokApiService = new LokAPI(
   process.env.VUE_APP_LOKAPI_HOST,
   process.env.VUE_APP_LOKAPI_DB,
 )
+
+
+// utilities function
+
+export async function getBankAccountName(bankAccount: any) {
+  if (bankAccount.getDisplayName) {
+    return await bankAccount.getDisplayName()
+  }
+  const backend = bankAccount.internalId.split(':')[0]
+  // XXXvlab: hopefully temporary solution to give a sane
+  // french name to account types in comchain
+  if (backend === "comchain" && bankAccount.type) {
+    return bankAccount.type === "Nant" ? "Compte nantis": "Crédit mutuel"
+  }
+  return "Compte principal"
+}

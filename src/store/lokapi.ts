@@ -4,7 +4,7 @@
 
 import router from "../router/index"
 import Swal from "sweetalert2"
-import { lokApiService } from "../services/lokapiService"
+import { lokApiService, getBankAccountName } from "../services/lokapiService"
 
 
 export var moduleLokAPI = {
@@ -16,6 +16,7 @@ export var moduleLokAPI = {
     bal: 0,
     curr:"",
     accounts:[],
+    accountsLoaded: false,
     recipient:"",
     isLog:false,
     paymentUrl: "",
@@ -77,6 +78,7 @@ export var moduleLokAPI = {
       state.bal= 0
       state.curr=""
       state.accounts=[]
+      state.accountsLoaded=false
       state.recipient=""
       state.isLog=false
       state.paymentUrl=""
@@ -107,13 +109,58 @@ export var moduleLokAPI = {
             return s
           }, '');
         }
-        // accounts can be an empty array
-        for (var i = 0; i < accounts.length; i++) {
-          state.accounts[i] = { name: '', bal: 0, curr: '' }
-          state.accounts[i].name = accounts[i].internalId
-          state.accounts[i].bal = parseFloat(await accounts[i].getBalance())
-          state.accounts[i].curr = await accounts[i].getSymbol()
-        }
+        const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
+        Promise.allSettled(
+          Object.values(accounts).map(
+            (account: any) => Promise.allSettled([
+              getBankAccountName(account),
+              account.getBalance(),
+              account.getSymbol(),
+            ]).then(vals => {
+              const [name, bal, curr] = vals.map(a => (<any>a).value)
+              const accountData = {
+                name, bal, curr,
+                backend: account.internalId.split(':')[0],
+                id: account.internalId,
+              }
+              let idx = state.accounts.findIndex((a: any) => account.id === a.id)
+              let replace
+              if (idx === -1) {
+                replace = 0
+                idx = 0
+                while (
+                  idx < state.accounts.length &&
+                    sortOrder(accountData, state.accounts[idx]) > 0
+                ) idx++
+              } else {
+                replace = 1
+              }
+              state.accounts.splice(idx, 0, accountData)
+            })
+          )).then(() => {  // Only when state.accounts if filled
+
+            // It'll detect and find multiple account names, and if
+            // this is the case, will provide an additional 'backend'
+            // field in all the state.accounts[i] concerned.
+
+            var accountNames: {[k: string]: Array<any>} = {}
+            state.accounts.forEach((a: any) => {
+              if (!accountNames[a.name]) {
+                accountNames[a.name] = []
+              }
+              accountNames[a.name].push(a)
+            })
+
+            Object.entries(accountNames).filter(
+              ([n, as]) => as.length > 1
+            ).forEach(([n, as]) => {
+              for (const a of as) {
+                const account = accounts.find((l: any) => l.internalId === a.id)
+                a.backend = account.internalId  // full backend information
+              }
+            })
+            state.accountsLoaded = true
+          })
       } catch (err) {
         console.error('getAccounts failed', err);
       }
