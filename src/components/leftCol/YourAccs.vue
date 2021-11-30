@@ -5,11 +5,16 @@
     >
       <h2 class="custom-card-title">vos comptes</h2>
       <template v-if="moneyAccounts.length > 0">
-        <Acc v-for="account in moneyAccounts" :bal="account.bal" :curr="account.curr">
-          <template v-slot:name>{{ account.name.split(':')[0] }}</template>
+        <Acc v-for="account in moneyAccounts"
+             :bal="account.bal"
+             :curr="account.curr"
+             :backend="account.backend"
+             :type="account.type"
+             >
+          <template v-slot:name>{{ account.name }}</template>
         </Acc>
       </template>
-      <template v-else>
+      <template v-else-if="areMoneyAccountsLoaded">
         <p class="notification is-default">Vous n'avez pas encore de compte</p>
       </template>
     </div>
@@ -22,12 +27,19 @@ import Acc from "./yourAccs/Acc.vue"
 
 @Options({
     name:"YourAccs",
+    props: {
+      loaded: Boolean,
+    },
     components: {
         Acc
     },
     computed: {
       moneyAccounts(): any {
         return this.$store.state.lokapi.accounts
+      },
+      areMoneyAccountsLoaded(): boolean {
+        console.log('called', this.$store.state.lokapi.accountsLoaded)
+        return this.$store.state.lokapi.accountsLoaded
       }
     }
 })
