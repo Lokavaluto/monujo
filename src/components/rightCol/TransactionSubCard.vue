@@ -10,7 +10,14 @@
         <div class="is-flex-direction-column">
           
           <h3 :class="[amount.charAt(0) == '-' ? 'custom-card-destinataire has-text-danger' : 'custom-card-destinataire has-text-success']">
-            {{amount}} {{symbol}}
+            {{
+             parseFloat(amount).toLocaleString(
+               "fr", {
+                 minimumFractionDigits: 2,
+                 maximumFractionDigits: 2
+               })
+            }}
+            {{symbol}}
           </h3>
           <h4 class="custom-card-destinataire">{{name}}</h4>
           <h5 class="has-text-grey-light">

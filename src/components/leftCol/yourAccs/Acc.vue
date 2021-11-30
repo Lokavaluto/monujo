@@ -9,7 +9,13 @@
       </div>
       <div class="account-bal">
         <span class="is-size-3 has-text-grey-darker account-bal">
-          {{ bal }}
+          {{
+             parseFloat(bal).toLocaleString(
+               "fr", {
+                 minimumFractionDigits: 2,
+                 maximumFractionDigits: 2
+               })
+          }}
         </span>
       </div>
       <div class="account-curr">
