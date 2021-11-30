@@ -88,27 +88,6 @@ export var moduleLokAPI = {
       let accounts: any;
       try {
         accounts = await lokApiService.getAccounts();
-        if (accounts.length > 0) {
-          // Compute a global moneyAccount balance
-          Promise.allSettled(
-            accounts.map((a:any) => a.getBalance())
-          ).then((balances:any) => {
-            state.bal = balances.reduce(
-              (s:number, b:any) => s + parseFloat(b.value), 0
-            )
-          })
-          // See if all accounts have same currency ?
-          Promise.allSettled(
-            accounts.map((a:any) => a.getSymbol())
-          )
-          state.curr = await accounts.reduce((c:string, a:any) => {
-            let s = a.value
-            if (s !== c) {
-              return 'mixed currencies'
-            }
-            return s
-          }, '');
-        }
         const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
         Promise.allSettled(
           Object.values(accounts).map(
