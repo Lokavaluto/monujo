@@ -628,41 +628,64 @@ rect {
 }
 
 
-.account {
+.accounts {
 
-    min-width: 30em;
-
-    .account-backend {
-        font-size: 0.6em;
-        font-weight: bold;
-        color: #009688;
-        opacity: 0.8;
+    > div {
+        margin-top: 2em;
+    }
+    > div:first-child {
+        margin-top: 0;
     }
 
+    .account {
 
-    .account-name {
-        width: 30%;
+        min-width: 30em;
+
+        .account-backend {
+            font-size: 0.6em;
+            font-weight: bold;
+            color: #009688;
+            opacity: 0.8;
+        }
+
+        .account-name {
+            margin-left: 1em;
+            width: 30%;
+        }
+
+        .account-bal {
+            width: 20%;
+            text-align: right;
+        }
+
+        .account-curr {
+            padding-left: 1em;
+        }
+
+        .account-type {
+        }
+
+        &.custom-card-padding {
+            padding-bottom: 1.2em;
+            padding-top: 1.2em;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+        }
     }
 
+    .sub-accounts {
+        margin-left: 3em;
 
-    .account-bal {
-        width: 20%;
-        text-align: right;
+        .account {
+            font-size: 0.5em;
+        }
+        .account-name {
+            margin-left: 2em;
+        }
     }
 
-    .account-curr {
-        width: 20%;
-        text-align: left;
+    .inactive .account.card {
+        background: #f0f0f0 !important;
+        opacity: 0.6;
     }
-
-    .account-type {
-    }
-
-    &.custom-card-padding {
-      padding-bottom: 1.2em;
-      padding-top: 1.2em;
-      padding-left: 1.2em;
-      padding-right: 1.2em;
-    }
-
 }
