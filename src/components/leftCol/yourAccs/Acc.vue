@@ -21,7 +21,7 @@
       <div class="account-curr">
         <span class="is-size-4">{{curr}}</span>
       </div>
-      <div class="account-backend" v-if="backend">
+      <div class="account-backend" v-if="isMultiCurrency">
         <span class="is-size-5 account-backend">
           {{ backend }}
         </span>
@@ -40,7 +40,12 @@ import { Options, Vue } from 'vue-class-component';
         curr:String,
         backend:String,
         type:String,
-    }
+    },
+  computed: {
+    isMultiCurrency(): any {
+        return this.$store.state.lokapi.isMultiCurrency
+    },
+  }
 })
 export default class Acc extends Vue {}
 </script>

@@ -20,7 +20,8 @@ export var moduleLokAPI = {
     recipient:"",
     isLog:false,
     paymentUrl: "",
-    recipientHistory:[]
+    recipientHistory:[],
+    isMultiCurrency: false,  // Are we displaying accounts with different currencies ?
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -82,6 +83,7 @@ export var moduleLokAPI = {
       state.recipient=""
       state.isLog=false
       state.paymentUrl=""
+      state.isMultiCurrency = false
     },
 
     async setBalCurr(state:any) {
@@ -99,7 +101,9 @@ export var moduleLokAPI = {
               const [name, bal, curr] = vals.map(a => (<any>a).value)
               const accountData = {
                 name, bal, curr,
-                backend: account.internalId.split(':')[0],
+                backend: account.parent.internalId.split(':')[0],
+                userAccountId: account.parent.internalId,
+                currencyId: account.parent.parent.internalId,
                 id: account.internalId,
               }
               let idx = state.accounts.findIndex((a: any) => account.id === a.id)
@@ -138,6 +142,19 @@ export var moduleLokAPI = {
                 a.backend = account.internalId  // full backend information
               }
             })
+
+            // Inform the UI if we are in a multi-currency display, note
+            // we are testing the backend and not the currency symbol
+
+            if (state.accounts.length > 1) {
+              let currencyId = state.accounts[0].currencyId
+              state.isMultiCurrency = state.accounts.slice(1).some(
+                (account: any) => account.currencyId !== currencyId
+              )
+            }
+
+            // Warn the UI that account information are fully loaded
+
             state.accountsLoaded = true
           })
       } catch (err) {
