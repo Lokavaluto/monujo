@@ -43,10 +43,10 @@ body {
 }
 
 .custom-card-padding {
-  padding-bottom: 1.8em !important;
-  padding-top: 1.8em !important;
-  padding-left: 1.8em !important;
-  padding-right: 1.8em !important;
+  padding-bottom: 1.8em;
+  padding-top: 1.8em;
+  padding-left: 1.8em;
+  padding-right: 1.8em;
 }
 
 .custom-card-title {
@@ -656,6 +656,13 @@ rect {
     }
 
     .account-type {
+    }
+
+    &.custom-card-padding {
+      padding-bottom: 1.2em;
+      padding-top: 1.2em;
+      padding-left: 1.2em;
+      padding-right: 1.2em;
     }
 
 }
