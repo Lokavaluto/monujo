@@ -4,7 +4,7 @@
 
 import router from "../router/index"
 import Swal from "sweetalert2"
-import { lokApiService, getBankAccountName } from "../services/lokapiService"
+import { lokApiService } from "../services/lokapiService"
 
 
 export var moduleLokAPI = {
@@ -87,79 +87,21 @@ export var moduleLokAPI = {
     },
 
     async setBalCurr(state:any) {
-      let accounts: any;
-      try {
-        accounts = await lokApiService.getAccounts();
-        const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
-        Promise.allSettled(
-          Object.values(accounts).map(
-            (account: any) => Promise.allSettled([
-              getBankAccountName(account),
-              account.getBalance(),
-              account.getSymbol(),
-            ]).then(vals => {
-              const [name, bal, curr] = vals.map(a => (<any>a).value)
-              const accountData = {
-                name, bal, curr,
-                backend: account.parent.internalId.split(':')[0],
-                userAccountId: account.parent.internalId,
-                currencyId: account.parent.parent.internalId,
-                id: account.internalId,
-              }
-              let idx = state.accounts.findIndex((a: any) => account.id === a.id)
-              let replace
-              if (idx === -1) {
-                replace = 0
-                idx = 0
-                while (
-                  idx < state.accounts.length &&
-                    sortOrder(accountData, state.accounts[idx]) > 0
-                ) idx++
-              } else {
-                replace = 1
-              }
-              state.accounts.splice(idx, 0, accountData)
-            })
-          )).then(() => {  // Only when state.accounts if filled
+      const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
+      await lokApiService.buildAccountsInplace(state.accounts)
 
-            // It'll detect and find multiple account names, and if
-            // this is the case, will provide an additional 'backend'
-            // field in all the state.accounts[i] concerned.
+      // Inform the UI if we are in a multi-currency display, note
+      // we are testing the backend and not the currency symbol
 
-            var accountNames: {[k: string]: Array<any>} = {}
-            state.accounts.forEach((a: any) => {
-              if (!accountNames[a.name]) {
-                accountNames[a.name] = []
-              }
-              accountNames[a.name].push(a)
-            })
-
-            Object.entries(accountNames).filter(
-              ([n, as]) => as.length > 1
-            ).forEach(([n, as]) => {
-              for (const a of as) {
-                const account = accounts.find((l: any) => l.internalId === a.id)
-                a.backend = account.internalId  // full backend information
-              }
-            })
-
-            // Inform the UI if we are in a multi-currency display, note
-            // we are testing the backend and not the currency symbol
-
-            if (state.accounts.length > 1) {
-              let currencyId = state.accounts[0].currencyId
-              state.isMultiCurrency = state.accounts.slice(1).some(
-                (account: any) => account.currencyId !== currencyId
-              )
-            }
-
-            // Warn the UI that account information are fully loaded
-
-            state.accountsLoaded = true
-          })
-      } catch (err) {
-        console.error('getAccounts failed', err);
+      if (state.accounts.length > 1) {
+        let currencyId = state.accounts[0].currencyId
+        state.isMultiCurrency = state.accounts.slice(1).some(
+          (account: any) => account.currencyId !== currencyId
+        )
       }
+
+      // Warn the UI that account information are fully loaded
+      state.accountsLoaded = true
     },
 
     async autoLogin(state: any) {

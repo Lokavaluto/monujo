@@ -1,22 +1,36 @@
 <template>
     <!-- card vos comptes -->
     <div
-      class="card custom-card custom-card-padding"
+      class="accounts card custom-card custom-card-padding"
     >
-      <h2 class="custom-card-title">vos comptes</h2>
-      <template v-if="moneyAccounts.length > 0">
-        <Acc v-for="account in moneyAccounts"
+      <div class="active" v-if="activeMoneyAccounts.length > 0">
+        <h2 class="custom-card-title">vos comptes</h2>
+        <Acc v-for="account in activeMoneyAccounts"
              :bal="account.bal"
              :curr="account.curr"
              :backend="account.backend"
              :type="account.type"
+             :active="account.active"
+             :subAccounts="account.subAccounts || []"
              >
           <template v-slot:name>{{ account.name }}</template>
         </Acc>
-      </template>
-      <template v-else-if="areMoneyAccountsLoaded">
+      </div>
+      <div class="inactive" v-if="inactiveMoneyAccounts.length > 0">
+        <h2 class="custom-card-title">vos comptes en attente de création</h2>
+        <Acc v-for="account in inactiveMoneyAccounts"
+             :bal="account.bal"
+             :curr="account.curr"
+             :backend="account.backend"
+             :type="account.type"
+             :active="account.active"
+             >
+          <template v-slot:name>{{ account.name }}</template>
+        </Acc>
+      </div>
+      <div class="notification" v-if="areMoneyAccountsLoaded && totalAccountsLoaded === 0">
         <p class="notification is-default">Vous n'avez pas encore de compte</p>
-      </template>
+      </div>
     </div>
     <!-- fin card vos comptes -->
 </template>
@@ -34,11 +48,17 @@ import Acc from "./yourAccs/Acc.vue"
         Acc
     },
     computed: {
-      moneyAccounts(): any {
-        return this.$store.state.lokapi.accounts
+      activeMoneyAccounts(): any {
+        return this.$store.state.lokapi.accounts.filter((a: any) => a.active === true)
+      },
+      inactiveMoneyAccounts(): any {
+        return this.$store.state.lokapi.accounts.filter((a: any) => a.active === false)
       },
       areMoneyAccountsLoaded(): boolean {
         return this.$store.state.lokapi.accountsLoaded
+      },
+      totalAccountsLoaded(): number {
+        return this.$store.state.lokapi.accounts.length
       }
     }
 })
