@@ -8,7 +8,7 @@
         </span>
       </div>
       <div class="account-bal">
-        <span class="is-size-3 has-text-grey-darker account-bal">
+        <span class="is-size-4 has-text-grey-darker account-bal">
           {{
              parseFloat(bal).toLocaleString(
                "fr", {
@@ -19,10 +19,10 @@
         </span>
       </div>
       <div class="account-curr">
-        <span class="is-size-4">{{curr}}</span>
+        <span class="is-size-5">{{curr}}</span>
       </div>
       <div class="account-backend" v-if="isMultiCurrency">
-        <span class="is-size-5 account-backend">
+        <span class="is-size-6 account-backend">
           {{ backend }}
         </span>
       </div>
