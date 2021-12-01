@@ -38,7 +38,6 @@ import Acc from "./yourAccs/Acc.vue"
         return this.$store.state.lokapi.accounts
       },
       areMoneyAccountsLoaded(): boolean {
-        console.log('called', this.$store.state.lokapi.accountsLoaded)
         return this.$store.state.lokapi.accountsLoaded
       }
     }
