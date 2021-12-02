@@ -61,6 +61,19 @@ export var moduleLokAPI = {
       const backend = state.backends[accountBackend]
       const errors = await backend.isPasswordStrongEnough(password)
       return translatePwdFieldErrors(errors)
+    },
+    async createUserAccount({ commit , state }:any, [password, backendId]: Array<string>) {
+      const backend = state.backends[backendId]
+      // Might throw some exception, leave it to the component
+      // to display error messages.
+      await backend.createUserAccount({ password })
+      // XXXvlab: hopin' to provide a better way (and generalized)
+      // to handle all caches in lokapi in an upcoming version.
+      lokApiService.clearBackendCache()
+      await commit('setBackends')
+      await commit("setBalCurr")
+      await commit("setThisWeekTransactions")
+
     }
   },
   mutations: {
