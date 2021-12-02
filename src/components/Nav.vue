@@ -41,6 +41,9 @@
             <router-link v-if="getLog" to="/profile" class="button is-light">
               Profile
             </router-link>
+            <router-link v-if="getLog && hasUnconfiguredBackend" to="/create-account" class="button is-light">
+              Créer mon portefeuille
+            </router-link>
             <router-link v-if="getLog" to="/" @click="logout" class="button is-light">
               Déconnexion
             </router-link>
@@ -69,6 +72,11 @@ import { Options, Vue } from 'vue-class-component';
   computed: {
       getLog(): string {
          return this.$store.state.lokapi.isLog
+      },
+      hasUnconfiguredBackend(): boolean {
+        // Display of the account creation button should be displayed only
+        // if there's an un-configured backend
+        return this.$store.getters.hasUnconfiguredBackend()
       },
     },
 })
