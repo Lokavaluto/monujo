@@ -57,6 +57,11 @@ export var moduleLokAPI = {
     askLogOut({commit}:any) {
       commit("logout")
     },
+    async checkPasswordStrength({ commit, state }:any, [password, accountBackend]: Array<string>) {
+      const backend = state.backends[accountBackend]
+      const errors = await backend.isPasswordStrongEnough(password)
+      return translatePwdFieldErrors(errors)
+    }
   },
   mutations: {
     async genPaymentLink(state: any, amount:number) {
@@ -205,3 +210,19 @@ export var moduleLokAPI = {
   }
 }
 
+function translatePwdFieldErrors(errors: string[]) {
+  return errors.map((e: string) => {
+    if (e.indexOf('tooShort') > -1) {
+      let segments = e.split(':')
+      return "Le mot de passe doit faire au moins " + segments[1] + ' caractères'
+    } else if (e === 'noLowerCase') {
+      return "Le mot de passe doit contenir au moins une lettre minuscule"
+    } else if (e === 'noUpperCase') {
+      return "Le mot de passe doit contenir au moins une lettre majuscule"
+    } else if (e === 'noDigit') {
+      return "Le mot de passe doit contenir au moins un nombre"
+    } else if (e === 'noSymbol') {
+      return "Le mot de passe doit contenir au moins un caractère spécial"
+    }
+  })
+}
