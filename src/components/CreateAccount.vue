@@ -133,6 +133,9 @@ import { LokAPIExc } from "@/services/lokapiService"
 @Options({
   name:"CreateAccount",
   mounted() {
+    if (this.unconfiguredBackends.length === 0) {
+      router.push('/')
+    }
     if (this.unconfiguredBackends.length === 1) {
       this.form.accountBackend = this.unconfiguredBackends[0]
     }
