@@ -22,6 +22,7 @@ export var moduleLokAPI = {
     paymentUrl: "",
     recipientHistory:[],
     isMultiCurrency: false,  // Are we displaying accounts with different currencies ?
+    backends: {},
   },
   actions: {
     async login({ commit }: any, credentials: { login: string, password: string }) {
@@ -34,14 +35,17 @@ export var moduleLokAPI = {
         commit('auth_error')
         throw err
       }
+      await commit('setBackends')
+
       commit("setThisWeekTransactions")
       commit('auth_success')
     },
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
     },
-    initAutoLogin({commit}:any) {
+    async initAutoLogin({commit}:any) {
       commit("autoLogin")
+      await commit('setBackends')
     },
     async setAccounts({commit}:any) {
       await commit("setBalCurr")
@@ -52,7 +56,7 @@ export var moduleLokAPI = {
     },
     askLogOut({commit}:any) {
       commit("logout")
-    }
+    },
   },
   mutations: {
     async genPaymentLink(state: any, amount:number) {
@@ -134,6 +138,13 @@ export var moduleLokAPI = {
       });
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
+    },
+    async setBackends(state:any) {
+      try {
+        state.backends = await lokApiService.getBackends()
+      } catch (err:any) {
+        console.error('Error getting currency backends')
+      }
     }
   },
   getters: {
@@ -171,6 +182,24 @@ export var moduleLokAPI = {
     getThisWeektransactions: (state: any) => {
       return function(): any {
         return state.thisWeektransactions
+      }
+    },
+    hasUnconfiguredBackend: (state: any, getters: any) => {
+      return function(): any {
+        let unconfiguredBackends = getters.getUnconfiguredBackends()
+        return unconfiguredBackends.length > 0
+      }
+    },
+    getUnconfiguredBackends: (state: any) => {
+      return function(): object {
+        return Object.entries(state.backends).filter(
+          ([_, backend]) => (
+            Object.keys((<any>backend).userAccounts).length === 0 &&
+              (<any>backend).createUserAccount
+          )
+        ).map(
+          ([backendId, _]) => backendId
+        )
       }
     }
   }
