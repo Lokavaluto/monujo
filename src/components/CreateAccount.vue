@@ -107,8 +107,13 @@
                   <span v-if="hasError('accountPasswordConfirm')" class="icon is-small is-right">
                     <i class="fas fa-exclamation-triangle"></i>
                   </span>
+                </div>
                 <p v-if="hasError('accountPasswordConfirm')" class="help is-danger">{{ form.errors.accountPasswordConfirm[0] }}</p>
+              </div>
 
+              <div class="field" v-if="!hasFieldErrors">
+                <div class="control">
+                  <button class="button is-primary" @click="createUserAccount()">Créer mon portefeuille</button>
                 </div>
               </div>
 
@@ -122,6 +127,8 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import router from "@/router/index"
+import { LokAPIExc } from "@/services/lokapiService"
 
 @Options({
   name:"CreateAccount",
@@ -183,6 +190,24 @@ import { Options, Vue } from 'vue-class-component';
     },
     hasError(field: string): boolean {
       return this.form.errors[field].length > 0
+    },
+    async createUserAccount() {
+      try {
+        await this.$store.dispatch(
+          "createUserAccount", [this.form['accountPassword'], this.form['accountBackend']])
+      } catch(err) {
+        console.error("Something went wrong on createUserAccount request", err)
+        if (!(err instanceof LokAPIExc.UserAccountAlreadyExists)) {
+          this.$toast.error(
+            "Création de compte interrompue inopinément." +
+              "Veuillez ré-éssayer ou contacter votre administrateur",
+            { position: "top" }
+          )
+          return // stay on page
+        }
+        this.$toast.warning("Compte déjà créé")
+      }
+      router.push('/profile')
     }
   },
   props: {
