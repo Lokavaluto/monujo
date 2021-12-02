@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Profile from "../views/Profile.vue";
 import Login from "../views/Login.vue";
+import CreateMyAccount from "../views/CreateMyAccount.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,6 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     meta: { title: "Connection" },
     component: Login,
+  },
+  {
+    path: "/create-account",
+    name: "Create my account",
+    meta: { title: "Créer mon portefeuille" },
+    component: CreateMyAccount,
   },
 ];
 
