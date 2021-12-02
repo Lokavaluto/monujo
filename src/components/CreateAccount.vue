@@ -55,6 +55,66 @@
             </div>
           </div>
         </div>
+        <div class="column">
+          <div class="card">
+            <div class="card-content">
+
+              <div class="field">
+                <label class="label">Mot de passe</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input"
+                    autocomplete="new-password"
+                    v-bind:class="{
+                      'is-danger': hasError('accountPassword'),
+                      'is-success': !hasError('accountPassword') && form.accountPassword.length > 1
+                    }"
+                    type="password"
+                    placeholder="Mot de passe"
+                    v-model="form.accountPassword"
+                  >
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-key"></i>
+                  </span>
+                  <span v-if="hasError('accountPassword')" class="icon is-small is-right">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </span>
+                </div>
+                <p v-if="hasError('accountPassword')" class="help is-danger">
+                  <template v-for="err in form.errors.accountPassword">
+                    <div>{{ err }}</div>
+                  </template>
+                </p>
+              </div>
+
+              <div class="field">
+                <label class="label">Confirmation du mot de passe</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input"
+                    autocomplete="new-password"
+                    v-bind:class="{
+                      'is-danger': hasError('accountPasswordConfirm'),
+                      'is-success': !hasError('accountPasswordConfirm') && form.accountPasswordConfirm.length > 1
+                    }"
+                    type="password"
+                    placeholder="Confirmation du mot de passe"
+                    v-model="form.accountPasswordConfirm"
+                  >
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-key"></i>
+                  </span>
+                  <span v-if="hasError('accountPasswordConfirm')" class="icon is-small is-right">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </span>
+                <p v-if="hasError('accountPasswordConfirm')" class="help is-danger">{{ form.errors.accountPasswordConfirm[0] }}</p>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -74,6 +134,12 @@ import { Options, Vue } from 'vue-class-component';
     return {
       form: {
         accountBackend: '',
+        accountPassword: '',
+        accountPasswordConfirm: '',
+        errors: {
+          accountPassword: [],
+          accountPasswordConfirm: []
+        }
       }
     }
   },
@@ -83,13 +149,43 @@ import { Options, Vue } from 'vue-class-component';
         this.form.accountBackend = newval[0]
       }
     },
+    "form.accountPassword": function (): void {
+      this.checkPasswordField('accountPassword')
+      this.checkIsSame('accountPasswordConfirm', 'accountPassword')
+    },
+    "form.accountPasswordConfirm": function (): void {
+      this.checkIsSame('accountPasswordConfirm', 'accountPassword')
+    }
   },
   computed: {
     unconfiguredBackends(): object {
       return this.$store.getters.getUnconfiguredBackends()
     },
+    hasFieldErrors(): boolean {
+      if (this.form.accountPassword.length === 0 || this.form.accountPasswordConfirm.length === 0)
+        return true
+      return Object.keys(this.form.errors).filter(field => {
+        return this.form.errors[field].length > 0
+      }).length > 0
+    }
   },
   methods: {
+    async checkPasswordField(fieldname: string, accountBackend: string) {
+      this.form.errors[fieldname] = await this.$store.dispatch(
+        "checkPasswordStrength", [this.form[fieldname], this.form['accountBackend']])
+    },
+    checkIsSame(fieldOne:string, fieldTwo:string): void {
+      if (this.form[fieldOne] !== this.form[fieldTwo]) {
+        this.form.errors[fieldOne] = ["Le mot de passe entré n'est pas identique"]
+      } else {
+        this.form.errors[fieldOne] = []
+      }
+    },
+    hasError(field: string): boolean {
+      return this.form.errors[field].length > 0
+    }
+  },
+  props: {
   },
   components: {},
 })
