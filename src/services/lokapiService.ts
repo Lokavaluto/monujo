@@ -49,7 +49,20 @@ class LokAPI extends LokAPIBrowserAbstract {
    * This function will build asynchronously the simplified account
    * array that can be used to display the list of accounts
    */
-  async buildAccountsInplace (simplifiedWatchedAccounts: Array<any>)  {
+
+  // Debouncing
+  _buildAccountsInplacePromise: Promise<any> | null = null
+  buildAccountsInplace (simplifiedWatchedAccounts: Array<any>)  {
+    if (!this._buildAccountsInplacePromise) {
+      this._buildAccountsInplacePromise = this._buildAccountsInplace(
+        simplifiedWatchedAccounts
+      ).then(() => {
+        this._buildAccountsInplacePromise = null
+      })
+    }
+    return this._buildAccountsInplacePromise
+  }
+  async _buildAccountsInplace (simplifiedWatchedAccounts: Array<any>)  {
     const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
 
     const backends = Object.values(await this.getBackends())
