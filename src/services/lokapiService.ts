@@ -130,6 +130,13 @@ class LokAPI extends LokAPIBrowserAbstract {
       }))
     )
   }
+
+  // XXXvlab: this is less than ideal way to handle the cache
+  // clearance. Waiting for a generalized cache management
+  clearBackendCache() {
+    this._backends = null
+    this._backendCredentials = null
+  }
 }
 
 
