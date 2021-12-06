@@ -160,7 +160,8 @@ export var moduleLokAPI = {
       try {
         state.backends = await lokApiService.getBackends()
       } catch (err:any) {
-        console.error('Error getting currency backends')
+        console.error('Error getting currency backends', err)
+        throw err
       }
     }
   },
