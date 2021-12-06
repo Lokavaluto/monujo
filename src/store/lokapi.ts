@@ -2,7 +2,6 @@
 
 ///<reference types="@types/node"/>
 
-import router from "../router/index"
 import Swal from "sweetalert2"
 import { lokApiService } from "../services/lokapiService"
 
