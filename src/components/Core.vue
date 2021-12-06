@@ -24,6 +24,8 @@ import { Options, Vue } from 'vue-class-component';
 import LeftCol from "./core/LeftCol.vue";
 import RightCol from "./core/RightCol.vue";
 import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
+import router from "../router/index"
+
 
 @Options({
   name:"core",
@@ -40,7 +42,9 @@ import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
           this.$store.state.lokapi.isLog = true
         })
       } catch(e) {
-        console.log(e)
+        console.error("Error while trying to autolog", e)
+        router.push("/")
+        throw e
       }
     }
   },
