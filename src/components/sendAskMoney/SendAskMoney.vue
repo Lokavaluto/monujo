@@ -1187,7 +1187,6 @@ function returnFavoritesOnly(partners:any): any{
         var recipients
         try {
           recipients = await this.$lokapi.searchRecipients(this.searchName)
-          console.log("serach", recipients)
         } catch (err) {
           console.log('searchRecipients() FAILED', err)
         }
@@ -1202,7 +1201,6 @@ function returnFavoritesOnly(partners:any): any{
         var recipients
         try {
             recipients = await this.$lokapi.searchProRecipients(this.searchName)
-            console.log('searchProRecipients() WORKED', recipients)
         } catch (err) {
             console.log('searchProRecipients() FAILED', err)
         }
