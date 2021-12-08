@@ -89,16 +89,21 @@ import { RestExc } from '@lokavaluto/lokapi-browser';
         this.$router.push({ path: "/profile" });
       } catch (e) {
         // { APIRequestFailed, InvalidCredentials }
+        this.isLoading = false
         if (e instanceof RestExc.APIRequestFailed) {
-          this.isLoading = false
           this.fail = "Refus du serveur distant, contactez votre administrateur";
           return
         }
         if (e instanceof RestExc.InvalidCredentials) {
-          this.isLoading = false
           this.fail = "Identifiant ou mot de passe incorrect";
           return
         }
+        if (e instanceof RestExc.RequestFailed) {
+          this.fail = "La requête a échoué, impossible de joindre le serveur distant.";
+          return
+        }
+        this.fail = "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant.";
+        throw e
       }
     }
   },
