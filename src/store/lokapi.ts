@@ -24,7 +24,7 @@ export var moduleLokAPI = {
     backends: {},
   },
   actions: {
-    async login({ commit }: any, credentials: { login: string, password: string }) {
+    async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
       let { login, password } = credentials
       commit('auth_request')
       try {
@@ -34,7 +34,7 @@ export var moduleLokAPI = {
         commit('auth_error')
         throw err
       }
-      await commit('setBackends')
+      await dispatch('setBackends')
 
       commit("setThisWeekTransactions")
       commit('auth_success')
@@ -42,9 +42,9 @@ export var moduleLokAPI = {
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
     },
-    async initAutoLogin({commit}:any) {
+    async initAutoLogin({commit, dispatch}:any) {
       commit("autoLogin")
-      await commit('setBackends')
+      await dispatch('setBackends')
     },
     async setAccounts({commit}:any) {
       await commit("setBalCurr")
@@ -61,7 +61,7 @@ export var moduleLokAPI = {
       const errors = await backend.isPasswordStrongEnough(password)
       return translatePwdFieldErrors(errors)
     },
-    async createUserAccount({ commit , state }:any, [password, backendId]: Array<string>) {
+    async createUserAccount({ commit, state, dispatch }:any, [password, backendId]: Array<string>) {
       const backend = state.backends[backendId]
       // Might throw some exception, leave it to the component
       // to display error messages.
@@ -69,11 +69,19 @@ export var moduleLokAPI = {
       // XXXvlab: hopin' to provide a better way (and generalized)
       // to handle all caches in lokapi in an upcoming version.
       lokApiService.clearBackendCache()
-      await commit('setBackends')
+      dispatch('setBackends')
       await commit("setBalCurr")
       await commit("setThisWeekTransactions")
-
+    },
+    async setBackends({ commit, state }:any) {
+      try {
+        commit('storeBackends', await lokApiService.getBackends())
+      } catch (err:any) {
+        console.error('Error getting currency backends', err)
+        throw err
+      }
     }
+
   },
   mutations: {
     async genPaymentLink(state: any, amount:number) {
@@ -156,13 +164,8 @@ export var moduleLokAPI = {
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
     },
-    async setBackends(state:any) {
-      try {
-        state.backends = await lokApiService.getBackends()
-      } catch (err:any) {
-        console.error('Error getting currency backends', err)
-        throw err
-      }
+    storeBackends(state: any, backends: any) {
+      state.backends = backends
     }
   },
   getters: {
