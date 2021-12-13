@@ -13,10 +13,8 @@ class LokAPI extends LokAPIBrowserAbstract {
   }
 
   requestLocalPassword = async function (state: string) {
-    let text
-    if (state === 'firstTry') {
-      text = ''  // XXXvlab: need i16n
-    } else if (state === 'failedUnlock') {
+    let text = ''
+    if (state === 'failedUnlock') {
       text = 'Échec du déchiffrage. ' +
         'Le mot de passe était probablement incorrect. '+
         'Ré-essayez une nouvelle fois'  // XXXvlab: need i18n
