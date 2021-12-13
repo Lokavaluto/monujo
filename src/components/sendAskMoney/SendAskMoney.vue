@@ -1215,10 +1215,9 @@ function returnFavoritesOnly(partners:any): any{
     },
 
     async sendTransaction():Promise<void> {
-      let accs = this.$store.state.lokapi.accounts
-      let part = this.$store.state.lokapi.recipient
+      let recipient = this.$store.state.lokapi.recipient
       try {
-          await accs[0].transfer(part, this.amount.toString(), this.message)
+          await recipient.transfer(this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
           if (err.message === 'User canceled the dialog box') {
           this.$toast.warning(
@@ -1232,16 +1231,14 @@ function returnFavoritesOnly(partners:any): any{
           console.log('Payment failed:', err.message)
           throw err
         }
-        let accounts = await this.$lokapi.getAccounts()
-        let bal = await accounts[0].getBalance()
-        this.$store.state.lokapi.bal = bal
+        await this.$store.commit("setBalCurr")
         this.$toast.success(
           `Paiement effectué à ${this.recipientName}`,
           {
             position:
             "top-right"
           });
-        if (!part.is_favorite) {
+        if (!recipient.is_favorite) {
           this.$Swal.fire({
           title: `Voulez vous ajouter ${this.recipientName} aux favoris ?`,
           showDenyButton: true,
@@ -1249,7 +1246,7 @@ function returnFavoritesOnly(partners:any): any{
           denyButtonText: `Plus tard`,
         }).then((result:any) => {
           if (result.isConfirmed) {
-            this.toggleFavorite(part)
+            this.toggleFavorite(recipient)
             this.$Swal.fire(`${this.recipientName} a bien été ajouté en favori`, '', 'success')
           }
         })
