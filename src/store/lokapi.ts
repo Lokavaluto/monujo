@@ -105,7 +105,6 @@ export var moduleLokAPI = {
       state.userProfile= null
       state.transactions=null
       state.thisWeektransactions=null
-      state.bal= 0
       state.curr=""
       state.accounts=[]
       state.accountsLoaded=false
@@ -169,11 +168,6 @@ export var moduleLokAPI = {
     }
   },
   getters: {
-    getBal: (state: any) => {
-      return function(): number {
-        return state.bal
-      }
-    },
     getCurr: (state: any) => {
       return function(): string {
         return state.curr
