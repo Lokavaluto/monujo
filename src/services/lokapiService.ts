@@ -19,15 +19,15 @@ class LokAPI extends LokAPIBrowserAbstract {
     } else if (state === 'failedUnlock') {
       text = 'Échec du déchiffrage. ' +
         'Le mot de passe était probablement incorrect. '+
-        'Ré-essayez une nouvelle fois'  // XXXvlab: need i16n
+        'Ré-essayez une nouvelle fois'  // XXXvlab: need i18n
     }
     const ret = await Swal.fire({
-      title: 'Entrez votre mot de passe',  // XXXvlab: need i16n
+      title: 'Entrez votre mot de passe',  // XXXvlab: need i18n
       text,
       showCloseButton: true,
       input: 'password',
-      inputLabel: 'Mot de passe du portefeuille',  // XXXvlab: need i16n
-      inputPlaceholder: 'Votre mot de passe',  // XXXvlab: need i16n
+      inputLabel: 'Mot de passe du portefeuille',  // XXXvlab: need i18n
+      inputPlaceholder: 'Votre mot de passe',  // XXXvlab: need i18n
       inputAttributes: {
         maxlength: '32',
         autocapitalize: 'off',
