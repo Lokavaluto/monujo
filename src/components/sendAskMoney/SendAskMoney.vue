@@ -1101,7 +1101,15 @@ function returnFavoritesOnly(partners:any): any{
 
     async newLinkTab() {
       if (this.amountForCredit > 0) {
-        let url = await this.$store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
+        // XXXvlab: temporarily select cyclos first account to keep
+        // functionality.
+        let cyclos_backend = <any>(Object.entries(this.$store.state.lokapi.backends).filter(
+          ([k, v]) => k.startsWith("cyclos")
+        )[0][1])
+        let cyclos_user_account = <any>Object.values(cyclos_backend.userAccounts)[0]
+        let cyclos_bank_account = (await cyclos_user_account.getAccounts())[0]
+
+        let url = await cyclos_bank_account.getCreditUrl(this.amountForCredit)
         try {
           window.open(url.order_url, '_blank')!.focus();
           this.urlForHyperlink = url.order_url
