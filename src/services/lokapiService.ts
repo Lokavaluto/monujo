@@ -89,15 +89,8 @@ class LokAPI extends LokAPIBrowserAbstract {
             subAccounts: [],
           }
 
-          replaceOrInsertElt(
-            simplifiedWatchedAccounts,
-            userAccountData,
-            (a: any) => userAccount.internalId === a.id,
-            sortOrder)
-
           // Query moneyAccounts in this userAccount
-
-          Promise.allSettled(moneyAccounts.map((account: any) => Promise.allSettled([
+          Promise.allSettled((moneyAccounts || []).map((account: any) => Promise.allSettled([
             getBankAccountName(account),
             account.getBalance(),
             account.getSymbol(),
@@ -125,7 +118,19 @@ class LokAPI extends LokAPIBrowserAbstract {
                 (a: any) => account.internalId === a.id,
                 sortOrder)
             }
-          }))).then(resolve)  // Resolving for all info related to this userAccount
+          }))).then((r) => {
+
+
+            if (moneyAccounts.length !== 1) {
+              replaceOrInsertElt(
+                simplifiedWatchedAccounts,
+                userAccountData,
+                (a: any) => userAccount.internalId === a.id,
+                sortOrder)
+            }
+
+            resolve(r)
+          })  // Resolving for all info related to this userAccount
         })
       }))
     )
