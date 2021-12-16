@@ -32,9 +32,9 @@ export var moduleLokAPI = {
         let profile = await lokApiService.getMyContact()
         commit('auth_success')
         commit('setUserProfile', profile)
-        commit("setThisWeekTransactions")
         dispatch("fetchUserAccounts")
         dispatch("fetchBackends")
+        dispatch("fetchUserTransactions")
       } catch (err:any) {
         // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
@@ -52,6 +52,7 @@ export var moduleLokAPI = {
         commit("setUserProfile", profile)
         dispatch("fetchUserAccounts")
         dispatch("fetchBackends")
+        dispatch("fetchUserTransactions")
       } catch (err:any) {
         console.error(err)
       }
@@ -60,7 +61,6 @@ export var moduleLokAPI = {
       let accounts: Array<object> = []
       await lokApiService.buildAccountsInplace(accounts)
       commit("setUserAccounts", accounts)
-      await commit("setThisWeekTransactions")
     },
     async genPaymentLink({commit}:any,amount:number) {
       await commit("genPaymentLink", amount)
@@ -83,13 +83,28 @@ export var moduleLokAPI = {
       lokApiService.clearBackendCache()
       dispatch("fetchUserAccounts")
       dispatch('fetchBackends')
-      await commit("setThisWeekTransactions")
+      dispatch("fetchUserTransactions")
     },
     async fetchBackends({ commit, state }:any) {
       try {
         commit('setBackends', await lokApiService.getBackends())
       } catch (err:any) {
         console.error('Error getting currency backends', err)
+        throw err
+      }
+    },
+    async fetchUserTransactions({ commit, state }:any) {
+      try {
+        let transactionsGen = await lokApiService.getTransactions()
+        let transactions = []
+        let next = await transactionsGen.next()
+        while (!next.done) {
+          transactions.push(<any>next.value)
+          next = await transactionsGen.next()
+        }
+        commit('setUserTransactions', transactions)
+      } catch (err:any) {
+        console.error('Error getting user transactions', err)
         throw err
       }
     }
@@ -145,15 +160,7 @@ export var moduleLokAPI = {
       state.accountsLoaded = true
     },
    
-    async setThisWeekTransactions (state:any) {
-      let transactionsGen = lokApiService.getTransactions()
-
-      let transactions = []
-      let next = await transactionsGen.next()
-      while (!next.done) {
-        transactions.push(<any>next.value)
-        next = await transactionsGen.next()
-      }
+    setUserTransactions (state:any, transactions:any) {
       state.transactions = transactions 
       var maxTransactions = 5
       let trs = []
