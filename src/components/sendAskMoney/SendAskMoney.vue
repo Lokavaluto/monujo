@@ -6,6 +6,7 @@
     <div class="columns menu">
       <div class="column is-tablet has-text-centered mb-2">
         <button
+          :disabled="!hasActiveMoneyAccount"
           @click="showModalFrame1 = true, resetSendMoney()"
           class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
@@ -14,7 +15,7 @@
       </div>
       <div class="column is-tablet has-text-centered mb-2">
         <button
-          disabled
+          :disabled="true"
           class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
           <!-- @click="showModalFrameAskMoney1 = true" -->
@@ -23,6 +24,7 @@
       </div>
       <div class="column is-tablet has-text-centered mb-2">
         <button
+          :disabled="!hasActiveMoneyAccount"
           class="button custom-button has-text-weight-medium is-rounded action"
           @click="showModalFrameCreditMoney1 = true"
         >
@@ -1020,6 +1022,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { mapGetters } from 'vuex'
 import MyModal from "../modal/MyModal.vue";
 //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 
@@ -1080,7 +1083,10 @@ function returnFavoritesOnly(partners:any): any{
     },
     globalBalCall():boolean {
       return this.$store.state.showCredit
-    }
+    },
+    hasActiveMoneyAccount():boolean {
+      return this.$store.getters.activeMoneyAccounts.length > 0
+    },
   },
 
   methods: {
