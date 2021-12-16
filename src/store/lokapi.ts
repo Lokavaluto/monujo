@@ -57,7 +57,9 @@ export var moduleLokAPI = {
       }
     },
     async fetchUserAccounts({commit}:any) {
-      await commit("setBalCurr")
+      let accounts: Array<object> = []
+      await lokApiService.buildAccountsInplace(accounts)
+      commit("setUserAccounts", accounts)
       await commit("setThisWeekTransactions")
     },
     async genPaymentLink({commit}:any,amount:number) {
@@ -79,8 +81,8 @@ export var moduleLokAPI = {
       // XXXvlab: hopin' to provide a better way (and generalized)
       // to handle all caches in lokapi in an upcoming version.
       lokApiService.clearBackendCache()
+      dispatch("fetchUserAccounts")
       dispatch('setBackends')
-      await commit("setBalCurr")
       await commit("setThisWeekTransactions")
     },
     async setBackends({ commit, state }:any) {
@@ -126,8 +128,8 @@ export var moduleLokAPI = {
       state.isMultiCurrency = false
     },
 
-    async setBalCurr(state:any) {
-      await lokApiService.buildAccountsInplace(state.accounts)
+    setUserAccounts(state:any, accounts:any) {
+      state.accounts = accounts
 
       // Inform the UI if we are in a multi-currency display, note
       // we are testing the backend and not the currency symbol
