@@ -30,7 +30,6 @@ export var moduleLokAPI = {
       try {
         await lokApiService.login(login, password)
       } catch (err:any) {
-        // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
         throw err
       }
