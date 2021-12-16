@@ -36,7 +36,6 @@ export var moduleLokAPI = {
         dispatch("fetchBackends")
         dispatch("fetchUserTransactions")
       } catch (err:any) {
-        // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
         throw err
       }
