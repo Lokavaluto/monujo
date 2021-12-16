@@ -34,7 +34,7 @@ export var moduleLokAPI = {
         commit('setUserProfile', profile)
         commit("setThisWeekTransactions")
         dispatch("fetchUserAccounts")
-        dispatch("setBackends")
+        dispatch("fetchBackends")
       } catch (err:any) {
         // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
@@ -51,7 +51,7 @@ export var moduleLokAPI = {
         commit('auth_success')
         commit("setUserProfile", profile)
         dispatch("fetchUserAccounts")
-        dispatch("setBackends")
+        dispatch("fetchBackends")
       } catch (err:any) {
         console.error(err)
       }
@@ -82,12 +82,12 @@ export var moduleLokAPI = {
       // to handle all caches in lokapi in an upcoming version.
       lokApiService.clearBackendCache()
       dispatch("fetchUserAccounts")
-      dispatch('setBackends')
+      dispatch('fetchBackends')
       await commit("setThisWeekTransactions")
     },
-    async setBackends({ commit, state }:any) {
+    async fetchBackends({ commit, state }:any) {
       try {
-        commit('storeBackends', await lokApiService.getBackends())
+        commit('setBackends', await lokApiService.getBackends())
       } catch (err:any) {
         console.error('Error getting currency backends', err)
         throw err
@@ -172,7 +172,7 @@ export var moduleLokAPI = {
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
     },
-    storeBackends(state: any, backends: any) {
+    setBackends(state: any, backends: any) {
       state.backends = backends
     },
     setUserProfile(state: any, profile: object) {
