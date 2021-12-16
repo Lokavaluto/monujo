@@ -1,23 +1,34 @@
 <template>
     <h2 class="custom-card-sub-title">Cette semaine</h2>
-    <TransactionSubCard v-for="transaction in getTrs"
-        :key="transaction" :amount="transaction.amount" 
-        :symbol="transaction.currency"
-        :desc="transaction.description"
-        :date="dateFormated(transaction.date)"
-        :unformatedDate="transaction.date"
-        :name="transaction.relatedUser ? transaction.relatedUser.display : transaction.related.type.name "
-        picto="QR"/>
+    <div class="notification p-6" v-if="isLoadingTransactions">
+        <loading v-model:active="isLoadingTransactions"
+            :can-cancel="false"
+            :is-full-page="false"
+        />
+    </div>
+    <template v-else>
+        <TransactionSubCard v-for="transaction in getTrs"
+            :key="transaction" :amount="transaction.amount" 
+            :symbol="transaction.currency"
+            :desc="transaction.description"
+            :date="dateFormated(transaction.date)"
+            :unformatedDate="transaction.date"
+            :name="transaction.relatedUser ? transaction.relatedUser.display : transaction.related.type.name "
+            picto="QR"/>
+    </template>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import TransactionSubCard from "./TransactionSubCard.vue"
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 @Options({
     name:"ThisWeek",
     components: {
-        TransactionSubCard
+        TransactionSubCard,
+        Loading
     },
     data() {
         return {}
@@ -29,6 +40,9 @@ import TransactionSubCard from "./TransactionSubCard.vue"
             } else {
                 return []
             }
+        },
+        isLoadingTransactions():boolean {
+            return this.$store.state.lokapi.transactionsStatus === 'loading'
         }
     },
    

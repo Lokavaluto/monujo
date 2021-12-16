@@ -11,6 +11,7 @@ export var moduleLokAPI = {
     status: '',
     userProfile: null,
     transactions: null,
+    transactionsStatus: 'loaded',
     thisWeektransactions:null,
     bal: 0,
     curr:"",
@@ -101,6 +102,7 @@ export var moduleLokAPI = {
       }
     },
     async fetchUserTransactions({ commit, state }:any) {
+      commit('setUserTransactionsStatus', 'loading')
       try {
         let transactionsGen = await lokApiService.getTransactions()
         let transactions = []
@@ -110,6 +112,7 @@ export var moduleLokAPI = {
           next = await transactionsGen.next()
         }
         commit('setUserTransactions', transactions)
+        commit('setUserTransactionsStatus', 'loaded')
       } catch (err:any) {
         console.error('Error getting user transactions', err)
         throw err
@@ -135,6 +138,7 @@ export var moduleLokAPI = {
       state.status= ''
       state.userProfile= null
       state.transactions=null
+      state.transactionsStatus='loaded'
       state.thisWeektransactions=null
       state.bal= 0
       state.curr=""
@@ -182,6 +186,9 @@ export var moduleLokAPI = {
       });
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
+    },
+    setUserTransactionsStatus(state:any, status:string) {
+      state.transactionsStatus = status
     },
     setBackends(state: any, backends: any) {
       state.backends = backends
