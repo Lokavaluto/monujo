@@ -29,9 +29,8 @@ export var moduleLokAPI = {
       commit('auth_request')
       try {
         await lokApiService.login(login, password)
-        let profile = await lokApiService.getMyContact()
         commit('auth_success')
-        commit('setUserProfile', profile)
+        dispatch("fetchUserProfile")
         dispatch("fetchUserAccounts")
         dispatch("fetchBackends")
         dispatch("fetchUserTransactions")
@@ -46,14 +45,22 @@ export var moduleLokAPI = {
     },
     async initAutoLogin({commit, dispatch}:any) {
       try {
-        let profile = await lokApiService.getMyContact()
         commit('auth_success')
-        commit("setUserProfile", profile)
+        dispatch("fetchUserProfile")
         dispatch("fetchUserAccounts")
         dispatch("fetchBackends")
         dispatch("fetchUserTransactions")
       } catch (err:any) {
         console.error(err)
+      }
+    },
+    async fetchUserProfile({ commit }:any) {
+      try {
+        let profile = await lokApiService.getMyContact()
+        commit("setUserProfile", profile)
+      } catch (err:any) {
+        console.error('Cannot fetch user profile data', err)
+        throw err
       }
     },
     async fetchUserAccounts({commit}:any) {
