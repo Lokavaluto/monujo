@@ -23,7 +23,7 @@ import TransactionSubCard from "./TransactionSubCard.vue";
     },
     computed: {
         getTrs(): number {
-            return this.$store.getters.getTransactions()
+            return this.$store.state.lokapi.transactions
         }
     },
     methods : { 
