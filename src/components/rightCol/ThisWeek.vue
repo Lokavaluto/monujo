@@ -25,7 +25,7 @@ import TransactionSubCard from "./TransactionSubCard.vue"
     computed: {
         getTrs(): any {
             if (this.$store.state.OperationsSelector == 0) {
-                return this.$store.getters.getThisWeektransactions()
+                return this.$store.state.lokapi.thisWeektransactions
             } else {
                 return []
             }
