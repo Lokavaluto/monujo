@@ -33,7 +33,7 @@ export var moduleLokAPI = {
         commit('auth_success')
         commit('setUserProfile', profile)
         commit("setThisWeekTransactions")
-        dispatch("setAccounts")
+        dispatch("fetchUserAccounts")
         dispatch("setBackends")
       } catch (err:any) {
         // { APIRequestFailed, InvalidCredentials }
@@ -50,13 +50,13 @@ export var moduleLokAPI = {
         let profile = await lokApiService.getMyContact()
         commit('auth_success')
         commit("setUserProfile", profile)
-        dispatch("setAccounts")
+        dispatch("fetchUserAccounts")
         dispatch("setBackends")
       } catch (err:any) {
         console.error(err)
       }
     },
-    async setAccounts({commit}:any) {
+    async fetchUserAccounts({commit}:any) {
       await commit("setBalCurr")
       await commit("setThisWeekTransactions")
     },
