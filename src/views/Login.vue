@@ -83,9 +83,7 @@ import { RestExc } from '@lokavaluto/lokapi-browser';
           login: this.email,
           password: this.password,
         });
-        this.$store.dispatch("setAccounts");
         this.success = "Connection réussie";
-        this.$store.state.lokapi.isLog = true;
         this.$router.push({ path: "/profile" });
       } catch (e) {
         // { APIRequestFailed, InvalidCredentials }
