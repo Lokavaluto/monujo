@@ -29,22 +29,32 @@ export var moduleLokAPI = {
       commit('auth_request')
       try {
         await lokApiService.login(login, password)
+        let profile = await lokApiService.getMyContact()
+        commit('auth_success')
+        commit('setUserProfile', profile)
+        commit("setThisWeekTransactions")
+        dispatch("setAccounts")
+        dispatch("setBackends")
       } catch (err:any) {
         // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
         throw err
       }
-      await dispatch('setBackends')
 
-      commit("setThisWeekTransactions")
-      commit('auth_success')
     },
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
     },
     async initAutoLogin({commit, dispatch}:any) {
-      commit("autoLogin")
-      await dispatch('setBackends')
+      try {
+        let profile = await lokApiService.getMyContact()
+        commit('auth_success')
+        commit("setUserProfile", profile)
+        dispatch("setAccounts")
+        dispatch("setBackends")
+      } catch (err:any) {
+        console.error(err)
+      }
     },
     async setAccounts({commit}:any) {
       await commit("setBalCurr")
@@ -93,10 +103,11 @@ export var moduleLokAPI = {
     },
     auth_success(state: any) {
       state.status = 'success'
-      state.userProfile = lokApiService.userProfile
+      state.isLog = true
     },
     auth_error(state: any) {
       state.status = 'error'
+      state.isLog = false
     },
     logout(state: any) {
       state.status = ''
@@ -132,10 +143,6 @@ export var moduleLokAPI = {
       // Warn the UI that account information are fully loaded
       state.accountsLoaded = true
     },
-
-    async autoLogin(state: any) {
-      state.userProfile = lokApiService.getMyContact()
-    },
    
     async setThisWeekTransactions (state:any) {
       let transactionsGen = lokApiService.getTransactions()
@@ -166,6 +173,9 @@ export var moduleLokAPI = {
     },
     storeBackends(state: any, backends: any) {
       state.backends = backends
+    },
+    setUserProfile(state: any, profile: object) {
+      state.userProfile = profile
     }
   },
   getters: {
@@ -182,12 +192,6 @@ export var moduleLokAPI = {
     getAccs: (state: any) => {
       return function(): Array<any> {
         return state.accounts
-      }
-    },
-
-    getUserProfile: (state: any) => {
-      return function(): any {
-        return state.userProfile
       }
     },
     getApiToken: (state: any) => {
