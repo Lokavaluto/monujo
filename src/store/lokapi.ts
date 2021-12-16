@@ -30,7 +30,6 @@ export var moduleLokAPI = {
       try {
         await lokApiService.login(login, password)
       } catch (err:any) {
-        // { APIRequestFailed, InvalidCredentials }
         commit('auth_error')
         throw err
       }
@@ -119,7 +118,6 @@ export var moduleLokAPI = {
     },
 
     async setBalCurr(state:any) {
-      const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
       await lokApiService.buildAccountsInplace(state.accounts)
 
       // Inform the UI if we are in a multi-currency display, note
