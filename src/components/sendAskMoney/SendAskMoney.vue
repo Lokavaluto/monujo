@@ -6,6 +6,7 @@
     <div class="columns menu">
       <div class="column is-tablet has-text-centered mb-2">
         <button
+          v-bind:disabled="!hasMoneyAccount"
           @click="showModalFrame1 = true, resetSendMoney()"
           class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
@@ -14,7 +15,7 @@
       </div>
       <div class="column is-tablet has-text-centered mb-2">
         <button
-          disabled
+          v-bind:disabled="true"
           class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
           <!-- @click="showModalFrameAskMoney1 = true" -->
@@ -23,6 +24,7 @@
       </div>
       <div class="column is-tablet has-text-centered mb-2">
         <button
+          v-bind:disabled="!hasMoneyAccount"
           class="button custom-button has-text-weight-medium is-rounded action"
           @click="showModalFrameCreditMoney1 = true"
         >
@@ -1080,6 +1082,9 @@ function returnFavoritesOnly(partners:any): any{
     },
     globalBalCall():boolean {
       return this.$store.state.showCredit
+    },
+    hasMoneyAccount():boolean {
+      return this.$store.state.lokapi.accounts.length > 0
     }
   },
 
