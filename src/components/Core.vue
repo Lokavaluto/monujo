@@ -51,7 +51,7 @@ import router from "../router/index"
   components: {
     LeftCol,
     RightCol,
-    SendAskMoney,
+    SendAskMoney
   },
 })
 export default class Core extends Vue {}

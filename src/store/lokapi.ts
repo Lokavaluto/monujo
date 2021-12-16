@@ -15,7 +15,7 @@ export var moduleLokAPI = {
     bal: 0,
     curr:"",
     accounts:[],
-    accountsLoaded: false,
+    accountsStatus: 'loaded',
     recipient:"",
     isLog:false,
     paymentUrl: "",
@@ -60,9 +60,12 @@ export var moduleLokAPI = {
       }
     },
     async fetchUserAccounts({commit}:any) {
+      commit('setUserAccountsListStatus', 'loading')
       let accounts: Array<object> = []
       await lokApiService.buildAccountsInplace(accounts)
       commit("setUserAccounts", accounts)
+      // Warn the UI that account information are fully loaded
+      commit('setUserAccountsListStatus', 'loaded')
     },
     async genPaymentLink({ commit, state }:any, amount:number) {
       console.log(state.accounts)
@@ -136,7 +139,7 @@ export var moduleLokAPI = {
       state.bal= 0
       state.curr=""
       state.accounts=[]
-      state.accountsLoaded=false
+      state.accountsStatus='loaded'
       state.recipient=""
       state.isLog=false
       state.paymentUrl=""
@@ -155,9 +158,10 @@ export var moduleLokAPI = {
           (account: any) => account.currencyId !== currencyId
         )
       }
+    },
 
-      // Warn the UI that account information are fully loaded
-      state.accountsLoaded = true
+    setUserAccountsListStatus(state:any, status:string) {
+      state.accountsStatus = status
     },
    
     setUserTransactions (state:any, transactions:any) {
