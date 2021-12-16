@@ -30,10 +30,6 @@ export var moduleLokAPI = {
       try {
         await lokApiService.login(login, password)
         commit('auth_success')
-        dispatch("fetchUserProfile")
-        dispatch("fetchUserAccounts")
-        dispatch("fetchBackends")
-        dispatch("fetchUserTransactions")
       } catch (err:any) {
         commit('auth_error')
         throw err
@@ -68,8 +64,10 @@ export var moduleLokAPI = {
       await lokApiService.buildAccountsInplace(accounts)
       commit("setUserAccounts", accounts)
     },
-    async genPaymentLink({commit}:any,amount:number) {
-      await commit("genPaymentLink", amount)
+    async genPaymentLink({ commit, state }:any, amount:number) {
+      console.log(state.accounts)
+      // state.paymentUrl = await state.accounts[0].getCreditUrl(amount)
+      // console.log("paymentUrl url =", state.paymentUrl.order_url)
     },
     askLogOut({commit}:any) {
       commit("logout")
@@ -117,10 +115,6 @@ export var moduleLokAPI = {
 
   },
   mutations: {
-    async genPaymentLink(state: any, amount:number) {
-      state.paymentUrl = await state.accounts[0].getCreditUrl(amount)
-      // console.log("paymentUrl url =", state.paymentUrl.order_url)
-    },
     auth_request(state: any) {
       state.status = 'loading'
     },
