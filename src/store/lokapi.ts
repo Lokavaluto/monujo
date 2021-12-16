@@ -10,9 +10,9 @@ export var moduleLokAPI = {
   state: {
     status: '',
     userProfile: null,
-    transactions: null,
+    transactions:[],
     transactionsStatus: 'loaded',
-    thisWeektransactions:null,
+    thisWeektransactions:[],
     bal: 0,
     curr:"",
     accounts:[],

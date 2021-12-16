@@ -2,22 +2,23 @@
     <div
       class="accounts card custom-card custom-card-padding"
     >
-        <h2 class="custom-card-title">Operations</h2>
+        <h2 class="custom-card-title">Operations cette semaine</h2>
         <div class="notification p-6" v-if="isLoadingTransactions">
             <loading v-model:active="isLoadingTransactions"
                 :can-cancel="false"
                 :is-full-page="false"
             />
         </div>
-
-        <TransactionSubCard v-for="transaction in thisweekTransactions"
-            :key="transaction" :amount="transaction.amount" 
-            :symbol="transaction.currency"
-            :desc="transaction.description"
-            :date="dateFormated(transaction.date)"
-            :unformatedDate="transaction.date"
-            :name="transaction.relatedUser ? transaction.relatedUser.display : transaction.related.type.name "
-            picto="QR"/>
+        <template v-else>
+            <TransactionSubCard v-for="transaction in thisweekTransactions"
+                :key="transaction" :amount="transaction.amount" 
+                :symbol="transaction.currency"
+                :desc="transaction.description"
+                :date="dateFormated(transaction.date)"
+                :unformatedDate="transaction.date"
+                :name="transaction.relatedUser ? transaction.relatedUser.display : transaction.related.type.name "
+                picto="QR"/>
+        </template>
     </div>
 </template>
 <script lang="ts">
