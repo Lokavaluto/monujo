@@ -211,16 +211,6 @@ export var moduleLokAPI = {
         return state.apiToken
       }
     },
-    getTransactions: (state: any) => {
-      return function(): any {
-        return state.transactions
-      }
-    },
-    getThisWeektransactions: (state: any) => {
-      return function(): any {
-        return state.thisWeektransactions
-      }
-    },
     hasUnconfiguredBackend: (state: any, getters: any) => {
       return function(): any {
         let unconfiguredBackends = getters.getUnconfiguredBackends()
