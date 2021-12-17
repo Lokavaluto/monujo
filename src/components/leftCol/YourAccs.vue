@@ -28,7 +28,7 @@
           <template v-slot:name>{{ account.name }}</template>
         </Acc>
       </div>
-      <div class="notification" v-if="areMoneyAccountsLoaded && totalAccountsLoaded === 0">
+      <div class="notification" v-if="accountsLoaded && totalAccountsLoaded === 0">
         <p class="notification is-default">Vous n'avez pas encore de compte</p>
       </div>
     </div>
@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { mapGetters, mapState } from 'vuex'
 import Acc from "./yourAccs/Acc.vue"
 
 @Options({
@@ -48,18 +49,16 @@ import Acc from "./yourAccs/Acc.vue"
         Acc
     },
     computed: {
-      activeMoneyAccounts(): any {
-        return this.$store.state.lokapi.accounts.filter((a: any) => a.active === true)
-      },
-      inactiveMoneyAccounts(): any {
-        return this.$store.state.lokapi.accounts.filter((a: any) => a.active === false)
-      },
-      areMoneyAccountsLoaded(): boolean {
-        return this.$store.state.lokapi.accountsLoaded
-      },
       totalAccountsLoaded(): number {
         return this.$store.state.lokapi.accounts.length
-      }
+      },
+      ...mapGetters([
+        'activeMoneyAccounts',
+        'inactiveMoneyAccounts',
+      ]),
+      ...mapState([
+                'accountsLoaded',
+      ]),
     }
 })
 export default class YourAccs extends Vue {}

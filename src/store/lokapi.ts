@@ -216,7 +216,13 @@ export var moduleLokAPI = {
           ([backendId, _]) => backendId
         )
       }
-    }
+    },
+    activeMoneyAccounts: (state:any) => {
+      return state.accounts.filter((a: any) => a.active === true)
+    },
+    inactiveMoneyAccounts: (state: any) => {
+      return state.accounts.filter((a: any) => a.active === false)
+    },
   }
 }
 
