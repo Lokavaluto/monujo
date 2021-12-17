@@ -1080,6 +1080,9 @@ function returnFavoritesOnly(partners:any): any{
     },
     globalBalCall():boolean {
       return this.$store.state.showCredit
+    },
+    userAccounts():Array<any> {
+      return this.$store.state.lokapi.accounts
     }
   },
 
@@ -1101,7 +1104,7 @@ function returnFavoritesOnly(partners:any): any{
 
     async newLinkTab() {
       if (this.amountForCredit > 0) {
-        let url = await this.$store.state.lokapi.accounts[0].getCreditUrl(this.amountForCredit)
+        let url = await this.userAccounts[0].getCreditUrl(this.amountForCredit)
         try {
           window.open(url.order_url, '_blank')!.focus();
           this.urlForHyperlink = url.order_url
@@ -1142,7 +1145,7 @@ function returnFavoritesOnly(partners:any): any{
       for (let i = 0; i < this.$store.state.lokapi.recipientHistory.length; i++) {
         var recipient
         try {
-          recipient = await this.$lokapi.searchRecipients(this.$store.state.lokapi.recipientHistory[i])
+          recipient = await this.$store.dispatch('searchRecipients', this.$store.state.lokapi.recipientHistory[i])
           h.push(recipient[0])
         } catch (err) {
           console.log('searchRecipients() Failed', err)
@@ -1158,7 +1161,7 @@ function returnFavoritesOnly(partners:any): any{
       } else {
       var recipients
       try {
-        recipients = await this.$lokapi.searchRecipients(this.searchName)
+        recipients = await this.$store.dispatch('searchRecipients', this.searchName)
         console.log(recipients)
       } catch (err) {
         console.log('searchRecipients() Failed', err)
@@ -1174,7 +1177,7 @@ function returnFavoritesOnly(partners:any): any{
       } else {
         var recipients
       try {
-        recipients = await this.$lokapi.searchProRecipients(this.searchName)
+        recipients = await this.$store.dispatch('searchProRecipients', this.searchName)
       } catch (err) {
         console.log('searchRecipients() Failed', err)
       }
@@ -1186,7 +1189,7 @@ function returnFavoritesOnly(partners:any): any{
       if (this.searchName != "" && !this.displayFavoritesOnly) {
         var recipients
         try {
-          recipients = await this.$lokapi.searchRecipients(this.searchName)
+          recipients = await this.$store.dispatch('searchRecipients', this.searchName)
         } catch (err) {
           console.log('searchRecipients() FAILED', err)
         }
@@ -1200,7 +1203,7 @@ function returnFavoritesOnly(partners:any): any{
       if (this.searchName != "" && !this.displayFavoritesOnly) {
         var recipients
         try {
-            recipients = await this.$lokapi.searchProRecipients(this.searchName)
+            recipients = await this.$store.dispatch('searchProRecipients', this.searchName)
         } catch (err) {
             console.log('searchProRecipients() FAILED', err)
         }
@@ -1232,8 +1235,7 @@ function returnFavoritesOnly(partners:any): any{
           console.log('Payment failed:', err.message)
           throw err
         }
-        let accounts = await this.$lokapi.getAccounts()
-        let bal = await accounts[0].getBalance()
+        let bal = this.userAccounts[0].bal
         this.$store.state.lokapi.bal = bal
         this.$toast.success(
           `Paiement effectué à ${this.recipientName}`,

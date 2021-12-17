@@ -117,6 +117,12 @@ export var moduleLokAPI = {
         console.error('Error getting user transactions', err)
         throw err
       }
+    },
+    async searchRecipients({ commit, state }:any, name:string) {
+      return lokApiService.searchRecipients(name)
+    },
+    async searchProRecipients({ commit, state }:any, name:string) {
+      return lokApiService.searchProRecipients(name)
     }
 
   },
