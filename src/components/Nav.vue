@@ -33,13 +33,6 @@
     >
 
       <div class="navbar-end">
-        <div class="navbar-item" v-if="!getLog">
-          <div class="buttons">
-            <router-link to="/" class="button is-light">
-              Se connecter
-            </router-link>
-          </div>
-        </div>
 
         <div class="navbar-item has-dropdown is-hoverable" v-if="getLog">
           <a class="navbar-link">
