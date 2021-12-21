@@ -33,13 +33,6 @@
     >
 
       <div class="navbar-end">
-        <div class="navbar-item" v-if="!getLog">
-          <div class="buttons">
-            <router-link to="/" class="button is-light">
-              Se connecter
-            </router-link>
-          </div>
-        </div>
 
         <template v-if="getLog">
           <div class="navbar-item">
