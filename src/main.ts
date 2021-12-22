@@ -6,10 +6,6 @@ import { lokApiService } from "./services/lokapiService"
 import Toaster from "@meforma/vue-toaster";
 import Swal from "./useSwal";
 require("@/assets/main.scss");
-// import { library } from "@fortawesome/fontawesome-svg-core";
-// import { faCoffee } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-// library.add(faCoffee);
 
 const app = createApp(App)
   app.use(store)
