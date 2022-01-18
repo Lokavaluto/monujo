@@ -42,6 +42,9 @@
           </div>
           <div class="navbar-item">
             <div class="buttons">
+              <a :href="profilePageUrl" target="_blank" class="button">
+                Profil
+              </a>
               <router-link v-if="hasUnconfiguredBackend" to="/create-account" class="button">
                 Créer mon portefeuille
               </router-link>
@@ -83,6 +86,9 @@ import { Options, Vue } from 'vue-class-component';
       },
       userProfile(): string {
         return this.$store.state.lokapi.userProfile
+      },
+      profilePageUrl(): string {
+        return this.$store.getters.getOdooUrl() + '/fr_FR/my/home'
       }
     },
 })

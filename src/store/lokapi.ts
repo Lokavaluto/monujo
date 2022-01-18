@@ -226,6 +226,11 @@ export var moduleLokAPI = {
     inactiveMoneyAccounts: (state: any) => {
       return state.accounts.filter((a: any) => a.active === false)
     },
+    getOdooUrl: (state: any) => {
+      return function(): any {
+        return 'https://' + lokApiService.host
+      }
+    }
   }
 }
 
