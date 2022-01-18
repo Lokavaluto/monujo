@@ -40,11 +40,14 @@
           </a>
 
           <div class="navbar-dropdown is-right">
+            <a :href="profilePageUrl" target="_blank" class="navbar-item">
+              Profil
+            </a>
             <router-link v-if="hasUnconfiguredBackend" to="/create-account" class="navbar-item">
               Créer mon portefeuille
             </router-link>
 
-            <hr class="navbar-divider" v-if="hasUnconfiguredBackend">
+            <hr class="navbar-divider">
 
             <router-link to="/" @click="logout" class="navbar-item">
               Déconnexion
@@ -83,6 +86,9 @@ import { Options, Vue } from 'vue-class-component';
       },
       userProfile(): string {
         return this.$store.state.lokapi.userProfile
+      },
+      profilePageUrl(): string {
+        return this.$store.getters.getOdooUrl() + '/fr_FR/my/home'
       }
     },
 })
