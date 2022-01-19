@@ -10,7 +10,12 @@
           @click="showModalFrame1 = true, resetSendMoney()"
           class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
-          Envoyer de l'argent
+          <span class="icon-text">
+            <span class="icon ml-1">
+              <i class="fas fa-lg fa-arrow-circle-up"></i>
+            </span>
+            <span>Payer</span>
+          </span>
         </button>
       </div>
       <div class="column is-tablet has-text-centered mb-2">
@@ -18,8 +23,12 @@
           :disabled="true"
           class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
         >
-          <!-- @click="showModalFrameAskMoney1 = true" -->
-          Demander de l'argent
+          <span class="icon-text">
+            <span class="icon ml-1">
+              <i class="fas fa-lg fa-arrow-circle-down"></i>
+            </span>
+            <span>Recevoir</span>
+          </span>
         </button>
       </div>
       <div class="column is-tablet has-text-centered mb-2">
@@ -28,7 +37,12 @@
           class="button custom-button has-text-weight-medium is-rounded action"
           @click="showModalFrameCreditMoney1 = true"
         >
-          crediter mon compte
+          <span class="icon-text">
+            <span class="icon ml-1">
+              <i class="fas fa-lg fa-plus-circle"></i>
+            </span>
+            <span>Recharger</span>
+          </span>
         </button>
       </div>
     </div>
