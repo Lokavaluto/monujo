@@ -61,23 +61,23 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+  import { Options, Vue } from 'vue-class-component';
 
-@Options({
-  name: "Nav",
-  data() {
-    return {
-      showNav: false
-    };
-  },
-  methods : {
-    logout() {
-      this.$store.dispatch("askLogOut")
-    }
-  },
-  computed: {
+  @Options({
+    name: "Nav",
+    data() {
+      return {
+        showNav: false
+      };
+    },
+    methods : {
+      logout() {
+        this.$store.dispatch("askLogOut")
+      }
+    },
+    computed: {
       getLog(): string {
-         return this.$store.state.lokapi.isLog
+        return this.$store.state.lokapi.isLog
       },
       hasUnconfiguredBackend(): boolean {
         // Display of the account creation button should be displayed only
@@ -91,6 +91,6 @@ import { Options, Vue } from 'vue-class-component';
         return this.$store.getters.getOdooUrl() + '/fr_FR/my/home'
       }
     },
-})
-export default class Nav extends Vue {}
+  })
+  export default class Nav extends Vue {}
 </script>
