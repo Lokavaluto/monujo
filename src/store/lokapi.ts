@@ -49,8 +49,10 @@ export var moduleLokAPI = {
       await commit("setBalCurr")
       await commit("setThisWeekTransactions")
     },
-    async genPaymentLink({commit}:any,amount:number) {
-      await commit("genPaymentLink", amount)
+    async genPaymentLink({ commit, state }:any, amount:number) {
+      console.log(state.accounts)
+      // state.paymentUrl = await state.accounts[0].getCreditUrl(amount)
+      // console.log("paymentUrl url =", state.paymentUrl.order_url)
     },
     askLogOut({commit}:any) {
       commit("logout")
@@ -83,10 +85,6 @@ export var moduleLokAPI = {
 
   },
   mutations: {
-    async genPaymentLink(state: any, amount:number) {
-      state.paymentUrl = await state.accounts[0].getCreditUrl(amount)
-      // console.log("paymentUrl url =", state.paymentUrl.order_url)
-    },
     auth_request(state: any) {
       state.status = 'loading'
     },
