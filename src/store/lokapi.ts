@@ -114,10 +114,11 @@ export var moduleLokAPI = {
     },
     auth_success(state: any) {
       state.status = 'success'
-      state.userProfile = lokApiService.userProfile
+      state.isLog = true
     },
     auth_error(state: any) {
       state.status = 'error'
+      state.isLog = false
     },
     logout(state: any) {
       state.status = ''
@@ -155,10 +156,6 @@ export var moduleLokAPI = {
     setBankAccounts(state:any, accounts:any) {
       state.accounts = accounts
     },
-
-    async autoLogin(state: any) {
-      state.userProfile = lokApiService.getMyContact()
-    },
    
     setTransactions (state:any, transactions:any) {
       state.transactions = transactions 
@@ -195,12 +192,6 @@ export var moduleLokAPI = {
     getAccs: (state: any) => {
       return function(): Array<any> {
         return state.accounts
-      }
-    },
-
-    getUserProfile: (state: any) => {
-      return function(): any {
-        return state.userProfile
       }
     },
     getApiToken: (state: any) => {
