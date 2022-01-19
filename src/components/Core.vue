@@ -34,18 +34,7 @@ import router from "../router/index"
     // the store already contains the logged in user informations...
     // Maybe all the following is not useful ?
     if(!this.userProfile) {
-      try {
-        this.$store.dispatch("initAutoLogin")
-        this.$store.getters.getUserProfile().then(async (result:any) => {
-          this.userProfile = result
-          this.$store.dispatch("setAccounts")
-          this.$store.state.lokapi.isLog = true
-        })
-      } catch(e) {
-        console.error("Error while trying to autolog", e)
-        router.push("/")
-        throw e
-      }
+      this.$store.dispatch("initAutoLogin")
     }
   },
   computed: {

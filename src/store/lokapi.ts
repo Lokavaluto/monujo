@@ -33,21 +33,31 @@ export var moduleLokAPI = {
         commit('auth_error')
         throw err
       }
-      await dispatch('setBackends')
-
-      commit("setThisWeekTransactions")
       commit('auth_success')
     },
     async resetTRS({commit} :any) {
-      await commit("setThisWeekTransactions")
+      commit("setTransactions", [])
     },
     async initAutoLogin({commit, dispatch}:any) {
-      commit("autoLogin")
-      await dispatch('setBackends')
+      commit('auth_success')
+      dispatch("fetchUserProfile")
+      dispatch("fetchBankAccounts")
+      dispatch("fetchBackends")
+      dispatch("fetchTransactions")
     },
-    async setAccounts({commit}:any) {
-      await commit("setBalCurr")
-      await commit("setThisWeekTransactions")
+    async fetchUserProfile({ commit }:any) {
+      try {
+        let profile = await lokApiService.getMyContact()
+        commit("setUserProfile", profile)
+      } catch (err:any) {
+        console.error('Cannot fetch user profile data', err)
+        throw err
+      }
+    },
+    async fetchBankAccounts({commit}:any) {
+      let accounts: Array<object> = []
+      await lokApiService.buildAccountsInplace(accounts)
+      commit("setBankAccounts", accounts)
     },
     async genPaymentLink({ commit, state }:any, amount:number) {
       console.log(state.accounts)
@@ -70,19 +80,33 @@ export var moduleLokAPI = {
       // XXXvlab: hopin' to provide a better way (and generalized)
       // to handle all caches in lokapi in an upcoming version.
       lokApiService.clearBackendCache()
-      dispatch('setBackends')
-      await commit("setBalCurr")
-      await commit("setThisWeekTransactions")
+      dispatch("fetchUserAccounts")
+      dispatch('fetchBackends')
+      dispatch("fetchUserTransactions")
     },
-    async setBackends({ commit, state }:any) {
+    async fetchBackends({ commit, state }:any) {
       try {
-        commit('storeBackends', await lokApiService.getBackends())
+        commit('setBackends', await lokApiService.getBackends())
       } catch (err:any) {
         console.error('Error getting currency backends', err)
         throw err
       }
+    },
+    async fetchTransactions({ commit, state }:any) {
+      try {
+        let transactionsGen = await lokApiService.getTransactions()
+        let transactions = []
+        let next = await transactionsGen.next()
+        while (!next.done) {
+          transactions.push(<any>next.value)
+          next = await transactionsGen.next()
+        }
+        commit('setTransactions', transactions)
+      } catch (err:any) {
+        console.error('Error getting user transactions', err)
+        throw err
+      }
     }
-
   },
   mutations: {
     auth_request(state: any) {
@@ -128,19 +152,15 @@ export var moduleLokAPI = {
       state.accountsLoaded = true
     },
 
+    setBankAccounts(state:any, accounts:any) {
+      state.accounts = accounts
+    },
+
     async autoLogin(state: any) {
       state.userProfile = lokApiService.getMyContact()
     },
    
-    async setThisWeekTransactions (state:any) {
-      let transactionsGen = lokApiService.getTransactions()
-
-      let transactions = []
-      let next = await transactionsGen.next()
-      while (!next.done) {
-        transactions.push(<any>next.value)
-        next = await transactionsGen.next()
-      }
+    setTransactions (state:any, transactions:any) {
       state.transactions = transactions 
       var maxTransactions = 5
       let trs = []
@@ -159,8 +179,11 @@ export var moduleLokAPI = {
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
     },
-    storeBackends(state: any, backends: any) {
+    setBackends(state: any, backends: any) {
       state.backends = backends
+    },
+    setUserProfile(state: any, profile: object) {
+      state.userProfile = profile
     }
   },
   getters: {
