@@ -37,13 +37,14 @@ export var moduleLokAPI = {
       await dispatch('setBackends')
 
       commit("setThisWeekTransactions")
+      commit('setUserProfile', await lokApiService.getMyContact())
       commit('auth_success')
     },
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
     },
     async initAutoLogin({commit, dispatch}:any) {
-      commit("autoLogin")
+      commit('setUserProfile', await lokApiService.getMyContact())
       await dispatch('setBackends')
     },
     async setAccounts({commit}:any) {
@@ -93,7 +94,6 @@ export var moduleLokAPI = {
     },
     auth_success(state: any) {
       state.status = 'success'
-      state.userProfile = lokApiService.userProfile
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -132,10 +132,6 @@ export var moduleLokAPI = {
       state.accountsLoaded = true
     },
 
-    async autoLogin(state: any) {
-      state.userProfile = lokApiService.getMyContact()
-    },
-   
     async setThisWeekTransactions (state:any) {
       let transactionsGen = lokApiService.getTransactions()
 
@@ -165,6 +161,9 @@ export var moduleLokAPI = {
     },
     storeBackends(state: any, backends: any) {
       state.backends = backends
+    },
+    setUserProfile(state: any, profile: any) {
+      state.userProfile = profile
     }
   },
   getters: {
@@ -176,12 +175,6 @@ export var moduleLokAPI = {
     getAccs: (state: any) => {
       return function(): Array<any> {
         return state.accounts
-      }
-    },
-
-    getUserProfile: (state: any) => {
-      return function(): any {
-        return state.userProfile
       }
     },
     getApiToken: (state: any) => {

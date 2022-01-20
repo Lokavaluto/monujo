@@ -24,18 +24,15 @@ import router from "../router/index"
 
 @Options({
   name:"core",
-  mounted() {
+  async mounted() {
     // If this component is loaded, we already are logged in, so
     // the store already contains the logged in user informations...
     // Maybe all the following is not useful ?
     if(!this.userProfile) {
       try {
-        this.$store.dispatch("initAutoLogin")
-        this.$store.getters.getUserProfile().then(async (result:any) => {
-          this.userProfile = result
-          this.$store.dispatch("setAccounts")
-          this.$store.state.lokapi.isLog = true
-        })
+        await this.$store.dispatch("initAutoLogin")
+        await this.$store.dispatch("setAccounts")
+        this.$store.state.lokapi.isLog = true
       } catch(e) {
         console.error("Error while trying to autolog", e)
         router.push("/")
