@@ -37,6 +37,7 @@ export var moduleLokAPI = {
       await dispatch('setBackends')
 
       commit("setThisWeekTransactions")
+      commit('setUserProfile', await lokApiService.getMyContact())
       commit('auth_success')
     },
     async resetTRS({commit} :any) {
@@ -93,7 +94,6 @@ export var moduleLokAPI = {
     },
     auth_success(state: any) {
       state.status = 'success'
-      state.userProfile = lokApiService.userProfile
     },
     auth_error(state: any) {
       state.status = 'error'
@@ -165,6 +165,9 @@ export var moduleLokAPI = {
     },
     storeBackends(state: any, backends: any) {
       state.backends = backends
+    },
+    setUserProfile(state: any, profile: any) {
+      state.userProfile = profile
     }
   },
   getters: {
