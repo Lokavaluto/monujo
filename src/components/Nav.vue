@@ -33,22 +33,32 @@
     >
 
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div class="navbar-item" v-if="!getLog">
           <div class="buttons">
-            <router-link v-if="!getLog" to="/" class="button is-light">
+            <router-link to="/" class="button is-light">
               Se connecter
-            </router-link>
-            <router-link v-if="getLog" to="/profile" class="button is-light">
-              Profile
-            </router-link>
-            <router-link v-if="getLog && hasUnconfiguredBackend" to="/create-account" class="button is-light">
-              Créer mon portefeuille
-            </router-link>
-            <router-link v-if="getLog" to="/" @click="logout" class="button is-light">
-              Déconnexion
             </router-link>
           </div>
         </div>
+
+        <template v-if="getLog">
+          <div class="navbar-item">
+            <span class="navbar-text">
+              {{ userProfile?.name ? userProfile.name : 'Utilisateur' }}
+            </span>
+          </div>
+          <div class="navbar-item">
+            <div class="buttons">
+              <router-link v-if="hasUnconfiguredBackend" to="/create-account" class="button">
+                Créer mon portefeuille
+              </router-link>
+              <router-link to="/" @click="logout" class="button">
+                Déconnexion
+              </router-link>
+            </div>
+          </div>
+        </template>
+
       </div>
     </div>
   </nav>
@@ -78,6 +88,9 @@ import { Options, Vue } from 'vue-class-component';
         // if there's an un-configured backend
         return this.$store.getters.hasUnconfiguredBackend()
       },
+      userProfile(): string {
+        return this.$store.state.lokapi.userProfile
+      }
     },
 })
 export default class Nav extends Vue {}
