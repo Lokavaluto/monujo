@@ -1,15 +1,10 @@
 <template>
   <main class="main">
     <div class="container mt-5">
-      <section class="top-column column">
-        <h1 class="title is-size-4 has-text-grey has-text-weight-medium mb-4">Bienvenue {{userProfile ? userProfile.name : 'inconnu'}}</h1>
-      </section>
-      <!-- conteneur des colonnes de gauche et droite où se situent les cards -->
       <div class="columns is-tablet">
         <LeftCol />
         <RightCol />
       </div>
-      <!-- fin des conteneurs des colonnes de gauche et droite -->
     </div>
     <div class="action-footer-container">
       <div class="container">
