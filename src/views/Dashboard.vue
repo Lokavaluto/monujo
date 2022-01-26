@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Core from '@/components/Core.vue'; // @ is an alias to /src
+import Core from '@/components/Core.vue';
 
 @Options({
   components: {

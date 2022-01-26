@@ -1,14 +1,14 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Profile from "../views/Profile.vue";
+import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
 import CreateMyAccount from "../views/CreateMyAccount.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/profile",
-    name: "Profile",
+    path: "/dashboard",
+    name: "dashboard",
     meta: { title: "Tableau de bord" },
-    component: Profile,
+    component: Dashboard,
   },
   {
     path: "/",
