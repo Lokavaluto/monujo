@@ -17,7 +17,7 @@ export var moduleLokAPI = {
     accounts:[],
     accountsLoaded: false,
     recipient:"",
-    isLog:false,
+    isLog:null,
     paymentUrl: "",
     recipientHistory:[],
     isMultiCurrency: false,  // Are we displaying accounts with different currencies ?
@@ -58,7 +58,8 @@ export var moduleLokAPI = {
     async genPaymentLink({commit}:any,amount:number) {
       await commit("genPaymentLink", amount)
     },
-    askLogOut({commit}:any) {
+    async askLogOut({commit}:any) {
+      await lokApiService.logout()
       commit("logout")
     },
     async checkPasswordStrength({ commit, state }:any, [password, accountBackend]: Array<string>) {
@@ -116,7 +117,6 @@ export var moduleLokAPI = {
     logout(state: any) {
       state.status = ''
       state.apiToken = ''
-      state.status= ''
       state.userProfile= null
       state.transactions=null
       state.thisWeektransactions=null
@@ -129,6 +129,7 @@ export var moduleLokAPI = {
       state.isMultiCurrency = false
       state.hasUserAccountValidationRights = false
       state.pendingUserAccounts = []
+      state.backends = {}
     },
 
     async setBalCurr(state:any) {
@@ -232,6 +233,9 @@ export var moduleLokAPI = {
       return function(): any {
         return 'https://' + lokApiService.host
       }
+    },
+    isAuthenticated: (state: any) => {
+      return state.isLog
     },
   }
 }

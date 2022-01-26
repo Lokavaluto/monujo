@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import store from '../store'
 import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
 import CreateMyAccount from "../views/CreateMyAccount.vue";
@@ -35,5 +36,11 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+
+// Authentication guard
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && store.getters.isAuthenticated === false) next({ name: 'Login' })
+  else next()
+})
 
 export default router;
