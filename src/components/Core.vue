@@ -32,7 +32,6 @@ import router from "../router/index"
       try {
         await this.$store.dispatch("initAutoLogin")
         await this.$store.dispatch("setAccounts")
-        this.$store.state.lokapi.isLog = true
       } catch(e) {
         console.error("Error while trying to autolog", e)
         router.push("/")

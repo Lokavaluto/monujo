@@ -45,6 +45,7 @@ export var moduleLokAPI = {
     },
     async initAutoLogin({commit, dispatch}:any) {
       commit('setUserProfile', await lokApiService.getMyContact())
+      commit('auth_success')
       await dispatch('setBackends')
     },
     async setAccounts({commit}:any) {
@@ -91,12 +92,15 @@ export var moduleLokAPI = {
     },
     auth_request(state: any) {
       state.status = 'loading'
+      state.isLog = false
     },
     auth_success(state: any) {
       state.status = 'success'
+      state.isLog = true;
     },
     auth_error(state: any) {
       state.status = 'error'
+      state.isLog = false
     },
     logout(state: any) {
       state.status = ''
