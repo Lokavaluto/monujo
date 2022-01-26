@@ -210,7 +210,7 @@ import { LokAPIExc } from "@/services/lokapiService"
         }
         this.$toast.warning("Compte déjà créé")
       }
-      router.push('/profile')
+      router.push({ name: "dashboard" })
     }
   },
   props: {
