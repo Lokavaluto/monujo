@@ -41,15 +41,26 @@
           Se connecter
         </router-link>
         <div
-          v-if="getLog && hasUserAccountValidationRights"
+          v-if="getLog && (hasUserAccountValidationRights || hasCreditRequestValidationRights)"
           class="navbar-item has-dropdown is-hoverable"
         >
           <a class="navbar-link">
             Admin
           </a>
           <div class="navbar-dropdown is-right">
-            <router-link to="/admin/pending-accounts" class="navbar-item">
+            <router-link
+              v-if="hasUserAccountValidationRights"
+              to="/admin/pending-accounts"
+              class="navbar-item"
+            >
               Comptes
+            </router-link>
+            <router-link
+              v-if="hasCreditRequestValidationRights"
+              to="/admin/pending-credits"
+              class="navbar-item"
+            >
+              Demandes de crédit
             </router-link>
           </div>
         </div>
@@ -108,6 +119,9 @@ import { Options, Vue } from "vue-class-component";
     },
     hasUserAccountValidationRights(): boolean {
       return this.$store.state.lokapi.hasUserAccountValidationRights;
+    },
+    hasCreditRequestValidationRights(): boolean {
+      return this.$store.state.lokapi.hasCreditRequestValidationRights
     },
     userProfile(): string {
       return this.$store.state.lokapi.userProfile;
