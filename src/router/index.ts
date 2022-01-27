@@ -5,6 +5,7 @@ import Carto from "../views/Carto.vue";
 import Login from "../views/Login.vue";
 import CreateMyAccount from "../views/CreateMyAccount.vue";
 import PendingAccounts from "../views/admin/PendingAccounts.vue";
+import PendingCredits from "../views/admin/PendingCredits.vue";
 
 const appName = require('../../package.json').name;
 
@@ -38,6 +39,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Validate-account",
     meta: { title: "Validation des comptes en attente de création" },
     component: PendingAccounts,
+  },
+  {
+    path: "/admin/pending-credits",
+    name: "Pending Credits",
+    meta: { title: "Validation des demandes de crédit" },
+    component: PendingCredits,
   },
 ];
 
