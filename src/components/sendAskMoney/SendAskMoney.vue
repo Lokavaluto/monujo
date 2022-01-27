@@ -203,9 +203,9 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
-      <div v-if="partners">
+      <div v-if="ownCurrenciesPartners">
         <div class="container custom-width-send-money mt-4"
-             v-for="partner in partners"
+             v-for="partner in ownCurrenciesPartners"
              :key="partner">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
@@ -505,7 +505,7 @@
         <div class="container is-fluid custom-heavy-line-separator"></div>
 
         <div class="container custom-width-send-money mt-4"
-             v-for="partner in partners"
+             v-for="partner in ownCurrenciesPartners"
              :key="partner">
           <div
             class="is-flex is-justify-content-space-between is-align-items-center"
@@ -1100,6 +1100,13 @@ function returnFavoritesOnly(partners:any): any{
     },
     hasActiveMoneyAccount():boolean {
       return this.$store.getters.activeMoneyAccounts.length > 0
+    },
+    ownCurrenciesPartners():Array<any> {
+      let currencyIds = this.$store.getters.activeMoneyAccounts
+        .map((a:any) => a.currencyId)
+      return this.partners.filter((p:any) => {
+        return currencyIds.indexOf(p.backendId) > -1
+      })
     },
   },
 
