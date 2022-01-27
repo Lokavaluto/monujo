@@ -1,51 +1,54 @@
 <template>
+  <div>
   <!-- début card envoyer et demander de l'argent  -->
-  <div
-    class="action-footer"
-  >
-    <div class="columns menu">
-      <div class="column is-tablet has-text-centered mb-2">
-        <button
-          :disabled="!hasActiveMoneyAccount"
-          @click="showModalFrame1 = true, resetSendMoney()"
-          class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
-        >
-          <span class="icon-text">
-            <span class="icon ml-1">
-              <i class="fas fa-lg fa-arrow-circle-up"></i>
+    <div
+      class="action-footer"
+    >
+      <div class="columns menu">
+        <div class="column is-tablet has-text-centered mb-2">
+          <button
+            :disabled="!hasActiveMoneyAccount"
+            @click="showModalFrame1 = true, resetSendMoney()"
+            class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
+          >
+            <span class="icon-text">
+              <span class="icon ml-1">
+                <i class="fas fa-lg fa-arrow-circle-up"></i>
+              </span>
+              <span>Payer</span>
             </span>
-            <span>Payer</span>
-          </span>
-        </button>
-      </div>
-      <div class="column is-tablet has-text-centered mb-2">
-        <button
-          :disabled="true"
-          class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
-        >
-          <span class="icon-text">
-            <span class="icon ml-1">
-              <i class="fas fa-lg fa-arrow-circle-down"></i>
+          </button>
+        </div>
+        <div class="column is-tablet has-text-centered mb-2">
+          <button
+            :disabled="true"
+            class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
+          >
+            <span class="icon-text">
+              <span class="icon ml-1">
+                <i class="fas fa-lg fa-arrow-circle-down"></i>
+              </span>
+              <span>Recevoir</span>
             </span>
-            <span>Recevoir</span>
-          </span>
-        </button>
-      </div>
-      <div class="column is-tablet has-text-centered mb-2">
-        <button
-          :disabled="!hasActiveMoneyAccount"
-          class="button custom-button has-text-weight-medium is-rounded action"
-          @click="showModalFrameCreditMoney1 = true"
-        >
-          <span class="icon-text">
-            <span class="icon ml-1">
-              <i class="fas fa-lg fa-plus-circle"></i>
+          </button>
+        </div>
+        <div class="column is-tablet has-text-centered mb-2">
+          <button
+            :disabled="!hasActiveMoneyAccount"
+            class="button custom-button has-text-weight-medium is-rounded action"
+            @click="showModalFrameCreditMoney1 = true"
+          >
+            <span class="icon-text">
+              <span class="icon ml-1">
+                <i class="fas fa-lg fa-plus-circle"></i>
+              </span>
+              <span>Recharger</span>
             </span>
-            <span>Recharger</span>
-          </span>
-        </button>
+          </button>
+        </div>
       </div>
     </div>
+
     <!-- modal frame 1 -->
     <MyModal
       :first="true"
