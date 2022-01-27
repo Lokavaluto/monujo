@@ -24,6 +24,8 @@ export var moduleLokAPI = {
     backends: {},
     hasUserAccountValidationRights: false,
     pendingUserAccounts: [],
+    hasCreditRequestValidationRights: false,
+    pendingCreditRequests: [],
   },
   actions: {
     async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
@@ -41,6 +43,7 @@ export var moduleLokAPI = {
       commit('setUserProfile', await lokApiService.getMyContact())
       commit('auth_success')
       dispatch('fetchUserAccountValidationRights')
+      dispatch('fetchCreditRequestValidationRights')
     },
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
@@ -50,6 +53,7 @@ export var moduleLokAPI = {
       commit('auth_success')
       await dispatch('setBackends')
       dispatch('fetchUserAccountValidationRights')
+      dispatch('fetchCreditRequestValidationRights')
     },
     async setAccounts({commit}:any) {
       await commit("setBalCurr")
@@ -93,7 +97,15 @@ export var moduleLokAPI = {
     async fetchPendingUserAccounts({ commit, state }:any) {
       let accounts = await lokApiService.getStagingUserAccounts()
       commit('setPendingUserAccounts', accounts)
-    }
+    },
+    async fetchCreditRequestValidationRights({ commit, state }:any) {
+      let hasRight = await lokApiService.hasCreditRequestValidationRights()
+      commit('setHasCreditRequestValidationRights', hasRight)
+    },
+    async fetchPendingCreditRequests({ commit, state }:any) {
+      let requests = await lokApiService.getCreditRequests()
+      commit('setPendingCreditRequests', requests)
+    },
 
   },
   mutations: {
@@ -129,6 +141,8 @@ export var moduleLokAPI = {
       state.isMultiCurrency = false
       state.hasUserAccountValidationRights = false
       state.pendingUserAccounts = []
+      state.hasCreditRequestValidationRights = false
+      state.pendingCreditRequests = []
     },
 
     async setBalCurr(state:any) {
@@ -186,7 +200,13 @@ export var moduleLokAPI = {
     },
     setPendingUserAccounts(state: any, accounts: Array<any>) {
       state.pendingUserAccounts = accounts
-    }
+    },
+    setHasCreditRequestValidationRights(state: any, hasRight: boolean) {
+      state.hasCreditRequestValidationRights = hasRight
+    },
+    setPendingCreditRequests(state: any, requests: Array<any>) {
+      state.pendingCreditRequests = requests
+    },
   },
   getters: {
     getCurr: (state: any) => {
