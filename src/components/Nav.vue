@@ -34,6 +34,18 @@
 
       <div class="navbar-end">
 
+        <div v-if="getLog && hasUserAccountValidationRights" class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Admin
+          </a>
+
+          <div class="navbar-dropdown is-right">
+            <router-link to="/admin/pending-accounts" class="navbar-item">
+              Comptes
+            </router-link>
+          </div>
+        </div>
+
         <div class="navbar-item has-dropdown is-hoverable" v-if="getLog">
           <a class="navbar-link">
             {{ userProfile?.name ? userProfile.name : 'Utilisateur' }}
@@ -83,6 +95,9 @@ import { Options, Vue } from 'vue-class-component';
         // Display of the account creation button should be displayed only
         // if there's an un-configured backend
         return this.$store.getters.hasUnconfiguredBackend()
+      },
+      hasUserAccountValidationRights(): boolean {
+        return this.$store.state.lokapi.hasUserAccountValidationRights
       },
       userProfile(): string {
         return this.$store.state.lokapi.userProfile
