@@ -23,10 +23,10 @@ body {
   min-height: 100vh;
   background-color: #e4f2f1;
   padding-top: 40px;
-  padding-bottom: 220px;
+  padding-bottom: 80px;
 
-  @media screen and (min-width: 768px) {
-    padding-bottom: 140px;
+  @media screen and (min-width: 1024px) {
+    padding-bottom: 110px;
   }
 }
 
@@ -112,9 +112,12 @@ body {
   // font-size: 20px !important;
   line-height: 23px !important;
   border-radius: 47px !important;
-  padding-right: 2.2em !important;
-  padding-left: 2.2em !important;
   background-color: inherit !important;
+
+  @media screen and (min-width: 1024px) {
+    padding-right: 2.2em !important;
+    padding-left: 2.2em !important;
+  }
 }
 
 .custom-button-send-receive-money {
@@ -201,8 +204,12 @@ body {
 
 .action-footer-container {
   position: fixed !important;
-  bottom: 20px !important;
+  bottom: 0 !important;
   width: 100%;
+
+  @media screen and (min-width: 1024px) {
+    bottom: 20px !important;
+  }
 }
 
 .custom-button {
@@ -220,20 +227,37 @@ body {
 
 .action-footer {
   background: white;
-  border-radius: 16px;
-  padding: 2rem 2rem 1.5rem 2rem;
+  padding: 2rem 1rem 1.5rem 1rem;
   width: 100%;
   box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.25) !important;
+
+  @media screen and (min-width: 1024px) {
+    padding: 2rem 2rem 1.5rem 2rem;
+    border-radius: 16px;
+  }
 
   .menu {
     .column {
       padding: 0;
 
       .custom-button {
-        padding: 1.6em;
+        @media screen and (max-width: 480px) {
+          width: 98%;
+          padding-right: 0.4em;
+          padding-left: 0.4em;
 
+          .icon-text {
+            font-size: 0.75em;
+            line-height: 1.6rem;
+
+            .icon {
+              margin-top: 0.3em;
+            }
+          }
+        }
       }
     }
+
   }
 }
 
