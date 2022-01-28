@@ -22,6 +22,8 @@ export var moduleLokAPI = {
     recipientHistory:[],
     isMultiCurrency: false,  // Are we displaying accounts with different currencies ?
     backends: {},
+    hasUserAccountValidationRights: false,
+    pendingUserAccounts: [],
   },
   actions: {
     async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
@@ -38,6 +40,7 @@ export var moduleLokAPI = {
       commit("setThisWeekTransactions")
       commit('setUserProfile', await lokApiService.getMyContact())
       commit('auth_success')
+      dispatch('fetchUserAccountValidationRights')
     },
     async resetTRS({commit} :any) {
       await commit("setThisWeekTransactions")
@@ -46,6 +49,7 @@ export var moduleLokAPI = {
       commit('setUserProfile', await lokApiService.getMyContact())
       commit('auth_success')
       await dispatch('setBackends')
+      dispatch('fetchUserAccountValidationRights')
     },
     async setAccounts({commit}:any) {
       await commit("setBalCurr")
@@ -81,6 +85,14 @@ export var moduleLokAPI = {
         console.error('Error getting currency backends', err)
         throw err
       }
+    },
+    async fetchUserAccountValidationRights({ commit, state }:any) {
+      let hasRight = await lokApiService.hasUserAccountValidationRights()
+      commit('setHasUserAccountValidationRights', hasRight)
+    },
+    async fetchPendingUserAccounts({ commit, state }:any) {
+      let accounts = await lokApiService.getStagingUserAccounts()
+      commit('setPendingUserAccounts', accounts)
     }
 
   },
@@ -115,6 +127,8 @@ export var moduleLokAPI = {
       state.isLog=false
       state.paymentUrl=""
       state.isMultiCurrency = false
+      state.hasUserAccountValidationRights = false
+      state.pendingUserAccounts = []
     },
 
     async setBalCurr(state:any) {
@@ -166,6 +180,12 @@ export var moduleLokAPI = {
     },
     setUserProfile(state: any, profile: any) {
       state.userProfile = profile
+    },
+    setHasUserAccountValidationRights(state: any, hasRight: boolean) {
+      state.hasUserAccountValidationRights = hasRight
+    },
+    setPendingUserAccounts(state: any, accounts: Array<any>) {
+      state.pendingUserAccounts = accounts
     }
   },
   getters: {
@@ -212,7 +232,7 @@ export var moduleLokAPI = {
       return function(): any {
         return 'https://' + lokApiService.host
       }
-    }
+    },
   }
 }
 
