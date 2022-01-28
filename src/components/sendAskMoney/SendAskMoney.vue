@@ -4,42 +4,42 @@
     <div
       class="action-footer"
     >
-      <div class="columns menu">
-        <div class="column is-tablet has-text-centered mb-2">
+      <div class="columns is-mobile menu">
+        <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
             @click="showModalFrame1 = true, resetSendMoney()"
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
           >
             <span class="icon-text">
-              <span class="icon ml-1">
+              <span class="icon">
                 <i class="fas fa-lg fa-arrow-circle-up"></i>
               </span>
               <span>Payer</span>
             </span>
           </button>
         </div>
-        <div class="column is-tablet has-text-centered mb-2">
+        <div class="column has-text-centered mb-2">
           <button
             :disabled="true"
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
           >
             <span class="icon-text">
-              <span class="icon ml-1">
+              <span class="icon">
                 <i class="fas fa-lg fa-arrow-circle-down"></i>
               </span>
               <span>Recevoir</span>
             </span>
           </button>
         </div>
-        <div class="column is-tablet has-text-centered mb-2">
+        <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
             class="button custom-button has-text-weight-medium is-rounded action"
             @click="showModalFrameCreditMoney1 = true"
           >
             <span class="icon-text">
-              <span class="icon ml-1">
+              <span class="icon">
                 <i class="fas fa-lg fa-plus-circle"></i>
               </span>
               <span>Recharger</span>
