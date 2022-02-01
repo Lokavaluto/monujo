@@ -15,7 +15,7 @@ class LokAPI extends LokAPIBrowserAbstract {
 
   requestLocalPassword = (state => {
     let rememberedPassword = { pwd: '', inputTime: 0 }
-    return async (state:any) => {
+    return async (state: any) => {
       let text = ''
 
       // Lets see if we have a (still valid) password in there...
@@ -37,7 +37,7 @@ class LokAPI extends LokAPIBrowserAbstract {
 
       if (state === 'failedUnlock') {
         text = 'Échec du déchiffrage. ' +
-          'Le mot de passe était probablement incorrect. '+
+          'Le mot de passe était probablement incorrect. ' +
           'Ré-essayez une nouvelle fois'  // XXXvlab: need i18n
       }
       const ret = await Swal.fire({
@@ -73,7 +73,7 @@ class LokAPI extends LokAPIBrowserAbstract {
 
   // Debouncing
   _buildAccountsInplacePromise: Promise<any> | null = null
-  buildAccountsInplace (simplifiedWatchedAccounts: Array<any>)  {
+  buildAccountsInplace(simplifiedWatchedAccounts: Array<any>) {
     if (!this._buildAccountsInplacePromise) {
       this._buildAccountsInplacePromise = this._buildAccountsInplace(
         simplifiedWatchedAccounts
@@ -83,7 +83,7 @@ class LokAPI extends LokAPIBrowserAbstract {
     }
     return this._buildAccountsInplacePromise
   }
-  async _buildAccountsInplace (simplifiedWatchedAccounts: Array<any>)  {
+  async _buildAccountsInplace(simplifiedWatchedAccounts: Array<any>) {
     const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
 
     const backends = Object.values(await this.getBackends())
@@ -175,7 +175,9 @@ if (!process.env.VUE_APP_LOKAPI_DB) {
   throw new Error("Please specify VUE_APP_LOKAPI_DB in '.env'")
 }
 
-
+if (!process.env.VUE_APP_MAP_URL) {
+  throw new Error("Please specify VUE_APP_MAP_URL in '.env'")
+}
 
 export var lokApiService = new LokAPI(
   process.env.VUE_APP_LOKAPI_HOST,
@@ -193,14 +195,14 @@ export async function getBankAccountName(bankAccount: any) {
   // XXXvlab: hopefully temporary solution to give a sane
   // french name to account types in comchain
   if (backend === "comchain" && bankAccount.type) {
-    return bankAccount.type === "Nant" ? "Compte nantis": "Crédit mutuel"
+    return bankAccount.type === "Nant" ? "Compte nantis" : "Crédit mutuel"
   }
   return "Compte principal"
 }
 
 export function replaceOrInsertElt<T>(array: Array<T>, elt: T,
-                                      sameFn: (a: T) => boolean,
-                                      orderFn: (a: T, b: T) => number) {
+  sameFn: (a: T) => boolean,
+  orderFn: (a: T, b: T) => number) {
   let idx = array.findIndex(sameFn)
   let replace
   if (idx === -1) {

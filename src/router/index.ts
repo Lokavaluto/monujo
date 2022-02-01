@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import store from '../store'
 import Dashboard from "../views/Dashboard.vue";
+import Carto from "../views/Carto.vue";
 import Login from "../views/Login.vue";
 import CreateMyAccount from "../views/CreateMyAccount.vue";
 import PendingAccounts from "../views/admin/PendingAccounts.vue";
@@ -11,6 +12,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "dashboard",
     meta: { title: "Tableau de bord" },
     component: Dashboard,
+  },
+  {
+    path: "/carto",
+    name: "Carto",
+    meta: { title: "Carto" },
+    component: Carto,
   },
   {
     path: "/",
@@ -39,7 +46,7 @@ const router = createRouter({
 
 // Authentication guard
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && store.getters.isAuthenticated === false) next({ name: 'Login' })
+  if ((to.name !== 'Login' && to.name !== 'Carto') && store.getters.isAuthenticated === false) next({ name: 'Carto' })
   else next()
 })
 
