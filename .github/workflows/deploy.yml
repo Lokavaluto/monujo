@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "VUE_APP_LOKAPI_HOST=\"${GITHUB_REF_NAME}.lokavaluto.fr\"" > .env
           echo "VUE_APP_LOKAPI_DB=\"odoo\"" >> .env
-          echo "VUE_APP_MAP_URL=\"https://carto.${GITHUB_REF_NAME}.lokavaluto.fr/annuaire#/carte/@45.27,3.99,6z?cat=all\"" >> .env
+          echo "VUE_APP_MAP_URL=\"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr/annuaire#/carte/@45.27,3.99,6z?cat=all\"" >> .env
           npm run build
 
       - name: "📂 SFTP Sync files"
