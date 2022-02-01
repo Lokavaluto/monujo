@@ -6,6 +6,8 @@ import Login from "../views/Login.vue";
 import CreateMyAccount from "../views/CreateMyAccount.vue";
 import PendingAccounts from "../views/admin/PendingAccounts.vue";
 
+const appName = require('../../package.json').name;
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
@@ -48,6 +50,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if ((to.name !== 'Login' && to.name !== 'Carto') && store.getters.isAuthenticated === false) next({ name: 'Carto' })
   else next()
+})
+router.beforeEach((to, from, next) => {
+  if (typeof(to.meta.title) === 'string') {
+    document.title = appName + " - " + to.meta.title
+  }
+  next()
 })
 
 export default router;
