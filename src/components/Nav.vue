@@ -127,7 +127,7 @@ import { Options, Vue } from "vue-class-component";
       return this.$store.state.lokapi.userProfile;
     },
     profilePageUrl(): string {
-      return this.$store.getters.getOdooUrl() + "/fr_FR/my/home";
+      return this.$store.getters.getOdooUrl() + "/web/login";
     },
   },
 })
