@@ -1,12 +1,7 @@
 <template>
     <div class=" is-flex is-justify-content-space-between pb-3 pt-3">
       <div class="is-flex">
-        <div
-          class="custom-pictogram is-flex is-justify-content-center is-align-items-center mr-4"
-        >
-        <TransactionPicto v-if="picto =='Transaction'"/>
-        <QRPicto v-else-if="picto == 'QR'"/>
-        </div>
+    
         <div class="is-flex-direction-column">
           
           <h3 :class="[amount.charAt(0) == '-' ? 'custom-card-destinataire has-text-danger' : 'custom-card-destinataire has-text-success']">
