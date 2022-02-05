@@ -8,7 +8,8 @@ module.exports = {
   lintOnSave: false,
   transpileDependencies: [
     // can be string or regex
-    /@lokavaluto\/.*/
+    /@lokavaluto\/.*/,
+    /@0k.io\/.*/
   ]
 };
 

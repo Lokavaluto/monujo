@@ -59,6 +59,7 @@ import { Options, Vue } from 'vue-class-component';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import { RestExc } from '@lokavaluto/lokapi-browser';
+import { e as RequestExc } from '@0k.io/types-request';
 
 @Options({
   name: "Login",
@@ -97,7 +98,7 @@ import { RestExc } from '@lokavaluto/lokapi-browser';
           this.fail = "Identifiant ou mot de passe incorrect";
           return
         }
-        if (e instanceof RestExc.RequestFailed) {
+        if (e instanceof RequestExc.RequestFailed) {
           this.fail = "La requête a échoué, impossible de joindre le serveur distant.";
           return
         }
