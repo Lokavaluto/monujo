@@ -889,57 +889,26 @@
         <div
           class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
         >
-          <div class="is-flex is-flex-direction-column custom-montant-input">
+          <div v-if="myHyperLink.length === 0" class="is-flex is-flex-direction-column custom-montant-input">
             <h2 class="frame3-sub-title mt-3 mb-3">
               Montant à créditer
             </h2>
-            <input v-model="amountForCredit" type="number" min="0" class="p-2" />
-            <h2 v-if="myHyperLink.length > 1" class="mt-6 mb-2 frame3-sub-title">Vous n'avez pas été redirigé ?</h2>
-            <a class="mt-6" target="_blank" :href="urlForHyperlink">{{urlForHyperlink}}</a>
-            <!-- <h2 class="mt-6 mb-6 frame3-sub-title">Mode de paiement</h2> -->
-            <!-- <div class="columns">
-              <div class="column">
-                <h2 class="custom-card-title">Vos cartes enregistrees</h2>
-                <AddPayCard
-                  fullName="M. Ivan MANCEL"
-                  cardNumber="5441 xxxx xxx xx92"
-                  cardtype="mastercard.svg"
-                />
-
-                <AddPayCard
-                  fullName="M. Ivan MANCEL"
-                  cardNumber="5618 xxxx xxx xx12"
-                  cardtype="visa.svg"
-                />
-              </div>
-              <div class="column">
-                <h3 class="custom-card-title">Nouvelle carte</h3>
-                <div class="is-flex">
-                  <figure class="image is-96x96">
-                    <img :src="require(`@/assets/media/CB.svg`)">
-                
-                  </figure>
-                  <figure class="image is-96x96">
-                    <img :src="require(`@/assets/media/visa.svg`)">
-                  
-                  </figure>
-                  <figure class="image is-96x96">
-                    <img :src="require(`@/assets/media/mastercard.svg`)">
-                    
-                  </figure>
-                </div>
-              </div> 
-              </div> -->
+            <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
+          </div>
+          <div v-if="myHyperLink.length > 1" class="notification is-default">
+            <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
+            <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
+            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
           </div>
         </div>
-        <div class="columns">
+        <div class="columns" v-if="myHyperLink.length === 0">
           <div class="column"></div>
           <div class="column is-flex is-justify-content-center">
             <button
               class="button custom-button custom-button-send-receive-money is-rounded action mt-6"
               @click="newLinkTab()"
             >
-              Suivant
+              Terminer
             </button>
           </div>
         </div>
@@ -1140,13 +1109,15 @@ function returnFavoritesOnly(partners:any): any{
         let cyclos_bank_account = (await cyclos_user_account.getAccounts())[0]
 
         let url = await cyclos_bank_account.getCreditUrl(this.amountForCredit)
-        try {
-          window.open(url.order_url, '_blank')!.focus();
-          this.urlForHyperlink = url.order_url
-        } catch(e) {
-          this.urlForHyperlink = url.order_url
-        }
+        this.urlForHyperlink = url.order_url
       }
+    },
+
+    navigateToCreditOrder():void {
+      this.showModalFrameCreditMoney1 = false
+      window.open(this.urlForHyperlink, '_blank');
+      this.urlForHyperlink = ""
+      this.amountForCredit = 0
     },
 
     copyUrl() {
