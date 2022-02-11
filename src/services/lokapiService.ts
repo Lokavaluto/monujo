@@ -67,23 +67,23 @@ class LokAPI extends LokAPIBrowserAbstract {
   }
 
   /**
-   * This function will build asynchronously the simplified account
+   * This function will build asynchronously the virtual account
    * array that can be used to display the list of accounts
    */
 
   // Debouncing
-  _buildAccountsInplacePromise: Promise<any> | null = null
-  buildAccountsInplace(simplifiedWatchedAccounts: Array<any>) {
-    if (!this._buildAccountsInplacePromise) {
-      this._buildAccountsInplacePromise = this._buildAccountsInplace(
-        simplifiedWatchedAccounts
-      ).then(() => {
-        this._buildAccountsInplacePromise = null
+  _buildVirtualAccountTreePromise: Promise<any> | null = null
+  buildVirtualAccountTree ()  {
+    if (!this._buildVirtualAccountTreePromise) {
+      this._buildVirtualAccountTreePromise = this._buildVirtualAccountTree().then((r) => {
+        this._buildVirtualAccountTreePromise = null
+        return r
       })
     }
-    return this._buildAccountsInplacePromise
+    return this._buildVirtualAccountTreePromise
   }
-  async _buildAccountsInplace(simplifiedWatchedAccounts: Array<any>) {
+  async _buildVirtualAccountTree ()  {
+    const virtualAccountTree: any[] = []
     const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
 
     const backends = Object.values(await this.getBackends())
@@ -91,7 +91,7 @@ class LokAPI extends LokAPIBrowserAbstract {
       (b: any) => Object.values(b.userAccounts)
     ).flat()
 
-    return await Promise.allSettled(
+    await Promise.allSettled(
       userAccounts.map((userAccount: any) => new Promise((resolve, reject) => {
         Promise.allSettled([
           getBankAccountName(userAccount),
@@ -128,7 +128,7 @@ class LokAPI extends LokAPIBrowserAbstract {
             if (moneyAccounts.length === 1) { // replace the userAccount
               accountData.id = userAccountData.id
               replaceOrInsertElt(
-                simplifiedWatchedAccounts,
+                virtualAccountTree,
                 accountData,
                 (a: any) => userAccountData.id === a.id,
                 sortOrder)
@@ -144,7 +144,7 @@ class LokAPI extends LokAPIBrowserAbstract {
 
             if (moneyAccounts && moneyAccounts.length !== 1) {
               replaceOrInsertElt(
-                simplifiedWatchedAccounts,
+                virtualAccountTree,
                 userAccountData,
                 (a: any) => userAccount.internalId === a.id,
                 sortOrder)
@@ -155,6 +155,7 @@ class LokAPI extends LokAPIBrowserAbstract {
         })
       }))
     )
+    return virtualAccountTree
   }
 
   // XXXvlab: this is less than ideal way to handle the cache

@@ -1260,7 +1260,7 @@ function returnFavoritesOnly(partners:any): any{
           }
         })
         }
-        await this.$store.dispatch("resetTRS")
+        await this.$store.dispatch("fetchTransactions")
         this.searchName = ""
         this.partners = []
         this.amount = 0
