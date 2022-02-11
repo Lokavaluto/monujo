@@ -84,7 +84,8 @@ import { e as RequestExc } from '@0k.io/types-request';
           login: this.email,
           password: this.password,
         });
-        this.$store.dispatch("setAccounts");
+        this.$store.dispatch("fetchAccounts");
+        this.$store.dispatch("fetchTransactions");
         this.success = "Connection réussie";
         this.$router.push({ name: "dashboard" });
       } catch (e) {
