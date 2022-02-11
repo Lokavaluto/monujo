@@ -39,14 +39,11 @@ export var moduleLokAPI = {
       }
       await dispatch('setBackends')
 
-      commit("setThisWeekTransactions")
+      dispatch('fetchTransactions')
       commit('setUserProfile', await lokApiService.getMyContact())
       commit('auth_success')
       dispatch('fetchUserAccountValidationRights')
       dispatch('fetchCreditRequestValidationRights')
-    },
-    async resetTRS({commit} :any) {
-      await commit("setThisWeekTransactions")
     },
     async initAutoLogin({commit, dispatch}:any) {
       commit('setUserProfile', await lokApiService.getMyContact())
@@ -55,9 +52,21 @@ export var moduleLokAPI = {
       dispatch('fetchUserAccountValidationRights')
       dispatch('fetchCreditRequestValidationRights')
     },
-    async setAccounts({commit}:any) {
-      await commit("setBalCurr")
-      await commit("setThisWeekTransactions")
+    async fetchAccounts({commit}:any) {
+      const virtualAccountTree = await lokApiService.buildVirtualAccountTree()
+      commit("setAccounts", virtualAccountTree)
+    },
+    async fetchTransactions({commit}:any) {
+      let transactionsGen = lokApiService.getTransactions()
+
+      let transactions = []
+      let next = await transactionsGen.next()
+      while (!next.done) {
+        transactions.push(<any>next.value)
+        next = await transactionsGen.next()
+      }
+
+      commit("setTransactions", transactions)
     },
     async genPaymentLink({commit}:any,amount:number) {
       await commit("genPaymentLink", amount)
@@ -80,8 +89,8 @@ export var moduleLokAPI = {
       // to handle all caches in lokapi in an upcoming version.
       lokApiService.clearBackendCache()
       dispatch('setBackends')
-      await commit("setBalCurr")
-      await commit("setThisWeekTransactions")
+      dispatch("fetchAccounts")
+      dispatch("fetchTransactions")
     },
     async setBackends({ commit, state }:any) {
       try {
@@ -146,9 +155,8 @@ export var moduleLokAPI = {
       state.pendingCreditRequests = []
     },
 
-    async setBalCurr(state:any) {
-      await lokApiService.buildAccountsInplace(state.virtualAccountTree)
-
+    setAccounts(state:any, virtualAccountTree: any[]) {
+      state.virtualAccountTree = virtualAccountTree
       // Inform the UI if we are in a multi-currency display, note
       // we are testing the backend and not the currency symbol
 
@@ -163,16 +171,7 @@ export var moduleLokAPI = {
       state.accountsLoaded = true
     },
 
-    async setThisWeekTransactions (state:any) {
-      let transactionsGen = lokApiService.getTransactions()
-
-      let transactions = []
-      let next = await transactionsGen.next()
-      while (!next.done) {
-        transactions.push(<any>next.value)
-        next = await transactionsGen.next()
-      }
-      state.transactions = transactions 
+    setTransactions (state:any, transactions: any[]) {
       var maxTransactions = 5
       let trs = []
       let history = []
@@ -187,6 +186,8 @@ export var moduleLokAPI = {
       var filtered = history.filter(function (el) {
         return el != null;
       });
+
+      state.transactions = transactions
       state.recipientHistory = [...new Set(filtered)];
       state.thisWeektransactions = trs
     },
