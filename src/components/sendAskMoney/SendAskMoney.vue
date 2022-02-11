@@ -1071,7 +1071,7 @@ function returnFavoritesOnly(partners:any): any{
       return this.$store.state.showCredit
     },
     hasActiveMoneyAccount():boolean {
-      return this.$store.getters.activeMoneyAccounts.length > 0
+      return this.$store.getters.activeVirtualAccounts.length > 0
     },
     ownCurrenciesPartners():Array<any> {
       let currencyIds = this.$store.getters.activeMoneyAccounts

@@ -3,9 +3,9 @@
     <div
       class="accounts card custom-card custom-card-padding"
     >
-      <div class="active" v-if="activeMoneyAccounts.length > 0">
+      <div class="active" v-if="activeVirtualAccounts.length > 0">
         <h2 class="custom-card-title">vos comptes</h2>
-        <Acc v-for="account in activeMoneyAccounts"
+        <Acc v-for="account in activeVirtualAccounts"
              :bal="account.bal"
              :curr="account.curr"
              :backend="account.backend"
@@ -16,9 +16,9 @@
           <template v-slot:name>{{ account.name }}</template>
         </Acc>
       </div>
-      <div class="inactive" v-if="inactiveMoneyAccounts.length > 0">
+      <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
         <h2 class="custom-card-title">vos comptes en attente de création</h2>
-        <Acc v-for="account in inactiveMoneyAccounts"
+        <Acc v-for="account in inactiveVirtualAccounts"
              :bal="account.bal"
              :curr="account.curr"
              :backend="account.backend"
@@ -50,11 +50,11 @@ import Acc from "./yourAccs/Acc.vue"
     },
     computed: {
       totalAccountsLoaded(): number {
-        return this.$store.state.lokapi.accounts.length
+        return this.$store.state.lokapi.virtualAccountTree.length
       },
       ...mapGetters([
-        'activeMoneyAccounts',
-        'inactiveMoneyAccounts',
+        'activeVirtualAccounts',
+        'inactiveVirtualAccounts',
       ]),
       ...mapState([
                 'accountsLoaded',
