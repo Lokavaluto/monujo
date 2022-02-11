@@ -142,7 +142,7 @@ class LokAPI extends LokAPIBrowserAbstract {
           }))).then((r) => {
 
 
-            if (moneyAccounts.length !== 1) {
+            if (moneyAccounts && moneyAccounts.length !== 1) {
               replaceOrInsertElt(
                 simplifiedWatchedAccounts,
                 userAccountData,
