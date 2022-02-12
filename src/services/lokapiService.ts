@@ -86,6 +86,7 @@ class LokAPI extends LokAPIBrowserAbstract {
     const virtualAccountTree: any[] = []
     const sortOrder = (a: any, b: any) => `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
 
+    const allMoneyAccounts: any[] = []
     const backends = Object.values(await this.getBackends())
     const userAccounts = backends.map(
       (b: any) => Object.values(b.userAccounts)
@@ -125,6 +126,7 @@ class LokAPI extends LokAPIBrowserAbstract {
               active: account.parent.active,  // FTM only the UserAccount is active or not
               id: account.internalId,
             }
+            allMoneyAccounts.push(accountData)
             if (moneyAccounts.length === 1) { // replace the userAccount
               accountData.id = userAccountData.id
               replaceOrInsertElt(
@@ -155,7 +157,7 @@ class LokAPI extends LokAPIBrowserAbstract {
         })
       }))
     )
-    return virtualAccountTree
+    return { virtualAccountTree, allMoneyAccounts }
   }
 
   // XXXvlab: this is less than ideal way to handle the cache
