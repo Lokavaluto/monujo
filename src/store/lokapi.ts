@@ -253,6 +253,9 @@ export var moduleLokAPI = {
     inactiveVirtualAccounts: (state: any) => {
       return state.virtualAccountTree.filter((a: any) => a.active === false)
     },
+    creditableMoneyAccounts: (state:any) => {
+      return state.moneyAccounts.filter((a: any) => a.active === true && a.creditable === true)
+    },
     getOdooUrl: (state: any) => {
       return function(): any {
         return 'https://' + lokApiService.host

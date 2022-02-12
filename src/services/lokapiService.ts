@@ -109,6 +109,7 @@ class LokAPI extends LokAPIBrowserAbstract {
             active: userAccount.active,  // FTM only the UserAccount is active or not
             id: userAccount.internalId,
             subAccounts: [],
+            creditable: false,
           }
 
           // Query moneyAccounts in this userAccount
@@ -125,6 +126,7 @@ class LokAPI extends LokAPIBrowserAbstract {
               currencyId: account.parent.parent.internalId,
               active: account.parent.active,  // FTM only the UserAccount is active or not
               id: account.internalId,
+              creditable: account.creditable,
             }
             allMoneyAccounts.push(accountData)
             if (moneyAccounts.length === 1) { // replace the userAccount
