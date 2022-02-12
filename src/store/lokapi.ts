@@ -15,6 +15,7 @@ export var moduleLokAPI = {
     bal: 0,
     curr:"",
     virtualAccountTree:[],
+    moneyAccounts:[],
     accountsLoaded: false,
     recipient:"",
     isLog:null,
@@ -53,8 +54,8 @@ export var moduleLokAPI = {
       dispatch('fetchCreditRequestValidationRights')
     },
     async fetchAccounts({commit}:any) {
-      const virtualAccountTree = await lokApiService.buildVirtualAccountTree()
-      commit("setAccounts", virtualAccountTree)
+      const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
+      commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
     },
     async fetchTransactions({commit}:any) {
       let transactionsGen = lokApiService.getTransactions()
@@ -143,6 +144,7 @@ export var moduleLokAPI = {
       state.thisWeektransactions=null
       state.curr=""
       state.virtualAccountTree=[]
+      state.moneyAccounts=[]
       state.accountsLoaded=false
       state.recipient=""
       state.isLog=false
@@ -155,7 +157,7 @@ export var moduleLokAPI = {
       state.pendingCreditRequests = []
     },
 
-    setAccounts(state:any, virtualAccountTree: any[]) {
+    setAccounts(state:any, { virtualAccountTree, allMoneyAccounts }: any) {
       state.virtualAccountTree = virtualAccountTree
       // Inform the UI if we are in a multi-currency display, note
       // we are testing the backend and not the currency symbol
@@ -168,6 +170,7 @@ export var moduleLokAPI = {
       }
 
       // Warn the UI that account information are fully loaded
+      state.moneyAccounts = allMoneyAccounts
       state.accountsLoaded = true
     },
 
