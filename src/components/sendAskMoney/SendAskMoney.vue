@@ -890,10 +890,32 @@
           class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
         >
           <div v-if="myHyperLink.length === 0" class="is-flex is-flex-direction-column custom-montant-input">
-            <h2 class="frame3-sub-title mt-3 mb-3">
-              Montant à créditer
-            </h2>
-            <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
+            <div v-if="creditableMoneyAccounts.length > 1">
+              <h2 class="frame3-sub-title mt-3 mb-3">
+                Compte à créditer
+              </h2>
+              <div v-for="account in creditableMoneyAccounts"
+                   :class="[selectedCreditAccount === account ? 'selected' : 'unselected', 'account-selector']"
+                   @click="setSelectedCreditAccount(account)"
+              >
+                <Acc
+                     :bal="account.bal"
+                     :curr="account.curr"
+                     :backend="account.backend"
+                     :type="account.type"
+                     :active="account.active"
+                     >
+                  <template v-slot:name>{{ account.name }}</template>
+                </Acc>
+              </div>
+            </div>
+            <div v-if="selectedCreditAccount || creditableMoneyAccounts.length === 1"
+                 class="amount">
+              <h2 class="frame3-sub-title mt-3 mb-3">
+                Montant à créditer
+              </h2>
+              <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
+            </div>
           </div>
           <div v-if="myHyperLink.length > 1" class="notification is-default">
             <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
@@ -901,7 +923,9 @@
             <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
           </div>
         </div>
-        <div class="columns" v-if="myHyperLink.length === 0">
+        <div class="columns" v-if="myHyperLink.length === 0 &&
+                                   (selectedCreditAccount ||
+                                    creditableMoneyAccounts.length === 1)">
           <div class="column"></div>
           <div class="column is-flex is-justify-content-center">
             <button
@@ -1010,6 +1034,8 @@
 import { Options, Vue } from 'vue-class-component';
 import { mapGetters } from 'vuex'
 import MyModal from "../modal/MyModal.vue";
+import Acc from "../leftCol/yourAccs/Acc.vue"
+
 //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 
 function returnFavoritesOnly(partners:any): any{
@@ -1026,6 +1052,7 @@ function returnFavoritesOnly(partners:any): any{
   name: "SendAskMoney",
   components: {
     MyModal: MyModal,
+    Acc,
     //AddPayCard,
   },
   data() {
@@ -1056,7 +1083,8 @@ function returnFavoritesOnly(partners:any): any{
       linkGenerated:false,
       history:[],
       amountForCredit:0,
-      urlForHyperlink:""
+      urlForHyperlink:"",
+      selectedCreditAccount:null,
     }
   },
 
@@ -1080,6 +1108,9 @@ function returnFavoritesOnly(partners:any): any{
         return currencyIds.indexOf(p.backendId) > -1
       })
     },
+    ...mapGetters([
+      'creditableMoneyAccounts',
+    ]),
   },
 
   methods: {
@@ -1100,15 +1131,13 @@ function returnFavoritesOnly(partners:any): any{
 
     async newLinkTab() {
       if (this.amountForCredit > 0) {
-        // XXXvlab: temporarily select cyclos first account to keep
-        // functionality.
-        let cyclos_backend = <any>(Object.entries(this.$store.state.lokapi.backends).filter(
-          ([k, v]) => k.startsWith("cyclos")
-        )[0][1])
-        let cyclos_user_account = <any>Object.values(cyclos_backend.userAccounts)[0]
-        let cyclos_bank_account = (await cyclos_user_account.getAccounts())[0]
-
-        let url = await cyclos_bank_account.getCreditUrl(this.amountForCredit)
+        if (!this.selectedCreditAccount) {
+          if (this.creditableMoneyAccounts.length > 1) {
+            throw new Error("Unexpected multiple creditable account found.")
+          }
+          this.selectedCreditAccount = this.creditableMoneyAccounts[0]
+        }
+        let url = await this.selectedCreditAccount._obj.getCreditUrl(this.amountForCredit)
         this.urlForHyperlink = url.order_url
       }
     },
@@ -1265,8 +1294,34 @@ function returnFavoritesOnly(partners:any): any{
         this.partners = []
         this.amount = 0
         this.activeClass = 0
-    }
+    },
+    setSelectedCreditAccount(account: any): void {
+      this.selectedCreditAccount = account
+    },
+
   },
 })
 export default class SendAskMoney extends Vue {}
 </script>
+
+<style scoped lang="sass">
+
+.columns
+  margin-left: 0
+  margin-right: 0
+
+
+div.account-selector
+
+  & :deep(.account)
+    min-width: fit-content
+    max-width: 50%
+    cursor: pointer
+
+  &.unselected :deep(.account)
+    opacity: 0.6
+    background-color: transparent
+    box-shadow: none
+    border: 2px #eee solid
+
+</style>
