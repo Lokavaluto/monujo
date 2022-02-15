@@ -105,7 +105,7 @@
     methods: {
       logout() {
         this.$store.dispatch("askLogOut");
-        this.$router.push({ name: "Carto" });
+        this.$router.push({ name: "Login" });
       },
     },
     computed: {
