@@ -1,8 +1,8 @@
 <template>
   <section class="hero is-halfheight">
     <loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page="fullPage"/>
+             :can-cancel="false"
+             :is-full-page="fullPage"/>
     <div
       class="hero-body is-justify-content-center mt-6 is-flex-direction-column"
     >
@@ -55,59 +55,59 @@
 
 <script lang="ts">
 
-import { Options, Vue } from 'vue-class-component';
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
-import { RestExc } from '@lokavaluto/lokapi-browser';
-import { e as RequestExc } from '@0k.io/types-request';
+  import { Options, Vue } from 'vue-class-component';
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/vue-loading.css';
+  import { RestExc } from '@lokavaluto/lokapi-browser';
+  import { e as RequestExc } from '@0k.io/types-request';
 
-@Options({
-  name: "Login",
-  components :{ Loading: Loading },
-  data() {
-    return {
-      isLoading: false,
-      fullPage: true,
-      email: "",
-      password: "",
-      fail: "",
-      success: ""
-    }
-  },
-  methods: {
-    load():void {
-      this.isLoading = true
-    },
-    async submit(): Promise<void> {
-      try {
-        await this.$store.dispatch("login", {
-          login: this.email,
-          password: this.password,
-        });
-        this.$store.dispatch("fetchAccounts");
-        this.$store.dispatch("fetchTransactions");
-        this.success = "Connection réussie";
-        this.$router.push({ name: "dashboard" });
-      } catch (e) {
-        // { APIRequestFailed, InvalidCredentials }
-        this.isLoading = false
-        if (e instanceof RestExc.APIRequestFailed) {
-          this.fail = "Refus du serveur distant, contactez votre administrateur";
-          return
-        }
-        if (e instanceof RestExc.InvalidCredentials) {
-          this.fail = "Identifiant ou mot de passe incorrect";
-          return
-        }
-        if (e instanceof RequestExc.RequestFailed) {
-          this.fail = "La requête a échoué, impossible de joindre le serveur distant.";
-          return
-        }
-        this.fail = "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant.";
-        throw e
+  @Options({
+    name: "Login",
+    components :{ Loading: Loading },
+    data() {
+      return {
+        isLoading: false,
+        fullPage: true,
+        email: "",
+        password: "",
+        fail: "",
+        success: ""
       }
-    }
-  },
-})
-export default class Login extends Vue {}
+    },
+    methods: {
+      load():void {
+        this.isLoading = true
+      },
+      async submit(): Promise<void> {
+        try {
+          await this.$store.dispatch("login", {
+            login: this.email,
+            password: this.password,
+          });
+          this.$store.dispatch("fetchAccounts");
+          this.$store.dispatch("fetchTransactions");
+          this.success = "Connection réussie";
+          this.$router.push({ name: "dashboard" });
+        } catch (e) {
+          // { APIRequestFailed, InvalidCredentials }
+          this.isLoading = false
+          if (e instanceof RestExc.APIRequestFailed) {
+            this.fail = "Refus du serveur distant, contactez votre administrateur";
+            return
+          }
+          if (e instanceof RestExc.InvalidCredentials) {
+            this.fail = "Identifiant ou mot de passe incorrect";
+            return
+          }
+          if (e instanceof RequestExc.RequestFailed) {
+            this.fail = "La requête a échoué, impossible de joindre le serveur distant.";
+            return
+          }
+          this.fail = "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant.";
+          throw e
+        }
+      }
+    },
+  })
+  export default class Login extends Vue {}
 </script>

@@ -93,46 +93,46 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+  import { Options, Vue } from "vue-class-component";
 
-@Options({
-  name: "Nav",
-  data() {
-    return {
-      showNav: false,
-    };
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch("askLogOut");
-      this.$router.push({ name: "Carto" });
+  @Options({
+    name: "Nav",
+    data() {
+      return {
+        showNav: false,
+      };
     },
-  },
-  computed: {
-    getLog(): string {
-      return this.$store.state.lokapi.isLog;
+    methods: {
+      logout() {
+        this.$store.dispatch("askLogOut");
+        this.$router.push({ name: "Carto" });
+      },
     },
-    hasUnconfiguredBackend(): boolean {
-      // Display of the account creation button should be displayed only
-      // if there's an un-configured backend
-      return this.$store.getters.hasUnconfiguredBackend();
+    computed: {
+      getLog(): string {
+        return this.$store.state.lokapi.isLog;
+      },
+      hasUnconfiguredBackend(): boolean {
+        // Display of the account creation button should be displayed only
+        // if there's an un-configured backend
+        return this.$store.getters.hasUnconfiguredBackend();
+      },
+      hasUserAccountValidationRights(): boolean {
+        return this.$store.state.lokapi.hasUserAccountValidationRights;
+      },
+      hasCreditRequestValidationRights(): boolean {
+        return this.$store.state.lokapi.hasCreditRequestValidationRights
+      },
+      userProfile(): string {
+        return this.$store.state.lokapi.userProfile;
+      },
+      profilePageUrl(): string {
+        return this.$store.getters.getOdooUrl() + "/web/login";
+      },
+      hasMapUrl(): string {
+        return this.$config.mapUrl
+      },
     },
-    hasUserAccountValidationRights(): boolean {
-      return this.$store.state.lokapi.hasUserAccountValidationRights;
-    },
-    hasCreditRequestValidationRights(): boolean {
-      return this.$store.state.lokapi.hasCreditRequestValidationRights
-    },
-    userProfile(): string {
-      return this.$store.state.lokapi.userProfile;
-    },
-    profilePageUrl(): string {
-      return this.$store.getters.getOdooUrl() + "/web/login";
-    },
-    hasMapUrl(): string {
-      return this.$config.mapUrl
-    },
-  },
-})
-export default class Nav extends Vue {}
+  })
+  export default class Nav extends Vue {}
 </script>
