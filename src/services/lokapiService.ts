@@ -5,7 +5,7 @@ import Swal from "sweetalert2"
 
 import router from "../router/index"
 
-class LokAPI extends LokAPIBrowserAbstract {
+export class LokAPI extends LokAPIBrowserAbstract {
 
   BackendFactories = {
     comchain,
@@ -173,23 +173,7 @@ class LokAPI extends LokAPIBrowserAbstract {
 }
 
 
-if (!process.env.VUE_APP_LOKAPI_HOST) {
-  throw new Error("Please specify VUE_APP_LOKAPI_HOST in '.env'")
-}
 
-
-if (!process.env.VUE_APP_LOKAPI_DB) {
-  throw new Error("Please specify VUE_APP_LOKAPI_DB in '.env'")
-}
-
-if (!process.env.VUE_APP_MAP_URL) {
-  throw new Error("Please specify VUE_APP_MAP_URL in '.env'")
-}
-
-export var lokApiService = new LokAPI(
-  process.env.VUE_APP_LOKAPI_HOST,
-  process.env.VUE_APP_LOKAPI_DB,
-)
 
 
 // utilities function
