@@ -14,7 +14,7 @@ export var moduleLokAPI = {
     thisWeektransactions:null,
     bal: 0,
     curr:"",
-    accounts:[],
+    virtualAccountTree:[],
     accountsLoaded: false,
     recipient:"",
     isLog:null,
@@ -111,7 +111,7 @@ export var moduleLokAPI = {
   },
   mutations: {
     async genPaymentLink(state: any, amount:number) {
-      state.paymentUrl = await state.accounts[0].getCreditUrl(amount)
+      state.paymentUrl = await state.virtualAccountTree[0].getCreditUrl(amount)
       // console.log("paymentUrl url =", state.paymentUrl.order_url)
     },
     auth_request(state: any) {
@@ -133,7 +133,7 @@ export var moduleLokAPI = {
       state.transactions=null
       state.thisWeektransactions=null
       state.curr=""
-      state.accounts=[]
+      state.virtualAccountTree=[]
       state.accountsLoaded=false
       state.recipient=""
       state.isLog=false
@@ -147,14 +147,14 @@ export var moduleLokAPI = {
     },
 
     async setBalCurr(state:any) {
-      await lokApiService.buildAccountsInplace(state.accounts)
+      await lokApiService.buildAccountsInplace(state.virtualAccountTree)
 
       // Inform the UI if we are in a multi-currency display, note
       // we are testing the backend and not the currency symbol
 
-      if (state.accounts.length > 1) {
-        let currencyId = state.accounts[0].currencyId
-        state.isMultiCurrency = state.accounts.slice(1).some(
+      if (state.virtualAccountTree.length > 1) {
+        let currencyId = state.virtualAccountTree[0].currencyId
+        state.isMultiCurrency = state.virtualAccountTree.slice(1).some(
           (account: any) => account.currencyId !== currencyId
         )
       }
@@ -217,7 +217,7 @@ export var moduleLokAPI = {
     },
     getAccs: (state: any) => {
       return function(): Array<any> {
-        return state.accounts
+        return state.virtualAccountTree
       }
     },
     getApiToken: (state: any) => {
@@ -243,11 +243,11 @@ export var moduleLokAPI = {
         )
       }
     },
-    activeMoneyAccounts: (state:any) => {
-      return state.accounts.filter((a: any) => a.active === true)
+    activeVirtualAccounts: (state:any) => {
+      return state.virtualAccountTree.filter((a: any) => a.active === true)
     },
-    inactiveMoneyAccounts: (state: any) => {
-      return state.accounts.filter((a: any) => a.active === false)
+    inactiveVirtualAccounts: (state: any) => {
+      return state.virtualAccountTree.filter((a: any) => a.active === false)
     },
     getOdooUrl: (state: any) => {
       return function(): any {
