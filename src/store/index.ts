@@ -3,7 +3,6 @@
 ///<reference types="@types/node"/>
 
 import { createStore } from 'vuex'
-import { moduleLokAPI } from './lokapi'
 
 
 export default createStore({
@@ -16,7 +15,6 @@ export default createStore({
   actions: {
   },
   modules: {
-    lokapi: moduleLokAPI,
   },
   getters: {
   }
