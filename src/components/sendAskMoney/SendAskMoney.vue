@@ -1102,7 +1102,7 @@ function returnFavoritesOnly(partners:any): any{
       return this.$store.getters.activeVirtualAccounts.length > 0
     },
     ownCurrenciesPartners():Array<any> {
-      let currencyIds = this.$store.getters.activeMoneyAccounts
+      let currencyIds = this.$store.getters.activeVirtualAccounts
         .map((a:any) => a.currencyId)
       return this.partners.filter((p:any) => {
         return currencyIds.indexOf(p.backendId) > -1
