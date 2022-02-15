@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@0k.io/node-request": "^0.0.1",
     "@lokavaluto/lokapi-backend-comchain": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-backend-cyclos": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-browser": "0.0.2 || >=0.0.3-alpha",
