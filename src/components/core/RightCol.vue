@@ -10,7 +10,7 @@
       <div v-show="showModal" class="modal-mask">
         <div class="overlay" @click="showModal = false"></div>
         <div class="modal-wrapper">
-          <div class="modal-container">
+          <div class="modal-container" ref="transactionsContainer" @scroll="handleScroll">
             <div class="modal-body">
               <div
                 class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
@@ -53,6 +53,25 @@
         showModal: false
       };
     },
+    watch: {
+      showModal(newval: boolean, oldval: boolean) {
+        if (newval) {
+          this.$nextTick(() => {
+            let div = this.$refs.transactionsContainer
+            if (div.scrollTop === (div.scrollHeight - div.offsetHeight)) {
+              this.$store.dispatch('fetchTransactionsBatch')
+            }
+          })
+        }
+      }
+    },
+    methods: {
+      handleScroll(evt: any) {
+        if (evt.target.scrollTop === (evt.target.scrollHeight - evt.target.offsetHeight)) {
+          this.$store.dispatch('fetchTransactionsBatch')
+        }
+      },
+    }
   })
   export default class RightCol extends Vue {}
 </script>
