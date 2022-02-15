@@ -7,7 +7,6 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    operationSelector:0,
     showCredit:false
   },
   mutations: {

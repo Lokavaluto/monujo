@@ -1,5 +1,5 @@
 <template>
-  <h2 class="custom-card-sub-title">Cette semaine</h2>
+  <h2 class="custom-card-sub-title">Transactions</h2>
   <TransactionSubCard v-for="transaction in getTrs"
                       :key="transaction" :amount="transaction.amount" 
                       :symbol="transaction.currency"
@@ -24,11 +24,7 @@
     },
     computed: {
       getTrs(): any {
-        if (this.$store.state.OperationsSelector == 0) {
-          return this.$store.state.lokapi.thisWeektransactions
-        } else {
-          return []
-        }
+        return this.$store.state.lokapi.thisWeektransactions
       }
     },
    

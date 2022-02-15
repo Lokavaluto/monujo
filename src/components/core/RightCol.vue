@@ -4,7 +4,6 @@
       class="card custom-card custom-card-padding"
     >
       <div class="is-flex-direction-column is-align-items-center is-justify-content-space-between">
-        <OperationsSelector />
         <ThisWeek />
       </div>
       <div v-show="showModal" class="modal-mask">
@@ -36,14 +35,12 @@
 
 <script lang="ts">
   import { Options, Vue } from 'vue-class-component';
-  import OperationsSelector from "../rightCol/OperationsSelector.vue";
   import ThisWeek from "../rightCol/ThisWeek.vue";
   import AllTrs from "../rightCol/AllTrs.vue";
 
   @Options({
     name: "RightCol",
     components: {
-      OperationsSelector,
       ThisWeek,
       AllTrs,
     },
