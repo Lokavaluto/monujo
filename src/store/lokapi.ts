@@ -5,6 +5,8 @@
 import Swal from "sweetalert2"
 
 export function lokapiStoreFactory(lokApiService: any) {
+  const transactionsBatchLength = 10
+  let transactionsGen = lokApiService.getTransactions()
   return {
     state: {
       status: '',
@@ -40,14 +42,19 @@ export function lokapiStoreFactory(lokApiService: any) {
         await dispatch('setBackends')
 
         dispatch("fetchAccounts");
-        dispatch('fetchTransactions')
+        // reset transactions generator upon login so we can have a fresh list of transactions
+        // There is no need to do it on autologin since autologin happens on initial load and 
+        // we already have called lokApiService.getTransactions() upon calling lokapiStoreFactory()
+        transactionsGen = lokApiService.getTransactions()
+        dispatch('fetchTransactionsBatch')
         commit('setUserProfile', await lokApiService.getMyContact())
         commit('auth_success')
         dispatch('fetchUserAccountValidationRights')
         dispatch('fetchCreditRequestValidationRights')
       },
       async initAutoLogin({commit, dispatch}:any) {
-        dispatch('fetchTransactions')
+        dispatch("fetchAccounts");
+        dispatch('fetchTransactionsBatch')
         commit('setUserProfile', await lokApiService.getMyContact())
         commit('auth_success')
         await dispatch('setBackends')
@@ -58,12 +65,12 @@ export function lokapiStoreFactory(lokApiService: any) {
         const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
         commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
       },
-      async fetchTransactions({commit}:any) {
-        let transactionsGen = lokApiService.getTransactions()
-
-        let transactions = []
+      async fetchTransactionsBatch({commit, dispatch, state}:any) {
+        let transactions = state.transactions.length > 0 ? state.transactions.slice(0) : [],
+            transactionsIndex = 0
         let next = await transactionsGen.next()
-        while (!next.done) {
+        while (!next.done && transactionsIndex < transactionsBatchLength) {
+          transactionsIndex++
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
@@ -92,7 +99,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         lokApiService.clearBackendCache()
         dispatch('setBackends')
         dispatch("fetchAccounts")
-        dispatch("fetchTransactions")
+        dispatch("fetchTransactionsBatch")
       },
       async setBackends({ commit, state }:any) {
         try {
