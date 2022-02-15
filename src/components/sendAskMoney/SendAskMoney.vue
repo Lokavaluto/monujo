@@ -1,6 +1,6 @@
 <template>
   <div>
-  <!-- début card envoyer et demander de l'argent  -->
+    <!-- début card envoyer et demander de l'argent  -->
     <div
       class="action-footer"
     >
@@ -196,9 +196,9 @@
                 @click="activeClass = 2 , displayFavoritesOnly = true, fastSearch()"
               >
                 <a class="custom-pictogram-star"
-                  ><span class="icon is-small is-left mr-5">
-                    <i class="fas fa-star"></i>
-                  </span>
+                ><span class="icon is-small is-left mr-5">
+                   <i class="fas fa-star"></i>
+                 </span>
                   <p>favoris</p></a
                 >
               </li>
@@ -206,46 +206,46 @@
           </div>
         </div>
         <div class="container is-fluid custom-heavy-line-separator"></div>
-      <div v-if="ownCurrenciesPartners">
-        <div class="container custom-width-send-money mt-4"
-             v-for="partner in ownCurrenciesPartners"
-             :key="partner">
-          <div
-            class="is-flex is-justify-content-space-between is-align-items-center"
-            
-          >
+        <div v-if="ownCurrenciesPartners">
+          <div class="container custom-width-send-money mt-4"
+               v-for="partner in ownCurrenciesPartners"
+               :key="partner">
             <div
-            class="is-flex is-align-items-center">
+              class="is-flex is-justify-content-space-between is-align-items-center"
+            
+            >
               <div
-                class="mr-5 p-2 is-clickable"
-                :class="[partner.is_favorite ? 'is-active' : '']"
-                @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
-              >
-                <span>
-                  <i
-                    class="far fa-star"
-                    :class="[partner.is_favorite ? 'fas fa-star' : '']"
-                  ></i>
-                </span>
+                class="is-flex is-align-items-center">
+                <div
+                  class="mr-5 p-2 is-clickable"
+                  :class="[partner.is_favorite ? 'is-active' : '']"
+                  @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
+                >
+                  <span>
+                    <i
+                      class="far fa-star"
+                      :class="[partner.is_favorite ? 'fas fa-star' : '']"
+                    ></i>
+                  </span>
+                </div>
+                <i class="fas fa-history mr-5"></i>
+                <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3 = true">
+                  <p class="custom-card-destinataire mr-5">
+                    {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
+                  </p>
+                </div>
               </div>
-              <i class="fas fa-history mr-5"></i>
-              <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame3 = true">
-                <p class="custom-card-destinataire mr-5">
-                  {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
-                </p>
+              <div class="is-flex">
+                <i class="fas fa-ellipsis-v"></i>
               </div>
             </div>
-            <div class="is-flex">
-              <i class="fas fa-ellipsis-v"></i>
+            <div class="is-flex is-justify-content-flex-end">
+              <span class="custom-line-separator mt-4"></span>
             </div>
-          </div>
-          <div class="is-flex is-justify-content-flex-end">
-            <span class="custom-line-separator mt-4"></span>
-          </div>
 
 
+          </div>
         </div>
-      </div>
       </template>
       <template v-slot:footer>
         <div></div>
@@ -276,8 +276,8 @@
             class="mr-5 p-2"
             @click="
               (showModalFrame2 = false),
-                (showModalFrame1 = false),
-                (showModalFrame3 = false)
+              (showModalFrame1 = false),
+              (showModalFrame3 = false)
             "
           >
             <img
@@ -327,8 +327,8 @@
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
                 @click="sendTransaction(), (showModalFrame2 = false),
-                (showModalFrame1 = false),
-                (showModalFrame3 = false)"
+                        (showModalFrame1 = false),
+                        (showModalFrame3 = false)"
               >
                 Envoyer
               </button>
@@ -496,9 +496,9 @@
                 @click="activeClass = 2 , displayFavoritesOnly = true, fastProSearch()"
               >
                 <a class="custom-pictogram-star"
-                  ><span class="icon is-small is-left mr-5">
-                    <i class="fas fa-star"></i>
-                  </span>
+                ><span class="icon is-small is-left mr-5">
+                   <i class="fas fa-star"></i>
+                 </span>
                   <p>favoris</p></a
                 >
               </li>
@@ -515,7 +515,7 @@
             
           >
             <div
-            class="is-flex is-align-items-center">
+              class="is-flex is-align-items-center">
               <div
                 class="mr-5 p-2 is-clickable"
                 :class="[partner.is_favorite ? 'is-active' : '']"
@@ -544,7 +544,7 @@
           </div>
 
 
-      </div>
+        </div>
       </template>
       <template v-slot:footer>
         <div></div>
@@ -575,8 +575,8 @@
             class="mr-5 p-2"
             @click="
               (showModalFrame2Pro = false),
-                (showModalFrame1 = false),
-                (showModalFrame3Pro = false)
+              (showModalFrame1 = false),
+              (showModalFrame3Pro = false)
             "
           >
             <img
@@ -626,8 +626,8 @@
               <button
                 class="button custom-button custom-button-send-receive-money is-rounded action"
                 @click="sendTransaction(), (showModalFrame2Pro = false),
-                (showModalFrame1 = false),
-                (showModalFrame3Pro = false)"
+                        (showModalFrame1 = false),
+                        (showModalFrame3Pro = false)"
               >
                 Envoyer
               </button>
@@ -761,7 +761,7 @@
             </div>
 
             <div v-if="linkGenerated"
-              class="is-flex is-justify-content-center is-align-items-center mt-6"
+                 class="is-flex is-justify-content-center is-align-items-center mt-6"
             >
               <p class="mr-4" ref="mylink">{{myLink}}</p>
               <button
@@ -899,12 +899,12 @@
                    @click="setSelectedCreditAccount(account)"
               >
                 <Acc
-                     :bal="account.bal"
-                     :curr="account.curr"
-                     :backend="account.backend"
-                     :type="account.type"
-                     :active="account.active"
-                     >
+                  :bal="account.bal"
+                  :curr="account.curr"
+                  :backend="account.backend"
+                  :type="account.type"
+                  :active="account.active"
+                >
                   <template v-slot:name>{{ account.name }}</template>
                 </Acc>
               </div>
@@ -924,8 +924,8 @@
           </div>
         </div>
         <div class="columns" v-if="myHyperLink.length === 0 &&
-                                   (selectedCreditAccount ||
-                                    creditableMoneyAccounts.length === 1)">
+          (selectedCreditAccount ||
+            creditableMoneyAccounts.length === 1)">
           <div class="column"></div>
           <div class="column is-flex is-justify-content-center">
             <button
@@ -1031,239 +1031,239 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { mapGetters } from 'vuex'
-import MyModal from "../modal/MyModal.vue";
-import Acc from "../leftCol/yourAccs/Acc.vue"
+  import { Options, Vue } from 'vue-class-component';
+  import { mapGetters } from 'vuex'
+  import MyModal from "../modal/MyModal.vue";
+  import Acc from "../leftCol/yourAccs/Acc.vue"
 
-//import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
+  //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 
-function returnFavoritesOnly(partners:any): any{
-  var ret = []
-  for (let el of partners) {
-    if (el.is_favorite == true) {
-      ret.push(el)
+  function returnFavoritesOnly(partners:any): any{
+    var ret = []
+    for (let el of partners) {
+      if (el.is_favorite == true) {
+        ret.push(el)
+      }
     }
+    return ret
   }
-  return ret
-}
 
-@Options({
-  name: "SendAskMoney",
-  components: {
-    MyModal: MyModal,
-    Acc,
+  @Options({
+    name: "SendAskMoney",
+    components: {
+      MyModal: MyModal,
+      Acc,
     //AddPayCard,
-  },
-  data() {
-    return {
-      showModalFrame1: false,
-      showModalFrame2: false,
-      showModalFrame3: false,
-      showModalFrame4: false,
-      showModalFrame2Pro: false,
-      showModalFrame3Pro: false,
-      showModalFrame4Pro: false,
-      showModalFrameAskMoney1: false,
-      showModalFrameAskMoney2: false,
-      showModalFrameCreditMoney1: false,
-      showModalFrameCreditMoney2: false,
-      showModalFrameCreditMoney3: false,
-      showModalFrameCreditMoney4: false,
-      warning: true,
-      activeClass: 0,
-      favoris: false,
-      searchName:"",
-      amount:0, 
-      message:"",
-      partners:[],
-      recipientName:"",
-      displayFavoritesOnly:false,
-      amountAsked:0,
-      linkGenerated:false,
-      history:[],
-      amountForCredit:0,
-      urlForHyperlink:"",
-      selectedCreditAccount:null,
-    }
-  },
-
-  computed: {
-    myLink(): string {
-      return this.$store.state.lokapi.paymentUrl.order_url
     },
-    myHyperLink():string {
-      return this.urlForHyperlink
-    },
-    globalBalCall():boolean {
-      return this.$store.state.showCredit
-    },
-    hasActiveMoneyAccount():boolean {
-      return this.$store.getters.activeVirtualAccounts.length > 0
-    },
-    ownCurrenciesPartners():Array<any> {
-      let currencyIds = this.$store.getters.activeVirtualAccounts
-        .map((a:any) => a.currencyId)
-      return this.partners.filter((p:any) => {
-        return currencyIds.indexOf(p.backendId) > -1
-      })
-    },
-    ...mapGetters([
-      'creditableMoneyAccounts',
-    ]),
-  },
-
-  methods: {
-
-    resetCredit() :void {
-      this.$store.state.showCredit = false
-      this.urlForHyperlink= ""
-      this.linkGenerated= false
-      this.amountForCredit = 0
+    data() {
+      return {
+        showModalFrame1: false,
+        showModalFrame2: false,
+        showModalFrame3: false,
+        showModalFrame4: false,
+        showModalFrame2Pro: false,
+        showModalFrame3Pro: false,
+        showModalFrame4Pro: false,
+        showModalFrameAskMoney1: false,
+        showModalFrameAskMoney2: false,
+        showModalFrameCreditMoney1: false,
+        showModalFrameCreditMoney2: false,
+        showModalFrameCreditMoney3: false,
+        showModalFrameCreditMoney4: false,
+        warning: true,
+        activeClass: 0,
+        favoris: false,
+        searchName:"",
+        amount:0, 
+        message:"",
+        partners:[],
+        recipientName:"",
+        displayFavoritesOnly:false,
+        amountAsked:0,
+        linkGenerated:false,
+        history:[],
+        amountForCredit:0,
+        urlForHyperlink:"",
+        selectedCreditAccount:null,
+      }
     },
 
-    resetSendMoney():void{
-      this.amount = 0
-      this.message = ""
-      this.searchName = ""
-      this.activeClass = 0
+    computed: {
+      myLink(): string {
+        return this.$store.state.lokapi.paymentUrl.order_url
+      },
+      myHyperLink():string {
+        return this.urlForHyperlink
+      },
+      globalBalCall():boolean {
+        return this.$store.state.showCredit
+      },
+      hasActiveMoneyAccount():boolean {
+        return this.$store.getters.activeVirtualAccounts.length > 0
+      },
+      ownCurrenciesPartners():Array<any> {
+        let currencyIds = this.$store.getters.activeVirtualAccounts
+          .map((a:any) => a.currencyId)
+        return this.partners.filter((p:any) => {
+          return currencyIds.indexOf(p.backendId) > -1
+        })
+      },
+      ...mapGetters([
+        'creditableMoneyAccounts',
+      ]),
     },
 
-    async newLinkTab() {
-      if (this.amountForCredit > 0) {
-        if (!this.selectedCreditAccount) {
-          if (this.creditableMoneyAccounts.length > 1) {
-            throw new Error("Unexpected multiple creditable account found.")
+    methods: {
+
+      resetCredit() :void {
+        this.$store.state.showCredit = false
+        this.urlForHyperlink= ""
+        this.linkGenerated= false
+        this.amountForCredit = 0
+      },
+
+      resetSendMoney():void{
+        this.amount = 0
+        this.message = ""
+        this.searchName = ""
+        this.activeClass = 0
+      },
+
+      async newLinkTab() {
+        if (this.amountForCredit > 0) {
+          if (!this.selectedCreditAccount) {
+            if (this.creditableMoneyAccounts.length > 1) {
+              throw new Error("Unexpected multiple creditable account found.")
+            }
+            this.selectedCreditAccount = this.creditableMoneyAccounts[0]
           }
-          this.selectedCreditAccount = this.creditableMoneyAccounts[0]
+          let url = await this.selectedCreditAccount._obj.getCreditUrl(this.amountForCredit)
+          this.urlForHyperlink = url.order_url
         }
-        let url = await this.selectedCreditAccount._obj.getCreditUrl(this.amountForCredit)
-        this.urlForHyperlink = url.order_url
-      }
-    },
+      },
 
-    navigateToCreditOrder():void {
-      this.showModalFrameCreditMoney1 = false
-      window.open(this.urlForHyperlink, '_blank');
-      this.urlForHyperlink = ""
-      this.amountForCredit = 0
-    },
+      navigateToCreditOrder():void {
+        this.showModalFrameCreditMoney1 = false
+        window.open(this.urlForHyperlink, '_blank');
+        this.urlForHyperlink = ""
+        this.amountForCredit = 0
+      },
 
-    copyUrl() {
-      const el = document.createElement('textarea');
-      el.value = this.$store.state.lokapi.paymentUrl.order_url;
-      el.setAttribute('readonly', '');
-      el.style.position = 'absolute';
-      el.style.left = '-9999px';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
+      copyUrl() {
+        const el = document.createElement('textarea');
+        el.value = this.$store.state.lokapi.paymentUrl.order_url;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
       
-    },
+      },
 
-    async genLink():Promise<void> {
-      this.$store.state.lokapi.paymentUrl= null
-      if (this.amountAsked > 0) {
-        await this.$store.dispatch("genPaymentLink",this.amountAsked).then(() => {
-          this.linkGenerated = true
-        });
-      }
-    },
-
-    async toggleFavorite(contact:any):Promise<void> {
-      contact.toggleFavorite()
-    },
-
-    async searchRecipientHistory() :Promise<void> {
-      let h = []
-      for (let i = 0; i < this.$store.state.lokapi.recipientHistory.length; i++) {
-        var recipient
-        try {
-          recipient = await this.$lokapi.searchRecipients(this.$store.state.lokapi.recipientHistory[i])
-          h.push(recipient[0])
-        } catch (err) {
-          console.log('searchRecipients() Failed', err)
+      async genLink():Promise<void> {
+        this.$store.state.lokapi.paymentUrl= null
+        if (this.amountAsked > 0) {
+          await this.$store.dispatch("genPaymentLink",this.amountAsked).then(() => {
+            this.linkGenerated = true
+          });
         }
-      }
+      },
+
+      async toggleFavorite(contact:any):Promise<void> {
+        contact.toggleFavorite()
+      },
+
+      async searchRecipientHistory() :Promise<void> {
+        let h = []
+        for (let i = 0; i < this.$store.state.lokapi.recipientHistory.length; i++) {
+          var recipient
+          try {
+            recipient = await this.$lokapi.searchRecipients(this.$store.state.lokapi.recipientHistory[i])
+            h.push(recipient[0])
+          } catch (err) {
+            console.log('searchRecipients() Failed', err)
+          }
+        }
       //this.partners = h
-    },
+      },
 
-    async fastSearch() :Promise<void> {
-      this.partners = []
-      if(this.searchName == "" && !this.displayFavoritesOnly) {
-        this.searchRecipientHistory()
-      } else {
-      var recipients
-      try {
-        recipients = await this.$lokapi.searchRecipients(this.searchName)
-        console.log(recipients)
-      } catch (err) {
-        console.log('searchRecipients() Failed', err)
-      }
-        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-      }
-    },
-
-    async fastProSearch() :Promise<void> {
-      this.partners = []
-      if(this.searchName == "" && !this.displayFavoritesOnly) {
-        this.searchRecipientHistory()
-      } else {
-        var recipients
-      try {
-        recipients = await this.$lokapi.searchProRecipients(this.searchName)
-      } catch (err) {
-        console.log('searchRecipients() Failed', err)
-      }
-        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-      }
-    },
-
-    async delayedSearch() :Promise<void> {
-      if (this.searchName != "" && !this.displayFavoritesOnly) {
-        var recipients
-        try {
-          recipients = await this.$lokapi.searchRecipients(this.searchName)
-        } catch (err) {
-          console.log('searchRecipients() FAILED', err)
-        }
-        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-      } else {
+      async fastSearch() :Promise<void> {
         this.partners = []
-      }
-    },
+        if(this.searchName == "" && !this.displayFavoritesOnly) {
+          this.searchRecipientHistory()
+        } else {
+          var recipients
+          try {
+            recipients = await this.$lokapi.searchRecipients(this.searchName)
+            console.log(recipients)
+          } catch (err) {
+            console.log('searchRecipients() Failed', err)
+          }
+          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+        }
+      },
 
-    async delayedProSearch() :Promise<void> {
-      if (this.searchName != "" && !this.displayFavoritesOnly) {
-        var recipients
-        try {
+      async fastProSearch() :Promise<void> {
+        this.partners = []
+        if(this.searchName == "" && !this.displayFavoritesOnly) {
+          this.searchRecipientHistory()
+        } else {
+          var recipients
+          try {
             recipients = await this.$lokapi.searchProRecipients(this.searchName)
-        } catch (err) {
-            console.log('searchProRecipients() FAILED', err)
+          } catch (err) {
+            console.log('searchRecipients() Failed', err)
+          }
+          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
         }
-        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-      } else {
-        this.partners = []
-      }
-    },
-    setRecipient(partner:any):void {
+      },
+
+      async delayedSearch() :Promise<void> {
+        if (this.searchName != "" && !this.displayFavoritesOnly) {
+          var recipients
+          try {
+            recipients = await this.$lokapi.searchRecipients(this.searchName)
+          } catch (err) {
+            console.log('searchRecipients() FAILED', err)
+          }
+          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+        } else {
+          this.partners = []
+        }
+      },
+
+      async delayedProSearch() :Promise<void> {
+        if (this.searchName != "" && !this.displayFavoritesOnly) {
+          var recipients
+          try {
+            recipients = await this.$lokapi.searchProRecipients(this.searchName)
+          } catch (err) {
+            console.log('searchProRecipients() FAILED', err)
+          }
+          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+        } else {
+          this.partners = []
+        }
+      },
+      setRecipient(partner:any):void {
         this.$store.state.lokapi.recipient = partner
         this.recipientName = partner.name
-    },
+      },
 
-    async sendTransaction():Promise<void> {
-      let recipient = this.$store.state.lokapi.recipient
-      try {
+      async sendTransaction():Promise<void> {
+        let recipient = this.$store.state.lokapi.recipient
+        try {
           await recipient.transfer(this.amount.toString(), this.message)
         } catch (err) { // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
           if (err.message === 'User canceled the dialog box') {
-          this.$toast.warning(
-            `Transaction en cours annulée`,
-            {
-              position:
-              "top-right"
-            });
+            this.$toast.warning(
+              `Transaction en cours annulée`,
+              {
+                position:
+                  "top-right"
+              });
             return
           }
           console.log('Payment failed:', err.message)
@@ -1274,34 +1274,34 @@ function returnFavoritesOnly(partners:any): any{
           `Paiement effectué à ${this.recipientName}`,
           {
             position:
-            "top-right"
+              "top-right"
           });
         if (!recipient.is_favorite) {
           this.$Swal.fire({
-          title: `Voulez vous ajouter ${this.recipientName} aux favoris ?`,
-          showDenyButton: true,
-          confirmButtonText: `Ajouter`,
-          denyButtonText: `Plus tard`,
-        }).then((result:any) => {
-          if (result.isConfirmed) {
-            this.toggleFavorite(recipient)
-            this.$Swal.fire(`${this.recipientName} a bien été ajouté en favori`, '', 'success')
-          }
-        })
+            title: `Voulez vous ajouter ${this.recipientName} aux favoris ?`,
+            showDenyButton: true,
+            confirmButtonText: `Ajouter`,
+            denyButtonText: `Plus tard`,
+          }).then((result:any) => {
+            if (result.isConfirmed) {
+              this.toggleFavorite(recipient)
+              this.$Swal.fire(`${this.recipientName} a bien été ajouté en favori`, '', 'success')
+            }
+          })
         }
         await this.$store.dispatch("fetchTransactions")
         this.searchName = ""
         this.partners = []
         this.amount = 0
         this.activeClass = 0
-    },
-    setSelectedCreditAccount(account: any): void {
-      this.selectedCreditAccount = account
-    },
+      },
+      setSelectedCreditAccount(account: any): void {
+        this.selectedCreditAccount = account
+      },
 
-  },
-})
-export default class SendAskMoney extends Vue {}
+    },
+  })
+  export default class SendAskMoney extends Vue {}
 </script>
 
 <style scoped lang="sass">

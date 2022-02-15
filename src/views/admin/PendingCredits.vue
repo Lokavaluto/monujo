@@ -46,42 +46,42 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+  import { Options, Vue } from 'vue-class-component';
 
-@Options({
-  name:"PendingCredits",
-  mounted() {
-    this.$store.dispatch('fetchPendingCreditRequests')
-  },
-  computed: {
-    pendingCreditRequests(): Array<any> {
-      return this.$store.state.lokapi.pendingCreditRequests
-    }
-  },
-  methods: {
-    async validateCreditRequest (request: any): Promise<void> {
-      try {
-        await request.validate()
-      } catch(err) {
+  @Options({
+    name:"PendingCredits",
+    mounted() {
+      this.$store.dispatch('fetchPendingCreditRequests')
+    },
+    computed: {
+      pendingCreditRequests(): Array<any> {
+        return this.$store.state.lokapi.pendingCreditRequests
+      }
+    },
+    methods: {
+      async validateCreditRequest (request: any): Promise<void> {
+        try {
+          await request.validate()
+        } catch(err) {
+          this.$Swal.fire({
+            position: 'top',
+            icon: 'error',
+            title: 'Il y a eu un problème lors de la tentative de validation de la demande de crédit' + request.relatedUser,
+            showConfirmButton: false,
+            timer: 3000
+          })
+          throw err
+        }
+        this.$store.dispatch('fetchPendingCreditRequests')
         this.$Swal.fire({
           position: 'top',
-          icon: 'error',
-          title: 'Il y a eu un problème lors de la tentative de validation de la demande de crédit' + request.relatedUser,
+          icon: 'success',
+          title: 'La demande de crédit de ' + request.relatedUser + ' d\'un montant de ' + request.amount + ' a été validée',
           showConfirmButton: false,
           timer: 3000
         })
-        throw err
       }
-      this.$store.dispatch('fetchPendingCreditRequests')
-      this.$Swal.fire({
-        position: 'top',
-        icon: 'success',
-        title: 'La demande de crédit de ' + request.relatedUser + ' d\'un montant de ' + request.amount + ' a été validée',
-        showConfirmButton: false,
-        timer: 3000
-      })
-    }
-  },
-})
-export default class Admin extends Vue {}
+    },
+  })
+  export default class Admin extends Vue {}
 </script>

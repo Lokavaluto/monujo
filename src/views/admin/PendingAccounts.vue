@@ -38,41 +38,41 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+  import { Options, Vue } from 'vue-class-component';
 
-@Options({
-  name:"PendingAccounts",
-  mounted() {
-    this.$store.dispatch('fetchPendingUserAccounts')
-  },
-  computed: {
-    pendingUserAccounts(): Array<any> {
-      return this.$store.state.lokapi.pendingUserAccounts
-    }
-  },
-  methods: {
-    validateUserAccount(account: any):void {
-      account.validateCreation()
-        .catch((err: any) => {
-          this.$Swal.fire({
-            position: 'top',
-            icon: 'error',
-            title: 'Il y a eu un problème lors de la tentative de validation de l\'utilisateur ' + account.name,
-            showConfirmButton: false,
-            timer: 3000
+  @Options({
+    name:"PendingAccounts",
+    mounted() {
+      this.$store.dispatch('fetchPendingUserAccounts')
+    },
+    computed: {
+      pendingUserAccounts(): Array<any> {
+        return this.$store.state.lokapi.pendingUserAccounts
+      }
+    },
+    methods: {
+      validateUserAccount(account: any):void {
+        account.validateCreation()
+          .catch((err: any) => {
+            this.$Swal.fire({
+              position: 'top',
+              icon: 'error',
+              title: 'Il y a eu un problème lors de la tentative de validation de l\'utilisateur ' + account.name,
+              showConfirmButton: false,
+              timer: 3000
+            })
+          }).then((result: any) => {
+            this.$store.dispatch('fetchPendingUserAccounts')
+            this.$Swal.fire({
+              position: 'top',
+              icon: 'success',
+              title: 'Le compte de l\'utilisateur ' + account.name + ' a été validé',
+              showConfirmButton: false,
+              timer: 3000
+            })
           })
-        }).then((result: any) => {
-          this.$store.dispatch('fetchPendingUserAccounts')
-          this.$Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Le compte de l\'utilisateur ' + account.name + ' a été validé',
-            showConfirmButton: false,
-            timer: 3000
-          })
-        })
-    }
-  },
-})
-export default class Admin extends Vue {}
+      }
+    },
+  })
+  export default class Admin extends Vue {}
 </script>

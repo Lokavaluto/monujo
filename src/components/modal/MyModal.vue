@@ -54,13 +54,13 @@
 </template>
 
 <script>
-export default {
-  name: "MyModal",
-  props:["first"],
-  data() {
-    return {
-      showModal: false
-    };
-  },
-};
+  export default {
+    name: "MyModal",
+    props:["first"],
+    data() {
+      return {
+        showModal: false
+      };
+    },
+  };
 </script>
