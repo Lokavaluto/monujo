@@ -36,7 +36,7 @@
       :class="{ 'is-active': showNav }"
     >
       <div class="navbar-end">
-        <router-link to="/carto" class="navbar-item"> Carto </router-link>
+        <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carto </router-link>
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
         </router-link>
@@ -128,6 +128,9 @@ import { Options, Vue } from "vue-class-component";
     },
     profilePageUrl(): string {
       return this.$store.getters.getOdooUrl() + "/web/login";
+    },
+    hasMapUrl(): string {
+      return this.$config.mapUrl
     },
   },
 })

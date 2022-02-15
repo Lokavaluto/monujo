@@ -1,5 +1,6 @@
 <template>
   <iframe
+    v-if="mapUrl"
     width="100%"
     height="100%"
     :src="mapUrl"
@@ -33,7 +34,10 @@ import { Options, Vue } from "vue-class-component";
     };
   },
   mounted() {
-    this.mapUrl = process.env.VUE_APP_MAP_URL;
+    this.mapUrl = this.$config.mapUrl
+    if (!this.mapUrl) {
+      console.error("This view require a valid `mapUrl` configured in `config.json`")
+    }
   },
 })
 export default class Carto extends Vue {}

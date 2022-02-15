@@ -6,34 +6,63 @@ import { lokapiStoreFactory } from "./store/lokapi"
 import { LokAPI } from "./services/lokapiService"
 import Toaster from "@meforma/vue-toaster";
 import Swal from "./useSwal";
+import { httpRequest } from "@0k.io/node-request"
+
 require("@/assets/main.scss");
 
 
-if (!process.env.VUE_APP_LOKAPI_HOST) {
-  throw new Error("Please specify VUE_APP_LOKAPI_HOST in '.env'")
+async function fetchConfig(path: string) {
+  const cur = window.location
+    let response
+    try {
+        response = await httpRequest({
+            protocol: cur.protocol.slice(0, -1),
+            host: cur.hostname,
+            port: parseInt(cur.port),
+            method: "GET",
+            path
+        })
+    } catch (error) {
+        console.log(`Failed to load config file '${path}'.`)
+        throw error
+    }
+    if (typeof(response) !== "string") {
+        throw new Error(
+            "Unexpected response while loading config file.")
+    }
+    try {
+    return JSON.parse(response)
+    } catch (error) {
+        console.error(`File '${path}' was loaded, but doesn't contain valid json.`)
+        throw error
+    }
 }
 
 
-if (!process.env.VUE_APP_LOKAPI_DB) {
-  throw new Error("Please specify VUE_APP_LOKAPI_DB in '.env'")
-}
+fetchConfig("/config.json").then((config: any) => {
 
-if (!process.env.VUE_APP_MAP_URL) {
-  throw new Error("Please specify VUE_APP_MAP_URL in '.env'")
-}
+    if (!config.lokapiHost) {
+        throw new Error("Please specify lokapiHost in 'config.json'")
+    }
 
-const lokApiService = new LokAPI(
-  process.env.VUE_APP_LOKAPI_HOST,
-  process.env.VUE_APP_LOKAPI_DB,
-)
+    if (!config.lokapiDb) {
+        throw new Error("Please specify lokapiDb in 'config.json'")
+    }
 
-store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
+    const lokApiService = new LokAPI(
+        config.lokapiHost,
+        config.lokapiDb,
+    )
 
-const app = createApp(App)
-  app.use(store)
-  app.use(router)
-  app.use(Swal)
-  app.use(Toaster)
-  app.provide('$store', store)
-  app.config.globalProperties.$lokapi = lokApiService
-  app.mount("#app");
+    store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
+
+    const app = createApp(App)
+    app.use(store)
+    app.use(router)
+    app.use(Swal)
+    app.use(Toaster)
+    app.provide('$store', store)
+    app.config.globalProperties.$lokapi = lokApiService
+    app.config.globalProperties.$config = config
+    app.mount("#app")
+})

@@ -1,0 +1,5 @@
+{
+  "lokapiDb": "odoo",
+  "lokapiHost": "example.org",
+  "mapUrl": "https://carte.example.org"
+}
