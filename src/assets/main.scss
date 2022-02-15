@@ -314,9 +314,19 @@ body {
   display: table-cell;
   vertical-align: middle;
   position: fixed;
-  top: 10%;
-  width: 70%;
-  height: 80%;
+
+  bottom: 10px;
+  top: 60px;
+  left: 10px;
+  right: 10px;
+
+  @media screen and (min-width:540px) {
+    left: auto;
+    right: auto;
+    width: 90%;
+    max-width: 540px;
+  }
+
 }
 
 .modal-container {
