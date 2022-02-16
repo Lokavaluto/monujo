@@ -5,7 +5,7 @@
     aria-label="main navigation"
   >
     <div class="navbar-brand">
-      <router-link :to="{ name: 'dashboard' }" class="navbar-item">
+      <router-link :to="{ name: 'dashboard' }" class="navbar-item" @click="showNav = false">
         <img
           class="is-rounded"
           style="max-height: none !important"
@@ -34,6 +34,7 @@
       id="navbarBasicExample"
       class="navbar-menu"
       :class="{ 'is-active': showNav }"
+      @click="showNav = false"
     >
       <div class="navbar-end">
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carto </router-link>
