@@ -5,7 +5,7 @@
     aria-label="main navigation"
   >
     <div class="navbar-brand">
-      <router-link :to="{ name: 'dashboard' }" class="navbar-item">
+      <router-link :to="{ name: 'dashboard' }" class="navbar-item" @click="showNav = false">
         <img
           class="is-rounded"
           src="/img/monujo-logo.png"
@@ -31,6 +31,7 @@
       id="navbarBasicExample"
       class="navbar-menu"
       :class="{ 'is-active': showNav }"
+      @click="showNav = false"
     >
       <div class="navbar-end">
         <div class="navbar-item" v-if="getLog">
