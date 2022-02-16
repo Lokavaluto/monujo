@@ -8,10 +8,7 @@
       <router-link :to="{ name: 'dashboard' }" class="navbar-item">
         <img
           class="is-rounded"
-          style="max-height: none !important"
-          src="https://lokavaluto.fr/web/image/res.company/1/logo?unique=2eaba5c"
-          width="80"
-          height="80"
+          src="/img/monujo-logo.png"
         />
       </router-link>
 
