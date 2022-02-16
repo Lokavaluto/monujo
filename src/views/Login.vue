@@ -1,14 +1,16 @@
 <template>
-  <section class="hero is-halfheight">
+  <section id="login">
     <loading v-model:active="isLoading"
              :can-cancel="false"
              :is-full-page="fullPage"/>
     <div
-      class="hero-body is-justify-content-center mt-6 is-flex-direction-column"
+      class="login-container"
+
     >
-      <div class="box p-6 m-6 ">
+      <div class="card">
+        <img src="/img/monujo-logo.png" class="pt-2 pb-5" />
         <form @submit.prevent="submit">
-          <div class="field">
+          <div class="field mb-5">
             <p class="control has-icons-left has-icons-right">
               <input
                 v-model="email"
@@ -23,7 +25,7 @@
               </span>
             </p>
           </div>
-          <div class="field">
+          <div class="field mb-5">
             <p class="control has-icons-left">
               <input
                 v-model="password"
