@@ -54,10 +54,11 @@ body {
 }
 
 .custom-card-padding {
-  padding-bottom: 1.8em;
-  padding-top: 1.8em;
-  padding-left: 1.8em;
-  padding-right: 1.8em;
+  padding: .8em;
+
+  @media screen and (min-width: 768px) {
+    padding: 1.8em;
+  }
 }
 
 .custom-card-title {
@@ -657,20 +658,23 @@ rect {
     .account {
 
         .account-backend {
-            font-size: 0.6em;
             font-weight: bold;
             color: #009688;
             opacity: 0.8;
         }
 
         .account-name {
-            margin-left: 1em;
-            width: 30%;
+            @media screen and (min-width: 768px) {
+              width: 30%;
+              margin-left: 1em;
+            }
         }
 
         .account-bal {
-            width: 20%;
             text-align: right;
+            @media screen and (min-width: 768px) {
+              width: 20%;
+            }
         }
 
         .account-curr {
@@ -680,22 +684,30 @@ rect {
         .account-type {
         }
 
-        &.custom-card-padding {
-            padding-bottom: 1.2em;
-            padding-top: 1.2em;
-            padding-left: 1.2em;
-            padding-right: 1.2em;
+        @media screen and (min-width: 768px) {
+          &.custom-card-padding {
+              padding-bottom: 1.2em;
+              padding-top: 1.2em;
+              padding-left: 1.2em;
+              padding-right: 1.2em;
+          }
         }
+
     }
 
     .sub-accounts {
-        margin-left: 3em;
+        margin-left: 1.5em;
+        @media screen and (min-width: 768px) {
+          margin-left: 3em;
+        }
 
         .account {
             font-size: 0.5em;
         }
         .account-name {
+          @media screen and (min-width: 768px) {
             margin-left: 2em;
+          }
         }
     }
 

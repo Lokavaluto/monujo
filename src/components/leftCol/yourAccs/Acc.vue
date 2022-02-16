@@ -3,12 +3,12 @@
     class="account card custom-inner-card custom-card-padding is-flex is-justify-content-space-between is-align-items-center mb-4"
   >
     <div class="account-name">
-      <span class="is-size-5">
+      <span class="is-size-6-mobile is-size-5-tablet">
         <slot name="name">default name</slot>
       </span>
     </div>
     <div class="account-bal">
-      <span class="is-size-4 has-text-grey-darker account-bal" v-if="active">
+      <span class="is-size-6-mobile is-size-4-tablet has-text-grey-darker account-bal" v-if="active">
         {{
           parseFloat(bal).toLocaleString(
             "fr", {
@@ -17,11 +17,11 @@
             })
         }}
       </span>
-      <span class="is-size-4 account-bal inactive" v-else>-.---,--</span>
-      <span class="is-size-5 account-curr">{{curr}}</span>
+      <span class="is-size-6-mobile is-size-4-tablet account-bal inactive" v-else>-.---,--</span>
+      <span class="is-size-6-mobile is-size-5-tablet account-curr">{{curr}}</span>
     </div>
     <div class="account-backend" v-if="isMultiCurrency">
-      <span class="is-size-6 account-backend" v-if="!isSub">
+      <span class="is-size-6-mobile is-size-5-tablet account-backend" v-if="!isSub">
         {{ backend }}
       </span>
     </div>
