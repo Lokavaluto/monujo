@@ -1,48 +1,50 @@
 <template>
-  <div class="container mt-5">
-    <div class="columns is-tablet">
-      <div class="column">
-        <div
-          class="accounts card custom-card custom-card-padding"
-        >
-          <h2 class="custom-card-title">Opérations de crédit en attente de validation</h2>
-          <table class="table is-striped is-fullwidth">
-            <thead>
-              <tr>
-                <th>Utilisateur</th>
-                <th>Montant</th>
-                <th class="has-text-right">Valider</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="request in pendingCreditRequests">
-                <td>
-                  {{request.relatedUser}} {{ request.markBackend ? `(on ${request.backendId})` : ""}}
-                </td>
-                <td>
-                  {{
-                    parseFloat(request.amount).toLocaleString(
-                      "fr", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
-                  }} {{request.currency}}
-                </td>
-                <td class="has-text-right">
-                  <a
-                    class="button is-primary custom-button custom-inverted is-small is-pulled-right"
-                    v-on:click="validateCreditRequest(request)"
-                  >
-                    valider
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <main class="main">
+    <div class="container mt-5">
+      <div class="columns is-tablet">
+        <div class="column">
+          <div
+            class="accounts card custom-card custom-card-padding"
+          >
+            <h2 class="custom-card-title">Opérations de crédit en attente de validation</h2>
+            <table class="table is-striped is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Montant</th>
+                  <th class="has-text-right">Valider</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="request in pendingCreditRequests">
+                  <td>
+                    {{request.relatedUser}} {{ request.markBackend ? `(on ${request.backendId})` : ""}}
+                  </td>
+                  <td>
+                    {{
+                      parseFloat(request.amount).toLocaleString(
+                        "fr", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                    }} {{request.currency}}
+                  </td>
+                  <td class="has-text-right">
+                    <a
+                      class="button is-primary custom-button custom-inverted is-small is-pulled-right"
+                      v-on:click="validateCreditRequest(request)"
+                    >
+                      valider
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
