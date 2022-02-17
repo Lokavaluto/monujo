@@ -27,3 +27,9 @@ pnpm-debug.log*
 lokapi/
 package-lock.json
 package.json
+
+# Capacitor splashes and icons
+resources/android/icon
+resources/android/splash
+resources/ios/icon
+resources/ios/splash
