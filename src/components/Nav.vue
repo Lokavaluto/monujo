@@ -11,7 +11,6 @@
           src="/img/monujo-logo.png"
         />
       </router-link>
-
       <div
         role="button"
         class="navbar-burger"
@@ -33,6 +32,7 @@
       :class="{ 'is-active': showNav }"
       @click="showNav = false"
     >
+      <div class="burger-menu-overlay" v-if="showNav"></div>
       <div class="navbar-end">
         <div class="navbar-item" v-if="getLog">
           <router-link to="/dashboard" class="navbar-item">
@@ -47,10 +47,12 @@
           v-if="getLog && (hasUserAccountValidationRights || hasCreditRequestValidationRights)"
           class="navbar-item has-dropdown is-hoverable"
         >
-          <a class="navbar-link">
+          <a class="navbar-link" v-on:mouseover="isMenuClosed = false">
             Admin
           </a>
-          <div class="navbar-dropdown is-right">
+          <div class="navbar-dropdown is-right"
+               :class="{'close-navbar': isMenuClosed}"
+               @click="isMenuClosed = true">
             <router-link
               v-if="hasUserAccountValidationRights"
               to="/admin/pending-accounts"
@@ -108,6 +110,7 @@
     data() {
       return {
         showNav: false,
+        isMenuClosed: false
       };
     },
     methods: {
@@ -150,3 +153,19 @@
   })
   export default class Nav extends Vue {}
 </script>
+<style scoped>
+@media screen and (max-width: 1023px) {
+   .burger-menu-overlay {
+      position: fixed;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+  }
+}
+.close-navbar{
+  display: none !important;
+}
+ 
+</style>
