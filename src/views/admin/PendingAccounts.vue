@@ -51,26 +51,28 @@
       }
     },
     methods: {
-      validateUserAccount(account: any):void {
-        account.validateCreation()
-          .catch((err: any) => {
-            this.$Swal.fire({
-              position: 'top',
-              icon: 'error',
-              title: 'Il y a eu un problème lors de la tentative de validation de l\'utilisateur ' + account.name,
-              showConfirmButton: false,
-              timer: 3000
-            })
-          }).then((result: any) => {
-            this.$store.dispatch('fetchPendingUserAccounts')
-            this.$Swal.fire({
-              position: 'top',
-              icon: 'success',
-              title: 'Le compte de l\'utilisateur ' + account.name + ' a été validé',
-              showConfirmButton: false,
-              timer: 3000
-            })
+      async validateUserAccount(account: any): Promise<void> {
+        try {
+          await account.validateCreation()
+        } catch (err) {
+          this.$Swal.fire({
+            position: 'top',
+            icon: 'error',
+            title: 'Il y a eu un problème lors de la tentative de validation de l\'utilisateur ' + account.name,
+            showConfirmButton: false,
+            timer: 3000
           })
+          throw err
+        }
+
+        this.$store.dispatch('fetchPendingUserAccounts')
+        this.$Swal.fire({
+          position: 'top',
+          icon: 'success',
+          title: 'Le compte de l\'utilisateur ' + account.name + ' a été validé',
+          showConfirmButton: false,
+          timer: 3000
+        })
       }
     },
   })
