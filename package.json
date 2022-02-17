@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "@0k.io/node-request": "^0.0.1",
+    "@capacitor/android": "^3.3.2",
+    "@capacitor/cli": "^3.3.2",
+    "@capacitor/core": "^3.3.2",
+    "@capacitor/ios": "^3.3.2",
     "@lokavaluto/lokapi-backend-comchain": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-backend-cyclos": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-browser": "0.0.2 || >=0.0.3-alpha",
