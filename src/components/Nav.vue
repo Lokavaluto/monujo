@@ -33,6 +33,11 @@
       :class="{ 'is-active': showNav }"
     >
       <div class="navbar-end">
+        <div class="navbar-item" v-if="getLog">
+          <router-link to="/dashboard" class="navbar-item">
+            Tableau de bord
+          </router-link>
+        </div>
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carto </router-link>
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
