@@ -9,7 +9,7 @@ export function lokapiStoreFactory(lokApiService: any) {
     state: {
       status: '',
       userProfile: null,
-      transactions: null,
+      transactions: [],
       thisWeektransactions:null,
       bal: 0,
       curr:"",
@@ -39,6 +39,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         }
         await dispatch('setBackends')
 
+        dispatch("fetchAccounts");
         dispatch('fetchTransactions')
         commit('setUserProfile', await lokApiService.getMyContact())
         commit('auth_success')
@@ -46,6 +47,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         dispatch('fetchCreditRequestValidationRights')
       },
       async initAutoLogin({commit, dispatch}:any) {
+        dispatch('fetchTransactions')
         commit('setUserProfile', await lokApiService.getMyContact())
         commit('auth_success')
         await dispatch('setBackends')
@@ -139,7 +141,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.status = ''
         state.apiToken = ''
         state.userProfile= null
-        state.transactions=null
+        state.transactions = []
         state.thisWeektransactions=null
         state.curr=""
         state.virtualAccountTree=[]
