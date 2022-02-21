@@ -84,8 +84,6 @@
             login: this.email,
             password: this.password,
           });
-          this.$store.dispatch("fetchAccounts");
-          this.$store.dispatch("fetchTransactions");
           this.success = "Connection réussie";
           this.$router.push({ name: "dashboard" });
         } catch (e) {
