@@ -31,7 +31,6 @@
       if(!this.userProfile) {
         try {
           await this.$store.dispatch("initAutoLogin")
-          await this.$store.dispatch("fetchAccounts")
         } catch(e) {
           console.error("Error while trying to autolog", e)
           router.push("/")
