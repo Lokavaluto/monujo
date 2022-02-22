@@ -1,0 +1,7 @@
+.navbar {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+#map {
+  top: env(safe-area-inset-top, 0);
+}
