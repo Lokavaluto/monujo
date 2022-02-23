@@ -45,8 +45,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         // reset transactions generator upon login so we can have a fresh list of transactions
         // There is no need to do it on autologin since autologin happens on initial load and 
         // we already have called lokApiService.getTransactions() upon calling lokapiStoreFactory()
-        transactionsGen = lokApiService.getTransactions()
-        dispatch('fetchTransactionsBatch')
+        dispatch('resetTransactions')
         commit('setUserProfile', await lokApiService.getMyContact())
         commit('auth_success')
         dispatch('fetchUserAccountValidationRights')
@@ -64,6 +63,19 @@ export function lokapiStoreFactory(lokApiService: any) {
       async fetchAccounts({commit}:any) {
         const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
         commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
+      },
+      async resetTransactions({commit, dispatch, state}:any) {
+        transactionsGen = lokApiService.getTransactions()
+        let transactions = [],
+            transactionsIndex = 0
+        let next = await transactionsGen.next()
+        while (!next.done && transactionsIndex < transactionsBatchLength) {
+          transactionsIndex++
+          transactions.push(<any>next.value)
+          next = await transactionsGen.next()
+        }
+
+        commit("setTransactions", transactions)
       },
       async fetchTransactionsBatch({commit, dispatch, state}:any) {
         let transactions = state.transactions.length > 0 ? state.transactions.slice(0) : [],
