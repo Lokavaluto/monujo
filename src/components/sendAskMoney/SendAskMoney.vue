@@ -865,7 +865,8 @@
     <MyModal
       :first="true"
       v-if="showModalFrameCreditMoney1 || globalBalCall"
-      @close="showModalFrameCreditMoney1 = false"
+      @close="showModalFrameCreditMoney1 = false,
+        showCreditRefreshNotification = false"
     >
       <template v-slot:header>
         <div
@@ -876,7 +877,11 @@
               Créditer mon compte
             </h3>
           </div>
-          <a class="mr-5 p-2" @click="showModalFrameCreditMoney1 = false, resetCredit()">
+          <a class="mr-5 p-2"
+            @click="showModalFrameCreditMoney1 = false,
+              showCreditRefreshNotification = false,
+              resetCredit()"
+          >
             <img
               class="cross-shape"
               src="../../assets/media/Cross-Shape.png"
@@ -887,9 +892,9 @@
       </template>
       <template v-slot:body>
         <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
+          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center p-3 mt-3"
         >
-          <div v-if="myHyperLink.length === 0" class="is-flex is-flex-direction-column custom-montant-input">
+          <div v-if="myHyperLink.length === 0 && !showCreditRefreshNotification" class="is-flex is-flex-direction-column custom-montant-input">
             <div v-if="creditableMoneyAccounts.length > 1">
               <h2 class="frame3-sub-title mt-3 mb-3">
                 Compte à créditer
@@ -917,15 +922,26 @@
               <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
             </div>
           </div>
-          <div v-if="myHyperLink.length > 1" class="notification is-default">
-            <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
-            <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
+          <template v-if="myHyperLink.length > 1">
+            <div class="notification is-info mb-3">
+              <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
+              <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
+            </div>
             <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
-          </div>
+          </template>
+          <template v-if="showCreditRefreshNotification">
+            <div class="notification is-info mb-3">
+              <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.</p>
+              <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.</p>
+            </div>
+            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
+          </template>
         </div>
         <div class="columns" v-if="myHyperLink.length === 0 &&
           (selectedCreditAccount ||
-            creditableMoneyAccounts.length === 1)">
+            creditableMoneyAccounts.length === 1) &&
+            !showCreditRefreshNotification"
+        >
           <div class="column"></div>
           <div class="column is-flex is-justify-content-center">
             <button
@@ -1085,6 +1101,7 @@
         amountForCredit:0,
         urlForHyperlink:"",
         selectedCreditAccount:null,
+        showCreditRefreshNotification: false,
       }
     },
 
@@ -1143,10 +1160,17 @@
       },
 
       navigateToCreditOrder():void {
-        this.showModalFrameCreditMoney1 = false
         window.open(this.urlForHyperlink, '_blank');
         this.urlForHyperlink = ""
         this.amountForCredit = 0
+        this.showCreditRefreshNotification = true
+      },
+
+      closeAndRefresh(): void {
+        this.showCreditRefreshNotification = false
+        this.showModalFrameCreditMoney1 = false
+        this.$store.dispatch("fetchAccounts")
+        this.$store.dispatch("resetTransactions")
       },
 
       copyUrl() {
