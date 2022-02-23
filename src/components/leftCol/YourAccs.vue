@@ -4,7 +4,19 @@
     class="accounts card custom-card custom-card-padding"
   >
     <div class="active" v-if="activeVirtualAccounts.length > 0">
-      <h2 class="custom-card-title">vos comptes</h2>
+      <a
+        @click="refreshBalanceAndTransactions"
+        title="Rafraîchir le solde et les transactions"
+        class="button is-default is-pulled-right is-rounded refresh"
+      >
+        <span>Rafraîchir</span>
+        <span class="icon is-small">
+          <i class="fas fa-sync"></i>
+        </span>
+      </a>
+      <h2 class="custom-card-title mb-3">
+        vos comptes
+      </h2>
       <Acc v-for="account in activeVirtualAccounts"
            :bal="account.bal"
            :curr="account.curr"
@@ -59,7 +71,18 @@
       ...mapState([
         'accountsLoaded',
       ]),
+    },
+    methods: {
+      refreshBalanceAndTransactions() {
+        this.$store.dispatch('fetchAccounts')
+        this.$store.dispatch('resetTransactions')
+      }
     }
   })
   export default class YourAccs extends Vue {}
 </script>
+<style lang="scss" scoped>
+.refresh {
+  margin-top: -9px;
+}
+</style>
