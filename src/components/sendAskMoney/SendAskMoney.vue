@@ -1269,7 +1269,6 @@
           console.log('Payment failed:', err.message)
           throw err
         }
-        await this.$store.commit("setBalCurr")
         this.$toast.success(
           `Paiement effectué à ${this.recipientName}`,
           {
@@ -1289,7 +1288,8 @@
             }
           })
         }
-        await this.$store.dispatch("fetchTransactions")
+        await this.$store.dispatch("fetchAccounts")
+        await this.$store.dispatch("resetTransactions")
         this.searchName = ""
         this.partners = []
         this.amount = 0
