@@ -6,26 +6,42 @@ import { lokapiStoreFactory } from "./store/lokapi"
 import { LokAPI } from "./services/lokapiService"
 import Toaster from "@meforma/vue-toaster";
 import Swal from "./useSwal";
+import "./polyfill";
 import { httpRequest } from "@0k.io/node-request"
+import { Capacitor } from '@capacitor/core';
 
 require("@/assets/main.scss");
-
+require("@/assets/native.scss");
 
 async function fetchConfig(path: string) {
-  const cur = window.location
   let response
-  try {
-    response = await httpRequest({
-      protocol: cur.protocol.slice(0, -1),
-      host: cur.hostname,
-      port: parseInt(cur.port),
-      method: "GET",
-      path
-    })
-  } catch (error) {
-    console.log(`Failed to load config file '${path}'.`)
-    throw error
+
+  // This allows us to store the config given at build time
+  // for the mobile apps compilation
+  if (Capacitor.isNative) {
+    console.log('Running native, loading config data from build-time stored values')
+    response = process.env.VUE_APP_MOBILE_CONFIG || ''
+    if (response.length === 0) {
+      throw new Error("Config file absent or empty at mobile app build time")
+    }
+  // Legacy web app behaviour
+  } else {
+    const cur = window.location
+    try {
+      // Legacy config loading (aka "dynamic") for web builds
+      response = await httpRequest({
+        protocol: cur.protocol.slice(0, -1),
+        host: cur.hostname,
+        port: parseInt(cur.port),
+        method: "GET",
+        path
+      })
+    } catch (error) {
+      console.log(`Failed to load config file '${path}'.`)
+      throw error
+    }
   }
+
   if (typeof(response) !== "string") {
     throw new Error(
        "Unexpected response while loading config file.")

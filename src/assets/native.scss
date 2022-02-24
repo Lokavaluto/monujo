@@ -1,0 +1,4 @@
+body,
+.navbar {
+  padding-top: env(safe-area-inset-top, 0);
+}
