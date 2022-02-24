@@ -1348,4 +1348,8 @@ div.account-selector
     box-shadow: none
     border: 2px #eee solid
 
+.button.action
+  white-space: normal
+  height: auto
+
 </style>
