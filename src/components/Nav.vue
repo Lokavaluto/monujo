@@ -87,6 +87,11 @@
 
             <hr class="navbar-divider" />
 
+            <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
+            <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
+
+            <hr v-if="helpUrl || cguUrl" class="navbar-divider" />
+
             <a @click="logout" class="navbar-item"> Déconnexion </a>
           </div>
         </div>
@@ -134,6 +139,12 @@
       },
       hasMapUrl(): string {
         return this.$config.mapUrl
+      },
+      helpUrl(): string {
+        return this.$config.helpUrl
+      },
+      cguUrl(): string {
+        return this.$config.cguUrl
       },
     },
   })
