@@ -53,9 +53,9 @@ export function lokapiStoreFactory(lokApiService: any) {
         dispatch('fetchCreditRequestValidationRights')
       },
       async initAutoLogin({commit, dispatch}:any) {
+        commit('setUserProfile', await lokApiService.getMyContact())
         dispatch("fetchAccounts");
         dispatch('fetchTransactionsBatch')
-        commit('setUserProfile', await lokApiService.getMyContact())
         commit('auth_success')
         await dispatch('setBackends')
         dispatch('fetchUserAccountValidationRights')
