@@ -46,6 +46,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: "Validation des demandes de crédit" },
     component: PendingCredits,
   },
+  {
+    path: '/:pathMatch(.*)*',
+    component: Carto
+  },
 ];
 
 const router = createRouter({
