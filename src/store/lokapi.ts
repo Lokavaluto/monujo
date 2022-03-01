@@ -19,7 +19,7 @@ export function lokapiStoreFactory(lokApiService: any) {
       moneyAccounts:[],
       accountsLoaded: false,
       recipient:"",
-      isLog:null,
+      isLog: false,
       paymentUrl: "",
       recipientHistory:[],
       isMultiCurrency: false,  // Are we displaying accounts with different currencies ?
