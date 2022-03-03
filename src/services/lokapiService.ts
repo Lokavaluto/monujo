@@ -12,54 +12,57 @@ export class LokAPI extends LokAPIBrowserAbstract {
     cyclos
   }
 
+  
+  constructor (host: string, db: string, localPasswordRetentionTime: number = 900) {
+    super(host, db)
+    this.requestLocalPassword = (state => {
+      let rememberedPassword = { pwd: '', inputTime: 0 }
+      return async (state: any) => {
+        let text = ''
 
-  requestLocalPassword = (state => {
-    let rememberedPassword = { pwd: '', inputTime: 0 }
-    return async (state: any) => {
-      let text = ''
-
-      // Lets see if we have a (still valid) password in there...
-      // ... that was used less than 30 secs ago.
-      // If it's the case, we will provide it to the lokapi right away
-      if (rememberedPassword.pwd.length > 0
-        && rememberedPassword.inputTime + 30000 > Date.now()
-        && state === 'firstTry'
-      ) {
-        // Valid pwd -> update the last used time and provide the pwd
-        // to the lokapi
-        rememberedPassword.inputTime = Date.now()
-        return rememberedPassword.pwd
-      }
-
-      // No valid pwd, so we make sure the pwd is reset and ask for it
-      // again
-      rememberedPassword = { pwd: '', inputTime: 0 }
-
-      if (state === 'failedUnlock') {
-        text = 'Échec du déchiffrage. ' +
-          'Le mot de passe était probablement incorrect. ' +
-          'Ré-essayez une nouvelle fois'  // XXXvlab: need i18n
-      }
-      const ret = await Swal.fire({
-        title: 'Entrez votre mot de passe',  // XXXvlab: need i18n
-        text,
-        showCloseButton: true,
-        input: 'password',
-        inputLabel: 'Mot de passe du portefeuille',  // XXXvlab: need i18n
-        inputPlaceholder: 'Votre mot de passe',  // XXXvlab: need i18n
-        inputAttributes: {
-          maxlength: '32',
-          autocapitalize: 'off',
-          autocorrect: 'off'
+        // Lets see if we have a (still valid) password in there...
+        // ... that was used less than 30 secs ago.
+        // If it's the case, we will provide it to the lokapi right away
+        if (rememberedPassword.pwd.length > 0
+          && rememberedPassword.inputTime + (localPasswordRetentionTime * 1000) > Date.now()
+          && state === 'firstTry'
+        ) {
+          // Valid pwd -> update the last used time and provide the pwd
+          // to the lokapi
+          rememberedPassword.inputTime = Date.now()
+          return rememberedPassword.pwd
         }
-      })
-      if (ret.isConfirmed) {
-        rememberedPassword = { pwd: ret.value, inputTime: Date.now() }
-        return ret.value
+  
+        // No valid pwd, so we make sure the pwd is reset and ask for it
+        // again
+        rememberedPassword = { pwd: '', inputTime: 0 }
+  
+        if (state === 'failedUnlock') {
+          text = 'Échec du déchiffrage. ' +
+            'Le mot de passe était probablement incorrect. ' +
+            'Ré-essayez une nouvelle fois'  // XXXvlab: need i18n
+        }
+        const ret = await Swal.fire({
+          title: 'Entrez votre mot de passe',  // XXXvlab: need i18n
+          text,
+          showCloseButton: true,
+          input: 'password',
+          inputLabel: 'Mot de passe du portefeuille',  // XXXvlab: need i18n
+          inputPlaceholder: 'Votre mot de passe',  // XXXvlab: need i18n
+          inputAttributes: {
+            maxlength: '32',
+            autocapitalize: 'off',
+            autocorrect: 'off'
+          }
+        })
+        if (ret.isConfirmed) {
+          rememberedPassword = { pwd: ret.value, inputTime: Date.now() }
+          return ret.value
+        }
+        throw new Error('User canceled the dialog box')
       }
-      throw new Error('User canceled the dialog box')
-    }
-  })()
+    })()
+  }
 
   requestLogin() {
     console.log("Login requested !")

@@ -3,5 +3,6 @@
   "lokapiHost": "example.org",
   "mapUrl": "https://carte.example.org",
   "helpUrl": "https://help.com",
-  "cguUrl": "https://cgu.com"
+  "cguUrl": "https://cgu.com",
+  "localPasswordRetentionTime": 900
 }

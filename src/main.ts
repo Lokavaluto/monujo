@@ -68,6 +68,7 @@ fetchConfig("/config.json").then((config: any) => {
   const lokApiService = new LokAPI(
     config.lokapiHost,
     config.lokapiDb,
+    config?.localPasswordRetentionTime,
   )
 
   store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
