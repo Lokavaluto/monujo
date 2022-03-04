@@ -102,7 +102,7 @@
             <p class="control has-icons-left custom-search-bar">
               <input
                 v-model="searchName"
-                v-on:input="delayedSearch()"
+                v-on:input="searchRecipients()"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
@@ -122,14 +122,14 @@
             <ul class="is-uppercase is-justify-content-space-evenly">
               <li
                 :class="[activeClass == 0 ? 'is-active' : '']"
-                @click="activeClass = 0 , displayFavoritesOnly = false, fastSearch()"
+                @click="activeClass = 0 , displayFavoritesOnly = false, searchRecipients()"
               >
                 <a>tous</a>
               </li>
               <li
                 class="is-flex is-align-items-center"
                 :class="[activeClass == 2 ? 'is-active' : '']"
-                @click="activeClass = 2 , displayFavoritesOnly = true, fastSearch()"
+                @click="activeClass = 2 , displayFavoritesOnly = true, searchRecipients()"
               >
                 <a class="custom-pictogram-star"
                 ><span class="icon is-small is-left mr-5">
@@ -164,7 +164,7 @@
                     ></i>
                   </span>
                 </div>
-                <i class="fas fa-history mr-5"></i>
+                <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-5"></i>
                 <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame2 = true">
                   <p class="custom-card-destinataire mr-5">
                     {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
@@ -610,10 +610,9 @@
 
 <script lang="ts">
   import { Options, Vue } from 'vue-class-component';
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
   import MyModal from "../modal/MyModal.vue";
   import Acc from "../leftCol/yourAccs/Acc.vue"
-
   //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 
   function returnFavoritesOnly(partners:any): any{
@@ -684,6 +683,9 @@
       },
       ...mapGetters([
         'creditableMoneyAccounts',
+      ]),
+      ...mapState([
+        'recipientHistory',
       ]),
     },
 
@@ -756,12 +758,13 @@
         contact.toggleFavorite()
       },
 
-      async searchRecipientHistory() :Promise<void> {
+      async searchRecipientsHistory() :Promise<void> {
         let h = []
-        for (let i = 0; i < this.$store.state.lokapi.recipientHistory.length; i++) {
+        for (let i = 0; i < this.recipientHistory.length; i++) {
           var recipient
           try {
-            recipient = await this.$lokapi.searchRecipients(this.$store.state.lokapi.recipientHistory[i])
+            recipient = await this.$lokapi.searchRecipients(this.recipientHistory[i])
+            console.log(recipient)
             h.push(recipient[0])
           } catch (err) {
             console.log('searchRecipients() Failed', err)
@@ -770,33 +773,18 @@
       //this.partners = h
       },
 
-      async fastSearch() :Promise<void> {
+      async searchRecipients() :Promise<void> {
         this.partners = []
         if(this.searchName == "" && !this.displayFavoritesOnly) {
-          this.searchRecipientHistory()
+          this.searchRecipientsHistory()
         } else {
           var recipients
           try {
             recipients = await this.$lokapi.searchRecipients(this.searchName)
-            console.log(recipients)
           } catch (err) {
             console.log('searchRecipients() Failed', err)
           }
           this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-        }
-      },
-
-      async delayedSearch() :Promise<void> {
-        if (this.searchName != "" && !this.displayFavoritesOnly) {
-          var recipients
-          try {
-            recipients = await this.$lokapi.searchRecipients(this.searchName)
-          } catch (err) {
-            console.log('searchRecipients() FAILED', err)
-          }
-          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
-        } else {
-          this.partners = []
         }
       },
 
