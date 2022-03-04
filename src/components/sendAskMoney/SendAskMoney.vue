@@ -171,9 +171,6 @@
                   </p>
                 </div>
               </div>
-              <div class="is-flex">
-                <i class="fas fa-ellipsis-v"></i>
-              </div>
             </div>
             <div class="is-flex is-justify-content-flex-end">
               <span class="custom-line-separator mt-4"></span>
