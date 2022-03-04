@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- début card envoyer et demander de l'argent  -->
+
     <div
       class="action-footer"
     >
@@ -187,6 +187,7 @@
         <div></div>
       </template>
     </MyModal>
+
     <MyModal v-if="showModalFrame2" @close="showModalFrame2 = false">
       <template v-slot:header>
         <div
@@ -237,9 +238,7 @@
                 </figure>
                 <h4 class="ml-1">{{recipientName}}</h4>
               </div>
-              <!-- <div class="mr-3">
-                <i class="fas fa-check" style="color: #46B020"></i>
-              </div> -->
+
             </div>
           </div>
         </div>
@@ -273,8 +272,7 @@
         <div></div>
       </template>
     </MyModal>
-    <!-- début MODALS demander de l'argent -->
-    <!-- Frame 1 -->
+
     <MyModal
       :first="true"
       v-if="showModalFrameAskMoney1"
@@ -351,79 +349,7 @@
         <div></div>
       </template>
     </MyModal>
-    <!-- fin frame 1 -->
-    <!-- début frame 2 -->
-    <!-- <MyModal
-      v-if="showModalFrameAskMoney2"
-      @close="showModalFrameAskMoney2 = false"
-    >
-      <template v-slot:header>
-        <div
-          class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-        >
-          <div class="is-flex is-align-items-center ml-5">
-            <h3 class="is-size-4 ml-4">
-              Demander de l'argent
-            </h3>
-          </div>
-          <a
-            class="mr-5 p-2"
-            @click="
-              (showModalFrameAskMoney1 = false),
-                (showModalFrameAskMoney2 = false)
-            "
-          >
-            <img
-              class="cross-shape"
-              src="../../assets/media/Cross-Shape.png"
-              alt="cross_shape"
-            />
-          </a>
-        </div>
-      </template>
-      <template v-slot:body>
-        <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-        >
-          <div class="is-flex is-flex-direction-column custom-montant-input">
-            <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-            <input type="number" min="0" class="p-2" />
-            <textarea
-              v-model="message"
-              class="custom-textarea textarea mt-5"
-              placeholder="Ajoutez un texte (optionnel)"
-            ></textarea>
-            <div
-              class="is-flex is-justify-content-center is-align-items-center mt-6"
-            >
-              <p class="mr-4">www.mamlcc-moncompte-paymeAe...</p>
-              <button
-                class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
-                @click="showModalFrameAskMoney2 = true"
-              >
-                <img src="../../../src/assets/media/copy.svg" />
-                <p class="ml-4">
-                  copier le lien
-                </p>
-              </button>
-            </div>
-            <div class="container custom-width-send-money mt-5">
-              <p class="has-text-centered">
-                vous pourrez partager ce lien par mail à vos contacts. Ils
-                recevront une invitation à se connecter ou à créer un compte
-                pour vous envoyer l’argent.
-              </p>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-slot:footer>
-        <div></div>
-      </template>
-    </MyModal> -->
-    <!-- fin MODALS demander de l'argent  -->
-    <!-- début MODALS créditer un compte -->
-    <!-- début frame 1 crédit -->
+
     <MyModal
       :first="true"
       v-if="showModalFrameCreditMoney1 || globalBalCall"
@@ -519,93 +445,8 @@
         <div></div>
       </template>
     </MyModal>
-  </div>
-  <!-- Fin frame 1 crédit -->
-  <!-- début frame 2 crédit -->
-  <!-- <MyModal
-    v-if="showModalFrameCreditMoney2"
-    @close="showModalFrameCreditMoney2 = false"
-  >
-    <template v-slot:header>
-      <div
-        class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-      >
-        <div class="is-flex is-align-items-center ml-5">
-          <div
-            class="is-flex is-align-items-center is-justify-content-space-between"
-          >
-            <a
-              class="p-2 mr-3 ml-3"
-              @click="showModalFrameCreditMoney2 = false"
-            >
-              <img
-                class="cross-shape"
-                src="../../assets/media/Arrow-Shape.png"
-                alt="arrow_shape"
-              />
-            </a>
-            <h3 class="is-size-4 ml-4">
-              Ajouter une carte
-            </h3>
-          </div>
-        </div>
-        <a
-          class="mr-5 p-2"
-          @click="
-            (showModalFrameCreditMoney1 = false),
-              (showModalFrameCreditMoney2 = false)
-          "
-        >
-          <img
-            class="cross-shape"
-            src="../../assets/media/Cross-Shape.png"
-            alt="cross_shape"
-          />
-        </a>
-      </div>
-    </template>
-    <template v-slot:body>
-      <div
-        class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-      >
-        <div class="is-flex is-flex-direction-column custom-montant-input">
-          <h2 class="frame3-sub-title mt-3 mb-3">
-            Numéro de la carte
-          </h2>
-          <input type="number" min="0" class="p-2 custom-input-left" />
-          <h2 class="mt-6 mb-3 frame3-sub-title">Titulaire</h2>
-          <input type="text" min="0" class="p-2 custom-input-left" />
-          <div class="is-flex mt-5">
-            <div class="is-flex is-flex-direction-column">
-              <h2 class="frame3-sub-title mt-3 mb-3">
-                Date d'expiration
-              </h2>
-              <input type="number" min="0" class="p-2 custom-input-left custom-montant-input" />
-            </div>
-            <div class="is-flex is-flex-direction-column">
-              <h2 class="mt-3 mb-3 frame3-sub-title">Cryptogramme</h2>
-              <input type="number" min="0" class="p-2 custom-input-left custom-montant-input" />
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="columns">
-        <div class="column"></div>
-        <div class="column is-flex is-justify-content-center mt-6">
-          <button
-            class="button custom-button custom-button-send-receive-money is-rounded action"
-            @click="showModalFrameCreditMoney2 = true"
-          >
-            Suivant
-          </button>
-        </div>
-      </div>
-    </template>
-    <template v-slot:footer>
-      <div></div>
-    </template>
-  </MyModal> -->
+  </div>
 </template>
 
 <script lang="ts">
@@ -613,7 +454,6 @@
   import { mapGetters, mapState } from 'vuex'
   import MyModal from "../modal/MyModal.vue";
   import Acc from "../leftCol/yourAccs/Acc.vue"
-  //import AddPayCard from "../leftCol/payCards/AddPayCard.vue";
 
   function returnFavoritesOnly(partners:any): any{
     var ret = []
@@ -630,7 +470,6 @@
     components: {
       MyModal: MyModal,
       Acc,
-    //AddPayCard,
     },
     data() {
       return {
