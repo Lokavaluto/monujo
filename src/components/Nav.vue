@@ -158,10 +158,12 @@
    .burger-menu-overlay {
       position: fixed;
       left: 0;
-      top: 0;
+      top: 45.5px;
       right: 0;
       bottom: 0;
-      z-index: 0;
+      z-index: -1;
+      background: black;
+      opacity: .3;
   }
 }
 .close-navbar{
