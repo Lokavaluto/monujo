@@ -1,29 +1,26 @@
 <template>
-  <div class=" is-flex is-justify-content-space-between pb-3 pt-3">
-    <div class="is-flex">
-    
-      <div class="is-flex-direction-column">
-          
-        <h3 :class="[amount.charAt(0) == '-' ? 'custom-card-destinataire has-text-danger' : 'custom-card-destinataire has-text-success']">
-          {{
-            parseFloat(amount).toLocaleString(
-              "fr", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })
-          }}
-          {{symbol}}
-        </h3>
-        <h4 class="custom-card-destinataire">{{name}}</h4>
-        <h5 class="has-text-grey-light">
-          {{desc}}
-        </h5>
-      </div>
-    </div>
-    <div>
+  <div class="pb-3 pt-3">
+    <div class="is-pulled-right">
       <h5 class="custom-card-destinataire">{{date}}</h5>
       <h5 class="card-paiement-defaut-carte has-text-right mt-1">
         {{calcDays(unformatedDate)}}
+      </h5>
+    </div>
+    <div class="is-flex-direction-column">
+        
+      <h3 :class="[amount.charAt(0) == '-' ? 'custom-card-destinataire has-text-danger' : 'custom-card-destinataire has-text-success']">
+        {{
+          parseFloat(amount).toLocaleString(
+            "fr", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })
+        }}
+        {{symbol}}
+      </h3>
+      <h4 class="custom-card-destinataire">{{name}}</h4>
+      <h5 class="has-text-grey-light">
+        {{desc}}
       </h5>
     </div>
   </div>
@@ -61,3 +58,10 @@
   })
   export default class TransactionSubCard extends Vue {}
 </script>
+<style lang="scss" scoped>
+  h4.custom-card-destinataire {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
