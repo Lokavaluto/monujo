@@ -39,7 +39,7 @@
             Tableau de bord
           </router-link>
         </div>
-        <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carto </router-link>
+        <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carte </router-link>
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
         </router-link>
