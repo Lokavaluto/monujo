@@ -6,18 +6,29 @@
       <div class="is-flex-direction-column is-align-items-center is-justify-content-space-between">
         <ThisWeek />
       </div>
-      <div v-show="showModal" class="modal-mask">
-        <div class="overlay" @click="showModal = false"></div>
-        <div class="modal-wrapper">
-          <div class="modal-container" ref="transactionsContainer" @scroll="handleScroll">
-            <div class="modal-body">
+      <div class="modal is-active" v-if="showModal"> 
+        <div class="modal-background" @click="showModal = false"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">
+              Toutes les opérations
+            </p>
+            <button class="delete" aria-label="close" 
+                    @click="showModal = false,
+                            showCreditRefreshNotification = false,
+                            resetCredit()"></button>
+          </header>
+          <section class="modal-card-body custom-card-transactions">
+            <div class="modal-container" ref="transactionsContainer" @scroll="handleScroll"> 
               <div
-                class="card custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between custom-card-padding mb-4"
+                class=" custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
               >
                 <AllTrs />
               </div>
             </div>
-          </div>
+          </section>
+          <footer class="modal-card-foot">
+          </footer>
         </div>
       </div>
 
