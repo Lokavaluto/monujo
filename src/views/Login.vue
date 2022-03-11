@@ -40,7 +40,7 @@
           </div>
           <div class="field">
             <p class="control has-text-centered">
-              <button @click="load" type="submit" class="button is-success">
+              <button @click="load" type="submit" class="button is-login">
                 Se connecter
               </button>
             </p>
