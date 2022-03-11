@@ -49,39 +49,25 @@
       </div>
     </div>
 
-    <MyModal :first="true" v-if="showModalFrame1" @close="showModalFrame1 = false">
-      <template v-slot:header>
-        <div
-          class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-        >
-          <div
-            class="is-flex is-align-items-center is-justify-content-space-between"
-          >
-            <a class="p-2 mr-3 ml-3" @click="showModalFrame1 = false">
-              <img
-                class="cross-shape"
-                src="../../assets/media/Arrow-Shape.png"
-                alt="arrow_shape"
-              />
-            </a>
-            <h3 class="is-size-4 ml-4">
-              Envoyer de l'argent
-            </h3>
-          </div>
-          <a
-            class="mr-5 p-2"
-            @click="(showModalFrame1 = false)"
-          >
-            <img
-              class="cross-shape"
-              src="../../assets/media/Cross-Shape.png"
-              alt="cross_shape"
-            />
-          </a>
-        </div>
-        <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-        >
+    <div class="modal is-active" v-if="showModalFrame1">
+      <div class="modal-background" @click="showModalFrame1 = false"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+        
+          <p class="modal-card-title">
+            <span>
+              <a class="p-2 mr-3 ml-3" @click="showModalFrame1 = false">
+                <img
+                  class="cross-shape"
+                  src="../../assets/media/Arrow-Shape.png"
+                  alt="arrow_shape"
+                />
+              </a>
+            </span> Envoyer de l'argent</p>
+          <button class="delete" aria-label="close" @click="showModalFrame1 = false"></button>
+        
+        </header>
+        <div class="search-area">
           <div
             v-if="warning"
             class="is-flex is-justify-content-space-between is-align-items-center custom-warning pl-6 pr-6 pt-4 pb-4"
@@ -112,12 +98,6 @@
               </span>
             </p>
           </div>
-        </div>
-      </template>
-      <template v-slot:body>
-        <div
-          class="is-flex is-justify-content-space-evenly is-align-items-center mt-5"
-        >
           <div class="tabs is-centered">
             <ul class="is-uppercase is-justify-content-space-evenly">
               <li
@@ -140,309 +120,303 @@
               </li>
             </ul>
           </div>
-        </div>
-        <div class="container is-fluid custom-heavy-line-separator"></div>
-        <div v-if="ownCurrenciesPartners">
-          <div class="container custom-width-send-money mt-4"
-               v-for="partner in ownCurrenciesPartners"
-               :key="partner">
-            <div
-              class="is-flex is-justify-content-space-between is-align-items-center"
-            
-            >
-              <div
-                class="is-flex is-align-items-center">
-                <div
-                  class="mr-5 p-2 is-clickable"
-                  :class="[partner.is_favorite ? 'is-active' : '']"
-                  @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
-                >
-                  <span>
-                    <i
-                      class="far fa-star"
-                      :class="[partner.is_favorite ? 'fas fa-star' : '']"
-                    ></i>
-                  </span>
-                </div>
-                <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-5"></i>
-                <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame2 = true">
-                  <p class="custom-card-destinataire mr-5">
-                    {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="is-flex is-justify-content-flex-end">
-              <span class="custom-line-separator mt-4"></span>
-            </div>
-
-
-          </div>
-        </div>
-      </template>
-      <template v-slot:footer>
-        <div></div>
-      </template>
-    </MyModal>
-
-    <MyModal v-if="showModalFrame2" @close="showModalFrame2 = false">
-      <template v-slot:header>
-        <div
-          class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-        >
           <div
-            class="is-flex is-align-items-center is-justify-content-space-between"
+            class="is-flex is-justify-content-space-evenly is-align-items-center mt-5"
           >
-            <a class="p-2 mr-3 ml-3" @click="showModalFrame2 = false">
-              <img
-                class="cross-shape"
-                src="../../assets/media/Arrow-Shape.png"
-                alt="arrow_shape"
-              />
-            </a>
-            <h3 class="is-size-4 ml-4">
-              Envoyer à {{recipientName}}
-            </h3>
+         
           </div>
-          <a
-            class="mr-5 p-2"
-            @click="
-              (showModalFrame1 = false),
-              (showModalFrame2 = false)
-            "
-          >
-            <img
-              class="cross-shape"
-              src="../../assets/media/Cross-Shape.png"
-              alt="cross_shape"
-            />
-          </a>
+          <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
-        <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-        >
-          <div class="is-flex is-flex-direction-column custom-search-bar">
-            <h1 class="frame3-title mt-3 mb-3">Destinataire</h1>
-            <div
-              class="is-flex is-justify-content-space-between is-align-items-center custom-user-select p-1"
-            >
-              <div class="is-flex is-align-items-center">
-                <figure class="image is-32x32">
-                  <img
-                    class="is-rounded"
-                    src="https://bulma.io/images/placeholders/128x128.png"
-                  />
-                </figure>
-                <h4 class="ml-1">{{recipientName}}</h4>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-slot:body>
-        <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-        >
-          <div class="is-flex is-flex-direction-column custom-montant-input">
-            <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-            <input v-model="amount" type="number" min="0" class="p-2" />
-            <textarea
-              v-model="message"
-              class="custom-textarea textarea mt-5"
-              placeholder="Ajoutez un texte (optionnel)"
-            ></textarea>
-            <div class="is-flex is-justify-content-flex-end mt-6">
-              <button
-                class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="sendTransaction(),
-                        (showModalFrame1 = false),
-                        (showModalFrame2 = false)"
-              >
-                Envoyer
-              </button>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-slot:footer>
-        <div></div>
-      </template>
-    </MyModal>
-
-    <MyModal
-      :first="true"
-      v-if="showModalFrameAskMoney1"
-      @close="showModalFrameAskMoney1 = false"
-    >
-      <template v-slot:header>
-        <div
-          class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-        >
-          <div class="is-flex is-align-items-center ml-5">
-            <h3 class="is-size-4 ml-4">
-              Demander de l'argent
-            </h3>
-          </div>
-          <a class="mr-5 p-2" @click="showModalFrameAskMoney1 = false">
-            <img
-              class="cross-shape"
-              src="../../assets/media/Cross-Shape.png"
-              alt="cross_shape"
-            />
-          </a>
-        </div>
-      </template>
-      <template v-slot:body>
-        <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-        >
-          <div class="is-flex is-flex-direction-column custom-montant-input">
-            <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-            <input type="number" min="0" class="p-2" v-model="amountAsked"/>
-            <textarea
-              v-model="message"
-              class="custom-textarea textarea mt-5"
-              placeholder="Ajoutez un texte (optionnel)"
-            ></textarea>
-            <div class="is-flex is-justify-content-center mt-6">
-              <button
-                class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
-                @click="genLink()"
-              >
-                <img src="../../../src/assets/media/Plane.svg" />
-                <p class="ml-4">
-                  Générer un lien de paiement
-                </p>
-              </button>
-            </div>
-
-            <div v-if="linkGenerated"
-                 class="is-flex is-justify-content-center is-align-items-center mt-6"
-            >
-              <p class="mr-4" ref="mylink">{{myLink}}</p>
-              <button
-                @click="copyUrl"
-                class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
-              >
-                <img src="../../../src/assets/media/copy.svg" />
-                <p class="ml-4">
-                  copier le lien
-                </p>
-              </button>
-            </div>
-
-            <div class="container custom-width-send-money mt-5">
-              <p class="has-text-centered">
-                vous pourrez partager ce lien par mail à vos contacts. Ils
-                recevront une invitation à se connecter ou à créer un compte
-                pour vous envoyer l’argent.
-              </p>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-slot:footer>
-        <div></div>
-      </template>
-    </MyModal>
-
-    <MyModal
-      :first="true"
-      v-if="showModalFrameCreditMoney1 || globalBalCall"
-      @close="showModalFrameCreditMoney1 = false,
-              showCreditRefreshNotification = false"
-    >
-      <template v-slot:header>
-        <div
-          class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-        >
-          <div class="is-flex is-align-items-center ml-5">
-            <h3 class="is-size-4 ml-6 pl-5">
-              Créditer mon compte
-            </h3>
-          </div>
-          <a class="mr-5 p-2"
-             @click="showModalFrameCreditMoney1 = false,
-                     showCreditRefreshNotification = false,
-                     resetCredit()"
-          >
-            <img
-              class="cross-shape"
-              src="../../assets/media/Cross-Shape.png"
-              alt="cross_shape"
-            />
-          </a>
-        </div>
-      </template>
-      <template v-slot:body>
-        <div
-          class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center p-3 mt-3"
-        >
-          <div v-if="myHyperLink.length === 0 && !showCreditRefreshNotification" class="is-flex is-flex-direction-column custom-montant-input">
-            <div v-if="creditableMoneyAccounts.length > 1">
-              <h2 class="frame3-sub-title mt-3 mb-3">
-                Compte à créditer
-              </h2>
-              <div v-for="account in creditableMoneyAccounts"
-                   :class="[selectedCreditAccount === account ? 'selected' : 'unselected', 'account-selector']"
-                   @click="setSelectedCreditAccount(account)"
-              >
-                <Acc
-                  :bal="account.bal"
-                  :curr="account.curr"
-                  :backend="account.backend"
-                  :type="account.type"
-                  :active="account.active"
+        <section class="modal-card-body">
+          <div>
+            <div  v-if="ownCurrenciesPartners">
+              <div class="container custom-width-send-money mt-4"
+                   v-for="partner in ownCurrenciesPartners"
+                   :key="partner">
+                <div
+                  class="is-flex is-justify-content-space-between is-align-items-center"
+            
                 >
-                  <template v-slot:name>{{ account.name }}</template>
-                </Acc>
+                  <div
+                    class="is-flex is-align-items-center">
+                    <div
+                      class="mr-5 p-2 is-clickable"
+                      :class="[partner.is_favorite ? 'is-active' : '']"
+                      @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
+                    >
+                      <span class="y-color">
+                        <i
+                          class="far fa-star"
+                          :class="[partner.is_favorite ? 'fas fa-star' : '']"
+                        ></i>
+                      </span>
+                    </div>
+                    <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-5"></i>
+                    <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false">
+                      <p class="custom-card-destinataire mr-5">
+                        {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="is-flex is-justify-content-flex-end">
+                  <span class="custom-line-separator mt-4"></span>
+                </div>
               </div>
             </div>
-            <div v-if="selectedCreditAccount || creditableMoneyAccounts.length === 1"
-                 class="amount">
-              <h2 class="frame3-sub-title mt-3 mb-3">
-                Montant à créditer
-              </h2>
-              <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <!--  <button class="button is-success">Save changes</button>
+        <button class="button">Cancel</button> -->
+        </footer>
+      </div>
+    </div>
+    <div class="modal is-active" v-if="showModalFrame2"> 
+      <div class="modal-background" @click="showModalFrame2 = false, showModalFrame1 = true"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+            
+          <p class="modal-card-title">
+            <span>
+              <a class="p-2 mr-3 ml-3" @click="showModalFrame2 = false, showModalFrame1 = true">
+                <img
+                  class="cross-shape"
+                  src="../../assets/media/Arrow-Shape.png"
+                  alt="arrow_shape"
+                />
+              </a>
+            </span>
+              
+               
+            Envoyer à {{recipientName}}
+                
+              
+          </p>
+          <button class="delete" aria-label="close" @click="showModalFrame2 = false"></button>
+            
+        </header>
+        <section class="modal-card-body">
+          <div>
+            <div
+              class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
+            >
+              <div class="is-flex is-flex-direction-column custom-search-bar">
+                <h1 class="frame3-title mt-3 mb-3">Destinataire</h1>
+                <div
+                  class="is-flex is-justify-content-space-between is-align-items-center custom-user-select p-1"
+                >
+                  <div class="is-flex is-align-items-center">
+                    <figure class="image is-32x32">
+                      <img
+                        class="is-rounded"
+                        src="https://bulma.io/images/placeholders/128x128.png"
+                      />
+                    </figure>
+                    <h4 class="ml-1">{{recipientName}}</h4>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div
+              class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
+            >
+              <div class="is-flex is-flex-direction-column custom-montant-input">
+                <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
+                <input v-model="amount" type="number" min="0" class="p-2" />
+                <textarea
+                  v-model="message"
+                  class="custom-textarea textarea mt-5"
+                  placeholder="Ajoutez un texte (optionnel)"
+                ></textarea>
+                <div class="is-flex is-justify-content-flex-end mt-6">
+                  <button
+                    class="button custom-button custom-button-send-receive-money is-rounded action"
+                    @click="sendTransaction(),
+                            (showModalFrame1 = false),
+                            (showModalFrame2 = false)"
+                  >
+                    Envoyer
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          <template v-if="myHyperLink.length > 1">
-            <div class="notification is-info mb-3">
-              <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
-              <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
-            </div>
-            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
-          </template>
-          <template v-if="showCreditRefreshNotification">
-            <div class="notification is-info mb-3">
-              <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.</p>
-              <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.</p>
-            </div>
-            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
-          </template>
+        </section>
+        <footer class="modal-card-foot">
+        </footer>
+      </div>
+    </div>
+  </div>
+  <MyModal
+    :first="true"
+    v-if="showModalFrameAskMoney1"
+    @close="showModalFrameAskMoney1 = false"
+  >
+    <template v-slot:header>
+      <div
+        class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
+      >
+        <div class="is-flex is-align-items-center ml-5">
+          <h3 class="is-size-4 ml-4">
+            Demander de l'argent
+          </h3>
         </div>
-        <div class="columns" v-if="myHyperLink.length === 0 &&
-          (selectedCreditAccount ||
-            creditableMoneyAccounts.length === 1) &&
-          !showCreditRefreshNotification"
-        >
-          <div class="column"></div>
-          <div class="column is-flex is-justify-content-center">
+        <a class="mr-5 p-2" @click="showModalFrameAskMoney1 = false">
+          <img
+            class="cross-shape"
+            src="../../assets/media/Cross-Shape.png"
+            alt="cross_shape"
+          />
+        </a>
+      </div>
+    </template>
+    <template v-slot:body>
+      <div
+        class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
+      >
+        <div class="is-flex is-flex-direction-column custom-montant-input">
+          <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
+          <input type="number" min="0" class="p-2" v-model="amountAsked"/>
+          <textarea
+            v-model="message"
+            class="custom-textarea textarea mt-5"
+            placeholder="Ajoutez un texte (optionnel)"
+          ></textarea>
+          <div class="is-flex is-justify-content-center mt-6">
             <button
-              class="button custom-button custom-button-send-receive-money is-rounded action mt-6"
-              @click="newLinkTab()"
+              class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
+              @click="genLink()"
             >
-              Terminer
+              <img src="../../../src/assets/media/Plane.svg" />
+              <p class="ml-4">
+                Générer un lien de paiement
+              </p>
             </button>
           </div>
-        </div>
-      </template>
-      <template v-slot:footer>
-        <div></div>
-      </template>
-    </MyModal>
 
+          <div v-if="linkGenerated"
+               class="is-flex is-justify-content-center is-align-items-center mt-6"
+          >
+            <p class="mr-4" ref="mylink">{{myLink}}</p>
+            <button
+              @click="copyUrl"
+              class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
+            >
+              <img src="../../../src/assets/media/copy.svg" />
+              <p class="ml-4">
+                copier le lien
+              </p>
+            </button>
+          </div>
+
+          <div class="container custom-width-send-money mt-5">
+            <p class="has-text-centered">
+              vous pourrez partager ce lien par mail à vos contacts. Ils
+              recevront une invitation à se connecter ou à créer un compte
+              pour vous envoyer l’argent.
+            </p>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <div></div>
+    </template>
+  </MyModal>
+
+
+
+
+  <div class="modal is-active" v-if="showModalFrameCreditMoney1 || globalBalCall"> 
+    <div class="modal-background" @click="showModalFrameCreditMoney1 = false,
+                                          showCreditRefreshNotification = false">
+        
+    </div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+            
+        <p class="modal-card-title">
+               
+          Créditer mon compte
+                
+        </p>
+        <button class="delete" aria-label="close" @click="showModalFrameCreditMoney1 = false,
+                                                          showCreditRefreshNotification = false,
+                                                          resetCredit()"></button>
+            
+      </header>
+      <section class="modal-card-body">
+        <div>
+
+          <div
+            class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center p-3 mt-3"
+          >
+            <div v-if="myHyperLink.length === 0 && !showCreditRefreshNotification" class="is-flex is-flex-direction-column custom-montant-input">
+              <div v-if="creditableMoneyAccounts.length > 1">
+                <h2 class="frame3-sub-title mt-3 mb-3">
+                  Compte à créditer
+                </h2>
+                <div v-for="account in creditableMoneyAccounts"
+                     :class="[selectedCreditAccount === account ? 'selected' : 'unselected', 'account-selector']"
+                     @click="setSelectedCreditAccount(account)"
+                >
+                  <Acc
+                    :bal="account.bal"
+                    :curr="account.curr"
+                    :backend="account.backend"
+                    :type="account.type"
+                    :active="account.active"
+                  >
+                    <template v-slot:name>{{ account.name }}</template>
+                  </Acc>
+                </div>
+              </div>
+              <div v-if="selectedCreditAccount || creditableMoneyAccounts.length === 1"
+                   class="amount">
+                <h2 class="frame3-sub-title mt-3 mb-3">
+                  Montant à créditer
+                </h2>
+                <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
+              </div>
+            </div>
+            <template v-if="myHyperLink.length > 1">
+              <div class="notification is-info mb-3">
+                <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
+                <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
+              </div>
+              <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
+            </template>
+            <template v-if="showCreditRefreshNotification">
+              <div class="notification is-info mb-3">
+                <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.</p>
+                <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.</p>
+              </div>
+              <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
+            </template>
+          </div>
+          <div class="columns" v-if="myHyperLink.length === 0 &&
+            (selectedCreditAccount ||
+              creditableMoneyAccounts.length === 1) &&
+            !showCreditRefreshNotification"
+          >
+            <div class="column"></div>
+            <div class="column is-flex is-justify-content-center">
+              <button
+                class="button custom-button custom-button-send-receive-money is-rounded action mt-6"
+                @click="newLinkTab()"
+              >
+                Terminer
+              </button>
+            </div>
+          </div>
+              
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+      </footer>
+    </div>
   </div>
 </template>
 
@@ -683,13 +657,18 @@
 
 <style scoped lang="sass">
 
+.search-area
+  background: #f0faf9
+#warning-message
+  margin: auto
+  margin-top: 20px
+
 .columns
   margin-left: 0
   margin-right: 0
 
 
 div.account-selector
-
   & :deep(.account)
     min-width: fit-content
     max-width: 50%

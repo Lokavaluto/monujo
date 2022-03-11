@@ -324,62 +324,24 @@ body {
 }
 
 // action-footer-anchor-fin
-
-// modal-frame-1-anchor
-
-.modal {
-  background-color: #000000 !important;
-  width: 200px !important;
-  height: 200px !important;
+.modal-card-title{
+  color: #ffffff;
 }
 
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.custom-card-destinataire{
+  width: auto;
 }
 
-.overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.modal-body{
+  min-height: 480px;
 }
-
-.invisible-overlay {
-  background-color: rgba(0, 0, 0, 0);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  position: fixed;
-  top: 10%;
-  width: 70%;
-  height: 80%;
-}
-
 .modal-container {
   width: 100%;
-  height: 100%;
+  height: 70vh;
   margin: 0px auto;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
+  /* border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
+ /*  transition: all 0.3s ease; */
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -399,45 +361,30 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-
-.modal-container-no-shadow {
-  width: 100%;
-  height: 100%;
-  margin: 0px auto;
-  background-color: #fff;
-  border-radius: 16px;
-  transition: all 0.3s ease;
+.modal-card {
+  position: fixed;
+  top: 60px;
+  max-height: calc(90vh - 60px);
+  max-width: 400px;
   overflow-y: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 
-  &::-webkit-scrollbar {
-    display: none;
+  @media screen and (max-width: 480px) {
+    width: 95%;
   }
 }
-
-.modal-header h3 {
-  font-style: normal;
-  font-weight: 500;
-  // font-size: 20px;
-  line-height: 28px;
-  color: white;
+.modal-card-body{
+  overflow-x: hidden;
 }
-
-.modal-body-frame-send-money {
-  margin: 20px 0;
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.custom-card-transactions{
+  overflow-y: hidden !important;
 }
-
-.modal-default-button {
-  display: block;
-  margin-top: 1rem;
+ 
+.modal-card-head {
+  background: #009688
 }
-
+.modal-container {
+  max-height: 70vh;
+}
 /*
  * The following styles are auto-applied to elements with
  * transition="modal" when their visibility is toggled
@@ -446,10 +393,6 @@ body {
  * You can easily play with the modal transition by editing
  * these styles.
  */
-
-.modal-enter {
-  opacity: 0;
-}
 
 .modal-leave-active {
   opacity: 0;
@@ -483,6 +426,7 @@ body {
   width: 85% !important;
   border: 1px solid #ff4081;
   border-radius: 16px;
+ 
 }
 
 .custom-button-warning {
@@ -494,6 +438,7 @@ body {
 
 .custom-search-bar {
   width: 89%;
+  margin: auto;
 }
 
 .custom-search-bar input {
@@ -539,7 +484,7 @@ rect {
   }
 }
 
-.is-active span {
+:not(.modal).is-active span {
   color: #ffb800 !important;
 }
 
@@ -589,10 +534,6 @@ rect {
     // font-size: 24px;
     line-height: 28px;
     color: rgba(0, 0, 0, 0.8);
-  }
-
-  .custom-input-left {
-    text-align: left !important;
   }
   input,
   input:focus-visible,
@@ -691,10 +632,6 @@ rect {
 #pincode {
   padding: 0 !important;
   width: 70% !important;
-}
-
-.custom-pin-width {
-  width: 60% !important;
 }
 
 
