@@ -35,7 +35,7 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
-            class="button custom-button has-text-weight-medium is-rounded action"
+            class="button custom-button is-recharger has-text-weight-medium is-rounded action"
             @click="showModalFrameCreditMoney1 = true"
           >
             <span class="icon-text">

@@ -1,9 +1,38 @@
-$body-size: 14px !default;
+// Default Monujo theme variables
+// 
+// Body Background color
+$color-1: #E4F2F1 !default;
+//
+// Buttons primary color,
+// And in transactions list: "voir tout" button color
+$color-2: #009688 !default;
+//
+// Secondary background colors
+// Inner panels background color (like in the accounts list)
+$color-3: #F0FAF9 !default;
+//
+// Special case in the bottom bar: the "Recharger" button
+$btn-recharger-text-color: $color-2 !default;
+$btn-recharger-border-color: $color-2 !default;
+$btn-recharger-background-color: #FFFFFF !default;
+//
+// Special case : the "Login" button
+$btn-login-text-color: #FFFFFF !default;
+$btn-login-border-color: $color-2 !default;
+$btn-login-background-color: $color-2 !default;
+//
+// Inner card border color (like in the accounts list)
+$inner-card-background-color: $color-3 !default;
+$inner-card-border-color: $color-3 !default;
 
+//
+// These are the bulma variables that we customize
+// 
+$body-size: 14px !default;
 // Tabs
 $tabs-border-bottom-color: white;
 $tabs-border-bottom-width: 4px;
-$tabs-link-hover-border-bottom-color: #009688;
+$tabs-link-hover-border-bottom-color: $color-2;
 $tabs-link-active-color: rgba(0, 0, 0, 0.8);
-$tabs-link-active-border-bottom-color: #009688;
+$tabs-link-active-border-bottom-color: $color-2;
 $tabs-link-color: rgba(0, 0, 0, 0.6);

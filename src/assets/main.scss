@@ -21,7 +21,7 @@ body {
 
 #app {
   min-height: 100vh;
-  background-color: #e4f2f1;
+  background-color: $color-1;
   padding-top: 40px;
   padding-bottom: 80px;
 
@@ -82,7 +82,22 @@ body {
     }
   }
 }
+.button {
 
+  &.is-login ,
+  &.is-login:hover {
+    color: $btn-login-text-color !important;
+    border-color: $btn-login-border-color !important;
+    background: $btn-login-background-color !important;
+  }
+
+  &.is-recharger,
+  &.is-recharger:hover {
+    color: $btn-recharger-text-color !important;
+    border-color: $btn-recharger-border-color !important;
+    background: $btn-recharger-background-color !important;
+  }
+}
 // card-anchor
 
 .custom-card {
@@ -147,12 +162,13 @@ body {
 
 .custom-inner-card {
   border-radius: 43px !important;
-  background-color: #f0faf9;
+  background-color: $inner-card-background-color;
+  border: 1px solid $inner-card-border-color;
 }
 
 .custom-button {
-  color: #009688 !important;
-  border-color: #009688 !important;
+  color: $color-2 !important;
+  border-color: $color-2 !important;
   font-style: normal;
   font-weight: normal;
   // font-size: 20px !important;
@@ -167,7 +183,7 @@ body {
 }
 
 .custom-button-send-receive-money {
-  background: #009688 !important;
+  background: $color-2 !important;
   text-transform: uppercase !important;
   color: #ffffff !important;
   font-style: normal;
@@ -179,8 +195,8 @@ body {
 .custom-button-credit-money {
   background-color: inherit !important;
   text-transform: uppercase !important;
-  color: #009688 !important;
-  border-color: #009688 !important;
+  color: $color-2 !important;
+  border-color: $color-2 !important;
   font-style: normal;
   font-weight: normal;
   // font-size: 20px !important;
@@ -262,11 +278,11 @@ body {
   text-transform: uppercase !important;
   text-transform: uppercase !important;
   background-color: inherit !important;
-  color: #009688 !important;
-  border-color: #009688 !important;
+  color: $color-2 !important;
+  border-color: $color-2 !important;
 
   &.custom-inverted {
-    background: #009688 !important;
+    background: $color-2 !important;
     color: #ffffff !important;
   }
 }
@@ -450,7 +466,7 @@ body {
   height: 80px;
   left: 0px;
   top: 0px;
-  background: #15b6a7;
+  background: $color-2;
   border-radius: 16px 16px 0px 0px;
 }
 
@@ -494,8 +510,8 @@ body {
 
 .custom-pictogram-search path,
 rect {
-  fill: #009688 !important;
-  background: #009688 !important;
+  fill: $color-2 !important;
+  background: $color-2 !important;
 }
 
 .custom-button-pictogram {
@@ -582,13 +598,13 @@ rect {
   input:focus-visible,
   input:focus-within,
   input:focus {
-    border: 1px solid #009688 !important;
+    border: 1px solid $color-2 !important;
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
     text-align: right !important;
     outline: none !important;
-    color: #009688;
+    color: $color-2;
     text-shadow: 0px 0px 0px black;
     -webkit-text-fill-color: transparent;
     height: 31px !important;
@@ -610,7 +626,7 @@ rect {
   textarea:focus-visible,
   textarea:focus,
   textarea:active {
-    border: 1px solid #009688 !important;
+    border: 1px solid $color-2 !important;
   }
 
   .custom-textarea {
@@ -644,7 +660,7 @@ rect {
     height: 24px;
     position: absolute;
     // width: 87px;
-    border: 1px solid #009688;
+    border: 1px solid $color-2;
     background: linear-gradient(
         to right,
         transparent 0%,
@@ -695,7 +711,7 @@ rect {
 
         .account-backend {
             font-weight: bold;
-            color: #009688;
+            color: $color-2;
             opacity: 0.8;
         }
 
