@@ -351,7 +351,7 @@
       :first="true"
       v-if="showModalFrameCreditMoney1 || globalBalCall"
       @close="showModalFrameCreditMoney1 = false,
-        showCreditRefreshNotification = false"
+              showCreditRefreshNotification = false"
     >
       <template v-slot:header>
         <div
@@ -363,9 +363,9 @@
             </h3>
           </div>
           <a class="mr-5 p-2"
-            @click="showModalFrameCreditMoney1 = false,
-              showCreditRefreshNotification = false,
-              resetCredit()"
+             @click="showModalFrameCreditMoney1 = false,
+                     showCreditRefreshNotification = false,
+                     resetCredit()"
           >
             <img
               class="cross-shape"
@@ -425,7 +425,7 @@
         <div class="columns" v-if="myHyperLink.length === 0 &&
           (selectedCreditAccount ||
             creditableMoneyAccounts.length === 1) &&
-            !showCreditRefreshNotification"
+          !showCreditRefreshNotification"
         >
           <div class="column"></div>
           <div class="column is-flex is-justify-content-center">

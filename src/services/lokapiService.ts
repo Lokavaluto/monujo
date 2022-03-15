@@ -13,7 +13,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
   }
 
   
-  constructor (host: string, db: string, localPasswordRetentionTime: number = 900) {
+  constructor (host: string, db: string, localPasswordRetentionTime = 900) {
     super(host, db)
     this.requestLocalPassword = (state => {
       let rememberedPassword = { pwd: '', inputTime: 0 }
