@@ -65,8 +65,11 @@ export class LokAPI extends LokAPIBrowserAbstract {
   }
 
   requestLogin() {
-    console.log("Login requested !")
-    router.push('/')
+    let lastUrlSegment = window.location.href.split('/').pop()
+    if (lastUrlSegment !== 'carto' && lastUrlSegment !== '') {
+      console.log("Login requested !")
+      router.push('/')
+    }
   }
 
   /**
