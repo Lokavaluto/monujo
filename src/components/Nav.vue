@@ -8,7 +8,7 @@
       <router-link :to="{ name: 'dashboard' }" class="navbar-item" @click="showNav = false">
         <img
           class="is-rounded"
-          src="/img/monujo-logo.png"
+          :src="$config.logoUrl"
         />
       </router-link>
       <div
