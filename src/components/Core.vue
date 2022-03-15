@@ -24,28 +24,6 @@
 
   @Options({
     name:"core",
-    async mounted() {
-      // If this component is loaded, we already are logged in, so
-      // the store already contains the logged in user informations...
-      // Maybe all the following is not useful ?
-      if(!this.userProfile) {
-        try {
-          await this.$store.dispatch("initAutoLogin")
-        } catch(e) {
-          console.error("Error while trying to autolog", e)
-          router.push("/")
-          throw e
-        }
-      }
-    },
-    computed: {
-      // We do not have to rely on an extra db call to get the
-      // information, just use a computed property on the store state (or getter if needed)
-      // and the vuejs magic happens !
-      userProfile(): string {
-        return this.$store.state.lokapi.userProfile
-      }
-    },
     props: {
       msg: String,
     },
