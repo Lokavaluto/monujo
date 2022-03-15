@@ -4,5 +4,6 @@
   "mapUrl": "https://carte.example.org",
   "helpUrl": "https://help.com",
   "cguUrl": "https://cgu.com",
-  "localPasswordRetentionTime": 900
+  "localPasswordRetentionTime": 900,
+  "logoUrl": "https://example.com/img/logo.png"
 }

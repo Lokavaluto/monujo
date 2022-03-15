@@ -34,7 +34,8 @@ jobs:
             \"lokapiDb\": \"odoo\",
             \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
             \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
-            \"localPasswordRetentionTime\": 900
+            \"localPasswordRetentionTime\": 900,
+            \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\"
           }" > dist/config.json
           cat dist/config.json
       - name: "📂 SFTP Sync files"

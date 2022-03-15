@@ -8,7 +8,7 @@
 
     >
       <div class="card">
-        <img src="/img/monujo-logo.png" class="pt-2 pb-5" />
+        <img :src="$config.logoUrl" class="pt-2 pb-5" />
         <form @submit.prevent="submit">
           <div class="field mb-5">
             <p class="control has-icons-left has-icons-right">
