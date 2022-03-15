@@ -24,20 +24,33 @@ jobs:
       - name: 🚚 Get deps
         run: |
           npm install
+      - name: 🔨 Config
+        run: |
+          rm public/config.sample.json
+          echo "{
+            \"lokapiDb\": \"odoo\",
+            \"lokapiHost\": \"dev3.lokavaluto.fr\",
+            \"mapUrl\": \"https://carte.dev3.lokavaluto.fr\",
+            \"localPasswordRetentionTime\": 900,
+            \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"theme\": {
+              \"color-1\": \"#E4F2F1\",
+              \"color-2\": \"#009688\",
+              \"color-3\": \"#F0FAF9\",
+              \"inner-card-border-color\": \"#F0FAF9\",
+              \"inner-card-background-color\": \"#F0FAF9\",
+              \"btn-recharger-text-color\": \"#009688\",
+              \"btn-recharger-border-color\": \"#009688\",
+              \"btn-recharger-background-color\": \"#FFFFFF\",
+              \"btn-login-text-color\": \"#FFFFFF\",
+              \"btn-login-border-color\": \"#009688\",
+              \"btn-login-background-color\": \"#009688\"
+            }
+          }" > public/config.json
+          cat public/config.json
       - name: 🔨 Build
         run: |
           npm run build
-      - name: 🔨 Config
-        run: |
-          rm dist/config.sample.json
-          echo "{
-            \"lokapiDb\": \"odoo\",
-            \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
-            \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
-            \"localPasswordRetentionTime\": 900,
-            \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\"
-          }" > dist/config.json
-          cat dist/config.json
       - name: "📂 SFTP Sync files"
         uses: swillner/sftp-sync-action@v1.0
         with:
