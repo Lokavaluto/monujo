@@ -5,6 +5,7 @@ package.json
 package-lock.json
 yarn.lock
 /public/config.json
+/public.config.theme.scss
 
 # local env files
 .env.local
