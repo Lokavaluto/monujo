@@ -28,6 +28,7 @@ export function lokapiStoreFactory(lokApiService: any) {
       pendingUserAccounts: [],
       hasCreditRequestValidationRights: false,
       pendingCreditRequests: [],
+      transactionsBatchLoading: true
     },
     actions: {
       async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
@@ -67,6 +68,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         commit("setAccountsLoaded", true)
       },
       async resetTransactions({commit, dispatch, state}:any) {
+        state.transactionsBatchLoading = true
         transactionsGen = lokApiService.getTransactions()
         let transactions = [],
             transactionsIndex = 0
@@ -76,7 +78,7 @@ export function lokapiStoreFactory(lokApiService: any) {
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
-
+        state.transactionsBatchLoading = false
         commit("setTransactions", transactions)
       },
       async fetchTransactionsBatch({commit, dispatch, state}:any) {
@@ -88,7 +90,7 @@ export function lokapiStoreFactory(lokApiService: any) {
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
-
+        state.transactionsBatchLoading = false
         commit("setTransactions", transactions)
       },
       async genPaymentLink({commit}:any,amount:number) {
