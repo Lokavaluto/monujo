@@ -1,13 +1,16 @@
 <template>
   <div
-    class="account card custom-inner-card custom-card-padding is-flex is-justify-content-space-between is-align-items-center mb-4"
+    class="account card custom-inner-card custom-card-padding mb-4"
   >
-    <div class="account-name">
+    <span class="account-name">
       <span class="is-size-6-mobile is-size-5-tablet">
         <slot name="name">default name</slot>
       </span>
-    </div>
-    <div class="account-bal">
+    </span>
+    <span class="account-backend is-size-6-mobile account-backend" v-if="isMultiCurrency && !isSub">
+      - {{ backend }}
+    </span>
+    <span class="account-bal is-pulled-right">
       <span class="is-size-6-mobile is-size-4-tablet has-text-grey-darker account-bal" v-if="active">
         {{
           parseFloat(bal).toLocaleString(
@@ -19,12 +22,8 @@
       </span>
       <span class="is-size-6-mobile is-size-4-tablet account-bal inactive" v-else>-.---,--</span>
       <span class="is-size-6-mobile is-size-5-tablet account-curr">{{curr}}</span>
-    </div>
-    <div class="account-backend" v-if="isMultiCurrency">
-      <span class="is-size-6-mobile is-size-5-tablet account-backend" v-if="!isSub">
-        {{ backend }}
-      </span>
-    </div>
+    </span>
+    <div class="is-clearfix"></div>
   </div>
   <div class="sub-accounts" v-if="subAccounts && subAccounts.length > 0">
     <Acc v-for="account in subAccounts"
