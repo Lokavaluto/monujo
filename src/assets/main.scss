@@ -102,6 +102,7 @@ body {
 
 .custom-card {
   border-radius: 16px !important;
+  min-height: 100px;
 }
 
 .custom-card-padding {
@@ -703,5 +704,8 @@ rect {
     .inactive .account.card {
         background: #f0f0f0 !important;
         opacity: 0.6;
+    }
+    .transactions-loader {
+      height: 65px;
     }
 }

@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div class="has-text-centered mt-5">
+      <div v-if="!isLoadingTransactionsBatch && getTrs?.length" class="has-text-centered mt-5">
         <button
           @click="showModal = true"
           class="button custom-button custom-inverted"
@@ -60,6 +60,14 @@
       return {
         showModal: false
       };
+    },
+    computed: {
+      getTrs(): any {
+        return this.$store.state.lokapi.thisWeektransactions
+      },
+      isLoadingTransactionsBatch(): boolean {
+        return this.$store.state.lokapi.transactionsBatchLoading
+      }
     },
     watch: {
       showModal(newval: boolean, oldval: boolean) {
