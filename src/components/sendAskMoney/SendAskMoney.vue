@@ -8,7 +8,7 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
-            @click="showModalFrame1 = true, resetSendMoney()"
+            @click="showModalFrame1 = true, resetSendMoney(),  searchRecipients()"
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
           >
             <span class="icon-text">
@@ -69,20 +69,6 @@
         </header>
         <div class="search-area">
           <div
-            v-if="warning"
-            class="is-flex is-justify-content-space-between is-align-items-center custom-warning pl-6 pr-6 pt-4 pb-4"
-            id="warning-message"
-          >
-            <h2 class="card-paiement-defaut-carte a has-text-danger">
-              Pour respecter votre confidentialité, nous n’affichons des
-              résultats que si vous possédez l’adresse mail ou le numéro de
-              téléphone complet de la personne recherchée.
-            </h2>
-            <button @click="warning = false" class="custom-button-warning p-2">
-              OK
-            </button>
-          </div>
-          <div
             class="mt-4 is-flex is-justify-content-space-evenly is-align-items-center custom-search-bar"
           >
             <p class="control has-icons-left custom-search-bar">
@@ -98,28 +84,6 @@
               </span>
             </p>
           </div>
-          <div class="tabs is-centered">
-            <ul class="is-uppercase is-justify-content-space-evenly">
-              <li
-                :class="[activeClass == 0 ? 'is-active' : '']"
-                @click="activeClass = 0 , displayFavoritesOnly = false, searchRecipients()"
-              >
-                <a>tous</a>
-              </li>
-              <li
-                class="is-flex is-align-items-center"
-                :class="[activeClass == 2 ? 'is-active' : '']"
-                @click="activeClass = 2 , displayFavoritesOnly = true, searchRecipients()"
-              >
-                <a class="custom-pictogram-star"
-                ><span class="icon is-small is-left mr-5">
-                   <i class="fas fa-star"></i>
-                 </span>
-                  <p>favoris</p></a
-                >
-              </li>
-            </ul>
-          </div>
           <div
             class="is-flex is-justify-content-space-evenly is-align-items-center mt-5"
           >
@@ -128,7 +92,7 @@
           <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
         <section class="modal-card-body">
-          <div>
+          <div v-if="ownCurrenciesPartners.length !== 0">
             <div  v-if="ownCurrenciesPartners">
               <div class="container custom-width-send-money mt-4"
                    v-for="partner in ownCurrenciesPartners"
@@ -164,6 +128,10 @@
                 </div>
               </div>
             </div>
+            
+          </div>
+          <div v-else>
+            Aucun destinataire de payement a afficher
           </div>
         </section>
         <footer class="modal-card-foot">
@@ -585,17 +553,13 @@
 
       async searchRecipients() :Promise<void> {
         this.partners = []
-        if(this.searchName == "" && !this.displayFavoritesOnly) {
-          this.searchRecipientsHistory()
-        } else {
-          var recipients
-          try {
-            recipients = await this.$lokapi.searchRecipients(this.searchName)
-          } catch (err) {
-            console.log('searchRecipients() Failed', err)
-          }
-          this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
+        var recipients
+        try {
+          recipients = await this.$lokapi.searchRecipients(this.searchName)
+        } catch (err) {
+          console.log('searchRecipients() Failed', err)
         }
+        this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
       },
 
       setRecipient(partner:any):void {
