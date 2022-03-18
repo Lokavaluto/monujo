@@ -153,7 +153,7 @@
   })
   export default class Nav extends Vue {}
 </script>
-<style scoped>
+<style lang="scss" scoped>
 @media screen and (max-width: 1023px) {
    .burger-menu-overlay {
       position: fixed;
@@ -168,6 +168,13 @@
 }
 .close-navbar{
   display: none !important;
+}
+.navbar-item {
+  &.has-dropdown {
+    .navbar-link::after {
+      border-color: inherit;
+    }
+  }
 }
  
 </style>
