@@ -647,51 +647,31 @@ rect {
     .account {
 
         .account-backend {
-            font-weight: bold;
-            color: $color-2;
-            opacity: 0.8;
-        }
-
-        .account-name {
-            @media screen and (min-width: 768px) {
-              width: 30%;
-              margin-left: 1em;
-            }
-        }
-
-        .account-bal {
-            text-align: right;
-            @media screen and (min-width: 768px) {
-              width: 20%;
-            }
+          color: $color-2;
+          opacity: 0.8;
         }
 
         .account-curr {
-            padding-left: 1em;
+          padding-left: .4em;
         }
 
-        .account-type {
-        }
-
-        @media screen and (min-width: 768px) {
-          &.custom-card-padding {
-              padding-bottom: 1.2em;
-              padding-top: 1.2em;
-              padding-left: 1.2em;
-              padding-right: 1.2em;
-          }
+        &.custom-card-padding {
+          padding-bottom: 1em;
+          padding-top: 1.2em;
+          padding-left: 1.2em;
+          padding-right: 14px;
         }
 
     }
 
     .sub-accounts {
-        margin-left: 1.5em;
+        margin-left: 1em;
         @media screen and (min-width: 768px) {
-          margin-left: 3em;
+          margin-left: 1.6em;
         }
 
         .account {
-            font-size: 0.5em;
+          font-size: 0.5em;
         }
         .account-name {
           @media screen and (min-width: 768px) {
