@@ -3,6 +3,10 @@
   <div
     class="accounts card custom-card custom-card-padding"
   >
+    <loading v-model:active="isAccountLoaded"
+             :can-cancel="false"
+             :is-full-page="false"/>
+    
     <div class="active" v-if="activeVirtualAccounts.length > 0">
       <a
         @click="refreshBalanceAndTransactions"
@@ -51,14 +55,18 @@
   import { Options, Vue } from 'vue-class-component';
   import { mapGetters, mapState } from 'vuex'
   import Acc from "./yourAccs/Acc.vue"
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/vue-loading.css';
 
   @Options({
     name:"YourAccs",
     props: {
       loaded: Boolean,
+      
     },
     components: {
-      Acc
+      Acc,
+      Loading: Loading
     },
     computed: {
       totalAccountsLoaded(): number {
@@ -71,6 +79,10 @@
       ...mapState([
         'accountsLoaded',
       ]),
+      isAccountLoaded () {
+        return !this.$store.state.lokapi.accountsLoaded
+      }
+     
     },
     methods: {
       refreshBalanceAndTransactions() {
