@@ -56,7 +56,7 @@
         
           <p class="modal-card-title">
             <span>
-              <a class="p-2 mr-3 ml-3" @click="showModalFrame1 = false">
+              <a class="mr-3" @click="showModalFrame1 = false">
                 <img
                   class="cross-shape"
                   src="../../assets/media/Arrow-Shape.png"
@@ -85,53 +85,49 @@
             </p>
           </div>
           <div
-            class="is-flex is-justify-content-space-evenly is-align-items-center mt-5"
+            class="is-flex is-justify-content-space-evenly is-align-items-center mt-3"
           >
          
           </div>
           <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
-        <section class="modal-card-body">
-          <div v-if="ownCurrenciesPartners.length !== 0">
-            <div  v-if="ownCurrenciesPartners">
-              <div class="container custom-width-send-money mt-4"
+        <section class="modal-card-body custom-modal-card-body">
+          
+          <div v-if="ownCurrenciesPartners.length !== 0" class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between">
+            <div v-if="ownCurrenciesPartners">
+              <div class="pb-3 pt-3 is-flex flex-test is-flex-direction-row"
                    v-for="partner in ownCurrenciesPartners"
                    :key="partner">
+
                 <div
-                  class="is-flex is-justify-content-space-between is-align-items-center"
-            
+                  class=" p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wraper"
+                  :class="[partner.is_favorite ? 'is-active' : '']"
+                  @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
                 >
-                  <div
-                    class="is-flex is-align-items-center">
-                    <div
-                      class="mr-5 p-2 is-clickable"
-                      :class="[partner.is_favorite ? 'is-active' : '']"
-                      @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
-                    >
-                      <span class="y-color">
-                        <i
-                          class="far fa-star"
-                          :class="[partner.is_favorite ? 'fas fa-star' : '']"
-                        ></i>
-                      </span>
-                    </div>
-                    <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-5"></i>
-                    <div class="p-2 is-clickable" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false">
-                      <p class="custom-card-destinataire mr-5">
-                        {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
-                      </p>
-                    </div>
-                  </div>
+                  <span>
+                    <i
+                      class="far fa-star"
+                      :class="[partner.is_favorite ? 'fas fa-star' : '']"
+                    ></i>
+                  </span>
                 </div>
-                <div class="is-flex is-justify-content-flex-end">
-                  <span class="custom-line-separator mt-4"></span>
+                <div class="p-1 is-clickable is-align-items-center is-flex is-justify-content-end favorit-icon-wraper">
+                  <span>
+                    <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-2"></i>
+                  </span>
                 </div>
+                <div class="p-2 is-clickable is-flex card-destinataire-wraper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false">
+                  <span class="custom-card-destinataire">
+                    {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
+                  </span>
+                </div>
+
               </div>
             </div>
             
           </div>
-          <div v-else>
-            Aucun destinataire de payement a afficher
+          <div v-else class="is-flex is-align-items-center is-justify-content-center">
+            Aucun destinataire de paiement a afficher
           </div>
         </section>
         <footer class="modal-card-foot">
@@ -279,7 +275,7 @@
             </button>
           </div>
 
-          <div class="container custom-width-send-money mt-5">
+          <div class="container custom-send-money mt-5">
             <p class="has-text-centered">
               vous pourrez partager ce lien par mail à vos contacts. Ils
               recevront une invitation à se connecter ou à créer un compte
@@ -646,5 +642,8 @@ div.account-selector
 .button.action
   white-space: normal
   height: auto
-
+.card-destinataire-wraper
+  width: 80%
+.favorit-icon-wraper
+  width: 10%
 </style>
