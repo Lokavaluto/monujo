@@ -34,11 +34,9 @@
     >
       <div class="burger-menu-overlay" v-if="showNav"></div>
       <div class="navbar-end">
-        <div class="navbar-item" v-if="getLog">
-          <router-link to="/dashboard" class="navbar-item">
-            Tableau de bord
-          </router-link>
-        </div>
+        <router-link to="/dashboard" class="navbar-item" v-if="getLog">
+          Tableau de bord
+        </router-link>
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carte </router-link>
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
@@ -154,6 +152,49 @@
   export default class Nav extends Vue {}
 </script>
 <style lang="scss" scoped>
+@import "../assets/custom-variables";
+
+.navbar {
+  background-color: $top-menu-background-color;
+
+  .navbar-item,
+  .navbar-item:visited,
+  .navbar-link,
+  .navbar-link:visited {
+    color: $top-menu-link-color;
+    background-color: $top-menu-link-background-color;
+
+    &:hover {
+      color: $top-menu-link-hover-color;
+      background-color: lighten($top-menu-link-hover-background-color, 5%);
+    }
+  }
+  .navbar-menu {
+    background-color: $top-menu-link-background-color;
+  }
+
+  .navbar-burger span,
+  .navbar-burger.is-active span {
+    background-color: $top-menu-link-color;
+  }
+
+  .navbar-dropdown {
+    background: $top-menu-background-color;
+
+    .navbar-divider {
+      background-color: $top-menu-dropdown-divider-color;
+    }
+  }
+  .navbar-item.has-dropdown .navbar-link,
+  .navbar-item.has-dropdown:visited .navbar-link {
+    background-color: $top-menu-link-background-color;
+
+    &:hover {
+      background-color: lighten($top-menu-link-background-color, 5%);
+    }
+  }
+}
+
 @media screen and (max-width: 1023px) {
    .burger-menu-overlay {
       position: fixed;

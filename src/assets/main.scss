@@ -91,6 +91,20 @@ body {
     background: $btn-login-background-color !important;
   }
 
+  &.is-payer,
+  &.is-payer:hover {
+    color: $btn-payer-text-color !important;
+    border-color: $btn-payer-border-color !important;
+    background: $btn-payer-background-color !important;
+  }
+
+  &.is-recevoir,
+  &.is-recevoir:hover {
+    color: $btn-recevoir-text-color !important;
+    border-color: $btn-recevoir-border-color !important;
+    background: $btn-recevoir-background-color !important;
+  }
+
   &.is-recharger,
   &.is-recharger:hover {
     color: $btn-recharger-text-color !important;
@@ -648,8 +662,21 @@ rect {
     .account {
 
         .account-backend {
-          color: $color-2;
           opacity: 0.8;
+        }
+
+        .account-name {
+            @media screen and (min-width: 768px) {
+              width: 30%;
+              margin-left: 1em;
+            }
+        }
+
+        .account-bal {
+          text-align: right;
+          @media screen and (min-width: 768px) {
+            width: 20%;
+          }
         }
 
         .account-curr {
@@ -682,7 +709,6 @@ rect {
     }
 
     .inactive .account.card {
-        background: #f0f0f0 !important;
         opacity: 0.6;
     }
     .transactions-loader {

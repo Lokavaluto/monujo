@@ -10,8 +10,8 @@
     <span class="account-backend is-size-6-mobile account-backend" v-if="isMultiCurrency && !isSub">
       - {{ backend }}
     </span>
-    <span class="account-bal is-pulled-right">
-      <span class="is-size-6-mobile is-size-4-tablet has-text-grey-darker account-bal" v-if="active">
+    <span class="is-pulled-right">
+      <span class="is-size-6-mobile is-size-4-tablet account-bal" v-if="active">
         {{
           parseFloat(bal).toLocaleString(
             "fr", {
@@ -63,5 +63,22 @@
   })
   export default class Acc extends Vue {}
 </script>
+<style lang="scss" scoped>
+@import "../../../assets/custom-variables";
 
+.account-name,
+.account-bal,
+.account-curr {
+  color: $inner-card-text-color;
+}
+.account-bal {
+  color: $inner-card-label-text-color;
+  background-color: $inner-card-label-background-color;
+  border-radius: 20px;
+  padding: 0 0.5em;
+}
+.account-backend {
+  color: darken($inner-card-text-color, 15%);
+}
+</style>
 
