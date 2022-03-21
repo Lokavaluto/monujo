@@ -9,7 +9,7 @@
           <button
             :disabled="!hasActiveMoneyAccount"
             @click="showModalFrame1 = true, resetSendMoney(),  searchRecipients()"
-            class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
+            class="button custom-button is-payer has-text-weight-medium is-rounded action"
           >
             <span class="icon-text">
               <span class="icon">
@@ -22,7 +22,7 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="true"
-            class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
+            class="button custom-button is-recevoir has-text-weight-medium is-rounded action"
           >
             <span class="icon-text">
               <span class="icon">
@@ -640,7 +640,6 @@ div.account-selector
 
   &.unselected :deep(.account)
     opacity: 0.6
-    background-color: transparent
     box-shadow: none
     border: 2px #eee solid
 
