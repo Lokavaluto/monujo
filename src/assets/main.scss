@@ -273,6 +273,12 @@ body {
 .custom-card-destinataire {
   font-size: 1.2rem;
   line-height: 1.5rem;
+  width: auto !important;
+}
+span.custom-card-destinataire {
+  width: min-content !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // card-opération-anchor-fin
@@ -343,10 +349,6 @@ body {
   color: #ffffff;
 }
 
-.custom-card-destinataire{
-  width: auto;
-}
-
 .modal-body{
   min-height: 480px;
 }
@@ -387,8 +389,11 @@ body {
     width: 95%;
   }
 }
-.modal-card-body{
+.custom-modal-card-body{
   overflow-x: hidden;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding: 5px;
 }
 .custom-card-transactions{
   overflow-y: hidden !important;
@@ -426,10 +431,6 @@ body {
   top: 0px;
   background: $color-2;
   border-radius: 16px 16px 0px 0px;
-}
-
-.custom-width-send-money {
-  width: 33%;
 }
 
 .cross-shape {
@@ -516,8 +517,10 @@ rect {
 }
 
 .custom-width-send-money {
-  width: 80% !important;
+  width: 100%;
+  margin: auto;
 }
+
 
 .custom-user-select {
   background: #ffffff;
