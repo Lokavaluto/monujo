@@ -61,8 +61,10 @@ export function lokapiStoreFactory(lokApiService: any) {
         dispatch('fetchCreditRequestValidationRights')
       },
       async fetchAccounts({commit}:any) {
+        commit("setAccountsLoaded", false)
         const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
         commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
+        commit("setAccountsLoaded", true)
       },
       async resetTransactions({commit, dispatch, state}:any) {
         transactionsGen = lokApiService.getTransactions()
@@ -231,6 +233,9 @@ export function lokapiStoreFactory(lokApiService: any) {
       },
       setPendingCreditRequests(state: any, requests: Array<any>) {
         state.pendingCreditRequests = requests
+      },
+      setAccountsLoaded(state: any, isLoaded: boolean) {
+        state.accountsLoaded = isLoaded
       }
     },
     getters: {
