@@ -92,43 +92,53 @@
           <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
         <section class="modal-card-body custom-modal-card-body">
-          
-          <div v-if="ownCurrenciesPartners.length !== 0" class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between">
-            <div v-if="ownCurrenciesPartners">
-              <div class="pb-3 pt-3 is-flex flex-test is-flex-direction-row"
-                   v-for="partner in ownCurrenciesPartners"
-                   :key="partner">
+          <div v-if="isLoading" class="loader-container">
+            <loading  v-model:active="isLoading"
+                      :can-cancel="false"
+                      :is-full-page="false"
+                      :width= "50"
+                      :height= "50"/>
+          </div>
+          <div v-else>
+            <div v-if="ownCurrenciesPartners.length !== 0" class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between">
+              <div v-if="ownCurrenciesPartners">
+                <div class="pb-3 pt-3 is-flex flex-test is-flex-direction-row"
+                     v-for="partner in ownCurrenciesPartners"
+                     :key="partner">
 
-                <div
-                  class=" p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wraper"
-                  :class="[partner.is_favorite ? 'is-active' : '']"
-                  @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
-                >
-                  <span>
-                    <i
-                      class="far fa-star"
-                      :class="[partner.is_favorite ? 'fas fa-star' : '']"
-                    ></i>
-                  </span>
-                </div>
-                <div class="p-1 is-clickable is-align-items-center is-flex is-justify-content-end favorit-icon-wraper">
-                  <span>
-                    <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-2"></i>
-                  </span>
-                </div>
-                <div class="p-2 is-clickable is-flex card-destinataire-wraper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false">
-                  <span class="custom-card-destinataire">
-                    {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
-                  </span>
-                </div>
+                  <div
+                    class=" p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wraper"
+                    :class="[partner.is_favorite ? 'is-active' : '']"
+                    @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
+                  >
+                    <span>
+                      <i
+                        class="far fa-star"
+                        :class="[partner.is_favorite ? 'fas fa-star' : '']"
+                      ></i>
+                    </span>
+                  </div>
+                  <div class="p-1 is-clickable is-align-items-center is-flex is-justify-content-end favorit-icon-wraper">
+                    <span>
+                      <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-2"></i>
+                    </span>
+                  </div>
+                  <div class="p-2 is-clickable is-flex card-destinataire-wraper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false">
+                    <span class="custom-card-destinataire">
+                      {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
+                    </span>
 
+                  </div>
+
+                </div>
               </div>
             </div>
-            
+            <div v-else class="is-flex is-align-items-center is-justify-content-center">
+              Aucun destinataire de paiement a afficher
+            </div>                              
           </div>
-          <div v-else class="is-flex is-align-items-center is-justify-content-center">
-            Aucun destinataire de paiement a afficher
-          </div>
+         
+          
         </section>
         <footer class="modal-card-foot">
           <!--  <button class="button is-success">Save changes</button>
@@ -383,6 +393,8 @@
   import { mapGetters, mapState } from 'vuex'
   import MyModal from "../modal/MyModal.vue";
   import Acc from "../leftCol/yourAccs/Acc.vue"
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/vue-loading.css';
 
   function returnFavoritesOnly(partners:any): any{
     var ret = []
@@ -399,6 +411,7 @@
     components: {
       MyModal: MyModal,
       Acc,
+      Loading: Loading,
     },
     data() {
       return {
@@ -426,6 +439,7 @@
         urlForHyperlink:"",
         selectedCreditAccount:null,
         showCreditRefreshNotification: false,
+        isLoading: false
       }
     },
 
@@ -545,10 +559,12 @@
         this.partners = []
         var recipients
         try {
+          this.isLoading = true
           recipients = await this.$lokapi.searchRecipients(this.searchName)
         } catch (err) {
           console.log('searchRecipients() Failed', err)
         }
+        this.isLoading = false
         this.partners = this.displayFavoritesOnly ? returnFavoritesOnly(recipients) : recipients
       },
 
@@ -639,4 +655,10 @@ div.account-selector
   width: 80%
 .favorit-icon-wraper
   width: 10%
+.modal-card-body
+  min-height: 120px
+.loader-container
+  position: relative
+  height: 80px
+
 </style>
