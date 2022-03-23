@@ -91,6 +91,7 @@
                 <label class="label">Confirmation du mot de passe</label>
                 <div class="control has-icons-left has-icons-right">
                   <input
+                    @keyup.enter="createUserAccount"
                     class="input"
                     autocomplete="new-password"
                     v-bind:class="{
