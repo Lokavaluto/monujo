@@ -369,7 +369,7 @@
                 class="button custom-button custom-button-send-receive-money is-rounded action"
                 @click="newLinkTab()"
               >
-                Terminer
+                Suivant
               </button>
             </div>
           </div>
