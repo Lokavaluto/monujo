@@ -3,24 +3,23 @@
   <div
     class="accounts card custom-card custom-card-padding"
   >
-    <loading v-model:active="isAccountLoaded"
+    <a
+      @click="refreshBalanceAndTransactions"
+      title="Rafraîchir le solde et les transactions"
+      class="button is-default is-pulled-right is-rounded refresh"
+    >
+      <span>Rafraîchir</span>
+      <span class="icon is-small">
+        <i class="fas fa-sync"></i>
+      </span>
+    </a>
+    <h2 class="custom-card-title">vos comptes</h2>
+    <loading v-model:active="isLoadingAccounts"
              :can-cancel="false"
              :is-full-page="false"/>
     
-    <div class="active" v-if="activeVirtualAccounts.length > 0">
-      <a
-        @click="refreshBalanceAndTransactions"
-        title="Rafraîchir le solde et les transactions"
-        class="button is-default is-pulled-right is-rounded refresh"
-      >
-        <span>Rafraîchir</span>
-        <span class="icon is-small">
-          <i class="fas fa-sync"></i>
-        </span>
-      </a>
-      <h2 class="custom-card-title mb-3">
-        vos comptes
-      </h2>
+    <div class="active">
+      <p class="notification is-default" v-if="!isLoadingAccounts && totalAccountsLoaded === 0">Vous n'avez pas encore de compte</p>
       <Acc v-for="account in activeVirtualAccounts"
            :bal="account.bal"
            :curr="account.curr"
@@ -43,9 +42,6 @@
       >
         <template v-slot:name>{{ account.name }}</template>
       </Acc>
-    </div>
-    <div class="notification" v-if="accountsLoaded && totalAccountsLoaded === 0">
-      <p class="notification is-default">Vous n'avez pas encore de compte</p>
     </div>
   </div>
   <!-- fin card vos comptes -->
@@ -72,17 +68,13 @@
       totalAccountsLoaded(): number {
         return this.$store.state.lokapi.virtualAccountTree.length
       },
+      isLoadingAccounts(): boolean {
+        return this.$store.state.lokapi.accountsLoading
+      },
       ...mapGetters([
         'activeVirtualAccounts',
         'inactiveVirtualAccounts',
       ]),
-      ...mapState([
-        'accountsLoaded',
-      ]),
-      isAccountLoaded () {
-        return !this.$store.state.lokapi.accountsLoaded
-      }
-     
     },
     methods: {
       refreshBalanceAndTransactions() {
