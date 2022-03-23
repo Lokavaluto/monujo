@@ -12,12 +12,11 @@ export function lokapiStoreFactory(lokApiService: any) {
       status: '',
       userProfile: null,
       transactions: [],
-      thisWeektransactions:null,
+      thisWeektransactions: [],
       bal: 0,
       curr:"",
       virtualAccountTree:[],
       moneyAccounts:[],
-      accountsLoaded: false,
       recipient:"",
       isLog:null,
       paymentUrl: "",
@@ -28,7 +27,8 @@ export function lokapiStoreFactory(lokApiService: any) {
       pendingUserAccounts: [],
       hasCreditRequestValidationRights: false,
       pendingCreditRequests: [],
-      transactionsBatchLoading: true
+      accountsLoading: true,
+      transactionsLoading: true,
     },
     actions: {
       async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
@@ -55,20 +55,20 @@ export function lokapiStoreFactory(lokApiService: any) {
       async initAutoLogin({commit, dispatch}:any) {
         commit('setUserProfile', await lokApiService.getMyContact())
         dispatch("fetchAccounts");
-        dispatch('fetchTransactionsBatch')
+        dispatch('resetTransactions')
         commit('auth_success')
         await dispatch('setBackends')
         dispatch('fetchUserAccountValidationRights')
         dispatch('fetchCreditRequestValidationRights')
       },
       async fetchAccounts({commit}:any) {
-        commit("setAccountsLoaded", false)
+        commit("setAccountsLoading", true)
         const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
         commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
-        commit("setAccountsLoaded", true)
+        commit("setAccountsLoading", false)
       },
       async resetTransactions({commit, dispatch, state}:any) {
-        state.transactionsBatchLoading = true
+        commit("setTransactionsLoading", true)
         transactionsGen = lokApiService.getTransactions()
         let transactions = [],
             transactionsIndex = 0
@@ -78,8 +78,8 @@ export function lokapiStoreFactory(lokApiService: any) {
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
-        state.transactionsBatchLoading = false
         commit("setTransactions", transactions)
+        commit("setTransactionsLoading", false)
       },
       async fetchTransactionsBatch({commit, dispatch, state}:any) {
         let transactions = state.transactions.length > 0 ? state.transactions.slice(0) : [],
@@ -90,7 +90,6 @@ export function lokapiStoreFactory(lokApiService: any) {
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
-        state.transactionsBatchLoading = false
         commit("setTransactions", transactions)
       },
       async genPaymentLink({commit}:any,amount:number) {
@@ -165,11 +164,10 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.apiToken = ''
         state.userProfile= null
         state.transactions = []
-        state.thisWeektransactions=null
+        state.thisWeektransactions = []
         state.curr=""
         state.virtualAccountTree=[]
         state.moneyAccounts=[]
-        state.accountsLoaded=false
         state.recipient=""
         state.isLog=false
         state.paymentUrl=""
@@ -179,6 +177,8 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.backends = {}
         state.hasCreditRequestValidationRights = false
         state.pendingCreditRequests = []
+        state.accountsLoading = false
+        state.transactionsLoading = false
       },
 
       setAccounts(state:any, { virtualAccountTree, allMoneyAccounts }: any) {
@@ -236,9 +236,12 @@ export function lokapiStoreFactory(lokApiService: any) {
       setPendingCreditRequests(state: any, requests: Array<any>) {
         state.pendingCreditRequests = requests
       },
-      setAccountsLoaded(state: any, isLoaded: boolean) {
-        state.accountsLoaded = isLoaded
-      }
+      setAccountsLoading(state: any, loading: boolean) {
+        state.accountsLoading = loading
+      },
+      setTransactionsLoading(state: any, loading: boolean) {
+        state.transactionsLoading = loading
+      },
     },
     getters: {
       getCurr: (state: any) => {

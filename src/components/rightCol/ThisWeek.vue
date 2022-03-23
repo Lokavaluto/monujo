@@ -1,13 +1,11 @@
 <template>
-  <div class="transactions-loader">
-    <loading  v-model:active="isLoadingTransactionsBatch"
-              :can-cancel="false"
-              :is-full-page="false"/>
-  </div>
-  <div v-if="!isLoadingTransactionsBatch">
-    <div v-if="getTrs?.length === 0" class="custom-card-title mb-3" > Aucune transaction dans votre historique</div>
+  <h2 class="custom-card-title">Transactions</h2>
+  <loading  v-model:active="isLoadingTransactions"
+            :can-cancel="false"
+            :is-full-page="false"/>
+  <div v-if="!isLoadingTransactions">
+    <p v-if="getTrs?.length === 0" class="notification is-default"> Aucune transaction dans votre historique</p>
     <div v-else >
-      <h2  class="custom-card-sub-title">Transactions</h2>
       <TransactionSubCard v-for="transaction in getTrs"
                           :key="transaction" :amount="transaction.amount"
                           :symbol="transaction.currency"
@@ -39,8 +37,8 @@
       getTrs(): any {
         return this.$store.state.lokapi.thisWeektransactions
       },
-      isLoadingTransactionsBatch(): boolean {
-        return this.$store.state.lokapi.transactionsBatchLoading
+      isLoadingTransactions(): boolean {
+        return this.$store.state.lokapi.transactionsLoading
       }
     },
    
