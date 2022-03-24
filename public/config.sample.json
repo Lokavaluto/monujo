@@ -6,6 +6,7 @@
   "cguUrl": "https://cgu.com",
   "localPasswordRetentionTime": 900,
   "logoUrl": "https://example.com/img/logo.png",
+  "loginLogoUrl": "https://example.com/img/logo-2.png",
   "theme": {
     "color-1": "#E4F2F1",
     "color-2": "#009688",
