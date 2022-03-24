@@ -33,6 +33,7 @@ jobs:
             \"mapUrl\": \"https://carte.dev3.lokavaluto.fr\",
             \"localPasswordRetentionTime\": 900,
             \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
             \"theme\": {
               \"color-1\": \"#E4F2F1\",
               \"color-2\": \"#009688\",
