@@ -317,62 +317,56 @@
       </header>
       <section class="modal-card-body">
         <div>
-
-          <div
-            class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center p-3 mt-3"
-          >
-            <div v-if="myHyperLink.length === 0 && !showCreditRefreshNotification" class="is-flex is-flex-direction-column custom-montant-input">
-              <div v-if="creditableMoneyAccounts.length > 1">
-                <h2 class="frame3-sub-title mt-3 mb-3">
-                  Compte à créditer
-                </h2>
-                <div v-for="account in creditableMoneyAccounts"
-                     :class="[selectedCreditAccount === account ? 'selected' : 'unselected', 'account-selector']"
-                     @click="setSelectedCreditAccount(account)"
+          <div v-if="myHyperLink.length === 0 && !showCreditRefreshNotification">
+            <div v-if="creditableMoneyAccounts.length > 1">
+              <h2 class="frame3-sub-title mt-3 mb-3">
+                Compte à créditer
+              </h2>
+              <div v-for="account in creditableMoneyAccounts"
+                   :class="[selectedCreditAccount === account ? 'selected' : 'unselected', 'account-selector']"
+                   @click="setSelectedCreditAccount(account)"
+              >
+                <Acc
+                  :bal="account.bal"
+                  :curr="account.curr"
+                  :backend="account.backend"
+                  :type="account.type"
+                  :active="account.active"
                 >
-                  <Acc
-                    :bal="account.bal"
-                    :curr="account.curr"
-                    :backend="account.backend"
-                    :type="account.type"
-                    :active="account.active"
-                  >
-                    <template v-slot:name>{{ account.name }}</template>
-                  </Acc>
-                </div>
-              </div>
-              <div v-if="selectedCreditAccount || creditableMoneyAccounts.length === 1"
-                   class="amount">
-                <h2 class="frame3-sub-title mt-3 mb-3">
-                  Montant à créditer
-                </h2>
-                <input v-model="amountForCredit" type="number" min="0" class="p-2 mb-3" />
+                  <template v-slot:name>{{ account.name }}</template>
+                </Acc>
               </div>
             </div>
-            <template v-if="myHyperLink.length > 1">
-              <div class="notification is-info mb-3">
-                <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
-                <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
-              </div>
-              <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
-            </template>
-            <template v-if="showCreditRefreshNotification">
-              <div class="notification is-info mb-3">
-                <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.</p>
-                <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.</p>
-              </div>
-              <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
-            </template>
+            <div v-if="selectedCreditAccount || creditableMoneyAccounts.length === 1"
+                 class="amount">
+              <h2 class="frame3-sub-title mt-3 mb-3">
+                Montant à créditer
+              </h2>
+              <input v-model="amountForCredit" type="number" min="0" class="input is-custom mb-3" />
+            </div>
           </div>
-          <div class="columns" v-if="myHyperLink.length === 0 &&
+          <template v-if="myHyperLink.length > 1">
+            <div class="notification is-info mb-3">
+              <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
+              <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
+            </div>
+            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
+          </template>
+          <template v-if="showCreditRefreshNotification">
+            <div class="notification is-info mb-3">
+              <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.</p>
+              <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.</p>
+            </div>
+            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
+          </template>
+          <div v-if="myHyperLink.length === 0 &&
             (selectedCreditAccount ||
               creditableMoneyAccounts.length === 1) &&
             !showCreditRefreshNotification"
           >
-            <div class="column"></div>
-            <div class="column is-flex is-justify-content-center">
+            <div class="control has-text-right mt-3">
               <button
-                class="button custom-button custom-button-send-receive-money is-rounded action mt-6"
+                class="button custom-button custom-button-send-receive-money is-rounded action"
                 @click="newLinkTab()"
               >
                 Terminer
@@ -635,7 +629,6 @@
 div.account-selector
   & :deep(.account)
     min-width: fit-content
-    max-width: 50%
     cursor: pointer
 
   &.unselected :deep(.account)

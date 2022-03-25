@@ -603,6 +603,29 @@ rect {
   }
 }
 
+// Custom form elements
+input {
+  &.is-custom,
+  &.is-custom:focus,
+  &.is-custom:hover {
+    border: solid $color-2;
+    border-radius: 0;
+    border-width: 0 0 1px 0;
+    outline: none;
+    color: $color-2;
+    text-shadow: 0px 0px 0px black;
+    -webkit-text-fill-color: transparent;
+    -moz-appearance: textfield;
+
+    &:hover,
+    &:focus-visible,
+    &:focus-within,
+    &:focus {
+      box-shadow: 0 4px 2px -2px #DDDDDD;
+    }
+  }
+}
+
 // début modal sécurité
 
 .pinBox {
