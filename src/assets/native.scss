@@ -2,3 +2,7 @@ body,
 .navbar {
   padding-top: env(safe-area-inset-top, 0);
 }
+
+.modal-card {
+  top: calc(env(safe-area-inset-top, 0) + 60px);
+}

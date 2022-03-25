@@ -385,6 +385,7 @@ span.custom-card-destinataire {
   max-height: calc(90vh - 60px);
   max-width: 400px;
   overflow-y: auto;
+  margin: 0;
 
   @media screen and (max-width: 480px) {
     width: 95%;
