@@ -652,11 +652,8 @@ rect {
 
 .accounts {
 
-    > div {
+    .inactive {
         margin-top: 2em;
-    }
-    > div:first-child {
-        margin-top: 0;
     }
 
     .account {
