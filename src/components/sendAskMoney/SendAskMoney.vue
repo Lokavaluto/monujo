@@ -99,6 +99,9 @@
                       :width= "50"
                       :height= "50"/>
           </div>
+          <div v-else-if="searchRecipientError" class="notification is-light is-danger">
+            Une erreur inattendue est survenue lors de la recherche de destinataires. Veuillez nous excuser pour la gêne occasionnée.
+          </div>
           <div v-else>
             <div v-if="ownCurrenciesPartners.length !== 0" class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between">
               <div v-if="ownCurrenciesPartners">
@@ -439,7 +442,8 @@
         urlForHyperlink:"",
         selectedCreditAccount:null,
         showCreditRefreshNotification: false,
-        isLoading: false
+        isLoading: false,
+        searchRecipientError: false,
       }
     },
 
@@ -557,11 +561,13 @@
 
       async searchRecipients() :Promise<void> {
         this.partners = []
+        this.searchRecipientError = false
         var recipients
         try {
           this.isLoading = true
           recipients = await this.$lokapi.searchRecipients(this.searchName)
         } catch (err) {
+          this.searchRecipientError = true
           console.log('searchRecipients() Failed', err)
         }
         this.isLoading = false

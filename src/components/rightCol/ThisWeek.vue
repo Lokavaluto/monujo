@@ -3,7 +3,11 @@
             :can-cancel="false"
             :is-full-page="false"/>
   <div v-if="!isLoadingTransactions">
-    <p v-if="getTrs?.length === 0" class="notification is-default"> Aucune opération dans votre historique</p>
+    <div class="notification is-danger is-light" v-if="hasTransactionsLoadingError">
+      <p class="mb-4">Une erreur inattendue est survenue pendant le chargement des dernières opérations de votre compte. Veuillez nous excuser pour le désagrément.</p>
+      <p>Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.</p>
+    </div>
+    <p v-else-if="getTrs?.length === 0" class="notification is-default"> Aucune opération dans votre historique</p>
     <div v-else >
       <h2 class="custom-card-title">Opérations</h2>
       <TransactionSubCard v-for="transaction in getTrs"
@@ -39,7 +43,10 @@
       },
       isLoadingTransactions(): boolean {
         return this.$store.state.lokapi.transactionsLoading
-      }
+      },
+      hasTransactionsLoadingError(): boolean {
+        return this.$store.state.lokapi.transactionsLoadingError
+      },
     },
    
     methods : { 
