@@ -3,41 +3,44 @@
     <div class="container mt-5">
       <div class="columns is-tablet">
         <div class="column">
-           <loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page= "true"/>
-          <div
-            v-if="!isLoading" class="accounts card custom-card custom-card-padding"
-          >
-         <div v-if="pendingUserAccounts.length === 0">Aucun compte en attente de validation</div>
+          <div class="accounts card custom-card custom-card-padding">
          
-        <div v-else>
-         <h2 class="custom-card-title">Comptes en attente de validation</h2>
-          <table   class="table is-striped is-fullwidth">
-           <thead>
-                <tr>
-                  <th>Utilisateur</th>
-                  <th class="has-text-right">Valider</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="account in pendingUserAccounts" :key="account.id">
-                  <td>
-                    {{account.name}} {{ account.markBackend ? `(via ${account.backendId})` : ""}}
-                  </td>
-                  <td class="has-text-right">
-                    <a
-                      class="button is-primary custom-button custom-inverted is-small is-pulled-right"
-                      v-on:click="validateUserAccount(account)"
-                    >
-                      valider
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-      </div>
+            <loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :is-full-page= "false"/>
+            <div v-if="!isLoading">
+              <p
+                class="notification is-default"
+                v-if="pendingUserAccounts.length === 0"
+              >Aucun compte en attente de validation</p>
+              <div v-else>
+                <h2 class="custom-card-title">Comptes en attente de validation</h2>
+                <table class="table is-striped is-fullwidth">
+                 <thead>
+                    <tr>
+                      <th>Utilisateur</th>
+                      <th class="has-text-right">Valider</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="account in pendingUserAccounts" :key="account.id">
+                      <td>
+                        {{account.name}} {{ account.markBackend ? `(via ${account.backendId})` : ""}}
+                      </td>
+                      <td class="has-text-right">
+                        <a
+                          class="button is-primary custom-button custom-inverted is-small is-pulled-right"
+                          v-on:click="validateUserAccount(account)"
+                        >
+                          valider
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

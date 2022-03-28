@@ -3,33 +3,35 @@
   <div
     class="accounts card custom-card custom-card-padding"
   >
-    <a
-      @click="refreshBalanceAndTransactions"
-      title="Rafraîchir le solde et les transactions"
-      class="button is-default is-pulled-right is-rounded refresh"
-    >
-      <span>Rafraîchir</span>
-      <span class="icon is-small">
-        <i class="fas fa-sync"></i>
-      </span>
-    </a>
-    <h2 class="custom-card-title">vos comptes</h2>
     <loading v-model:active="isLoadingAccounts"
              :can-cancel="false"
              :is-full-page="false"/>
     
-    <div class="active">
-      <p class="notification is-default" v-if="!isLoadingAccounts && totalAccountsLoaded === 0">Vous n'avez pas encore de compte</p>
-      <Acc v-for="account in activeVirtualAccounts"
-           :bal="account.bal"
-           :curr="account.curr"
-           :backend="account.backend"
-           :type="account.type"
-           :active="account.active"
-           :subAccounts="account.subAccounts || []"
+    <div class="active" v-if="!isLoadingAccounts">
+      <a
+        @click="refreshBalanceAndTransactions"
+        title="Rafraîchir le solde et les transactions"
+        class="button is-default is-pulled-right is-rounded refresh"
       >
-        <template v-slot:name>{{ account.name }}</template>
-      </Acc>
+        <span>Rafraîchir</span>
+        <span class="icon is-small">
+          <i class="fas fa-sync"></i>
+        </span>
+      </a>
+      <p class="notification is-default" v-if="totalAccountsLoaded === 0">Vous n'avez pas encore de compte</p>
+      <div v-else>
+        <h2 class="custom-card-title">vos comptes</h2>
+        <Acc v-for="account in activeVirtualAccounts"
+             :bal="account.bal"
+             :curr="account.curr"
+             :backend="account.backend"
+             :type="account.type"
+             :active="account.active"
+             :subAccounts="account.subAccounts || []"
+        >
+          <template v-slot:name>{{ account.name }}</template>
+        </Acc>
+      </div>
     </div>
     <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
       <h2 class="custom-card-title">vos comptes en attente de création</h2>
