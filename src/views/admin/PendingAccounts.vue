@@ -4,14 +4,17 @@
       <div class="columns is-tablet">
         <div class="column">
           <div class="accounts card custom-card custom-card-padding">
-         
             <loading v-model:active="isLoading"
                  :can-cancel="false"
                  :is-full-page= "false"/>
             <div v-if="!isLoading">
+              <div class="notification is-danger is-light" v-if="hasLoadingError">
+                <p class="mb-4">Une erreur inattendue est survenue pendant le chargement de la liste des comptes. Veuillez nous excuser pour le désagrément.</p>
+                <p>Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.</p>
+              </div>
               <p
                 class="notification is-default"
-                v-if="pendingUserAccounts.length === 0"
+                v-else-if="pendingUserAccounts.length === 0"
               >Aucun compte en attente de validation</p>
               <div v-else>
                 <h2 class="custom-card-title">Comptes en attente de validation</h2>
@@ -57,6 +60,7 @@
   data() {
     return {
       isLoading: false,
+      hasLoadingError: false,
     }
   },
   mounted() {
@@ -91,7 +95,13 @@
     },
     async updatePendingAccount(){
       this.isLoading = true
-      await this.$store.dispatch('fetchPendingUserAccounts')
+      try {
+        await this.$store.dispatch('fetchPendingUserAccounts')
+        this.hasLoadingError = false
+      } catch (e:any) {
+        console.error('Failed to fetch pending accounts', e)
+        this.hasLoadingError = true
+      }
       this.isLoading = false
     }
   },

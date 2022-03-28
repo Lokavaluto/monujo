@@ -6,9 +6,13 @@
           <div
             class="accounts card custom-card custom-card-padding"
           >
+            <div class="notification is-danger is-light" v-if="hasLoadingError">
+              <p class="mb-4">Une erreur inattendue est survenue pendant le chargement de la liste de demandes de crédits. Veuillez nous excuser pour le désagrément.</p>
+              <p>Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.</p>
+            </div>
             <p
               class="notification is-default"
-              v-if="pendingCreditRequests.length === 0"
+              v-else-if="pendingCreditRequests.length === 0"
             >Aucune demande de crédit en attente de validation</p>
             <div v-else>
               <h2 class="custom-card-title">Opérations de crédit en attente de validation</h2>
@@ -58,13 +62,18 @@
 
   @Options({
     name:"PendingCredits",
+    data() {
+      return {
+        hasLoadingError: false,
+      }
+    },
     mounted() {
-      this.$store.dispatch('fetchPendingCreditRequests')
+      this.updatePendingCreditRequests()
     },
     computed: {
       pendingCreditRequests(): Array<any> {
         return this.$store.state.lokapi.pendingCreditRequests
-      }
+      },
     },
     methods: {
       async validateCreditRequest (request: any): Promise<void> {
@@ -88,6 +97,15 @@
           showConfirmButton: false,
           timer: 3000
         })
+      },
+      async updatePendingCreditRequests() {
+        try {
+          await this.$store.dispatch('fetchPendingCreditRequests')
+          this.hasLoadingError = false
+        } catch (e:any) {
+          console.error('Failed to fetch pending credit requests', e)
+          this.hasLoadingError = true
+        }
       }
     },
   })

@@ -18,7 +18,11 @@
           <i class="fas fa-sync"></i>
         </span>
       </a>
-      <p class="notification is-default" v-if="totalAccountsLoaded === 0">Vous n'avez pas encore de compte</p>
+      <div class="notification is-danger is-light" v-if="hasAccountsLoadingError">
+        <p class="mb-4">Une erreur inattendue est survenue pendant le chargement des portefeuilles. Veuillez nous excuser pour le désagrément.</p>
+        <p>Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.</p>
+      </div>
+      <p class="notification is-default" v-else-if="totalAccountsLoaded === 0">Vous n'avez pas encore de compte</p>
       <div v-else>
         <h2 class="custom-card-title">vos comptes</h2>
         <Acc v-for="account in activeVirtualAccounts"
@@ -73,6 +77,9 @@
       isLoadingAccounts(): boolean {
         return this.$store.state.lokapi.accountsLoading
       },
+      hasAccountsLoadingError(): boolean {
+        return this.$store.state.lokapi.accountsLoadingError
+      },
       ...mapGetters([
         'activeVirtualAccounts',
         'inactiveVirtualAccounts',
@@ -90,5 +97,6 @@
 <style lang="scss" scoped>
 .refresh {
   margin-top: -9px;
+  z-index: 1;
 }
 </style>

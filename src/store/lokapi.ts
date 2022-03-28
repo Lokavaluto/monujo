@@ -28,7 +28,9 @@ export function lokapiStoreFactory(lokApiService: any) {
       hasCreditRequestValidationRights: false,
       pendingCreditRequests: [],
       accountsLoading: true,
+      accountsLoadingError: false,
       transactionsLoading: true,
+      transactionsLoadingError: false,
     },
     actions: {
       async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
@@ -63,20 +65,32 @@ export function lokapiStoreFactory(lokApiService: any) {
       },
       async fetchAccounts({commit}:any) {
         commit("setAccountsLoading", true)
-        const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
-        commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
+        commit("setAccountsLoadingError", false)
+        try {
+          const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
+          commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
+        } catch (e:any) {
+          console.error('Error fetching wallets', e)
+          commit("setAccountsLoadingError", true)
+        }
         commit("setAccountsLoading", false)
       },
       async resetTransactions({commit, dispatch, state}:any) {
         commit("setTransactionsLoading", true)
-        transactionsGen = lokApiService.getTransactions()
-        let transactions = [],
+        commit("setTransactionsLoadingError", false)
+        let transactions:any = [],
             transactionsIndex = 0
-        let next = await transactionsGen.next()
-        while (!next.done && transactionsIndex < transactionsBatchLength) {
-          transactionsIndex++
-          transactions.push(<any>next.value)
-          next = await transactionsGen.next()
+        try {
+          transactionsGen = lokApiService.getTransactions()
+          let next = await transactionsGen.next()
+          while (!next.done && transactionsIndex < transactionsBatchLength) {
+            transactionsIndex++
+            transactions.push(<any>next.value)
+            next = await transactionsGen.next()
+          }
+        } catch (e:any) {
+          console.error('Error fetching transactions', e)
+          commit("setTransactionsLoadingError", true)
         }
         commit("setTransactions", transactions)
         commit("setTransactionsLoading", false)
@@ -178,7 +192,9 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.hasCreditRequestValidationRights = false
         state.pendingCreditRequests = []
         state.accountsLoading = false
+        state.accountsLoadingError = false
         state.transactionsLoading = false
+        state.transactionsLoadingError = false
       },
 
       setAccounts(state:any, { virtualAccountTree, allMoneyAccounts }: any) {
@@ -239,8 +255,14 @@ export function lokapiStoreFactory(lokApiService: any) {
       setAccountsLoading(state: any, loading: boolean) {
         state.accountsLoading = loading
       },
+      setAccountsLoadingError(state: any, hasError: boolean) {
+        state.accountsLoadingError = hasError
+      },
       setTransactionsLoading(state: any, loading: boolean) {
         state.transactionsLoading = loading
+      },
+      setTransactionsLoadingError(state: any, hasError: boolean) {
+        state.transactionsLoadingError = hasError
       },
     },
     getters: {
