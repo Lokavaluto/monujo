@@ -1,11 +1,11 @@
 <template>
-  <h2 class="custom-card-title">Opérations</h2>
   <loading  v-model:active="isLoadingTransactions"
             :can-cancel="false"
             :is-full-page="false"/>
   <div v-if="!isLoadingTransactions">
     <p v-if="getTrs?.length === 0" class="notification is-default"> Aucune opération dans votre historique</p>
     <div v-else >
+      <h2 class="custom-card-title">Opérations</h2>
       <TransactionSubCard v-for="transaction in getTrs"
                           :key="transaction" :amount="transaction.amount"
                           :symbol="transaction.currency"
