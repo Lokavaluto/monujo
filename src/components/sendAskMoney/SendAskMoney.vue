@@ -36,7 +36,7 @@
           <button
             :disabled="!hasActiveMoneyAccount"
             class="button custom-button is-recharger has-text-weight-medium is-rounded action"
-            @click="showModalFrameCreditMoney1 = true"
+            @click="showModalFrameCreditMoney1 = true, setFocus()"
           >
             <span class="icon-text">
               <span class="icon">
@@ -330,7 +330,7 @@
               </h2>
               <div v-for="account in creditableMoneyAccounts"
                    :class="[selectedCreditAccount === account ? 'selected' : 'unselected', 'account-selector']"
-                   @click="setSelectedCreditAccount(account)"
+                   @click="setSelectedCreditAccount(account), setFocus()"
               >
                 <Acc
                   :bal="account.bal"
@@ -343,12 +343,12 @@
                 </Acc>
               </div>
             </div>
-            <div v-if="selectedCreditAccount || creditableMoneyAccounts.length === 1"
+            <div v-show="selectedCreditAccount || creditableMoneyAccounts.length === 1"
                  class="amount">
               <h2 class="frame3-sub-title mt-3 mb-3">
                 Montant à créditer
               </h2>
-              <input v-model="amountForCredit" type="number" min="0" class="input is-custom mb-3" />
+              <input v-model="amountForCredit" ref="amountcredit" type="number" min="0" class="input is-custom mb-3" />
             </div>
           </div>
           <template v-if="myHyperLink.length > 1">
@@ -619,7 +619,13 @@
       setSelectedCreditAccount(account: any): void {
         this.selectedCreditAccount = account
       },
+      setFocus() {
+        this.$nextTick(()=> {
+          this.$refs.amountcredit.focus();
+          this.$refs.amountcredit.select();
 
+        })
+      }
     },
   })
   export default class SendAskMoney extends Vue {}
