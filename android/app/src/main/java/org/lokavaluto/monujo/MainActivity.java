@@ -1,4 +1,4 @@
-package org.lokavaluto.monujo;
+package com.lokavaluto.monujo;
 
 import com.getcapacitor.BridgeActivity;
 
