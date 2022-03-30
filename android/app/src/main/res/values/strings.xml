@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Monujo</string>
     <string name="title_activity_main">Monujo</string>
-    <string name="package_name">org.lokavaluto.monujo</string>
-    <string name="custom_url_scheme">org.lokavaluto.monujo</string>
+    <string name="package_name">com.lokavaluto.monujo</string>
+    <string name="custom_url_scheme">com.lokavaluto.monujo</string>
 </resources>
