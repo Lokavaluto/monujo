@@ -110,7 +110,7 @@
                      :key="partner">
 
                   <div
-                    class=" p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wraper"
+                    class=" p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wrapper"
                     :class="[partner.is_favorite ? 'is-active' : '']"
                     @click="toggleFavorite(partner), partner.is_favorite = partner.is_favorite ? false : true"
                   >
@@ -121,12 +121,7 @@
                       ></i>
                     </span>
                   </div>
-                  <div class="p-1 is-clickable is-align-items-center is-flex is-justify-content-end favorit-icon-wraper">
-                    <span>
-                      <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-2"></i>
-                    </span>
-                  </div>
-                  <div class="p-2 is-clickable is-flex card-destinataire-wraper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false, setFocusSend()">
+                  <div class="p-2 is-clickable is-flex card-recipient-wrapper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false, setFocusSend()">
                     <span class="custom-card-destinataire">
                       {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
                     </span>
@@ -669,9 +664,9 @@ div.account-selector
 .button.action
   white-space: normal
   height: auto
-.card-destinataire-wraper
-  width: 80%
-.favorit-icon-wraper
+.card-recipient-wrapper
+  width: 90%
+.favorit-icon-wrapper
   width: 10%
 .modal-card-body
   min-height: 120px
