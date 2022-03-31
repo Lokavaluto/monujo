@@ -126,7 +126,7 @@
                       <i v-if="this.searchName === '' && !this.displayFavoritesOnly" class="fas fa-history mr-2"></i>
                     </span>
                   </div>
-                  <div class="p-2 is-clickable is-flex card-destinataire-wraper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false">
+                  <div class="p-2 is-clickable is-flex card-destinataire-wraper" @click=" setRecipient(partner), this.showModalFrame2 = true, this.showModalFrame1 = false, setFocusSend()">
                     <span class="custom-card-destinataire">
                       {{partner.name}} {{ partner.markBackend ? `(via ${partner.backendId})` : ""}}
                     </span>
@@ -201,7 +201,7 @@
             >
               <div class="is-flex is-flex-direction-column custom-montant-input">
                 <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-                <input v-model="amount" type="number" min="0" class="p-2" />
+                <input v-model="amount" ref="amountSend" type="number" min="0" class="p-2" />
                 <textarea
                   v-model="message"
                   class="custom-textarea textarea mt-5"
@@ -630,6 +630,12 @@
           this.$refs.amountcredit.focus();
           this.$refs.amountcredit.select();
 
+        })
+      },
+      setFocusSend() {
+        this.$nextTick(()=> {
+          this.$refs.amountSend.focus();
+          this.$refs.amountSend.select();
         })
       }
     },
