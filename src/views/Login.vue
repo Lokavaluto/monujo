@@ -13,7 +13,7 @@
           <div class="field mb-5">
             <p class="control has-icons-left has-icons-right">
               <input
-                v-model="email"
+                v-model.trim="email"
                 class="input"
                 placeholder="Courriel"
               />
