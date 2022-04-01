@@ -15,8 +15,7 @@
             </p>
             <button class="delete" aria-label="close" 
                     @click="showModal = false,
-                            showCreditRefreshNotification = false,
-                            resetCredit()"></button>
+                            showCreditRefreshNotification = false"></button>
           </header>
           <section class="modal-card-body custom-card-transactions">
             <div class="modal-container" ref="transactionsContainer" @scroll="handleScroll"> 
