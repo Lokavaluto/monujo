@@ -281,6 +281,15 @@ span.custom-card-destinataire {
   text-overflow: ellipsis;
 }
 
+.is-title-shrink{
+  overflow: hidden;
+  flex-shrink: 1 !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-left: 10px;
+}
+ 
+
 // card-opération-anchor-fin
 
 // action-footer-anchor

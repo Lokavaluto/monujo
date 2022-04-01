@@ -53,17 +53,21 @@
       <div class="modal-background" @click="showModalFrame1 = false"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-        
-          <p class="modal-card-title">
-            <span>
-              <a class="mr-3" @click="showModalFrame1 = false">
-                <img
-                  class="cross-shape"
-                  src="../../assets/media/Arrow-Shape.png"
-                  alt="arrow_shape"
-                />
-              </a>
-            </span> Envoyer de l'argent</p>
+          <span class="is-flex is-justify-content-flex-start is-flex-shrink-0">
+            <a class="mr-3 mt-1" @click="showModalFrame1 = false">
+              <img
+                class="cross-shape"
+                src="../../assets/media/Arrow-Shape.png"
+                alt="arrow_shape"
+              />
+            </a>
+          </span>
+          <p class="modal-card-title is-title-shrink">
+           
+            <span >
+              Envoyer de l'argent
+            </span>
+          </p>
           <button class="delete" aria-label="close" @click="showModalFrame1 = false"></button>
         
         </header>
@@ -153,20 +157,23 @@
       <div class="modal-background" @click="showModalFrame2 = false, showModalFrame1 = true"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-            
-          <p class="modal-card-title">
+          <span class="is-flex is-flex-shrink-0">
+            <a class="mr-3 mt-1" @click="showModalFrame2 = false, showModalFrame1 = true">
+              <img
+                class="cross-shape"
+                src="../../assets/media/Arrow-Shape.png"
+                alt="arrow_shape"
+              />
+            </a>
+          </span>
+          <p class="modal-card-title is-title-shrink" >
+           
             <span>
-              <a class="p-2 mr-3 ml-3" @click="showModalFrame2 = false, showModalFrame1 = true">
-                <img
-                  class="cross-shape"
-                  src="../../assets/media/Arrow-Shape.png"
-                  alt="arrow_shape"
-                />
-              </a>
+              Envoyer à {{recipientName}}
             </span>
               
                
-            Envoyer à {{recipientName}}
+            
                 
               
           </p>
@@ -314,7 +321,7 @@
     <div class="modal-card">
       <header class="modal-card-head">
             
-        <p class="modal-card-title">
+        <p class="modal-card-title is-title-shrink">
                
           Créditer mon compte
                 
