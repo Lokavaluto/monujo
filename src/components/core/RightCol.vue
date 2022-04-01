@@ -10,7 +10,7 @@
         <div class="modal-background" @click="showModal = false"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">
+            <p class="modal-card-title is-title-shrink">
               Toutes les opérations
             </p>
             <button class="delete" aria-label="close" 
