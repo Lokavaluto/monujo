@@ -1,7 +1,7 @@
 <template>
   <div class="pb-3 pt-3">
     <div class="is-pulled-right">
-      <h5 class="custom-card-destinataire">{{date}}</h5>
+      <h5 class="custom-card-destinataire has-text-right">{{date}}</h5>
       <h5 class="card-paiement-defaut-carte has-text-right mt-1">
         {{calcDays(unformatedDate)}}
       </h5>
