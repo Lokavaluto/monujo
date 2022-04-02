@@ -18,7 +18,7 @@
                             showCreditRefreshNotification = false"></button>
           </header>
           <section class="modal-card-body custom-card-transactions">
-            <div class="modal-container" ref="transactionsContainer" @scroll="handleScroll"> 
+            <div class="modal-container custom-modal-container"  ref="transactionsContainer" @scroll="handleScroll"> 
               <div
                 class=" custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
               >
@@ -26,7 +26,14 @@
               </div>
             </div>
           </section>
-          <footer class="modal-card-foot">
+          <footer class="modal-card-foot custom-modal-card-foot">
+	     <div class="transactions-loader-container">
+               <loading v-model:active="isLoadingTransactionsBatch"
+                           :can-cancel="false" 
+                           :is-full-page= "false"
+                           :width= "30"
+                           :height= "30"/>
+                </div>
           </footer>
         </div>
       </div>
@@ -47,12 +54,14 @@
   import { Options, Vue } from 'vue-class-component';
   import ThisWeek from "../rightCol/ThisWeek.vue";
   import AllTrs from "../rightCol/AllTrs.vue";
+  import Loading from 'vue-loading-overlay';
 
   @Options({
     name: "RightCol",
     components: {
       ThisWeek,
       AllTrs,
+      Loading
     },
 
     data() {
@@ -66,6 +75,9 @@
       },
       isLoadingTransactions(): boolean {
         return this.$store.state.lokapi.transactionsLoading
+      },
+      isLoadingTransactionsBatch(): boolean {
+        return this.$store.state.lokapi.transactionsBatchLoading
       }
     },
     watch: {
