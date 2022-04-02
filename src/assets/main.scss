@@ -288,7 +288,15 @@ span.custom-card-destinataire {
   text-overflow: ellipsis;
   padding-left: 10px;
 }
- 
+.transactions-loader-container {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    margin: auto;
+}
+.custom-modal-card-foot {
+    padding: 5px !important;
+}
 
 // card-opération-anchor-fin
 
@@ -405,8 +413,12 @@ span.custom-card-destinataire {
   padding-right: 1px;
   padding: 5px;
 }
-.custom-card-transactions{
+.custom-card-transactions {
   overflow-y: hidden !important;
+  max-height: calc(70vh - 60px) !important;
+}
+.custom-modal-container {
+  max-height: calc(70vh - 65px) !important;
 }
  
 .modal-card-head {

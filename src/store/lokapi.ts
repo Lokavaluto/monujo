@@ -31,6 +31,7 @@ export function lokapiStoreFactory(lokApiService: any) {
       accountsLoadingError: false,
       transactionsLoading: true,
       transactionsLoadingError: false,
+      transactionsBatchLoading: false,
     },
     actions: {
       async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
@@ -98,12 +99,14 @@ export function lokapiStoreFactory(lokApiService: any) {
       async fetchTransactionsBatch({commit, dispatch, state}:any) {
         let transactions = state.transactions.length > 0 ? state.transactions.slice(0) : [],
             transactionsIndex = 0
+        commit("setTransactionsBatchLoading",true)
         let next = await transactionsGen.next()
         while (!next.done && transactionsIndex < transactionsBatchLength) {
           transactionsIndex++
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
+        commit("setTransactionsBatchLoading",false)
         commit("setTransactions", transactions)
       },
       async genPaymentLink({commit}:any,amount:number) {
@@ -264,6 +267,9 @@ export function lokapiStoreFactory(lokApiService: any) {
       setTransactionsLoadingError(state: any, hasError: boolean) {
         state.transactionsLoadingError = hasError
       },
+      setTransactionsBatchLoading(state: any, isLoading: boolean) {
+        state.transactionsBatchLoading = isLoading
+      }
     },
     getters: {
       getCurr: (state: any) => {
