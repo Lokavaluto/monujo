@@ -21,14 +21,14 @@
                 <table class="table is-striped is-fullwidth">
                   <thead>
                     <tr>
-                      <th>Utilisateur</th>
-                      <th>Montant</th>
-                      <th class="has-text-right">Valider</th>
+                      <th class="row-user-header">Utilisateur</th>
+                      <th class="row-amount-header">Montant</th>
+                      <th class="row-validate-header has-text-right">Valider</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="request in pendingCreditRequests">
-                      <td>
+                      <td class="row-user">
                         {{request.relatedUser}} {{ request.markBackend ? `(on ${request.backendId})` : ""}}
                       </td>
                       <td>
@@ -119,3 +119,16 @@
   })
   export default class Admin extends Vue {}
 </script>
+<style scoped lang="sass">
+  .row-user-header
+   width: 60%
+  .row-amount-header
+   width: 20%
+  .row-validate-header
+   width: 20%
+  .row-user
+   overflow: hidden
+   text-overflow: ellipsis
+  table
+   table-layout: fixed
+</style>
