@@ -53,37 +53,37 @@
             <router-link
               v-if="hasUnconfiguredBackend"
               to="/create-account"
-              class="navbar-item"
+              class="dropdown-item"
             >
               Créer mon portefeuille
             </router-link>
 
-            <hr class="navbar-divider" />
+            <hr class="dropdown-divider" />
 
             <template v-if="getLog && (hasUserAccountValidationRights || hasCreditRequestValidationRights)">
               <router-link
                 v-if="hasUserAccountValidationRights"
                 to="/admin/pending-accounts"
-                class="navbar-item"
+                class="dropdown-item"
               >
-                Comptes
+                Demandes de comptes
               </router-link>
               <router-link
                 v-if="hasCreditRequestValidationRights"
                 to="/admin/pending-credits"
-                class="navbar-item"
+                class="dropdown-item"
               >
                 Demandes de crédit
               </router-link>
-              <hr class="navbar-divider" />
+              <hr class="dropdown-divider" />
             </template>
 
-            <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
-            <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
+            <a v-if="helpUrl" :href="helpUrl" class="dropdown-item"> Aide </a>
+            <a v-if="cguUrl" :href="cguUrl" class="dropdown-item"> CGU </a>
 
-            <hr v-if="helpUrl || cguUrl" class="navbar-divider" />
+            <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
 
-            <a @click="logout" class="navbar-item"> Déconnexion </a>
+            <a @click="logout" class="dropdown-item"> Déconnexion </a>
           </div>
         </div>
       </div>
