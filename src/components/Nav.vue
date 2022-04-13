@@ -41,33 +41,6 @@
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
         </router-link>
-        <div
-          v-if="getLog && (hasUserAccountValidationRights || hasCreditRequestValidationRights)"
-          class="navbar-item has-dropdown is-hoverable"
-        >
-          <a class="navbar-link" v-on:mouseover="isMenuClosed = false">
-            Admin
-          </a>
-          <div class="navbar-dropdown is-right"
-               :class="{'close-navbar': isMenuClosed}"
-               @click="isMenuClosed = true">
-            <router-link
-              v-if="hasUserAccountValidationRights"
-              to="/admin/pending-accounts"
-              class="navbar-item"
-            >
-              Comptes
-            </router-link>
-            <router-link
-              v-if="hasCreditRequestValidationRights"
-              to="/admin/pending-credits"
-              class="navbar-item"
-            >
-              Demandes de crédit
-            </router-link>
-          </div>
-        </div>
-
         <div class="navbar-item has-dropdown is-hoverable" v-if="getLog">
           <a class="navbar-link">
             {{ userProfile?.name ? userProfile.name : "Utilisateur" }}
@@ -86,6 +59,24 @@
             </router-link>
 
             <hr class="navbar-divider" />
+
+            <template v-if="getLog && (hasUserAccountValidationRights || hasCreditRequestValidationRights)">
+              <router-link
+                v-if="hasUserAccountValidationRights"
+                to="/admin/pending-accounts"
+                class="navbar-item"
+              >
+                Comptes
+              </router-link>
+              <router-link
+                v-if="hasCreditRequestValidationRights"
+                to="/admin/pending-credits"
+                class="navbar-item"
+              >
+                Demandes de crédit
+              </router-link>
+              <hr class="navbar-divider" />
+            </template>
 
             <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
             <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
@@ -108,7 +99,6 @@
     data() {
       return {
         showNav: false,
-        isMenuClosed: false
       };
     },
     methods: {
