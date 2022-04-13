@@ -142,7 +142,7 @@
          
           
         </section>
-        <footer class="modal-card-foot">
+        <footer class="modal-card-foot is-justify-content-flex-end">
           <!--  <button class="button is-success">Save changes</button>
         <button class="button">Cancel</button> -->
         </footer>
@@ -209,21 +209,19 @@
                   class="custom-textarea textarea mt-5"
                   placeholder="Ajoutez un texte (optionnel)"
                 ></textarea>
-                <div class="is-flex is-justify-content-flex-end mt-6">
-                  <button
-                    class="button custom-button custom-button-send-receive-money is-rounded action"
-                    @click="sendTransaction(),
-                            (showModalFrame1 = false),
-                            (showModalFrame2 = false)"
-                  >
-                    Envoyer
-                  </button>
-                </div>
               </div>
             </div>
           </div>
         </section>
-        <footer class="modal-card-foot">
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button
+            class="button custom-button custom-button-send-receive-money is-rounded action"
+            @click="sendTransaction(),
+                    (showModalFrame1 = false),
+                    (showModalFrame2 = false)"
+          >
+            Envoyer
+          </button>
         </footer>
       </div>
     </div>
@@ -264,15 +262,6 @@
             placeholder="Ajoutez un texte (optionnel)"
           ></textarea>
           <div class="is-flex is-justify-content-center mt-6">
-            <button
-              class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
-              @click="genLink()"
-            >
-              <img src="../../../src/assets/media/Plane.svg" />
-              <p class="ml-4">
-                Générer un lien de paiement
-              </p>
-            </button>
           </div>
 
           <div v-if="linkGenerated"
@@ -301,7 +290,15 @@
       </div>
     </template>
     <template v-slot:footer>
-      <div></div>
+      <button
+        class="button custom-button custom-button-send-receive-money is-rounded action"
+        @click="genLink()"
+      >
+        <img src="../../../src/assets/media/Plane.svg" />
+        <p class="ml-4">
+          Générer un lien de paiement
+        </p>
+      </button>
     </template>
   </MyModal>
 
@@ -357,37 +354,39 @@
             </div>
           </div>
           <template v-if="myHyperLink.length > 1">
-            <div class="notification is-info mb-3">
+            <div class="notification is-info">
               <p class="mb-3">Un bon de commande pour votre rechargement a été créé.</p>
               <p class="mb-3">Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:</p>
             </div>
-            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
           </template>
           <template v-if="showCreditRefreshNotification">
-            <div class="notification is-info mb-3">
+            <div class="notification is-info">
               <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.</p>
               <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.</p>
             </div>
-            <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
           </template>
-          <div v-if="myHyperLink.length === 0 &&
-            (selectedCreditAccount ||
-              creditableMoneyAccounts.length === 1) &&
-            !showCreditRefreshNotification"
-          >
-            <div class="control has-text-right mt-3">
-              <button
-                class="button custom-button custom-button-send-receive-money is-rounded action"
-                @click="newLinkTab()"
-              >
-                Suivant
-              </button>
-            </div>
-          </div>
               
         </div>
       </section>
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot is-justify-content-flex-end">
+        <template v-if="myHyperLink.length === 0 &&
+          (selectedCreditAccount ||
+            creditableMoneyAccounts.length === 1) &&
+          !showCreditRefreshNotification"
+        >
+          <button
+            class="button custom-button custom-button-send-receive-money is-rounded action"
+            @click="newLinkTab()"
+          >
+            Suivant
+          </button>
+        </template>
+        <template v-if="myHyperLink.length > 1">
+          <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="navigateToCreditOrder">Compléter la transaction dans mon espace personnel</a>
+        </template>
+        <template v-if="showCreditRefreshNotification">
+          <a class="button custom-button has-text-weight-medium custom-inverted is-rounded action" @click="closeAndRefresh">Fermer et rafraîchir</a>
+        </template>
       </footer>
     </div>
   </div>
