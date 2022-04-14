@@ -30,8 +30,8 @@ jobs:
           rm public/config.sample.json
           echo "{
             \"lokapiDb\": \"odoo\",
-            \"lokapiHost\": \"dev3.lokavaluto.fr\",
-            \"mapUrl\": \"https://carte.dev3.lokavaluto.fr\",
+            \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
+            \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
             \"localPasswordRetentionTime\": 900,
             \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
             \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\"
