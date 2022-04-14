@@ -762,8 +762,10 @@
       },
       setFocus() {
         this.$nextTick(() => {
-          this.$refs.amountcredit.focus()
-          this.$refs.amountcredit.select()
+          if (this.$refs.amountcredit) {
+            this.$refs.amountcredit.focus()
+            this.$refs.amountcredit.select()
+          }
         })
       },
       setFocusSend() {
