@@ -41,6 +41,7 @@
             @click="
               ;(showModalFrameCreditMoney1 = true),
                 setFocus(),
+                resetCredit(),
                 $store.commit('setModalState', true)
             "
           >
@@ -158,12 +159,7 @@
                   </div>
                   <div
                     class="p-2 is-clickable is-flex card-recipient-wrapper"
-                    @click="
-                      setRecipient(partner),
-                        (this.showModalFrame2 = true),
-                        (this.showModalFrame1 = false),
-                        setFocusSend()
-                    "
+                    @click="handleClickRecipient(partner)"
                   >
                     <span class="custom-card-destinataire">
                       {{ partner.name }}
@@ -248,15 +244,20 @@
                 class="is-flex is-flex-direction-column custom-montant-input"
               >
                 <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-                <input
-                  v-model="amount"
-                  ref="amountSend"
-                  type="number"
-                  min="0"
-                  class="p-2"
-                  placeholder="ex: 50"
-                  :class="{ 'is-danger': errors.transfer.balance }"
-                />
+                <div class="is-flex mb-3">
+                  <input
+                    v-model="amount"
+                    ref="amountSend"
+                    type="number"
+                    min="0"
+                    class="input is-custom"
+                    placeholder="ex: 50"
+                    :class="{ 'is-danger': errors.transfer.balance }"
+                  />
+                  <div class="amount-currency-symbol pl-2">
+                    {{ recipientCurrencySymbol }}
+                  </div>
+                </div>
                 <div
                   class="notification is-danger is-light"
                   v-if="errors.transfer.balance"
@@ -388,77 +389,75 @@
         ></button>
       </header>
       <section class="modal-card-body">
-        <div>
-          <div
-            v-if="myHyperLink.length === 0 && !showCreditRefreshNotification"
-          >
-            <div v-if="creditableMoneyAccounts.length > 1">
-              <h2 class="frame3-sub-title mt-3 mb-3">Compte à créditer</h2>
-              <div
-                v-for="account in creditableMoneyAccounts"
-                :class="[
-                  selectedCreditAccount === account ? 'selected' : 'unselected',
-                  'account-selector',
-                ]"
-                @click="setSelectedCreditAccount(account), setFocus()"
-              >
-                <Acc
-                  :bal="account.bal"
-                  :curr="account.curr"
-                  :backend="account.backend"
-                  :type="account.type"
-                  :active="account.active"
-                >
-                  <template v-slot:name>{{ account.name }}</template>
-                </Acc>
-              </div>
-            </div>
+        <div v-if="myHyperLink.length === 0 && !showCreditRefreshNotification">
+          <div v-if="creditableMoneyAccounts.length > 1">
+            <h2 class="frame3-sub-title mt-3 mb-3">Compte à créditer</h2>
             <div
-              v-show="
-                selectedCreditAccount || creditableMoneyAccounts.length === 1
-              "
-              class="amount"
+              v-for="account in creditableMoneyAccounts"
+              :class="[
+                selectedCreditAccount === account ? 'selected' : 'unselected',
+                'account-selector',
+              ]"
+              @click="setSelectedCreditAccount(account), setFocus()"
             >
-              <h2 class="frame3-sub-title mt-3 mb-3">Montant à créditer</h2>
+              <Acc
+                :bal="account.bal"
+                :curr="account.curr"
+                :backend="account.backend"
+                :type="account.type"
+                :active="account.active"
+              >
+                <template v-slot:name>{{ account.name }}</template>
+              </Acc>
+            </div>
+          </div>
+          <div
+            v-show="
+              selectedCreditAccount || creditableMoneyAccounts.length === 1
+            "
+            class="amount custom-montant-input w-100"
+          >
+            <h2 class="frame3-sub-title mt-3 mb-3">Montant à créditer</h2>
+            <div class="is-flex mb-3">
               <input
                 v-model="amountForCredit"
                 ref="amountcredit"
                 type="number"
                 min="0"
-                class="input is-custom mb-3"
+                class="input is-custom"
                 placeholder="ex: 50"
               />
+              <span class="amount-currency-symbol pl-2">{{
+                this.selectedCreditAccount?.curr
+              }}</span>
             </div>
           </div>
-          <template v-if="myHyperLink.length > 1">
-            <div class="notification is-info">
-              <p class="mb-3">
-                Un bon de commande pour votre rechargement a été créé.
-              </p>
-              <p class="mb-3">
-                Pour compléter la demande de crédit, vous devez finaliser la
-                transaction en vous rendant dans votre espace personnel Odoo:
-              </p>
-            </div>
-          </template>
-          <template v-if="showCreditRefreshNotification">
-            <div class="notification is-info">
-              <p
-                class="mb-3"
-                v-if="selectedCreditAccount.backend === 'comchain'"
-              >
-                Une fois votre opération complétée dans votre espace personnel,
-                votre crédit sera en attente de validation par un
-                administrateur. Vous pourrez alors fermer cette fenêtre pour
-                actualiser votre solde.
-              </p>
-              <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">
-                Une fois votre opération complétée dans votre espace personnel,
-                fermez cette fenêtre pour actualiser votre solde.
-              </p>
-            </div>
-          </template>
         </div>
+        <template v-if="myHyperLink.length > 1">
+          <div class="notification is-info">
+            <p class="mb-3">
+              Un bon de commande pour votre rechargement a été créé.
+            </p>
+            <p class="mb-3">
+              Pour compléter la demande de crédit, vous devez finaliser la
+              transaction en vous rendant dans votre espace personnel Odoo:
+            </p>
+          </div>
+        </template>
+        <template v-if="showCreditRefreshNotification">
+          <div class="notification is-info">
+            <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">
+              Une fois votre opération complétée dans votre espace personnel,
+              votre crédit sera en attente de validation par un administrateur.
+              Vous pourrez alors fermer cette fenêtre pour actualiser votre
+              solde.
+            </p>
+            <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">
+              Une fois votre opération complétée dans votre espace personnel,
+              fermez cette fenêtre pour actualiser votre solde.
+            </p>
+          </div>
+        </template>
       </section>
       <footer class="modal-card-foot is-justify-content-flex-end">
         <template
@@ -546,6 +545,7 @@
         message: "",
         partners: [],
         recipientName: "",
+        recipientCurrencySymbol: "",
         displayFavoritesOnly: false,
         amountAsked: 0,
         linkGenerated: false,
@@ -596,6 +596,10 @@
         this.urlForHyperlink = ""
         this.linkGenerated = false
         this.amountForCredit = 0
+        this.selectedCreditAccount =
+          this.creditableMoneyAccounts.length === 1
+            ? this.creditableMoneyAccounts[0]
+            : false
       },
 
       resetSendMoney(): void {
@@ -727,9 +731,17 @@
           : recipients
       },
 
-      setRecipient(partner: any): void {
+      async handleClickRecipient(recipient: any): Promise<void> {
+        await this.setRecipient(recipient)
+        this.showModalFrame2 = true
+        this.showModalFrame1 = false
+        this.setFocusSend()
+      },
+
+      async setRecipient(partner: any): Promise<void> {
         this.$store.state.lokapi.recipient = partner
         this.recipientName = partner.name
+        this.recipientCurrencySymbol = await partner.getSymbol()
       },
 
       async sendTransaction(): Promise<void> {
@@ -809,7 +821,6 @@
 </script>
 
 <style scoped lang="sass">
-
   .search-area
     background: #f0faf9
   #warning-message
@@ -843,4 +854,15 @@
   .loader-container
     position: relative
     height: 80px
+  .amount-currency-symbol
+    margin: auto
+    font-size: 1.25em
+    font-weight: bold
+    line-height: 1em
+    padding-bottom: calc(0.5em - 1px)
+    padding-left: calc(0.75em - 1px)
+    padding-right: calc(0.75em - 1px)
+    padding-top: calc(0.5em - 1px)
+  .w-100
+    width: 100%
 </style>
