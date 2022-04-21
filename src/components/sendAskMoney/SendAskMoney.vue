@@ -78,7 +78,7 @@
             <p class="control has-icons-left custom-search-bar">
               <input
                 v-model="searchName"
-                v-on:input="searchRecipients()"
+                v-on:input="(searchName.length === 0 || searchName.length >= 3) ? searchRecipients() : null"
                 class="input"
                 type="text"
                 placeholder="adresse mail, téléphone"
