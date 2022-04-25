@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-  import { Options, Vue } from 'vue-class-component';
+  import { Options, Vue } from "vue-class-component"
 
   @Options({
     name: "Modal",
@@ -32,7 +32,7 @@
     },
     methods: {
       close() {
-        this.$emit("input", !this.value);
+        this.$emit("input", !this.value)
       },
     },
   })

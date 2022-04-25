@@ -5,11 +5,12 @@
     aria-label="main navigation"
   >
     <div class="navbar-brand">
-      <router-link :to="{ name: 'dashboard' }" class="navbar-item" @click="showNav = false">
-        <img
-          class="is-rounded"
-          :src="$config.logoUrl"
-        />
+      <router-link
+        :to="{ name: 'dashboard' }"
+        class="navbar-item"
+        @click="showNav = false"
+      >
+        <img class="is-rounded" :src="$config.logoUrl" />
       </router-link>
       <div
         role="button"
@@ -37,7 +38,9 @@
         <router-link to="/dashboard" class="navbar-item" v-if="getLog">
           Tableau de bord
         </router-link>
-        <router-link to="/carto" class="navbar-item" v-if="hasMapUrl"> Carte </router-link>
+        <router-link to="/carto" class="navbar-item" v-if="hasMapUrl">
+          Carte
+        </router-link>
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
         </router-link>
@@ -60,7 +63,13 @@
 
             <hr class="dropdown-divider" />
 
-            <template v-if="getLog && (hasUserAccountValidationRights || hasCreditRequestValidationRights)">
+            <template
+              v-if="
+                getLog &&
+                (hasUserAccountValidationRights ||
+                  hasCreditRequestValidationRights)
+              "
+            >
               <router-link
                 v-if="hasUserAccountValidationRights"
                 to="/admin/pending-accounts"
@@ -92,41 +101,41 @@
 </template>
 
 <script lang="ts">
-  import { Options, Vue } from "vue-class-component";
+  import { Options, Vue } from "vue-class-component"
 
   @Options({
     name: "Nav",
     data() {
       return {
         showNav: false,
-      };
+      }
     },
     methods: {
       logout() {
-        this.$store.dispatch("askLogOut");
-        this.$router.push({ name: "Login" });
+        this.$store.dispatch("askLogOut")
+        this.$router.push({ name: "Login" })
       },
     },
     computed: {
       getLog(): string {
-        return this.$store.state.lokapi.isLog;
+        return this.$store.state.lokapi.isLog
       },
       hasUnconfiguredBackend(): boolean {
         // Display of the account creation button should be displayed only
         // if there's an un-configured backend
-        return this.$store.getters.hasUnconfiguredBackend();
+        return this.$store.getters.hasUnconfiguredBackend()
       },
       hasUserAccountValidationRights(): boolean {
-        return this.$store.state.lokapi.hasUserAccountValidationRights;
+        return this.$store.state.lokapi.hasUserAccountValidationRights
       },
       hasCreditRequestValidationRights(): boolean {
         return this.$store.state.lokapi.hasCreditRequestValidationRights
       },
       userProfile(): string {
-        return this.$store.state.lokapi.userProfile;
+        return this.$store.state.lokapi.userProfile
       },
       profilePageUrl(): string {
-        return this.$store.getters.getOdooUrl() + "/web/login";
+        return this.$store.getters.getOdooUrl() + "/web/login"
       },
       hasMapUrl(): string {
         return this.$config.mapUrl
@@ -142,51 +151,51 @@
   export default class Nav extends Vue {}
 </script>
 <style lang="scss" scoped>
-@import "../assets/custom-variables";
+  @import "../assets/custom-variables";
 
-.navbar {
-  background-color: $top-menu-background-color;
+  .navbar {
+    background-color: $top-menu-background-color;
 
-  .navbar-item,
-  .navbar-item:visited,
-  .navbar-link,
-  .navbar-link:visited {
-    color: $top-menu-link-color;
-    background-color: $top-menu-link-background-color;
+    .navbar-item,
+    .navbar-item:visited,
+    .navbar-link,
+    .navbar-link:visited {
+      color: $top-menu-link-color;
+      background-color: $top-menu-link-background-color;
 
-    &:hover {
-      color: $top-menu-link-hover-color;
-      background-color: lighten($top-menu-link-hover-background-color, 5%);
+      &:hover {
+        color: $top-menu-link-hover-color;
+        background-color: lighten($top-menu-link-hover-background-color, 5%);
+      }
+    }
+    .navbar-menu {
+      background-color: $top-menu-link-background-color;
+    }
+
+    .navbar-burger span,
+    .navbar-burger.is-active span {
+      background-color: $top-menu-link-color;
+    }
+
+    .navbar-dropdown {
+      background: $top-menu-background-color;
+
+      .navbar-divider {
+        background-color: $top-menu-dropdown-divider-color;
+      }
+    }
+    .navbar-item.has-dropdown .navbar-link,
+    .navbar-item.has-dropdown:visited .navbar-link {
+      background-color: $top-menu-link-background-color;
+
+      &:hover {
+        background-color: lighten($top-menu-link-background-color, 5%);
+      }
     }
   }
-  .navbar-menu {
-    background-color: $top-menu-link-background-color;
-  }
 
-  .navbar-burger span,
-  .navbar-burger.is-active span {
-    background-color: $top-menu-link-color;
-  }
-
-  .navbar-dropdown {
-    background: $top-menu-background-color;
-
-    .navbar-divider {
-      background-color: $top-menu-dropdown-divider-color;
-    }
-  }
-  .navbar-item.has-dropdown .navbar-link,
-  .navbar-item.has-dropdown:visited .navbar-link {
-    background-color: $top-menu-link-background-color;
-
-    &:hover {
-      background-color: lighten($top-menu-link-background-color, 5%);
-    }
-  }
-}
-
-@media screen and (max-width: 1023px) {
-   .burger-menu-overlay {
+  @media screen and (max-width: 1023px) {
+    .burger-menu-overlay {
       position: fixed;
       left: 0;
       top: 45.5px;
@@ -194,18 +203,17 @@
       bottom: 0;
       z-index: -1;
       background: black;
-      opacity: .3;
-  }
-}
-.close-navbar{
-  display: none !important;
-}
-.navbar-item {
-  &.has-dropdown {
-    .navbar-link::after {
-      border-color: inherit;
+      opacity: 0.3;
     }
   }
-}
- 
+  .close-navbar {
+    display: none !important;
+  }
+  .navbar-item {
+    &.has-dropdown {
+      .navbar-link::after {
+        border-color: inherit;
+      }
+    }
+  }
 </style>

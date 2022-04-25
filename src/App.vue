@@ -4,9 +4,9 @@
 </template>
 
 <script lang="ts">
-  import { RestExc } from '@lokavaluto/lokapi-browser'
-  import { Options, Vue } from 'vue-class-component';
-  import Nav from "@/components/Nav.vue";
+  import { RestExc } from "@lokavaluto/lokapi-browser"
+  import { Options, Vue } from "vue-class-component"
+  import Nav from "@/components/Nav.vue"
 
   @Options({
     components: { Nav },
@@ -15,7 +15,7 @@
         try {
           console.log("Trying to Autolog")
           await this.$store.dispatch("initAutoLogin")
-        } catch(e) {
+        } catch (e) {
           if (e instanceof RestExc.TokenRequired) {
             // TokenRequired is cast by lokapi as one of 2 mecanism to
             // react upon failure of auto-login. As we are already using
@@ -33,7 +33,7 @@
     computed: {
       userProfile(): string {
         return this.$store.state.lokapi.userProfile
-      }
+      },
     },
   })
   export default class Login extends Vue {}

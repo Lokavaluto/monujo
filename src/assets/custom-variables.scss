@@ -1,7 +1,7 @@
 // Default Monujo theme variables
-// 
+//
 // Body Background color
-$color-1: #E4F2F1 !default;
+$color-1: #e4f2f1 !default;
 //
 // Buttons primary color,
 // And in transactions list: "voir tout" button color
@@ -9,8 +9,8 @@ $color-2: #009688 !default;
 //
 // Top menu customization
 //
-$top-menu-background-color: #FEFEFE !default;
-$top-menu-link-color: #4A4A4A !default;
+$top-menu-background-color: #fefefe !default;
+$top-menu-link-color: #4a4a4a !default;
 $top-menu-link-background-color: white !default;
 $top-menu-link-hover-color: #777777 !default;
 $top-menu-link-hover-background-color: whitesmoke !default;
@@ -19,35 +19,35 @@ $top-menu-dropdown-divider-color: whitesmoke !default;
 // Bottom menu buttons:
 //
 // "Payer" button
-$btn-payer-text-color: #FFFFFF !default;
+$btn-payer-text-color: #ffffff !default;
 $btn-payer-border-color: $color-2 !default;
 $btn-payer-background-color: $color-2 !default;
 // "Recevoir" button
-$btn-recevoir-text-color: #FFFFFF !default;
+$btn-recevoir-text-color: #ffffff !default;
 $btn-recevoir-border-color: $color-2 !default;
 $btn-recevoir-background-color: $color-2 !default;
 // "Recharger" button
 $btn-recharger-text-color: $color-2 !default;
 $btn-recharger-border-color: $color-2 !default;
-$btn-recharger-background-color: #FFFFFF !default;
+$btn-recharger-background-color: #ffffff !default;
 // "Login" button
-$btn-login-text-color: #FFFFFF !default;
+$btn-login-text-color: #ffffff !default;
 $btn-login-border-color: $color-2 !default;
 $btn-login-background-color: $color-2 !default;
 //
 //
 // Inner card border color (like in the accounts list)
 //
-$inner-card-background-color: #F0FAF9 !default;
-$inner-card-border-color: #F0FAF9 !default;
-$inner-card-text-color: #4A4A4A !default;
+$inner-card-background-color: #f0faf9 !default;
+$inner-card-border-color: #f0faf9 !default;
+$inner-card-text-color: #4a4a4a !default;
 $inner-card-label-background-color: transparent !default;
-$inner-card-label-text-color: #4A4A4A !default;
+$inner-card-label-text-color: #4a4a4a !default;
 $inner-card-alt-text-color: #009688 !default; // the backend name color
 //
 //
 // These are the bulma variables that we customize
-// 
+//
 $body-size: 14px !default;
 // Tabs
 $tabs-border-bottom-color: white;

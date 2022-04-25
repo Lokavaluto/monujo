@@ -1,4 +1,4 @@
-@import '~sweetalert2/src/variables';
+@import "~sweetalert2/src/variables";
 // Monujo variables
 $button-border-radius: 47px;
 $input-border-radius: 4px;
@@ -19,7 +19,7 @@ $swal2-input-focus-border: 1px solid #485fc7;
 $swal2-input-focus-outline: none;
 $swal2-input-focus-box-shadow: 0 0 0 0.125em rgba(72, 95, 199, 0.25);
 
-@import '~sweetalert2/src/sweetalert2';
+@import "~sweetalert2/src/sweetalert2";
 
 .swal2-input:hover,
 .swal2-file:hover,
