@@ -1,12 +1,11 @@
 <template>
   <section id="login">
-    <loading v-model:active="isLoading"
-             :can-cancel="false"
-             :is-full-page="fullPage"/>
-    <div
-      class="login-container"
-
-    >
+    <loading
+      v-model:active="isLoading"
+      :can-cancel="false"
+      :is-full-page="fullPage"
+    />
+    <div class="login-container">
       <div class="card">
         <img :src="$config.loginLogoUrl" class="pt-2 pb-5" />
         <form @submit.prevent="submit">
@@ -56,16 +55,15 @@
 </template>
 
 <script lang="ts">
-
-  import { Options, Vue } from 'vue-class-component';
-  import Loading from 'vue-loading-overlay';
-  import 'vue-loading-overlay/dist/vue-loading.css';
-  import { RestExc } from '@lokavaluto/lokapi-browser';
-  import { e as RequestExc } from '@0k.io/types-request';
+  import { Options, Vue } from "vue-class-component"
+  import Loading from "vue-loading-overlay"
+  import "vue-loading-overlay/dist/vue-loading.css"
+  import { RestExc } from "@lokavaluto/lokapi-browser"
+  import { e as RequestExc } from "@0k.io/types-request"
 
   @Options({
     name: "Login",
-    components :{ Loading: Loading },
+    components: { Loading: Loading },
     data() {
       return {
         isLoading: false,
@@ -73,11 +71,11 @@
         email: "",
         password: "",
         fail: "",
-        success: ""
+        success: "",
       }
     },
     methods: {
-      load():void {
+      load(): void {
         this.isLoading = true
       },
       async submit(): Promise<void> {
@@ -85,28 +83,31 @@
           await this.$store.dispatch("login", {
             login: this.email,
             password: this.password,
-          });
-          this.success = "Connection réussie";
-          this.$router.push({ name: "dashboard" });
+          })
+          this.success = "Connection réussie"
+          this.$router.push({ name: "dashboard" })
         } catch (e) {
           // { APIRequestFailed, InvalidCredentials }
           this.isLoading = false
           if (e instanceof RestExc.APIRequestFailed) {
-            this.fail = "Refus du serveur distant, contactez votre administrateur";
+            this.fail =
+              "Refus du serveur distant, contactez votre administrateur"
             return
           }
           if (e instanceof RestExc.InvalidCredentials) {
-            this.fail = "Identifiant ou mot de passe incorrect";
+            this.fail = "Identifiant ou mot de passe incorrect"
             return
           }
           if (e instanceof RequestExc.RequestFailed) {
-            this.fail = "La requête a échoué, impossible de joindre le serveur distant.";
+            this.fail =
+              "La requête a échoué, impossible de joindre le serveur distant."
             return
           }
-          this.fail = "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant.";
+          this.fail =
+            "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant."
           throw e
         }
-      }
+      },
     },
   })
   export default class Login extends Vue {}

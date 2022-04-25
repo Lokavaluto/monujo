@@ -9,19 +9,19 @@ export function lokapiStoreFactory(lokApiService: any) {
   let transactionsGen = lokApiService.getTransactions()
   return {
     state: {
-      status: '',
+      status: "",
       userProfile: null,
       transactions: [],
       thisWeektransactions: [],
       bal: 0,
-      curr:"",
-      virtualAccountTree:[],
-      moneyAccounts:[],
-      recipient:"",
-      isLog:null,
+      curr: "",
+      virtualAccountTree: [],
+      moneyAccounts: [],
+      recipient: "",
+      isLog: null,
       paymentUrl: "",
-      recipientHistory:[],
-      isMultiCurrency: false,  // Are we displaying accounts with different currencies ?
+      recipientHistory: [],
+      isMultiCurrency: false, // Are we displaying accounts with different currencies ?
       backends: {},
       hasUserAccountValidationRights: false,
       pendingUserAccounts: [],
@@ -34,53 +34,57 @@ export function lokapiStoreFactory(lokApiService: any) {
       transactionsBatchLoading: false,
     },
     actions: {
-      async login({ commit, dispatch }: any, credentials: { login: string, password: string }) {
+      async login(
+        { commit, dispatch }: any,
+        credentials: { login: string; password: string }
+      ) {
         let { login, password } = credentials
-        commit('auth_request')
+        commit("auth_request")
         try {
           await lokApiService.login(login, password)
-        } catch (err:any) {
-          commit('auth_error')
+        } catch (err: any) {
+          commit("auth_error")
           throw err
         }
-        await dispatch('setBackends')
+        await dispatch("setBackends")
 
-        dispatch("fetchAccounts");
+        dispatch("fetchAccounts")
         // reset transactions generator upon login so we can have a fresh list of transactions
-        // There is no need to do it on autologin since autologin happens on initial load and 
+        // There is no need to do it on autologin since autologin happens on initial load and
         // we already have called lokApiService.getTransactions() upon calling lokapiStoreFactory()
-        dispatch('resetTransactions')
-        commit('setUserProfile', await lokApiService.getMyContact())
-        commit('auth_success')
-        dispatch('fetchUserAccountValidationRights')
-        dispatch('fetchCreditRequestValidationRights')
+        dispatch("resetTransactions")
+        commit("setUserProfile", await lokApiService.getMyContact())
+        commit("auth_success")
+        dispatch("fetchUserAccountValidationRights")
+        dispatch("fetchCreditRequestValidationRights")
       },
-      async initAutoLogin({commit, dispatch}:any) {
-        commit('setUserProfile', await lokApiService.getMyContact())
-        dispatch("fetchAccounts");
-        dispatch('resetTransactions')
-        commit('auth_success')
-        await dispatch('setBackends')
-        dispatch('fetchUserAccountValidationRights')
-        dispatch('fetchCreditRequestValidationRights')
+      async initAutoLogin({ commit, dispatch }: any) {
+        commit("setUserProfile", await lokApiService.getMyContact())
+        dispatch("fetchAccounts")
+        dispatch("resetTransactions")
+        commit("auth_success")
+        await dispatch("setBackends")
+        dispatch("fetchUserAccountValidationRights")
+        dispatch("fetchCreditRequestValidationRights")
       },
-      async fetchAccounts({commit}:any) {
+      async fetchAccounts({ commit }: any) {
         commit("setAccountsLoading", true)
         commit("setAccountsLoadingError", false)
         try {
-          const { virtualAccountTree, allMoneyAccounts } = await lokApiService.buildVirtualAccountTree()
+          const { virtualAccountTree, allMoneyAccounts } =
+            await lokApiService.buildVirtualAccountTree()
           commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
-        } catch (e:any) {
-          console.error('Error fetching wallets', e)
+        } catch (e: any) {
+          console.error("Error fetching wallets", e)
           commit("setAccountsLoadingError", true)
         }
         commit("setAccountsLoading", false)
       },
-      async resetTransactions({commit, dispatch, state}:any) {
+      async resetTransactions({ commit, dispatch, state }: any) {
         commit("setTransactionsLoading", true)
         commit("setTransactionsLoadingError", false)
-        let transactions:any = [],
-            transactionsIndex = 0
+        let transactions: any = [],
+          transactionsIndex = 0
         try {
           transactionsGen = lokApiService.getTransactions()
           let next = await transactionsGen.next()
@@ -89,39 +93,46 @@ export function lokapiStoreFactory(lokApiService: any) {
             transactions.push(<any>next.value)
             next = await transactionsGen.next()
           }
-        } catch (e:any) {
-          console.error('Error fetching transactions', e)
+        } catch (e: any) {
+          console.error("Error fetching transactions", e)
           commit("setTransactionsLoadingError", true)
         }
         commit("setTransactions", transactions)
         commit("setTransactionsLoading", false)
       },
-      async fetchTransactionsBatch({commit, dispatch, state}:any) {
-        let transactions = state.transactions.length > 0 ? state.transactions.slice(0) : [],
-            transactionsIndex = 0
-        commit("setTransactionsBatchLoading",true)
+      async fetchTransactionsBatch({ commit, dispatch, state }: any) {
+        let transactions =
+            state.transactions.length > 0 ? state.transactions.slice(0) : [],
+          transactionsIndex = 0
+        commit("setTransactionsBatchLoading", true)
         let next = await transactionsGen.next()
         while (!next.done && transactionsIndex < transactionsBatchLength) {
           transactionsIndex++
           transactions.push(<any>next.value)
           next = await transactionsGen.next()
         }
-        commit("setTransactionsBatchLoading",false)
+        commit("setTransactionsBatchLoading", false)
         commit("setTransactions", transactions)
       },
-      async genPaymentLink({commit}:any,amount:number) {
+      async genPaymentLink({ commit }: any, amount: number) {
         await commit("genPaymentLink", amount)
       },
-      async askLogOut({commit}:any) {
+      async askLogOut({ commit }: any) {
         await lokApiService.logout()
         commit("logout")
       },
-      async checkPasswordStrength({ commit, state }:any, [password, accountBackend]: Array<string>) {
+      async checkPasswordStrength(
+        { commit, state }: any,
+        [password, accountBackend]: Array<string>
+      ) {
         const backend = state.backends[accountBackend]
         const errors = await backend.isPasswordStrongEnough(password)
         return translatePwdFieldErrors(errors)
       },
-      async createUserAccount({ commit, state, dispatch }:any, [password, backendId]: Array<string>) {
+      async createUserAccount(
+        { commit, state, dispatch }: any,
+        [password, backendId]: Array<string>
+      ) {
         const backend = state.backends[backendId]
         // Might throw some exception, leave it to the component
         // to display error messages.
@@ -129,65 +140,66 @@ export function lokapiStoreFactory(lokApiService: any) {
         // XXXvlab: hopin' to provide a better way (and generalized)
         // to handle all caches in lokapi in an upcoming version.
         lokApiService.clearBackendCache()
-        dispatch('setBackends')
+        dispatch("setBackends")
         dispatch("fetchAccounts")
         dispatch("fetchTransactionsBatch")
       },
-      async setBackends({ commit, state }:any) {
+      async setBackends({ commit, state }: any) {
         try {
-          commit('storeBackends', await lokApiService.getBackends())
-        } catch (err:any) {
-          console.error('Error getting currency backends', err)
+          commit("storeBackends", await lokApiService.getBackends())
+        } catch (err: any) {
+          console.error("Error getting currency backends", err)
           throw err
         }
       },
-      async fetchUserAccountValidationRights({ commit, state }:any) {
+      async fetchUserAccountValidationRights({ commit, state }: any) {
         let hasRight = await lokApiService.hasUserAccountValidationRights()
-        commit('setHasUserAccountValidationRights', hasRight)
+        commit("setHasUserAccountValidationRights", hasRight)
       },
-      async fetchPendingUserAccounts({ commit, state }:any) {
+      async fetchPendingUserAccounts({ commit, state }: any) {
         let accounts = await lokApiService.getStagingUserAccounts()
-        commit('setPendingUserAccounts', accounts)
+        commit("setPendingUserAccounts", accounts)
       },
-      async fetchCreditRequestValidationRights({ commit, state }:any) {
+      async fetchCreditRequestValidationRights({ commit, state }: any) {
         let hasRight = await lokApiService.hasCreditRequestValidationRights()
-        commit('setHasCreditRequestValidationRights', hasRight)
+        commit("setHasCreditRequestValidationRights", hasRight)
       },
-      async fetchPendingCreditRequests({ commit, state }:any) {
+      async fetchPendingCreditRequests({ commit, state }: any) {
         let requests = await lokApiService.getCreditRequests()
-        commit('setPendingCreditRequests', requests)
-      }
-
+        commit("setPendingCreditRequests", requests)
+      },
     },
     mutations: {
-      async genPaymentLink(state: any, amount:number) {
-        state.paymentUrl = await state.virtualAccountTree[0].getCreditUrl(amount)
+      async genPaymentLink(state: any, amount: number) {
+        state.paymentUrl = await state.virtualAccountTree[0].getCreditUrl(
+          amount
+        )
         // console.log("paymentUrl url =", state.paymentUrl.order_url)
       },
       auth_request(state: any) {
-        state.status = 'loading'
+        state.status = "loading"
         state.isLog = false
       },
       auth_success(state: any) {
-        state.status = 'success'
-        state.isLog = true;
+        state.status = "success"
+        state.isLog = true
       },
       auth_error(state: any) {
-        state.status = 'error'
+        state.status = "error"
         state.isLog = false
       },
       logout(state: any) {
-        state.status = ''
-        state.apiToken = ''
-        state.userProfile= null
+        state.status = ""
+        state.apiToken = ""
+        state.userProfile = null
         state.transactions = []
         state.thisWeektransactions = []
-        state.curr=""
-        state.virtualAccountTree=[]
-        state.moneyAccounts=[]
-        state.recipient=""
-        state.isLog=false
-        state.paymentUrl=""
+        state.curr = ""
+        state.virtualAccountTree = []
+        state.moneyAccounts = []
+        state.recipient = ""
+        state.isLog = false
+        state.paymentUrl = ""
         state.isMultiCurrency = false
         state.hasUserAccountValidationRights = false
         state.pendingUserAccounts = []
@@ -200,16 +212,16 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.transactionsLoadingError = false
       },
 
-      setAccounts(state:any, { virtualAccountTree, allMoneyAccounts }: any) {
+      setAccounts(state: any, { virtualAccountTree, allMoneyAccounts }: any) {
         state.virtualAccountTree = virtualAccountTree
         // Inform the UI if we are in a multi-currency display, note
         // we are testing the backend and not the currency symbol
 
         if (state.virtualAccountTree.length > 1) {
           let currencyId = state.virtualAccountTree[0].currencyId
-          state.isMultiCurrency = state.virtualAccountTree.slice(1).some(
-            (account: any) => account.currencyId !== currencyId
-          )
+          state.isMultiCurrency = state.virtualAccountTree
+            .slice(1)
+            .some((account: any) => account.currencyId !== currencyId)
         }
 
         // Warn the UI that account information are fully loaded
@@ -217,7 +229,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.accountsLoaded = true
       },
 
-      setTransactions (state:any, transactions: any[]) {
+      setTransactions(state: any, transactions: any[]) {
         var maxTransactions = 5
         let trs = []
         let history = []
@@ -225,16 +237,16 @@ export function lokapiStoreFactory(lokApiService: any) {
           trs.push(el)
           history.push(el.relatedUser ? el.relatedUser.display : null)
           if (maxTransactions === 1) {
-            break;
+            break
           }
           maxTransactions -= 1
         }
         var filtered = history.filter(function (el) {
-          return el != null;
-        });
+          return el != null
+        })
 
         state.transactions = transactions
-        state.recipientHistory = [...new Set(filtered)];
+        state.recipientHistory = [...new Set(filtered)]
         state.thisWeektransactions = trs
       },
       storeBackends(state: any, backends: any) {
@@ -269,76 +281,78 @@ export function lokapiStoreFactory(lokApiService: any) {
       },
       setTransactionsBatchLoading(state: any, isLoading: boolean) {
         state.transactionsBatchLoading = isLoading
-      }
+      },
     },
     getters: {
       getCurr: (state: any) => {
-        return function(): string {
+        return function (): string {
           return state.curr
         }
       },
       getAccs: (state: any) => {
-        return function(): Array<any> {
+        return function (): Array<any> {
           return state.virtualAccountTree
         }
       },
       getApiToken: (state: any) => {
-        return function(): any {
+        return function (): any {
           return state.apiToken
         }
       },
       hasUnconfiguredBackend: (state: any, getters: any) => {
-        return function(): any {
+        return function (): any {
           let unconfiguredBackends = getters.getUnconfiguredBackends()
           return unconfiguredBackends.length > 0
         }
       },
       getUnconfiguredBackends: (state: any) => {
-        return function(): object {
-          return Object.entries(state.backends).filter(
-            ([_, backend]) => (
-              Object.keys((<any>backend).userAccounts).length === 0 &&
+        return function (): object {
+          return Object.entries(state.backends)
+            .filter(
+              ([_, backend]) =>
+                Object.keys((<any>backend).userAccounts).length === 0 &&
                 (<any>backend).createUserAccount
             )
-          ).map(
-            ([backendId, _]) => backendId
-          )
+            .map(([backendId, _]) => backendId)
         }
       },
-      activeVirtualAccounts: (state:any) => {
+      activeVirtualAccounts: (state: any) => {
         return state.virtualAccountTree.filter((a: any) => a.active === true)
       },
       inactiveVirtualAccounts: (state: any) => {
         return state.virtualAccountTree.filter((a: any) => a.active === false)
       },
-      creditableMoneyAccounts: (state:any) => {
-        return state.moneyAccounts.filter((a: any) => a.active === true && a.creditable === true)
+      creditableMoneyAccounts: (state: any) => {
+        return state.moneyAccounts.filter(
+          (a: any) => a.active === true && a.creditable === true
+        )
       },
       getOdooUrl: (state: any) => {
-        return function(): any {
-          return 'https://' + lokApiService.host
+        return function (): any {
+          return "https://" + lokApiService.host
         }
       },
       isAuthenticated: (state: any) => {
         return state.isLog
       },
-    }
+    },
   }
 }
 
-
 function translatePwdFieldErrors(errors: string[]) {
   return errors.map((e: string) => {
-    if (e.indexOf('tooShort') > -1) {
-      let segments = e.split(':')
-      return "Le mot de passe doit faire au moins " + segments[1] + ' caractères'
-    } else if (e === 'noLowerCase') {
+    if (e.indexOf("tooShort") > -1) {
+      let segments = e.split(":")
+      return (
+        "Le mot de passe doit faire au moins " + segments[1] + " caractères"
+      )
+    } else if (e === "noLowerCase") {
       return "Le mot de passe doit contenir au moins une lettre minuscule"
-    } else if (e === 'noUpperCase') {
+    } else if (e === "noUpperCase") {
       return "Le mot de passe doit contenir au moins une lettre majuscule"
-    } else if (e === 'noDigit') {
+    } else if (e === "noDigit") {
       return "Le mot de passe doit contenir au moins un nombre"
-    } else if (e === 'noSymbol') {
+    } else if (e === "noSymbol") {
       return "Le mot de passe doit contenir au moins un caractère spécial"
     }
   })

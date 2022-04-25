@@ -6,15 +6,11 @@
       <div class="modal-wrapper">
         <div v-if="first" class="modal-container">
           <div class="modal-header">
-            <slot name="header">
-              default header
-            </slot>
+            <slot name="header"> default header </slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-              default body
-            </slot>
+            <slot name="body"> default body </slot>
           </div>
 
           <div class="modal-footer">
@@ -28,15 +24,11 @@
         </div>
         <div v-else class="modal-container-no-shadow">
           <div class="modal-header">
-            <slot name="header">
-              default header
-            </slot>
+            <slot name="header"> default header </slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-              default body
-            </slot>
+            <slot name="body"> default body </slot>
           </div>
 
           <div class="modal-footer">
@@ -56,11 +48,11 @@
 <script>
   export default {
     name: "MyModal",
-    props:["first"],
+    props: ["first"],
     data() {
       return {
-        showModal: false
-      };
+        showModal: false,
+      }
     },
-  };
+  }
 </script>

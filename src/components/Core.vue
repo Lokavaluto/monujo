@@ -15,15 +15,14 @@
 </template>
 
 <script lang="ts">
-  import { Options, Vue } from 'vue-class-component';
-  import LeftCol from "./core/LeftCol.vue";
-  import RightCol from "./core/RightCol.vue";
-  import SendAskMoney from "./sendAskMoney/SendAskMoney.vue";
+  import { Options, Vue } from "vue-class-component"
+  import LeftCol from "./core/LeftCol.vue"
+  import RightCol from "./core/RightCol.vue"
+  import SendAskMoney from "./sendAskMoney/SendAskMoney.vue"
   import router from "../router/index"
 
-
   @Options({
-    name:"core",
+    name: "core",
     props: {
       msg: String,
     },

@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-  import { Options, Vue } from 'vue-class-component';
-  import TransactionSubCard from "./TransactionSubCard.vue";
+  import { Options, Vue } from "vue-class-component"
+  import TransactionSubCard from "./TransactionSubCard.vue"
 
   @Options({
     name: "LastWeek",
@@ -28,18 +28,18 @@
     },
     computed: {
       getTrs(): number {
-        return this.$store.state.lokapi.transactions;
+        return this.$store.state.lokapi.transactions
       },
     },
 
     methods: {
       dateFormated(badDate: string): string {
-        var date = new Date(badDate);
-        var options = { weekday: "long", day: "numeric", month: "numeric" };
+        var date = new Date(badDate)
+        var options = { weekday: "long", day: "numeric", month: "numeric" }
         // eslint-disable-next-line
-      //@ts-ignore-next-line
-        const DateFr = new Intl.DateTimeFormat("fr-FR", options).format(date);
-        return DateFr;
+        //@ts-ignore-next-line
+        const DateFr = new Intl.DateTimeFormat("fr-FR", options).format(date)
+        return DateFr
       },
     },
   })

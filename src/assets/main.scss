@@ -83,8 +83,7 @@ body {
   }
 }
 .button {
-
-  &.is-login ,
+  &.is-login,
   &.is-login:hover {
     color: $btn-login-text-color !important;
     border-color: $btn-login-border-color !important;
@@ -120,7 +119,7 @@ body {
 }
 
 .custom-card-padding {
-  padding: 1.4em .8em;
+  padding: 1.4em 0.8em;
 
   @media screen and (min-width: 768px) {
     padding: 1.8em;
@@ -281,7 +280,7 @@ span.custom-card-destinataire {
   text-overflow: ellipsis;
 }
 
-.is-title-shrink{
+.is-title-shrink {
   overflow: hidden;
   flex-shrink: 1 !important;
   white-space: nowrap;
@@ -289,13 +288,13 @@ span.custom-card-destinataire {
   padding-left: 10px;
 }
 .transactions-loader-container {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    margin: auto;
+  position: relative;
+  height: 40px;
+  width: 40px;
+  margin: auto;
 }
 .custom-modal-card-foot {
-    padding: 5px !important;
+  padding: 5px !important;
 }
 
 // card-opération-anchor-fin
@@ -358,16 +357,15 @@ span.custom-card-destinataire {
         }
       }
     }
-
   }
 }
 
 // action-footer-anchor-fin
-.modal-card-title{
+.modal-card-title {
   color: #ffffff;
 }
 
-.modal-body{
+.modal-body {
   min-height: 480px;
 }
 .modal-container {
@@ -376,7 +374,7 @@ span.custom-card-destinataire {
   margin: 0px auto;
   /* border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
- /*  transition: all 0.3s ease; */
+  /*  transition: all 0.3s ease; */
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -408,7 +406,7 @@ span.custom-card-destinataire {
     width: 95%;
   }
 }
-.custom-modal-card-body{
+.custom-modal-card-body {
   overflow-x: hidden;
   padding-left: 1px;
   padding-right: 1px;
@@ -421,7 +419,7 @@ span.custom-card-destinataire {
 .custom-modal-container {
   max-height: calc(70vh - 65px) !important;
 }
- 
+
 .modal-card-head {
   background: $color-2;
 }
@@ -465,7 +463,6 @@ span.custom-card-destinataire {
   width: 85% !important;
   border: 1px solid #ff4081;
   border-radius: 16px;
- 
 }
 
 .custom-button-warning {
@@ -543,7 +540,6 @@ rect {
   width: 100%;
   margin: auto;
 }
-
 
 .custom-user-select {
   background: #ffffff;
@@ -647,7 +643,7 @@ input {
     &:focus-visible,
     &:focus-within,
     &:focus {
-      box-shadow: 0 4px 2px -2px #DDDDDD;
+      box-shadow: 0 4px 2px -2px #dddddd;
     }
   }
 }
@@ -698,63 +694,59 @@ input {
   width: 70% !important;
 }
 
-
 .accounts {
+  .inactive {
+    margin-top: 2em;
+  }
 
-    .inactive {
-        margin-top: 2em;
+  .account {
+    .account-backend {
+      opacity: 0.8;
+    }
+
+    .account-name {
+      @media screen and (min-width: 768px) {
+        width: 30%;
+        margin-left: 1em;
+      }
+    }
+
+    .account-bal {
+      text-align: right;
+      @media screen and (min-width: 768px) {
+        width: 20%;
+      }
+    }
+
+    .account-curr {
+      padding-left: 0.4em;
+    }
+
+    &.custom-card-padding {
+      padding-bottom: 1em;
+      padding-top: 1.2em;
+      padding-left: 1.2em;
+      padding-right: 14px;
+    }
+  }
+
+  .sub-accounts {
+    margin-left: 1em;
+    @media screen and (min-width: 768px) {
+      margin-left: 1.6em;
     }
 
     .account {
-
-        .account-backend {
-          opacity: 0.8;
-        }
-
-        .account-name {
-            @media screen and (min-width: 768px) {
-              width: 30%;
-              margin-left: 1em;
-            }
-        }
-
-        .account-bal {
-          text-align: right;
-          @media screen and (min-width: 768px) {
-            width: 20%;
-          }
-        }
-
-        .account-curr {
-          padding-left: .4em;
-        }
-
-        &.custom-card-padding {
-          padding-bottom: 1em;
-          padding-top: 1.2em;
-          padding-left: 1.2em;
-          padding-right: 14px;
-        }
-
+      font-size: 0.5em;
     }
-
-    .sub-accounts {
-        margin-left: 1em;
-        @media screen and (min-width: 768px) {
-          margin-left: 1.6em;
-        }
-
-        .account {
-          font-size: 0.5em;
-        }
-        .account-name {
-          @media screen and (min-width: 768px) {
-            margin-left: 2em;
-          }
-        }
+    .account-name {
+      @media screen and (min-width: 768px) {
+        margin-left: 2em;
+      }
     }
+  }
 
-    .inactive .account.card {
-        opacity: 0.6;
-    }
+  .inactive .account.card {
+    opacity: 0.6;
+  }
 }

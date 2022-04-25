@@ -1,26 +1,30 @@
 <template>
   <div class="pb-3 pt-3">
     <div class="is-pulled-right">
-      <h5 class="custom-card-destinataire has-text-right">{{date}}</h5>
+      <h5 class="custom-card-destinataire has-text-right">{{ date }}</h5>
       <h5 class="card-paiement-defaut-carte has-text-right mt-1">
-        {{calcDays(unformatedDate)}}
+        {{ calcDays(unformatedDate) }}
       </h5>
     </div>
     <div class="is-flex-direction-column">
-        
-      <h3 :class="[amount.charAt(0) == '-' ? 'custom-card-destinataire has-text-danger' : 'custom-card-destinataire has-text-success']">
+      <h3
+        :class="[
+          amount.charAt(0) == '-'
+            ? 'custom-card-destinataire has-text-danger'
+            : 'custom-card-destinataire has-text-success',
+        ]"
+      >
         {{
-          parseFloat(amount).toLocaleString(
-            "fr", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })
+          parseFloat(amount).toLocaleString("fr", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
         }}
-        {{symbol}}
+        {{ symbol }}
       </h3>
-      <h4 class="custom-card-destinataire">{{name}}</h4>
+      <h4 class="custom-card-destinataire">{{ name }}</h4>
       <h5 class="has-text-grey-light">
-        {{desc}}
+        {{ desc }}
       </h5>
     </div>
   </div>
@@ -28,23 +32,23 @@
 </template>
 
 <script lang="ts">
-  import { Options, Vue } from 'vue-class-component';
+  import { Options, Vue } from "vue-class-component"
   import TransactionPicto from "./pictos/TransactionPicto.vue"
   import QRPicto from "./pictos/QRPicto.vue"
-  import moment from 'moment'
+  import moment from "moment"
 
   @Options({
-    name:"TransactionSubCard",
+    name: "TransactionSubCard",
     components: {
       TransactionPicto,
-      QRPicto
+      QRPicto,
     },
     methods: {
-      calcDays(date:string):string {
-        moment.locale('fr');
+      calcDays(date: string): string {
+        moment.locale("fr")
         var test = moment(date).fromNow()
         return test
-      }
+      },
     },
     props: {
       picto: String,
@@ -52,8 +56,8 @@
       symbol: String,
       desc: String,
       date: String,
-      name:String,
-      unformatedDate:String
+      name: String,
+      unformatedDate: String,
     },
   })
   export default class TransactionSubCard extends Vue {}

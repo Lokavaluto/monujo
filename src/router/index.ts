@@ -1,13 +1,13 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import store from '../store'
-import Dashboard from "../views/Dashboard.vue";
-import Carto from "../views/Carto.vue";
-import Login from "../views/Login.vue";
-import CreateMyAccount from "../views/CreateMyAccount.vue";
-import PendingAccounts from "../views/admin/PendingAccounts.vue";
-import PendingCredits from "../views/admin/PendingCredits.vue";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
+import store from "../store"
+import Dashboard from "../views/Dashboard.vue"
+import Carto from "../views/Carto.vue"
+import Login from "../views/Login.vue"
+import CreateMyAccount from "../views/CreateMyAccount.vue"
+import PendingAccounts from "../views/admin/PendingAccounts.vue"
+import PendingCredits from "../views/admin/PendingCredits.vue"
 
-const appName = require('../../package.json').name;
+const appName = require("../../package.json").name
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -47,26 +47,31 @@ const routes: Array<RouteRecordRaw> = [
     component: PendingCredits,
   },
   {
-    path: '/:pathMatch(.*)*',
-    component: Carto
+    path: "/:pathMatch(.*)*",
+    component: Carto,
   },
-];
+]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-});
+})
 
 // Authentication guard
 router.beforeEach((to, from, next) => {
-  if ((to.name !== 'Login' && to.name !== 'Carto') && store.getters.isAuthenticated === false) next({ name: 'Carto' })
+  if (
+    to.name !== "Login" &&
+    to.name !== "Carto" &&
+    store.getters.isAuthenticated === false
+  )
+    next({ name: "Carto" })
   else next()
 })
 router.beforeEach((to, from, next) => {
-  if (typeof(to.meta.title) === 'string') {
+  if (typeof to.meta.title === "string") {
     document.title = appName + " - " + to.meta.title
   }
   next()
 })
 
-export default router;
+export default router

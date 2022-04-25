@@ -13,7 +13,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { Options, Vue } from 'vue-class-component';
+  import { Options, Vue } from "vue-class-component"
 
   @Options({
     name: "AddPayCard",
@@ -27,7 +27,7 @@
         mastercard: "/src/assets/media/mastercard.svg",
         visa: "/src/assets/media/visa.svg",
         cb: "/src/assets/media/CB.svg",
-      };
+      }
     },
   })
   export default class AddPayCard extends Vue {}

@@ -1,12 +1,12 @@
 <template>
   <!-- card vos comptes -->
-  <div
-    class="accounts card custom-card custom-card-padding"
-  >
-    <loading v-model:active="isLoadingAccounts"
-             :can-cancel="false"
-             :is-full-page="false"/>
-    
+  <div class="accounts card custom-card custom-card-padding">
+    <loading
+      v-model:active="isLoadingAccounts"
+      :can-cancel="false"
+      :is-full-page="false"
+    />
+
     <div class="active" v-if="!isLoadingAccounts">
       <a
         @click="refreshBalanceAndTransactions"
@@ -18,20 +18,32 @@
           <i class="fas fa-sync"></i>
         </span>
       </a>
-      <div class="notification is-danger is-light" v-if="hasAccountsLoadingError">
-        <p class="mb-4">Une erreur inattendue est survenue pendant le chargement des portefeuilles. Veuillez nous excuser pour le désagrément.</p>
-        <p>Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.</p>
+      <div
+        class="notification is-danger is-light"
+        v-if="hasAccountsLoadingError"
+      >
+        <p class="mb-4">
+          Une erreur inattendue est survenue pendant le chargement des
+          portefeuilles. Veuillez nous excuser pour le désagrément.
+        </p>
+        <p>
+          Vous pouvez essayer de recharger la page, ou contacter votre
+          administrateur si l'erreur persiste.
+        </p>
       </div>
-      <p class="notification is-default" v-else-if="totalAccountsLoaded === 0">Vous n'avez pas encore de compte</p>
+      <p class="notification is-default" v-else-if="totalAccountsLoaded === 0">
+        Vous n'avez pas encore de compte
+      </p>
       <div v-else>
         <h2 class="custom-card-title">vos comptes</h2>
-        <Acc v-for="account in activeVirtualAccounts"
-             :bal="account.bal"
-             :curr="account.curr"
-             :backend="account.backend"
-             :type="account.type"
-             :active="account.active"
-             :subAccounts="account.subAccounts || []"
+        <Acc
+          v-for="account in activeVirtualAccounts"
+          :bal="account.bal"
+          :curr="account.curr"
+          :backend="account.backend"
+          :type="account.type"
+          :active="account.active"
+          :subAccounts="account.subAccounts || []"
         >
           <template v-slot:name>{{ account.name }}</template>
         </Acc>
@@ -39,12 +51,13 @@
     </div>
     <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
       <h2 class="custom-card-title">vos comptes en attente de création</h2>
-      <Acc v-for="account in inactiveVirtualAccounts"
-           :bal="account.bal"
-           :curr="account.curr"
-           :backend="account.backend"
-           :type="account.type"
-           :active="account.active"
+      <Acc
+        v-for="account in inactiveVirtualAccounts"
+        :bal="account.bal"
+        :curr="account.curr"
+        :backend="account.backend"
+        :type="account.type"
+        :active="account.active"
       >
         <template v-slot:name>{{ account.name }}</template>
       </Acc>
@@ -54,21 +67,20 @@
 </template>
 
 <script lang="ts">
-  import { Options, Vue } from 'vue-class-component';
-  import { mapGetters, mapState } from 'vuex'
+  import { Options, Vue } from "vue-class-component"
+  import { mapGetters, mapState } from "vuex"
   import Acc from "./yourAccs/Acc.vue"
-  import Loading from 'vue-loading-overlay';
-  import 'vue-loading-overlay/dist/vue-loading.css';
+  import Loading from "vue-loading-overlay"
+  import "vue-loading-overlay/dist/vue-loading.css"
 
   @Options({
-    name:"YourAccs",
+    name: "YourAccs",
     props: {
       loaded: Boolean,
-      
     },
     components: {
       Acc,
-      Loading: Loading
+      Loading: Loading,
     },
     computed: {
       totalAccountsLoaded(): number {
@@ -80,23 +92,20 @@
       hasAccountsLoadingError(): boolean {
         return this.$store.state.lokapi.accountsLoadingError
       },
-      ...mapGetters([
-        'activeVirtualAccounts',
-        'inactiveVirtualAccounts',
-      ]),
+      ...mapGetters(["activeVirtualAccounts", "inactiveVirtualAccounts"]),
     },
     methods: {
       refreshBalanceAndTransactions() {
-        this.$store.dispatch('fetchAccounts')
-        this.$store.dispatch('resetTransactions')
-      }
-    }
+        this.$store.dispatch("fetchAccounts")
+        this.$store.dispatch("resetTransactions")
+      },
+    },
   })
   export default class YourAccs extends Vue {}
 </script>
 <style lang="scss" scoped>
-.refresh {
-  margin-top: -9px;
-  z-index: 1;
-}
+  .refresh {
+    margin-top: -9px;
+    z-index: 1;
+  }
 </style>
