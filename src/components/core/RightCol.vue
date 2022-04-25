@@ -7,7 +7,10 @@
         <ThisWeek />
       </div>
       <div class="modal is-active" v-if="showModal">
-        <div class="modal-background" @click="showModal = false"></div>
+        <div
+          class="modal-background"
+          @click=";(showModal = false), $store.commit('setModalState', false)"
+        ></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title is-title-shrink">
@@ -17,7 +20,9 @@
               class="delete"
               aria-label="close"
               @click="
-                ;(showModal = false), (showCreditRefreshNotification = false)
+                ;(showModal = false),
+                  (showCreditRefreshNotification = false),
+                  $store.commit('setModalState', false)
               "
             ></button>
           </header>
@@ -53,7 +58,7 @@
         class="has-text-centered mt-5"
       >
         <button
-          @click="showModal = true"
+          @click=";(showModal = true), $store.commit('setModalState', true)"
           class="button custom-button custom-inverted"
         >
           Voir tout

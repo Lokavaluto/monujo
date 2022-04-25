@@ -6,7 +6,10 @@
           <button
             :disabled="!hasActiveMoneyAccount"
             @click="
-              ;(showModalFrame1 = true), resetSendMoney(), searchRecipients()
+              ;(showModalFrame1 = true),
+                resetSendMoney(),
+                searchRecipients(),
+                $store.commit('setModalState', true)
             "
             class="button custom-button is-payer has-text-weight-medium is-rounded action"
           >
@@ -35,7 +38,11 @@
           <button
             :disabled="!hasActiveMoneyAccount"
             class="button custom-button is-recharger has-text-weight-medium is-rounded action"
-            @click=";(showModalFrameCreditMoney1 = true), setFocus()"
+            @click="
+              ;(showModalFrameCreditMoney1 = true),
+                setFocus(),
+                $store.commit('setModalState', true)
+            "
           >
             <span class="icon-text">
               <span class="icon">
@@ -49,11 +56,22 @@
     </div>
 
     <div class="modal is-active" v-if="showModalFrame1">
-      <div class="modal-background" @click="showModalFrame1 = false"></div>
+      <div
+        class="modal-background"
+        @click="
+          ;(showModalFrame1 = false), $store.commit('setModalState', false)
+        "
+      ></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-justify-content-flex-start is-flex-shrink-0">
-            <a class="mr-3 mt-1" @click="showModalFrame1 = false">
+            <a
+              class="mr-3 mt-1"
+              @click="
+                ;(showModalFrame1 = false),
+                  $store.commit('setModalState', false)
+              "
+            >
               <img
                 class="cross-shape"
                 src="../../assets/media/Arrow-Shape.png"
@@ -67,7 +85,9 @@
           <button
             class="delete"
             aria-label="close"
-            @click="showModalFrame1 = false"
+            @click="
+              ;(showModalFrame1 = false), $store.commit('setModalState', false)
+            "
           ></button>
         </header>
         <div class="search-area">
@@ -199,7 +219,9 @@
           <button
             class="delete"
             aria-label="close"
-            @click="showModalFrame2 = false"
+            @click="
+              ;(showModalFrame2 = false), $store.commit('setModalState', false)
+            "
           ></button>
         </header>
         <section class="modal-card-body">
@@ -253,7 +275,8 @@
             @click="
               sendTransaction(),
                 (showModalFrame1 = false),
-                (showModalFrame2 = false)
+                (showModalFrame2 = false),
+                $store.commit('setModalState', false)
             "
           >
             Envoyer
@@ -340,7 +363,8 @@
       class="modal-background"
       @click="
         ;(showModalFrameCreditMoney1 = false),
-          (showCreditRefreshNotification = false)
+          (showCreditRefreshNotification = false),
+          $store.commit('setModalState', false)
       "
     ></div>
     <div class="modal-card">
@@ -352,7 +376,8 @@
           @click="
             ;(showModalFrameCreditMoney1 = false),
               (showCreditRefreshNotification = false),
-              resetCredit()
+              resetCredit(),
+              $store.commit('setModalState', false)
           "
         ></button>
       </header>
@@ -542,7 +567,6 @@
       ...mapGetters(["creditableMoneyAccounts"]),
       ...mapState(["recipientHistory"]),
     },
-
     methods: {
       resetCredit(): void {
         this.$store.state.showCredit = false
@@ -585,6 +609,7 @@
         this.showModalFrameCreditMoney1 = false
         this.$store.dispatch("fetchAccounts")
         this.$store.dispatch("resetTransactions")
+        this.$store.commit("setModalState", false)
       },
 
       copyUrl() {

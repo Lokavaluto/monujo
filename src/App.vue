@@ -34,6 +34,15 @@
       userProfile(): string {
         return this.$store.state.lokapi.userProfile
       },
+      getModalState() {
+        return this.$store.state.isModalOpen
+      },
+    },
+    watch: {
+      getModalState() {
+        if (this.getModalState) document.body.classList.add("is-clipped")
+        else document.body.classList.remove("is-clipped")
+      },
     },
   })
   export default class Login extends Vue {}

@@ -19,6 +19,10 @@ body {
   font-family: Roboto;
 }
 
+.is-clipped {
+  height: 100%;
+  overflow-y: hidden;
+}
 #app {
   min-height: 100vh;
   background-color: $color-1;
