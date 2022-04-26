@@ -147,12 +147,7 @@
                   <div
                     class="p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wrapper"
                     :class="[partner.is_favorite ? 'is-active' : '']"
-                    @click="
-                      toggleFavorite(partner),
-                        (partner.is_favorite = partner.is_favorite
-                          ? false
-                          : true)
-                    "
+                    @click="toggleFavorite(partner)"
                   >
                     <span>
                       <i
