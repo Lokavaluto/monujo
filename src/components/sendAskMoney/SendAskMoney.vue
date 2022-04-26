@@ -605,8 +605,24 @@
         }
       },
 
-      async toggleFavorite(contact: any): Promise<void> {
-        contact.toggleFavorite()
+      async toggleFavorite(contact: any): Promise<boolean> {
+        try {
+          await contact.toggleFavorite()
+        } catch (e) {
+          let errorMessage = ""
+          if (!contact.jsonData.odoo.is_favorite)
+            errorMessage = "Une erreur est survenue lors de la mise en favoris,"
+          else
+            errorMessage =
+              "Une erreur est survenue lors de la suppression du favori,"
+          this.$toast.error(
+            errorMessage +
+              " veuillez ré-essayer ou contacter votre administrateur",
+            { position: "top" }
+          )
+          return false
+        }
+        return true
       },
 
       async searchRecipientsHistory(): Promise<void> {
@@ -674,14 +690,15 @@
               confirmButtonText: `Ajouter`,
               denyButtonText: `Plus tard`,
             })
-            .then((result: any) => {
-              if (result.isConfirmed) {
-                this.toggleFavorite(recipient)
-                this.$Swal.fire(
-                  `${this.recipientName} a bien été ajouté en favori`,
-                  "",
-                  "success"
-                )
+            .then(async (result: any) => {
+              if (!result.isConfirmed) {
+                if (await this.toggleFavorite(recipient)) {
+                  this.$Swal.fire(
+                    `${this.recipientName} a bien été ajouté en favori`,
+                    "",
+                    "success"
+                  )
+                }
               }
             })
         }
