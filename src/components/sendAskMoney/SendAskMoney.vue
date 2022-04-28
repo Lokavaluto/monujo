@@ -262,6 +262,13 @@
       </div>
     </div>
   </div>
+  <div>
+    <loading
+      v-model:active="isSendingMoney"
+      :can-cancel="false"
+      :is-full-page="true"
+    />
+  </div>
   <MyModal
     :first="true"
     v-if="showModalFrameAskMoney1"
@@ -515,6 +522,7 @@
         showCreditRefreshNotification: false,
         isLoading: false,
         searchRecipientError: false,
+        isSendingMoney: false,
       }
     },
 
@@ -656,8 +664,10 @@
       async sendTransaction(): Promise<void> {
         let recipient = this.$store.state.lokapi.recipient
         try {
+          this.isSendingMoney = true
           await recipient.transfer(this.amount.toString(), this.message)
         } catch (err) {
+          this.isSendingMoney = false
           // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
           if (err.message === "User canceled the dialog box") {
             this.$toast.warning(`Transaction en cours annulée`, {
@@ -668,6 +678,7 @@
           console.log("Payment failed:", err.message)
           throw err
         }
+        this.isSendingMoney = false
         this.$toast.success(`Paiement effectué à ${this.recipientName}`, {
           position: "top-right",
         })
