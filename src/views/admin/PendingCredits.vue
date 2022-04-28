@@ -45,7 +45,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="request in pendingCreditRequests">
+                    <tr
+                      v-for="request in pendingCreditRequests"
+                      v-bind:key="request"
+                    >
                       <td class="row-user">
                         {{ request.relatedUser }}
                         {{
@@ -65,9 +68,24 @@
                         <a
                           class="button is-primary custom-button custom-inverted is-small is-pulled-right"
                           v-on:click="validateCreditRequest(request)"
+                          v-if="
+                            selectedItem !== request || !isWaitingForValidation
+                          "
                         >
                           valider
                         </a>
+                        <div
+                          v-else
+                          class="transactions-loader-container is-pulled-right"
+                        >
+                          <loading
+                            v-model:active="isWaitingForValidation"
+                            :can-cancel="false"
+                            :is-full-page="false"
+                            :width="30"
+                            :height="30"
+                          />
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -92,6 +110,8 @@
       return {
         isLoading: true,
         hasLoadingError: false,
+        isWaitingForValidation: false,
+        selectedItem: null,
       }
     },
     mounted() {
@@ -104,9 +124,13 @@
     },
     methods: {
       async validateCreditRequest(request: any): Promise<void> {
+        this.selectedItem = request
         try {
+          this.isWaitingForValidation = true
           await request.validate()
         } catch (err) {
+          this.isWaitingForValidation = false
+
           this.$Swal.fire({
             position: "top",
             icon: "error",
@@ -118,6 +142,8 @@
           })
           throw err
         }
+        this.isWaitingForValidation = false
+        this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$Swal.fire({
           position: "top",
@@ -131,6 +157,7 @@
           showConfirmButton: false,
           timer: 3000,
         })
+        this.isLoading = false
       },
       async updatePendingCreditRequests() {
         this.isLoading = true
