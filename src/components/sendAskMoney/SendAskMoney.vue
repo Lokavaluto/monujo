@@ -593,10 +593,22 @@
             }
             this.selectedCreditAccount = this.creditableMoneyAccounts[0]
           }
-          let url = await this.selectedCreditAccount._obj.getCreditUrl(
-            this.amountForCredit
-          )
-          this.urlForHyperlink = url.order_url
+          try {
+            let url = await this.selectedCreditAccount._obj.getCreditUrl(
+              this.amountForCredit
+            )
+            this.urlForHyperlink = url.order_url
+          } catch (error) {
+            console.log(error)
+            this.$Swal.fire({
+              position: "top",
+              icon: "error",
+              title:
+                "Il y a eu un problème lors de la tentative de crédit de votre compte",
+              showConfirmButton: false,
+              timer: 3000,
+            })
+          }
         }
       },
 
