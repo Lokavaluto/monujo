@@ -11,10 +11,6 @@
   "dependencies": {
     "@0k.io/node-request": "^0.0.1",
     "@0k.io/types-request": "^0.0.2",
-    "@capacitor/android": "^3.3.2",
-    "@capacitor/cli": "^3.3.2",
-    "@capacitor/core": "^3.3.2",
-    "@capacitor/ios": "^3.3.2",
     "@lokavaluto/lokapi-backend-comchain": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-backend-cyclos": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-browser": "0.0.2 || >=0.0.3-alpha",
@@ -33,6 +29,10 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@capacitor/android": "^3.3.2",
+    "@capacitor/cli": "^3.3.2",
+    "@capacitor/core": "^3.3.2",
+    "@capacitor/ios": "^3.3.2",
     "@types/node": "^15.12.2",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
@@ -46,6 +46,7 @@
     "@vue/eslint-config-typescript": "^7.0.0",
     "assert": "^2.0.0",
     "buffer": "^5.7.1",
+    "cordova-res": "^0.15.4",
     "crypto-browserify": "^3.12.0",
     "eslint-plugin-vue": "^7.0.0",
     "https-browserify": "^1.0.0",
