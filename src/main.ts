@@ -70,6 +70,29 @@ fetchConfig("/config.json").then((config: any) => {
     config?.localPasswordRetentionTime
   )
 
+  const root = document.querySelector(":root") as HTMLElement
+
+  if (root !== null && typeof config.theme === "object") {
+    Object.entries(config.theme).forEach(([key, value]: [string, any]) => {
+      if (typeof value !== "string") {
+        if (typeof value.toString !== "undefined") {
+          value = value.toString()
+        } else {
+          console.warn(
+            `Ignored invalid value for key '${key}' in config.json:`,
+            value
+          )
+          return
+        }
+      }
+      // Provide a simple way to refer to other variables in
+      // ``config.json``, by using "$var" syntax.
+      if (value.startsWith("$")) {
+        value = `var(--${value.substring(1)})`
+      }
+      root.style.setProperty(`--${key}`, value)
+    })
+  }
   store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
 
   const app = createApp(App)
