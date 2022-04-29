@@ -68,13 +68,10 @@ npm run build
 ## Theme customization
 
 You can customize the app's theme by setting properties in the
-`<project root>/public/config.json` file (see the `<project
-root>/src/assets/custom-variables.scss` for a reference of what you
-can customize). Note that if you choose to customize your theme from
-the main config file `<project root>/public/config.json`, be sure not
-to include the leading `$` of the sass variables.
+`public/config.json` file (see the `src/assets/custom-variables.scss`
+for a reference of what you can customize).
 
-See the `<project root>/public/config.example.json` for a complete
+See the `public/config.example.json` for a complete
 example of customizing your theme in the main config file.
 
 ## Prepare app for build
