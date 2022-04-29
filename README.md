@@ -76,26 +76,30 @@ example of customizing your theme in the main config file.
 
 ## Prepare app for build
 
+This will copy the assets into the android and ios directories and
+make sure the platforms have all their needed dependencies
+
 ```
-npx cap sync // this will copy the assets into the android and ios directories and make sure the platforms have all their needed dependencies
+npx cap sync
 ```
 
 ## Run in simulator or physical device
 
 This will prompt you to choose from a list of installed simulators or
-your physical device(s).
+your physical device(s) if connected via USB cable and properly set up.
 
 ```
-npx cap run ios|android
+npx cap run
 ```
 
-## Build
+## Using full platform specific user interfaces
 
-To open in editor for building the binary or for debugging the app
+If you have installed the required studios (graphical user interface),
+you can open it through:
 
 ```
-npx cap open ios|android
+npx cap open
 ```
 
-From there you can sign package, upload to store, etc the way you
+From there you can sign package, upload to store, etc... the way you
 would do it for any mobile app.
