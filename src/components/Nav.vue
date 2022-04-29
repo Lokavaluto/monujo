@@ -165,7 +165,7 @@
 
       &:hover {
         color: $top-menu-link-hover-color;
-        background-color: lighten($top-menu-link-hover-background-color, 5%);
+        background-color: $top-menu-link-hover-background-color-bg;
       }
     }
     .navbar-menu {
@@ -189,7 +189,7 @@
       background-color: $top-menu-link-background-color;
 
       &:hover {
-        background-color: lighten($top-menu-link-background-color, 5%);
+        background-color: $top-menu-link-background-color-bg;
       }
     }
   }

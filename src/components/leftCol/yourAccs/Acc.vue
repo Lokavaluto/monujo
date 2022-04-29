@@ -84,6 +84,6 @@
     padding: 0 0.5em;
   }
   .account-backend {
-    color: darken($inner-card-text-color, 15%);
+    color: $inner-card-text-color-backend;
   }
 </style>

@@ -25,9 +25,14 @@ jobs:
         run: |
           npm install &&
           npm ls -a
+      ## Build stage need to be kept before configuration to test the
+      ## released file still offer dynamic configuration.
+      - name: 🔨 Build
+        run: |
+          npm run build
       - name: 🔨 Config
         run: |
-          rm public/config.sample.json
+          rm dist/config.sample.json
           echo "{
             \"lokapiDb\": \"odoo\",
             \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
@@ -35,11 +40,8 @@ jobs:
             \"localPasswordRetentionTime\": 900,
             \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
             \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\"
-          }" > public/config.json
-          cat public/config.json
-      - name: 🔨 Build
-        run: |
-          npm run build
+          }" > dist/config.json
+          cat dist/config.json
       - name: "📂 SFTP Sync files"
         uses: swillner/sftp-sync-action@v1.0
         with:
