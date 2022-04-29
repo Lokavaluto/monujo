@@ -35,17 +35,25 @@ these instructions first:
 
 [capacitor environment setup instructions](https://capacitorjs.com/docs/getting-started/environment-setup)
 
-## To generate the splash screens and the icons for mobile deployment
+And download all dependencies:
 
-If you need to do this, make sure you have cordova-res installed with `npm i -g cordova-res`
+```
+npm install
+```
 
-Then put your icon and splash files in `resources/icon.png` and
+This will install `cap` and `cordova-res` which we will use in the
+next steps. Please note that these commands all accept the platform
+(`ios` or `android`) as first argument, and will ask for it if it
+can't apply to all platform at once.
+
+## Generating splash screens and icons
+
+Put your icon and splash files in `resources/icon.png` and
 `resources/splash.png` respectively (see the files for minimum sizes)
 and then run:
 
 ```
-cd project root
-cordova-res android --skip-config --copy && cordova-res ios --skip-config --copy
+npx cordova-res --skip-config --copy
 ```
 
 ## Theme customization
