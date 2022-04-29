@@ -486,6 +486,13 @@
         </template>
       </footer>
     </div>
+    <div>
+      <loading
+        v-model:active="isCreditingMoney"
+        :can-cancel="false"
+        :is-full-page="true"
+      />
+    </div>
   </div>
 </template>
 
@@ -543,6 +550,7 @@
         isLoading: false,
         searchRecipientError: false,
         isSendingMoney: false,
+        isCreditingMoney: false,
       }
     },
 
@@ -594,11 +602,13 @@
             this.selectedCreditAccount = this.creditableMoneyAccounts[0]
           }
           try {
+            this.isCreditingMoney = true
             let url = await this.selectedCreditAccount._obj.getCreditUrl(
               this.amountForCredit
             )
             this.urlForHyperlink = url.order_url
           } catch (error) {
+            this.isCreditingMoney = false
             console.log(error)
             this.$Swal.fire({
               position: "top",
@@ -609,6 +619,7 @@
               timer: 3000,
             })
           }
+          this.isCreditingMoney = false
         }
       },
 
