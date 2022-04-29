@@ -56,6 +56,15 @@ and then run:
 npx cordova-res --skip-config --copy
 ```
 
+## Build core files
+
+This will compile and produce the final javascript and css files in
+`dist/` from the typescript files in `src/` and assets of the `public/`.
+
+```
+npm run build
+```
+
 ## Theme customization
 
 You can customize the app's theme by setting properties in the
@@ -68,15 +77,9 @@ to include the leading `$` of the sass variables.
 See the `<project root>/public/config.example.json` for a complete
 example of customizing your theme in the main config file.
 
-## To build the assets (the web app) for mobile deployment
-
-**!IMPORTANT** : Do not forget to put your config file at `<project
-root>/public/config.json` otherwise the build will exit with an error
-
 ## Prepare app for build
 
 ```
-npm run build:mobile // This will build the assets with the content of the aforementioned config file
 npx cap sync // this will copy the assets into the android and ios directories and make sure the platforms have all their needed dependencies
 ```
 
