@@ -59,9 +59,24 @@
                         <a
                           class="button is-primary custom-button custom-inverted is-small is-pulled-right"
                           v-on:click="validateUserAccount(account)"
+                          v-if="
+                            selectedItem !== account || !isWaitingForValidation
+                          "
                         >
                           valider
                         </a>
+                        <div
+                          v-else
+                          class="transactions-loader-container is-pulled-right"
+                        >
+                          <loading
+                            v-model:active="isWaitingForValidation"
+                            :can-cancel="false"
+                            :is-full-page="false"
+                            :width="30"
+                            :height="30"
+                          />
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -86,6 +101,8 @@
       return {
         isLoading: false,
         hasLoadingError: false,
+        isWaitingForValidation: false,
+        selectedItem: null,
       }
     },
     mounted() {
@@ -98,9 +115,12 @@
     },
     methods: {
       validateUserAccount(account: any): void {
+        this.selectedItem = account
+        this.isWaitingForValidation = true
         account
           .validateCreation()
           .catch((err: any) => {
+            this.isWaitingForValidation = false
             this.$Swal.fire({
               position: "top",
               icon: "error",
@@ -112,6 +132,7 @@
             })
           })
           .then((result: any) => {
+            this.isWaitingForValidation = false
             this.updatePendingAccount()
             this.$Swal.fire({
               position: "top",
