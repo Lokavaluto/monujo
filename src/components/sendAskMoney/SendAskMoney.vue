@@ -255,7 +255,14 @@
                   min="0"
                   class="p-2"
                   placeholder="ex: 50"
+                  :class="{ 'is-danger': errors.transfer.balance }"
                 />
+                <div
+                  class="notification is-danger is-light"
+                  v-if="errors.transfer.balance"
+                >
+                  {{ errors.transfer.balance }}
+                </div>
                 <textarea
                   v-model="message"
                   class="custom-textarea textarea mt-5"
@@ -268,12 +275,7 @@
         <footer class="modal-card-foot is-justify-content-flex-end">
           <button
             class="button custom-button custom-button-send-receive-money is-rounded action"
-            @click="
-              sendTransaction(),
-                (showModalFrame1 = false),
-                (showModalFrame2 = false),
-                $store.commit('setModalState', false)
-            "
+            @click="sendTransaction(), $store.commit('setModalState', false)"
           >
             Envoyer
           </button>
@@ -286,6 +288,7 @@
       v-model:active="isSendingMoney"
       :can-cancel="false"
       :is-full-page="true"
+      :enforce-focus="false"
     />
   </div>
   <MyModal
@@ -499,8 +502,10 @@
 </template>
 
 <script lang="ts">
+  import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
   import { Options, Vue } from "vue-class-component"
   import { mapGetters, mapState } from "vuex"
+
   import MyModal from "../modal/MyModal.vue"
   import Acc from "../leftCol/yourAccs/Acc.vue"
   import Loading from "vue-loading-overlay"
@@ -553,6 +558,11 @@
         searchRecipientError: false,
         isSendingMoney: false,
         isCreditingMoney: false,
+        errors: {
+          transfer: {
+            balance: false,
+          },
+        },
       }
     },
 
@@ -593,6 +603,7 @@
         this.message = ""
         this.searchName = ""
         this.activeClass = 0
+        this.errors.transfer.balance = false
       },
 
       async newLinkTab() {
@@ -729,19 +740,27 @@
           await recipient.transfer(this.amount.toString(), this.message)
         } catch (err) {
           this.isSendingMoney = false
-          // {RequestFailed, APIRequestFailed, InvalidCredentials, InvalidJson}
+          if (err instanceof LokapiExc.InsufficientBalance) {
+            this.errors.transfer.balance =
+              "Transaction refusée en raison de fonds insuffisants"
+            return
+          }
           if (err.message === "User canceled the dialog box") {
             this.$toast.warning(`Transaction en cours annulée`, {
-              position: "top-right",
+              position: "top",
             })
             return
           }
           console.log("Payment failed:", err.message)
           throw err
         }
+        this.errors.transfer.balance = false
+        this.showModalFrame1 = false
+        this.showModalFrame2 = false
+
         this.isSendingMoney = false
         this.$toast.success(`Paiement effectué à ${this.recipientName}`, {
-          position: "top-right",
+          position: "top",
         })
         if (!recipient.is_favorite) {
           this.$Swal
