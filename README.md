@@ -12,11 +12,23 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+You'll need to provide a `public/config.json` along the live assets.
+Yon can find an example in `public/config.example.json`.
+
+### Compiles and minifies for production (web or mobile)
 
 ```
 npm run build
 ```
+
+This will create `dist` folder with all files needed for the app.
+You'll need to provide a `config.json` along with the release file.
+Note that if you provided a `public/config.json` file prior to running
+the build command, you'll end up having a copy in `dist/config.json`
+along your release file.
+
+You can find an example of a valid config file in
+`public/config.example.json`.
 
 ### Lints and fixes files
 
@@ -46,6 +58,18 @@ next steps. Please note that these commands all accept the platform
 (`ios` or `android`) as first argument, and will ask for it if it
 can't apply to all platform at once.
 
+## Build core files
+
+This will compile and produce the final javascript and css files in
+`dist/` from the typescript files in `src/` and assets of the `public/`.
+
+```
+npm run build
+```
+
+Note: if you had a `public/config.json` file setup for development, it'll
+be copied to `dist/config.json` automatically.
+
 ## Generating splash screens and icons
 
 Put your icon and splash files in `resources/icon.png` and
@@ -56,19 +80,10 @@ and then run:
 npx cordova-res --skip-config --copy
 ```
 
-## Build core files
-
-This will compile and produce the final javascript and css files in
-`dist/` from the typescript files in `src/` and assets of the `public/`.
-
-```
-npm run build
-```
-
 ## Theme customization
 
 You can customize the app's theme by setting properties in the
-`public/config.json` file (see the `src/assets/custom-variables.scss`
+`dist/config.json` file (see the `src/assets/custom-variables.scss`
 for a reference of what you can customize).
 
 See the `public/config.example.json` for a complete
@@ -76,8 +91,9 @@ example of customizing your theme in the main config file.
 
 ## Prepare app for build
 
-This will copy the assets into the android and ios directories and
-make sure the platforms have all their needed dependencies
+This will copy the assets from `dist/` folder into the android and iOS
+directories and make sure the platforms have all their needed
+dependencies
 
 ```
 npx cap sync
@@ -85,8 +101,9 @@ npx cap sync
 
 ## Run in simulator or physical device
 
-This will prompt you to choose from a list of installed simulators or
-your physical device(s) if connected via USB cable and properly set up.
+The following command will prompt you to choose from a list of
+installed simulators or your physical device(s) if connected via USB
+cable and properly set up.
 
 ```
 npx cap run
