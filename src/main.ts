@@ -36,10 +36,6 @@ fetchConfig("config.json").then((config: any) => {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
 
-  if (!config.lokapiDb) {
-    throw new Error("Please specify lokapiDb in 'config.json'")
-  }
-
   const lokApiService = new LokAPI(
     config.lokapiHost,
     config.lokapiDb,
