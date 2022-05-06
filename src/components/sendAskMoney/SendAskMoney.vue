@@ -684,10 +684,9 @@
           else
             errorMessage =
               "Une erreur est survenue lors de la suppression du favori,"
-          this.$toast.error(
+          this.$msg.error(
             errorMessage +
-              " veuillez ré-essayer ou contacter votre administrateur",
-            { position: "top" }
+              " veuillez ré-essayer ou contacter votre administrateur"
           )
           return false
         }
@@ -746,9 +745,7 @@
             return
           }
           if (err.message === "User canceled the dialog box") {
-            this.$toast.warning(`Transaction en cours annulée`, {
-              position: "top",
-            })
+            this.$msg.warning("Transaction en cours annulée")
             return
           }
           console.log("Payment failed:", err.message)
@@ -759,9 +756,7 @@
         this.showModalFrame2 = false
 
         this.isSendingMoney = false
-        this.$toast.success(`Paiement effectué à ${this.recipientName}`, {
-          position: "top",
-        })
+        this.$msg.success(`Paiement effectué à ${this.recipientName}`)
         if (!recipient.is_favorite) {
           this.$Swal
             .fire({

@@ -232,14 +232,14 @@
             err
           )
           if (!(err instanceof LokAPIExc.UserAccountAlreadyExists)) {
-            this.$toast.error(
+            this.$msg.error(
               "Création de compte interrompue inopinément." +
-                "Veuillez ré-éssayer ou contacter votre administrateur",
-              { position: "top" }
+                "Veuillez ré-éssayer ou contacter votre administrateur"
             )
+
             return // stay on page
           }
-          this.$toast.warning("Compte déjà créé")
+          this.$msg.warning("Compte déjà créé")
         }
         router.push({ name: "dashboard" })
       },
