@@ -4,9 +4,10 @@ import router from "./router"
 import store from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { LokAPI } from "./services/lokapiService"
-import Toaster from "@meforma/vue-toaster"
 import Swal from "./useSwal"
 import "./polyfill"
+
+import ToastService from "@/services/toastService"
 
 require("@/assets/main.scss")
 require("@/assets/native.scss")
@@ -71,9 +72,10 @@ fetchConfig("config.json").then((config: any) => {
   app.use(store)
   app.use(router)
   app.use(Swal)
-  app.use(Toaster)
   app.provide("$store", store)
   app.config.globalProperties.$lokapi = lokApiService
   app.config.globalProperties.$config = config
+  app.config.globalProperties.$msg = ToastService
+
   app.mount("#app")
 })
