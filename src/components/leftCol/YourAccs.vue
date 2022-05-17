@@ -31,8 +31,13 @@
           administrateur si l'erreur persiste.
         </p>
       </div>
-      <p class="notification is-default" v-else-if="totalAccountsLoaded === 0">
-        Vous n'avez pas encore de compte
+      <p
+        class="notification is-default notification-no-accounts"
+        v-else-if="totalAccountsLoaded === 0"
+      >
+        Vous n'avez pas encore de portefeuille,
+        <router-link to="/create-account">cliquez ici</router-link> pour en
+        créer un.
       </p>
       <div v-else>
         <h2 class="custom-card-title">vos comptes</h2>
