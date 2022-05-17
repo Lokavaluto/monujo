@@ -24,7 +24,7 @@
               </span>
             </p>
           </div>
-          <div class="field mb-5">
+          <div class="field mb-2">
             <p class="control has-icons-left">
               <input
                 v-model="password"
@@ -37,12 +37,30 @@
               </span>
             </p>
           </div>
-          <div class="field">
-            <p class="control has-text-centered">
-              <button @click="load" type="submit" class="button is-login">
-                Se connecter
-              </button>
-            </p>
+          <div class="forgot-password mb-4">
+            <button @click="openResetPasswordUrl()" type="button">
+              Mot de passe oublié ?
+            </button>
+          </div>
+          <div class="login-buttons">
+            <div>
+              <p class="control has-text-centered">
+                <button @click="load" type="submit" class="button is-login">
+                  Se connecter
+                </button>
+              </p>
+            </div>
+            <div>
+              <p class="control has-text-centered">
+                <button
+                  @click="openSignupUrl()"
+                  type="button"
+                  class="button create-account"
+                >
+                  Créer un compte
+                </button>
+              </p>
+            </div>
           </div>
           <p class="has-text-danger has-text-centered" v-if="fail">
             {{ fail }}
@@ -78,6 +96,12 @@
       load(): void {
         this.isLoading = true
       },
+      openResetPasswordUrl(): void {
+        window.open(this.$store.getters.getOdooUrl() + "/web/reset_password")
+      },
+      openSignupUrl(): void {
+        window.open(this.$store.getters.getOdooUrl() + "/web/signup")
+      },
       async submit(): Promise<void> {
         try {
           await this.$store.dispatch("login", {
@@ -112,3 +136,4 @@
   })
   export default class Login extends Vue {}
 </script>
+<style scoped lang="scss"></style>
