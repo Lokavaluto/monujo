@@ -278,14 +278,14 @@
           </button>
         </footer>
       </div>
+      <div>
+        <loading
+          v-model:active="isSendingMoney"
+          :can-cancel="false"
+          :is-full-page="true"
+        />
+      </div>
     </div>
-  </div>
-  <div>
-    <loading
-      v-model:active="isSendingMoney"
-      :can-cancel="false"
-      :is-full-page="true"
-    />
   </div>
   <MyModal
     :first="true"
