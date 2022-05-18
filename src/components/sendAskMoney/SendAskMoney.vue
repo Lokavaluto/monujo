@@ -254,6 +254,7 @@
                   type="number"
                   min="0"
                   class="p-2"
+                  placeholder="ex: 50"
                 />
                 <textarea
                   v-model="message"
@@ -422,6 +423,7 @@
                 type="number"
                 min="0"
                 class="input is-custom mb-3"
+                placeholder="ex: 50"
               />
             </div>
           </div>
@@ -774,6 +776,7 @@
       setFocus() {
         this.$nextTick(() => {
           if (this.$refs.amountcredit) {
+            this.$refs.amountcredit.value = null
             this.$refs.amountcredit.focus()
             this.$refs.amountcredit.select()
           }
@@ -781,6 +784,7 @@
       },
       setFocusSend() {
         this.$nextTick(() => {
+          this.$refs.amountSend.value = null
           this.$refs.amountSend.focus()
           this.$refs.amountSend.select()
         })
