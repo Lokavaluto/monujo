@@ -3,63 +3,71 @@ import comchain from "@lokavaluto/lokapi-backend-comchain"
 import cyclos from "@lokavaluto/lokapi-backend-cyclos"
 import Swal from "sweetalert2"
 
+
+export function mkRequestCredentials(localPasswordRetentionTime = 900) {
+  let rememberedPassword = { pwd: "", inputTime: 0 }
+  return async (state: any) => {
+    let text = ""
+
+    // Lets see if we have a (still valid) password in there...
+    // ... that was used less than 30 secs ago.
+    // If it's the case, we will provide it to the lokapi right away
+    if (
+      rememberedPassword.pwd.length > 0 &&
+      rememberedPassword.inputTime + localPasswordRetentionTime * 1000 >
+        Date.now() &&
+      state === "firstTry"
+    ) {
+      // Valid pwd -> update the last used time and provide the pwd
+      // to the lokapi
+      rememberedPassword.inputTime = Date.now()
+      return rememberedPassword.pwd
+    }
+
+    // No valid pwd, so we make sure the pwd is reset and ask for it
+    // again
+    rememberedPassword = { pwd: "", inputTime: 0 }
+
+    if (state === "failedUnlock") {
+      text =
+        "Échec du déchiffrage. " +
+        "Le mot de passe était probablement incorrect. " +
+        "Ré-essayez une nouvelle fois" // XXXvlab: need i18n
+    }
+    const ret = await Swal.fire({
+      title: "Entrez votre mot de passe", // XXXvlab: need i18n
+      text,
+      showCloseButton: true,
+      input: "password",
+      inputLabel: "Mot de passe du portefeuille", // XXXvlab: need i18n
+      inputPlaceholder: "Votre mot de passe", // XXXvlab: need i18n
+      inputAttributes: {
+        maxlength: "32",
+        autocapitalize: "off",
+        autocorrect: "off",
+      },
+    })
+    if (ret.isConfirmed) {
+      rememberedPassword = { pwd: ret.value, inputTime: Date.now() }
+      return ret.value
+    }
+    throw new Error("User canceled the dialog box")
+  }
+}
+
+
 export class LokAPI extends LokAPIBrowserAbstract {
   BackendFactories = {
     comchain,
     cyclos,
   }
 
-  rememberedPassword: any = { pwd: "", inputTime: 0 }
+  localPasswordRetentionTime: number
 
   constructor(host: string, db: string, localPasswordRetentionTime = 900) {
     super(host, db)
-    this.requestLocalPassword = async (state: any) => {
-      let text = ""
-
-      // Lets see if we have a (still valid) password in there...
-      // ... that was used less than 30 secs ago.
-      // If it's the case, we will provide it to the lokapi right away
-      if (
-        this.rememberedPassword.pwd.length > 0 &&
-        this.rememberedPassword.inputTime + localPasswordRetentionTime * 1000 >
-          Date.now() &&
-        state === "firstTry"
-      ) {
-        // Valid pwd -> update the last used time and provide the pwd
-        // to the lokapi
-        this.rememberedPassword.inputTime = Date.now()
-        return this.rememberedPassword.pwd
-      }
-
-      // No valid pwd, so we make sure the pwd is reset and ask for it
-      // again
-      this.rememberedPassword = { pwd: "", inputTime: 0 }
-
-      if (state === "failedUnlock") {
-        text =
-          "Échec du déchiffrage. " +
-          "Le mot de passe était probablement incorrect. " +
-          "Ré-essayez une nouvelle fois" // XXXvlab: need i18n
-      }
-      const ret = await Swal.fire({
-        title: "Entrez votre mot de passe", // XXXvlab: need i18n
-        text,
-        showCloseButton: true,
-        input: "password",
-        inputLabel: "Mot de passe du portefeuille", // XXXvlab: need i18n
-        inputPlaceholder: "Votre mot de passe", // XXXvlab: need i18n
-        inputAttributes: {
-          maxlength: "32",
-          autocapitalize: "off",
-          autocorrect: "off",
-        },
-      })
-      if (ret.isConfirmed) {
-        this.rememberedPassword = { pwd: ret.value, inputTime: Date.now() }
-        return ret.value
-      }
-      throw new Error("User canceled the dialog box")
-    }
+    this.localPasswordRetentionTime = localPasswordRetentionTime
+    this.requestLocalPassword = mkRequestCredentials(localPasswordRetentionTime)
   }
 
   requestLogin = () => {}
@@ -67,7 +75,9 @@ export class LokAPI extends LokAPIBrowserAbstract {
    * Ensure we reset the stored wallet password whenever we log out of the app
    */
   logout() {
-    this.rememberedPassword = { pwd: "", inputTime: 0 }
+    this.requestLocalPassword = mkRequestCredentials(
+      this.localPasswordRetentionTime
+    )
     return super.logout()
   }
 
