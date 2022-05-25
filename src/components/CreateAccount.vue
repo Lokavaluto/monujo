@@ -124,11 +124,12 @@
                 </p>
               </div>
 
-              <div class="field" v-if="!hasFieldErrors">
+              <div class="field">
                 <div class="control">
                   <button
                     class="button is-primary"
                     @click="createUserAccount()"
+                    :disabled="hasFieldErrors"
                   >
                     Créer mon portefeuille
                   </button>
