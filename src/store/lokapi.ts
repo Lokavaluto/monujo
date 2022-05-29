@@ -132,13 +132,14 @@ export function lokapiStoreFactory(lokApiService: any) {
         const backend = state.backends[backendId]
         // Might throw some exception, leave it to the component
         // to display error messages.
-        await backend.createUserAccount({ password })
+        const userAccount = await backend.createUserAccount({ password })
         // XXXvlab: hopin' to provide a better way (and generalized)
         // to handle all caches in lokapi in an upcoming version.
         lokApiService.clearBackendCache()
         dispatch("setBackends")
         dispatch("fetchAccounts")
         dispatch("fetchTransactionsBatch")
+        return userAccount
       },
       async setBackends({ commit, state }: any) {
         try {
