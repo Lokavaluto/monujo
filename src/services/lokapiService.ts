@@ -104,10 +104,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
       `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
 
     const allMoneyAccounts: any[] = []
-    const backends = Object.values(await this.getBackends())
-    const userAccounts = backends
-      .map((b: any) => Object.values(b.userAccounts))
-      .flat()
+    const userAccounts = await this.getUserAccounts()
 
     await Promise.allSettled(
       userAccounts.map(
