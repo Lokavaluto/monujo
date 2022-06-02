@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 ///<reference types="@types/node"/>
 
 export function lokapiStoreFactory(lokApiService: any) {
