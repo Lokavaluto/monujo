@@ -2,8 +2,6 @@
 
 ///<reference types="@types/node"/>
 
-import Swal from "sweetalert2"
-
 export function lokapiStoreFactory(lokApiService: any) {
   const transactionsBatchLength = 10
   let transactionsGen = lokApiService.getTransactions()
