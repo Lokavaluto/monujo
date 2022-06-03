@@ -13,8 +13,7 @@
     async mounted() {
       if (!this.userProfile) {
         try {
-          console.log("Trying to Autolog")
-          await this.$store.dispatch("initAutoLogin")
+          await this.$store.dispatch("setupAfterLogin")
         } catch (e) {
           if (e instanceof RestExc.TokenRequired) {
             // TokenRequired is cast by lokapi as one of 2 mecanism to
