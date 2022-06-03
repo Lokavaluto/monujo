@@ -42,19 +42,9 @@ export function lokapiStoreFactory(lokApiService: any) {
           commit("auth_error")
           throw err
         }
-        await dispatch("setBackends")
-
-        dispatch("fetchAccounts")
-        // reset transactions generator upon login so we can have a fresh list of transactions
-        // There is no need to do it on autologin since autologin happens on initial load and
-        // we already have called lokApiService.getTransactions() upon calling lokapiStoreFactory()
-        dispatch("resetTransactions")
-        commit("setUserProfile", await lokApiService.getMyContact())
-        commit("auth_success")
-        dispatch("fetchUserAccountValidationRights")
-        dispatch("fetchCreditRequestValidationRights")
+        dispatch("setupAfterLogin")
       },
-      async initAutoLogin({ commit, dispatch }: any) {
+      async setupAfterLogin({ commit, dispatch }: any) {
         commit("setUserProfile", await lokApiService.getMyContact())
         dispatch("fetchAccounts")
         dispatch("resetTransactions")
