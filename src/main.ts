@@ -7,6 +7,8 @@ import store from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { LokAPI } from "./services/lokapiService"
 import Swal from "./useSwal"
+import Loading from "./plugins/loading"
+import "vue-loading-overlay/dist/vue-loading.css"
 import "./polyfill"
 
 import ToastService from "@/services/toastService"
@@ -83,6 +85,7 @@ fetchConfig("config.json").then((config: any) => {
   app.use(store)
   app.use(router)
   app.use(Swal)
+  app.use(Loading)
   app.provide("$store", store)
   app.config.globalProperties.$lokapi = lokApiService
   app.config.globalProperties.$config = config
