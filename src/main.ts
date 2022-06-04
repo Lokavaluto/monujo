@@ -6,6 +6,16 @@ import { mkRouter } from "./router"
 import store from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { LokAPI } from "./services/lokapiService"
+
+import {
+  AuthService,
+  RetentionAuthHandler,
+  DirectAuthHandler,
+  PersistentConfigStore,
+} from "./services/AuthService"
+import AuthChallengeRetention from "@/components/AuthChallengeRetention.vue"
+import AuthChallengeDirect from "@/components/AuthChallengeDirect.vue"
+import Toaster from "@meforma/vue-toaster"
 import Swal from "./useSwal"
 import Loading from "./plugins/loading"
 import "vue-loading-overlay/dist/vue-loading.css"
@@ -41,13 +51,10 @@ fetchConfig("config.json").then((config: any) => {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
 
+
   const defaultAppName = require("../package.json").name
   const router = mkRouter(config.appName || defaultAppName)
-  const lokApiService = new LokAPI(
-    config.lokapiHost,
-    config.lokapiDb,
-    config?.localPasswordRetentionTime
-  )
+  const lokApiService = new LokAPI(config.lokapiHost, config.lokapiDb)
   lokApiService.requestLogin = () => {
     const lastUrlSegment = window.location.href.split("/").pop()
     if (lastUrlSegment !== "carto" && lastUrlSegment !== "") {
@@ -79,6 +86,36 @@ fetchConfig("config.json").then((config: any) => {
       root.style.setProperty(`--${key}`, value)
     })
   }
+
+  const authService = new AuthService(
+    config?.localAuthPolicy,
+    new PersistentConfigStore(lokApiService.persistentStore, "config"),
+    {
+      Direct: {
+        Handler: DirectAuthHandler,
+        Ui: {
+          Challenge: AuthChallengeDirect,
+        },
+      },
+      Retention: {
+        Handler: RetentionAuthHandler,
+        Ui: {
+          Challenge: AuthChallengeRetention,
+        },
+      },
+    }
+  )
+
+  lokApiService.requestLocalPassword = async function (
+    state: string,
+    userAccount: any
+  ) {
+    const accountAuthService = await authService.getAccountAuth(
+      userAccount.internalId
+    )
+    return await accountAuthService.requestCredentials(state)
+  }
+
   store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
 
   const app = createApp(App)
@@ -87,6 +124,7 @@ fetchConfig("config.json").then((config: any) => {
   app.use(Swal)
   app.use(Loading)
   app.provide("$store", store)
+  app.config.globalProperties.$auth = authService
   app.config.globalProperties.$lokapi = lokApiService
   app.config.globalProperties.$config = config
   app.config.globalProperties.$msg = ToastService

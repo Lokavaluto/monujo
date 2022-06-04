@@ -1,4 +1,5 @@
 <template>
+  <AuthChallenge />
   <Nav />
   <router-view />
 </template>
@@ -7,9 +8,10 @@
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { Options, Vue } from "vue-class-component"
   import Nav from "@/components/Nav.vue"
+  import AuthChallenge from "@/components/AuthChallenge.vue"
 
   @Options({
-    components: { Nav },
+    components: { Nav, AuthChallenge },
     async mounted() {
       if (!this.userProfile) {
         try {

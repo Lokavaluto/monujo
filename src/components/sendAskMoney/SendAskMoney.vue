@@ -794,7 +794,7 @@
             return
           }
           if (err.message === "User canceled the dialog box") {
-            this.$msg.warning("Transaction en cours annulée")
+            // A warning message should have already been sent
             return
           }
           this.$msg.error(
