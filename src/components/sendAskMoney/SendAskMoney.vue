@@ -293,14 +293,7 @@
       </div>
     </div>
   </div>
-  <div>
-    <loading
-      v-model:active="isSendingMoney"
-      :can-cancel="false"
-      :is-full-page="true"
-      :enforce-focus="false"
-    />
-  </div>
+  <div ref="isLoadinMoneyContainer"></div>
   <MyModal
     :first="true"
     v-if="showModalFrameAskMoney1"
@@ -512,13 +505,6 @@
         </template>
       </footer>
     </div>
-    <div>
-      <loading
-        v-model:active="isCreditingMoney"
-        :can-cancel="false"
-        :is-full-page="true"
-      />
-    </div>
   </div>
 </template>
 
@@ -578,8 +564,6 @@
         showCreditRefreshNotification: false,
         isLoading: false,
         searchRecipientError: false,
-        isSendingMoney: false,
-        isCreditingMoney: false,
         errors: {
           transfer: {
             balance: false,
@@ -654,7 +638,7 @@
             }
             this.selectedCreditAccount = this.creditableMoneyAccounts[0]
           }
-          this.isCreditingMoney = true
+          this.$loading.show()
           let url = await this.selectedCreditAccount._obj.getCreditUrl(
             this.amountForCredit
           )
@@ -664,8 +648,9 @@
           this.$msg.error(
             "Il y a eu un problème lors de la tentative de crédit de votre compte"
           )
+        } finally {
+          this.$loading.hide()
         }
-        this.isCreditingMoney = false
       },
 
       navigateToCreditOrder(): void {
@@ -786,10 +771,9 @@
         this.amount = this.amount.toFixed(2)
         let recipient = this.$store.state.lokapi.recipient
         try {
-          this.isSendingMoney = true
+          this.$loading.show()
           await recipient.transfer(this.amount.toString(), this.message)
         } catch (err) {
-          this.isSendingMoney = false
           if (err instanceof LokapiExc.InsufficientBalance) {
             this.errors.transfer.balance =
               "Transaction refusée en raison de fonds insuffisants"
@@ -806,13 +790,14 @@
           )
           console.log("Payment failed:", err.message)
           throw err
+        } finally {
+          this.$loading.hide()
         }
         this.errors.transfer.balance = false
         this.errors.transfer.amount = false
         this.showModalFrame1 = false
         this.showModalFrame2 = false
 
-        this.isSendingMoney = false
         this.$msg.success(`Paiement effectué à ${this.recipientName}`)
         if (!recipient.is_favorite) {
           this.$Swal
