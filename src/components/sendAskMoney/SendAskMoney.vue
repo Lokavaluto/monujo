@@ -771,7 +771,7 @@
         this.amount = this.amount.toFixed(2)
         let recipient = this.$store.state.lokapi.recipient
         try {
-          this.$loading.show()
+          this.$store.commit("setRequestLoadingAfterCreds", true)
           await recipient.transfer(this.amount.toString(), this.message)
         } catch (err) {
           if (err instanceof LokapiExc.InsufficientBalance) {
@@ -792,6 +792,7 @@
           throw err
         } finally {
           this.$loading.hide()
+          this.$store.commit("setRequestLoadingAfterCreds", false)
         }
         this.errors.transfer.balance = false
         this.errors.transfer.amount = false

@@ -109,10 +109,17 @@ fetchConfig("config.json").then((config: any) => {
     state: string,
     userAccount: any
   ) {
+    if (store.state.requestLoadingAfterCreds && state === "failedUnlock") {
+      app.config.globalProperties.$loading.hide()
+    }
     const accountAuthService = await authService.getAccountAuth(
       userAccount.internalId
     )
-    return await accountAuthService.requestCredentials(state)
+    const creds = await accountAuthService.requestCredentials(state)
+    if (store.state.requestLoadingAfterCreds) {
+      app.config.globalProperties.$loading.show()
+    }
+    return creds
   }
 
   store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
