@@ -1,10 +1,5 @@
 <template>
   <section id="login">
-    <loading
-      v-model:active="isLoading"
-      :can-cancel="false"
-      :is-full-page="fullPage"
-    />
     <div class="login-container">
       <div class="card">
         <img :src="$config.loginLogoUrl" class="pt-2 pb-5" />
@@ -45,7 +40,7 @@
           <div class="login-buttons">
             <div>
               <p class="control has-text-centered">
-                <button @click="load" type="submit" class="button is-login">
+                <button type="submit" class="button is-login">
                   Se connecter
                 </button>
               </p>
@@ -74,18 +69,13 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import Loading from "vue-loading-overlay"
-  import "vue-loading-overlay/dist/vue-loading.css"
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { e as RequestExc } from "@0k.io/types-request"
 
   @Options({
     name: "Login",
-    components: { Loading: Loading },
     data() {
       return {
-        isLoading: false,
-        fullPage: true,
         email: "",
         password: "",
         fail: "",
@@ -96,9 +86,6 @@
       this.email = this.$persistentStore.get("loginEmail")
     },
     methods: {
-      load(): void {
-        this.isLoading = true
-      },
       openResetPasswordUrl(): void {
         window.open(this.$store.getters.getOdooUrl() + "/web/reset_password")
       },
@@ -107,6 +94,7 @@
       },
       async submit(): Promise<void> {
         try {
+          this.$loading.show()
           await this.$store.dispatch("login", {
             login: this.email,
             password: this.password,
@@ -116,7 +104,6 @@
           this.$persistentStore.set("loginEmail", this.email)
         } catch (e) {
           // { APIRequestFailed, InvalidCredentials }
-          this.isLoading = false
           if (e instanceof RestExc.APIRequestFailed) {
             this.fail =
               "Refus du serveur distant, contactez votre administrateur"
@@ -134,6 +121,8 @@
           this.fail =
             "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant."
           throw e
+        } finally {
+          this.$loading.hide()
         }
       },
     },
