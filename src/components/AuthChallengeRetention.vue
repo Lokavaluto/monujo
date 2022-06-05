@@ -12,6 +12,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
 
+  import AuthChallengePin from "@/components/AuthChallengePin.vue"
   import AuthChallengeDirect from "@/components/AuthChallengeDirect.vue"
 
   let lastInputTime: any = 0
@@ -20,6 +21,7 @@
   @Options({
     name: "AuthChallengeRetention",
     components: {
+      AuthChallengePin,
       AuthChallengeDirect,
     },
     props: {

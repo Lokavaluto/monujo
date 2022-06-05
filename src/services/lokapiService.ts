@@ -124,6 +124,24 @@ export class LokAPI extends LokAPIBrowserAbstract {
     return { virtualAccountTree, allMoneyAccounts }
   }
 
+  async getUserAccountsRequiringUnlock() {
+    const userAccounts = await this.getUserAccounts()
+    // XXXvlab: typeforcing to any as typescript doesn't seem to
+    // understand that a allSettled is actually a Promise of an
+    // array.
+    const filteredAccounts = (await Promise.allSettled(
+      userAccounts.map(async function (account: any) {
+        return [account, await account.requiresUnlock()]
+      })
+    )) as any
+
+    return filteredAccounts
+      .filter((p: any) => p.status === "fulfilled")
+      .map((p: any) => p.value)
+      .filter((accountWithrequiresUnlock: any) => accountWithrequiresUnlock[1])
+      .map((accountWithrequiresUnlock: any) => accountWithrequiresUnlock[0])
+  }
+
   // XXXvlab: this is less than ideal way to handle the cache
   // clearance. Waiting for a generalized cache management
   clearBackendCache() {
