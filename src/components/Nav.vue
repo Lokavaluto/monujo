@@ -54,6 +54,12 @@
               Profil
             </a>
             <router-link
+              v-if="hasPreferences"
+              to="/preferences" class="dropdown-item">
+              Préferences
+            </router-link>
+
+            <router-link
               v-if="hasUnconfiguredBackend"
               to="/create-account"
               class="dropdown-item"
@@ -120,6 +126,9 @@
     computed: {
       getLog(): string {
         return this.$store.state.lokapi.isLog
+      },
+      hasPreferences(): boolean {
+        return this.$store.state.prefs.componentDefs.length > 0
       },
       hasUnconfiguredBackend(): boolean {
         // Display of the account creation button should be displayed only

@@ -10,15 +10,26 @@ import { LokAPI } from "./services/lokapiService"
 
 import {
   AuthService,
+  PinAuthHandler,
   RetentionAuthHandler,
   DirectAuthHandler,
   PersistentConfigStore,
 } from "./services/AuthService"
 
 import PrefsService from "./services/PrefsService"
+
+import AuthPrefs from "@/components/AuthPrefs.vue"
+
+import AuthPrefDirect from "@/components/AuthPrefDirect.vue"
+import AuthPrefRetention from "@/components/AuthPrefRetention.vue"
+import AuthPrefPin from "@/components/AuthPrefPin.vue"
+
 import AuthChallengeRetention from "@/components/AuthChallengeRetention.vue"
 import AuthChallengeDirect from "@/components/AuthChallengeDirect.vue"
+import AuthChallengePin from "@/components/AuthChallengePin.vue"
+
 import Toaster from "@meforma/vue-toaster"
+
 import Swal from "./useSwal"
 import Loading from "./plugins/loading"
 import "vue-loading-overlay/dist/vue-loading.css"
@@ -93,15 +104,24 @@ fetchConfig("config.json").then((config: any) => {
     config?.localAuthPolicy,
     new PersistentConfigStore(lokApiService.persistentStore, "config"),
     {
+      Pin: {
+        Handler: PinAuthHandler,
+        Ui: {
+          Pref: AuthPrefPin,
+          Challenge: AuthChallengePin,
+        },
+      },
       Direct: {
         Handler: DirectAuthHandler,
         Ui: {
+          Pref: AuthPrefDirect,
           Challenge: AuthChallengeDirect,
         },
       },
       Retention: {
         Handler: RetentionAuthHandler,
         Ui: {
+          Pref: AuthPrefRetention,
           Challenge: AuthChallengeRetention,
         },
       },
@@ -109,6 +129,21 @@ fetchConfig("config.json").then((config: any) => {
   )
 
   const prefsService = new PrefsService()
+  prefsService.register(async () => {
+    const userAccounts = await lokApiService.getUserAccountsRequiringUnlock()
+    if (userAccounts.length == 0) {
+      return []
+    }
+    return [
+      {
+        component: AuthPrefs,
+        data: {
+          userAccountsRequiringAuth: userAccounts,
+        },
+      },
+    ]
+  })
+
   lokApiService.requestLocalPassword = async function (
     state: string,
     userAccount: any

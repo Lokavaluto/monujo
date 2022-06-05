@@ -1,5 +1,7 @@
 import { LokAPIBrowserAbstract, e, t } from "@lokavaluto/lokapi-browser"
 
+import { Hash, cipher, decipher, hashSecret, checkSecret } from "./secret"
+
 /**
  * Store
  */
@@ -85,6 +87,33 @@ abstract class AbstractAuthHandlerWrapper extends AbstractAuthHandler {
   }
 }
 
+export class PinAuthHandler extends AbstractAuthHandler {
+  async checkUserInput(userInput: string): Promise<any> {
+    if (!this.userConfig.pin)
+      throw new Error("can't check user input on uninitialized input.")
+    return checkSecret(userInput, this.userConfig.pin)
+  }
+  async inferKey(userInput: string): Promise<{}> {
+    if (!this.userConfig.key)
+      throw new Error("can't check user input on uninitialized input.")
+    try {
+      return decipher(this.userConfig.key, userInput)
+    } catch (err) {
+      if (err.message === "unable to decrypt data") {
+        return false
+      }
+      console.error(`Couldn't decipher crypted secret:`, err)
+    }
+    return false
+  }
+  toUserConfigJson(userInput: string) {
+    return {
+      pin: hashSecret(userInput),
+      key: cipher(this.accountAuthService.secret, userInput),
+    }
+  }
+}
+
 export class DirectAuthHandler extends AbstractAuthHandler {
   async checkUserInput(userInput: string): Promise<any> {
     // nothing to check locally
@@ -101,7 +130,10 @@ export class RetentionAuthHandler extends AbstractAuthHandlerWrapper {
   async checkUserInput(userInput: string = ""): Promise<boolean> {
     // we actually don't have user input
     const configId = this.accountAuthService.configId
-    if (typeof configId !== "string") return false
+    if (typeof configId !== "string") {
+      // Retention is disabled for this request
+      return false
+    }
     const AccountRetentionStore: any =
       RetentionAuthHandler.globalRetentionMemStore[configId] || {}
     const { lastCredsInput } = AccountRetentionStore
@@ -119,7 +151,10 @@ export class RetentionAuthHandler extends AbstractAuthHandlerWrapper {
   }
   async inferKey(userInput?: any): Promise<{}> {
     const configId = this.accountAuthService.configId
-    if (typeof configId !== "string") throw Error("YYYvlab, Typing error")
+    if (typeof configId !== "string") {
+      // Retention is disabled for this request
+      return userInput
+    }
     const AccountRetentionStore: any =
       RetentionAuthHandler.globalRetentionMemStore[configId] || {}
     if (typeof userInput === "undefined") {
@@ -142,6 +177,7 @@ type TAuthRegistry = {
       flush: () => void
     }
     Ui: {
+      Pref: new (...args: any[]) => any
       Challenge: new (...args: any[]) => any
     }
   }
@@ -160,7 +196,7 @@ export class AuthService {
       "Retention",
       {
         time: 900,
-        subConfig: ["Direct", {}],
+        subConfig: ["Pin", {}],
       },
     ]
     this.store = store
@@ -190,9 +226,21 @@ export class AuthService {
     this._requestCredentials = requestCredentialsFn
   }
 
-  async getAccountAuth(configId: string) {
-    const [configDef, userConfig] = await this.getConfigs()
-    const configs = [configDef, userConfig[configId]]
+  /**
+   * Providing the configId (usually an identifier of the userAccount)
+   * allows to load or save preferences and inner memory of auth
+   * challenges that is connected to the authentication of this
+   * identified account. Not providing it will force a default bland
+   * direct password request.
+   */
+  async getAccountAuth(configId?: string) {
+    let configs: any
+    if (configId) {
+      const [configDef, userConfig] = await this.getConfigs()
+      configs = [configDef, userConfig[configId]]
+    } else {
+      configs = [this.configDef || [null, null], null]
+    }
     return new AccountAuthService(this, configId, configs as [any, any])
   }
 
@@ -205,11 +253,15 @@ export class AuthService {
 
 export class AccountAuthService {
   authService: AuthService
-  configId: string
+  configId: string | undefined
   configs: [any, any]
   private _secret: false | string = false
 
-  constructor(authService: AuthService, configId: string, configs: [any, any]) {
+  constructor(
+    authService: AuthService,
+    configId: string | undefined,
+    configs: [any, any]
+  ) {
     this.authService = authService
     this.configId = configId
     this.configs = configs
@@ -226,6 +278,9 @@ export class AccountAuthService {
   }
 
   async setUserConfig(config: {}): Promise<void> {
+    if (!this.configId) {
+      throw new Error("Can't set user config as it is not named.")
+    }
     const [_configDef, userConfig] = await this.authService.getConfigs()
     userConfig[this.configId] = config
     await this.authService.setUserConfig(userConfig)
@@ -280,7 +335,13 @@ export class AccountAuthService {
   get userConfig() {
     return this.configs[1]
   }
+  set userConfig(value) {
+    this.configs[1] = value
+  }
   get configDef() {
     return this.configs[0]
+  }
+  set configDef(value) {
+    this.configs[0] = value
   }
 }

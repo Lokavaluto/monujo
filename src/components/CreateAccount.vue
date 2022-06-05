@@ -71,6 +71,7 @@
                     type="password"
                     placeholder="Mot de passe"
                     v-model="form.accountPassword"
+                    :disabled="useSimplifiedAuth"
                   />
                   <span class="icon is-small is-left">
                     <i class="fas fa-key"></i>
@@ -105,6 +106,7 @@
                     type="password"
                     placeholder="Confirmation du mot de passe"
                     v-model="form.accountPasswordConfirm"
+                    :disabled="useSimplifiedAuth"
                   />
                   <span class="icon is-small is-left">
                     <i class="fas fa-key"></i>
@@ -122,6 +124,15 @@
                 >
                   {{ form.errors.accountPasswordConfirm[0] }}
                 </p>
+              </div>
+
+              <div class="card-content">
+                <AuthPref
+                  :handler="handler"
+                  :requestCredentials="requestCredentials"
+                  :disabled="hasFieldErrors"
+                  @saveConfig="saveSimplifiedAuthPref"
+                />
               </div>
 
               <div class="field">
@@ -144,11 +155,17 @@
 </template>
 
 <script lang="ts">
+  import { markRaw } from "vue"
   import { Options, Vue } from "vue-class-component"
   import { LokAPIExc } from "@/services/lokapiService"
-
+  import AuthPref from "@/components/AuthPref.vue"
   @Options({
     name: "CreateAccount",
+    components: { AuthPref },
+    async created() {
+      const accountAuth = await this.$auth.getAccountAuth("new")
+      this.handler = markRaw(accountAuth.authPrefHandler)
+    },
     mounted() {
       if (this.unconfiguredBackends.length === 0) {
         this.$router.push("/")
@@ -159,6 +176,8 @@
     },
     data() {
       return {
+        handler: false,
+        useSimplifiedAuth: false,
         form: {
           accountBackend: "",
           accountPassword: "",
@@ -200,6 +219,16 @@
           }).length > 0
         )
       },
+      requestCredentials() {
+        return () => {
+          if (this.hasFieldErrors)
+            throw Error(
+              "This action should not be triggerable when there are still form errors."
+            )
+          this.useSimplifiedAuth = true
+          return this.form.accountPassword
+        }
+      },
     },
     methods: {
       async checkPasswordField(fieldname: string, accountBackend: string) {
@@ -220,9 +249,13 @@
       hasError(field: string): boolean {
         return this.form.errors[field].length > 0
       },
+      saveSimplifiedAuthPref(accountAuthService: any, userConfigInput: any) {
+        this.userAuthPref = [accountAuthService, userConfigInput]
+      },
       async createUserAccount() {
+        let userAccount
         try {
-          await this.$store.dispatch("createUserAccount", [
+          userAccount = await this.$store.dispatch("createUserAccount", [
             this.form["accountPassword"],
             this.form["accountBackend"],
           ])
@@ -241,11 +274,31 @@
           }
           this.$msg.warning("Compte déjà créé")
         }
+        
+        if (this.userAuthPref) {
+          try {
+            const [accountAuthService, userConfigInput] = this.userAuthPref
+            accountAuthService.configId = userAccount.internalId
+            await accountAuthService.setUserConfig(userConfigInput)
+          } catch (err) {
+            console.error(
+              "Something went wrong on createUserAccount request",
+              err
+            )
+            this.$msg.error(
+              "L'enregistrement des préférences de l'authentification simplifiée ne s'est pas déroulée correctement... " +
+                "Veuillez ré-éssayer dans l'écran de préférences ou contacter votre administrateur"
+            )
+          }
+        }
         this.$router.push({ name: "dashboard" })
       },
     },
-    props: {},
-    components: {},
   })
   export default class CreateAccount extends Vue {}
 </script>
+<style lang="scss" scoped>
+  .auth-card {
+    margin-top: 10px;
+  }
+</style>
