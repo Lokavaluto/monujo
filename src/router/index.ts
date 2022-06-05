@@ -6,6 +6,7 @@ import Login from "../views/Login.vue"
 import CreateMyAccount from "../views/CreateMyAccount.vue"
 import PendingAccounts from "../views/admin/PendingAccounts.vue"
 import PendingCredits from "../views/admin/PendingCredits.vue"
+import Prefs from "../views/Prefs.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Create my account",
     meta: { title: "Créer mon portefeuille" },
     component: CreateMyAccount,
+  },
+  {
+    path: "/preferences",
+    name: "Preferences",
+    meta: { title: "Préferences" },
+    component: Prefs,
   },
   {
     path: "/admin/pending-accounts",

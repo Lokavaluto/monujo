@@ -5,6 +5,7 @@ import App from "./App.vue"
 import { mkRouter } from "./router"
 import store from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
+import { prefsStoreFactory } from "./store/prefs"
 import { LokAPI } from "./services/lokapiService"
 
 import {
@@ -13,6 +14,8 @@ import {
   DirectAuthHandler,
   PersistentConfigStore,
 } from "./services/AuthService"
+
+import PrefsService from "./services/PrefsService"
 import AuthChallengeRetention from "@/components/AuthChallengeRetention.vue"
 import AuthChallengeDirect from "@/components/AuthChallengeDirect.vue"
 import Toaster from "@meforma/vue-toaster"
@@ -50,7 +53,6 @@ fetchConfig("config.json").then((config: any) => {
   if (!config.lokapiHost) {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
-
 
   const defaultAppName = require("../package.json").name
   const router = mkRouter(config.appName || defaultAppName)
@@ -106,6 +108,7 @@ fetchConfig("config.json").then((config: any) => {
     }
   )
 
+  const prefsService = new PrefsService()
   lokApiService.requestLocalPassword = async function (
     state: string,
     userAccount: any
@@ -124,6 +127,7 @@ fetchConfig("config.json").then((config: any) => {
   }
 
   store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
+  store.registerModule("prefs", prefsStoreFactory(prefsService))
 
   const app = createApp(App)
   app.use(store)
@@ -136,5 +140,7 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$config = config
   app.config.globalProperties.$msg = ToastService
   app.config.globalProperties.$persistentStore = new LocalStore("monujo")
+  app.config.globalProperties.$auth = authService
+  app.config.globalProperties.$prefs = prefsService
   app.mount("#app")
 })
