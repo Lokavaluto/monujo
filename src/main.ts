@@ -11,6 +11,12 @@ import "./polyfill"
 require("@/assets/main.scss")
 require("@/assets/native.scss")
 
+const defaultAppName = require("../package.json").name
+
+declare global {
+  var appName: string;
+}
+
 async function fetchConfig(path: string) {
   let response: Response
 
@@ -35,6 +41,8 @@ fetchConfig("config.json").then((config: any) => {
   if (!config.lokapiHost) {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
+
+  globalThis.appName = config.appName || defaultAppName
 
   const lokApiService = new LokAPI(
     config.lokapiHost,

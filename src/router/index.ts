@@ -7,8 +7,6 @@ import CreateMyAccount from "../views/CreateMyAccount.vue"
 import PendingAccounts from "../views/admin/PendingAccounts.vue"
 import PendingCredits from "../views/admin/PendingCredits.vue"
 
-const appName = require("../../package.json").name
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
