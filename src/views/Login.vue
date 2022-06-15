@@ -74,6 +74,9 @@
         success: "",
       }
     },
+    mounted() {
+      this.email = this.$persistentStore.get("loginEmail")
+    },
     methods: {
       load(): void {
         this.isLoading = true
@@ -86,6 +89,7 @@
           })
           this.success = "Connection réussie"
           this.$router.push({ name: "dashboard" })
+          this.$persistentStore.set("loginEmail", this.email)
         } catch (e) {
           // { APIRequestFailed, InvalidCredentials }
           this.isLoading = false
