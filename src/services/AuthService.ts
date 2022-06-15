@@ -55,6 +55,9 @@ abstract class AbstractAuthHandler {
   get configs() {
     return [this.configDef, this.userConfig]
   }
+  static flush() {
+    // Placeholder for flushing all memory stores
+  }
 }
 
 abstract class AbstractAuthHandlerWrapper extends AbstractAuthHandler {
@@ -128,11 +131,16 @@ export class RetentionAuthHandler extends AbstractAuthHandlerWrapper {
     }
     return userInput
   }
+  static flush() {
+    RetentionAuthHandler.globalRetentionMemStore = {}
+  }
 }
 
 type TAuthRegistry = {
   [k: string]: {
-    Handler: new (...args: any[]) => AbstractAuthHandler
+    Handler: (new (...args: any[]) => AbstractAuthHandler) & {
+      flush: () => void
+    }
     Ui: {
       Challenge: new (...args: any[]) => any
     }
@@ -186,6 +194,12 @@ export class AuthService {
     const [configDef, userConfig] = await this.getConfigs()
     const configs = [configDef, userConfig[configId]]
     return new AccountAuthService(this, configId, configs as [any, any])
+  }
+
+  flush(): void {
+    for (const defRegistry of Object.values(this.AuthRegistry)) {
+      defRegistry.Handler.flush()
+    }
   }
 }
 

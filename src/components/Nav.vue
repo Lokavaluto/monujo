@@ -114,6 +114,7 @@
       logout() {
         this.$store.dispatch("askLogOut")
         this.$router.push({ name: "Login" })
+        this.$auth.flush()
       },
     },
     computed: {
