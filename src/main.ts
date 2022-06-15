@@ -1,4 +1,6 @@
+import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
+
 import App from "./App.vue"
 import router from "./router"
 import store from "./store"
@@ -76,6 +78,6 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$lokapi = lokApiService
   app.config.globalProperties.$config = config
   app.config.globalProperties.$msg = ToastService
-
+  app.config.globalProperties.$persistentStore = new LocalStore("monujo")
   app.mount("#app")
 })
