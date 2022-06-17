@@ -1,17 +1,17 @@
 <template>
   <AuthChallenge />
-  <Nav />
+  <TheNavBar />
   <router-view />
 </template>
 
 <script lang="ts">
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { Options, Vue } from "vue-class-component"
-  import Nav from "@/components/Nav.vue"
   import AuthChallenge from "@/components/AuthChallenge.vue"
+  import TheNavBar from "@/components/TheNavBar.vue"
 
   @Options({
-    components: { Nav, AuthChallenge },
+    components: { TheNavBar, AuthChallenge },
     async mounted() {
       if (!this.userProfile) {
         try {
