@@ -39,8 +39,8 @@ fetchConfig("config.json").then((config: any) => {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
 
-  const appName = require("../package.json").name
-  const router = mkRouter(appName)
+  const defaultAppName = require("../package.json").name
+  const router = mkRouter(config.appName || defaultAppName)
   const lokApiService = new LokAPI(
     config.lokapiHost,
     config.lokapiDb,
