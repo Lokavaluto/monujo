@@ -3,7 +3,7 @@
     <div
       class="is-flex-direction-column is-align-items-center is-justify-content-space-between"
     >
-      <ThisWeek />
+      <TransactionListRecent />
     </div>
     <div class="modal is-active" v-if="showModal">
       <div
@@ -32,7 +32,7 @@
             <div
               class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
             >
-              <AllTrs />
+              <TransactionListFull />
             </div>
           </div>
         </section>
@@ -51,7 +51,7 @@
     </div>
 
     <div
-      v-if="!isLoadingTransactions && getTrs?.length"
+      v-if="!isLoadingTransactions && getRecentTransactions?.length"
       class="has-text-centered mt-5"
     >
       <button
@@ -66,15 +66,15 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import ThisWeek from "./rightCol/ThisWeek.vue"
-  import AllTrs from "./rightCol/AllTrs.vue"
+  import TransactionListRecent from "./TransactionListRecent.vue"
+  import TransactionListFull from "./TransactionListFull.vue"
   import Loading from "vue-loading-overlay"
 
   @Options({
     name: "TheTransactionList",
     components: {
-      ThisWeek,
-      AllTrs,
+      TransactionListRecent,
+      TransactionListFull,
       Loading,
     },
 
@@ -84,7 +84,7 @@
       }
     },
     computed: {
-      getTrs(): any {
+      getRecentTransactions(): any {
         return this.$store.state.lokapi.thisWeektransactions
       },
       isLoadingTransactions(): boolean {
