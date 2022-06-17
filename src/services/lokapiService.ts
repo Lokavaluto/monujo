@@ -3,8 +3,6 @@ import comchain from "@lokavaluto/lokapi-backend-comchain"
 import cyclos from "@lokavaluto/lokapi-backend-cyclos"
 import Swal from "sweetalert2"
 
-import router from "../router/index"
-
 export class LokAPI extends LokAPIBrowserAbstract {
   BackendFactories = {
     comchain,
@@ -64,14 +62,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
     }
   }
 
-  requestLogin() {
-    let lastUrlSegment = window.location.href.split("/").pop()
-    if (lastUrlSegment !== "carto" && lastUrlSegment !== "") {
-      console.log("Login requested !")
-      router.push("/")
-    }
-  }
-
+  requestLogin = () => {}
   /**
    * Ensure we reset the stored wallet password whenever we log out of the app
    */

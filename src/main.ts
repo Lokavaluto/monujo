@@ -44,6 +44,13 @@ fetchConfig("config.json").then((config: any) => {
     config.lokapiDb,
     config?.localPasswordRetentionTime
   )
+  lokApiService.requestLogin = () => {
+    const lastUrlSegment = window.location.href.split("/").pop()
+    if (lastUrlSegment !== "carto" && lastUrlSegment !== "") {
+      console.log("Login requested !")
+      router.push("/")
+    }
+  }
 
   const root = document.querySelector(":root") as HTMLElement
 
