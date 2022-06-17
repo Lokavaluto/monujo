@@ -1,7 +1,7 @@
 <template>
   <div>
-    <TransactionSubCard
-      v-for="transaction in getTrs"
+    <TransactionItem
+      v-for="transaction in getTransactions"
       :key="transaction"
       :amount="transaction.amount"
       :symbol="transaction.currency"
@@ -19,15 +19,15 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import TransactionSubCard from "./TransactionSubCard.vue"
+  import TransactionItem from "./TransactionItem.vue"
 
   @Options({
-    name: "AllTrs",
+    name: "TransactionListFull",
     components: {
-      TransactionSubCard,
+      TransactionItem,
     },
     computed: {
-      getTrs(): number {
+      getTransactions(): number {
         return this.$store.state.lokapi.transactions
       },
     },
@@ -42,5 +42,5 @@
       },
     },
   })
-  export default class AllTrs extends Vue {}
+  export default class TransactionListFull extends Vue {}
 </script>

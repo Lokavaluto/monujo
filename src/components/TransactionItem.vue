@@ -33,15 +33,12 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import TransactionPicto from "./pictos/TransactionPicto.vue"
-  import QRPicto from "./pictos/QRPicto.vue"
+
   import moment from "moment"
 
   @Options({
-    name: "TransactionSubCard",
+    name: "TransactionItem",
     components: {
-      TransactionPicto,
-      QRPicto,
     },
     methods: {
       calcDays(date: string): string {
@@ -60,7 +57,7 @@
       unformatedDate: String,
     },
   })
-  export default class TransactionSubCard extends Vue {}
+  export default class TransactionItem extends Vue {}
 </script>
 <style lang="scss" scoped>
   h4.custom-card-destinataire {

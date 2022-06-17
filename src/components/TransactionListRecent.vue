@@ -18,13 +18,13 @@
         administrateur si l'erreur persiste.
       </p>
     </div>
-    <p v-else-if="getTrs?.length === 0" class="notification is-default">
+    <p v-else-if="getRecentTransactions?.length === 0" class="notification is-default">
       Aucune opération dans votre historique
     </p>
     <div v-else>
       <h2 class="custom-card-title">Opérations</h2>
-      <TransactionSubCard
-        v-for="transaction in getTrs"
+      <TransactionItem
+        v-for="transaction in getRecentTransactions"
         :key="transaction"
         :amount="transaction.amount"
         :symbol="transaction.currency"
@@ -44,21 +44,21 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import TransactionSubCard from "./TransactionSubCard.vue"
+  import TransactionItem from "./TransactionItem.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
 
   @Options({
-    name: "ThisWeek",
+    name: "TransactionListRecent",
     components: {
-      TransactionSubCard,
-      Loading: Loading,
+      TransactionItem,
+      Loading,
     },
     data() {
       return {}
     },
     computed: {
-      getTrs(): any {
+      getRecentTransactions(): any {
         return this.$store.state.lokapi.thisWeektransactions
       },
       isLoadingTransactions(): boolean {
@@ -78,5 +78,5 @@
       },
     },
   })
-  export default class ThisWeek extends Vue {}
+  export default class TransactionListRecent extends Vue {}
 </script>
