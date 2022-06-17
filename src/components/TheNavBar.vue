@@ -110,7 +110,7 @@
   import { Options, Vue } from "vue-class-component"
 
   @Options({
-    name: "Nav",
+    name: "TheNavBar",
     data() {
       return {
         showNav: false,
@@ -158,7 +158,7 @@
       },
     },
   })
-  export default class Nav extends Vue {}
+  export default class TheNavBar extends Vue {}
 </script>
 <style lang="scss" scoped>
   @import "../assets/custom-variables";
