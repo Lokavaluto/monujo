@@ -3,7 +3,7 @@
     <div class="container mt-5">
       <div class="columns is-tablet">
         <div class="column">
-          <YourAccs />
+          <TheBankAccountList />
         </div>
         <div class="column">
           <TheTransactionList />
@@ -22,9 +22,8 @@
   import { Options, Vue } from "vue-class-component"
 
   import TheTransactionList from "./TheTransactionList.vue"
-  import SendAskMoney from "./sendAskMoney/SendAskMoney.vue"
-
-  import YourAccs from "./leftCol/YourAccs.vue"
+  import SendAskMoney from "./SendAskMoney.vue"
+  import TheBankAccountList from "./TheBankAccountList.vue"
 
   @Options({
     name: "core",
@@ -34,7 +33,7 @@
     components: {
       TheTransactionList,
       SendAskMoney,
-      YourAccs,
+      TheBankAccountList,
     },
   })
   export default class Core extends Vue {}

@@ -74,7 +74,7 @@
             >
               <img
                 class="cross-shape"
-                src="../../assets/media/Arrow-Shape.png"
+                src="../assets/media/Arrow-Shape.png"
                 alt="arrow_shape"
               />
             </a>
@@ -198,7 +198,7 @@
             >
               <img
                 class="cross-shape"
-                src="../../assets/media/Arrow-Shape.png"
+                src="../assets/media/Arrow-Shape.png"
                 alt="arrow_shape"
               />
             </a>
@@ -332,7 +332,7 @@
               ]"
               @click="setSelectedCreditAccount(account), setFocus()"
             >
-              <Acc
+              <BankAccountItem
                 :bal="account.bal"
                 :curr="account.curr"
                 :backend="account.backend"
@@ -340,7 +340,7 @@
                 :active="account.active"
               >
                 <template v-slot:name>{{ account.name }}</template>
-              </Acc>
+              </BankAccountItem>
             </div>
           </div>
           <div
@@ -440,7 +440,7 @@
   import { Options, Vue } from "vue-class-component"
   import { mapGetters, mapState } from "vuex"
 
-  import Acc from "../leftCol/yourAccs/Acc.vue"
+  import BankAccountItem from "./BankAccountItem.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
 
@@ -457,7 +457,7 @@
   @Options({
     name: "SendAskMoney",
     components: {
-      Acc,
+      BankAccountItem,
       Loading,
     },
     data() {

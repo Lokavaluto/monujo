@@ -32,7 +32,7 @@
     <div class="is-clearfix"></div>
   </div>
   <div class="sub-accounts" v-if="subAccounts && subAccounts.length > 0">
-    <Acc
+    <BankAccountItem
       v-for="account in subAccounts"
       :bal="account.bal"
       :curr="account.curr"
@@ -42,7 +42,7 @@
       :isSub="true"
     >
       <template v-slot:name>{{ account.name }}</template>
-    </Acc>
+    </BankAccountItem>
   </div>
 </template>
 
@@ -50,7 +50,7 @@
   import { Options, Vue } from "vue-class-component"
 
   @Options({
-    name: "Acc",
+    name: "BankAccountItem",
     props: {
       name: String,
       bal: Number,
@@ -67,10 +67,10 @@
       },
     },
   })
-  export default class Acc extends Vue {}
+  export default class BankAccountItem extends Vue {}
 </script>
 <style lang="scss" scoped>
-  @import "../../../assets/custom-variables";
+  @import "../assets/custom-variables";
 
   .account-name,
   .account-bal,

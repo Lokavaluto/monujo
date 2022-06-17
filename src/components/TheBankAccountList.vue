@@ -1,5 +1,4 @@
 <template>
-  <!-- card vos comptes -->
   <div class="accounts card custom-card custom-card-padding">
     <loading
       v-model:active="isLoadingAccounts"
@@ -41,7 +40,7 @@
       </p>
       <div v-else>
         <h2 class="custom-card-title">vos comptes</h2>
-        <Acc
+        <BankAccountItem
           v-for="account in activeVirtualAccounts"
           :bal="account.bal"
           :curr="account.curr"
@@ -51,12 +50,12 @@
           :subAccounts="account.subAccounts || []"
         >
           <template v-slot:name>{{ account.name }}</template>
-        </Acc>
+        </BankAccountItem>
       </div>
     </div>
     <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
       <h2 class="custom-card-title">vos comptes en attente de création</h2>
-      <Acc
+      <BankAccountItem
         v-for="account in inactiveVirtualAccounts"
         :bal="account.bal"
         :curr="account.curr"
@@ -65,27 +64,26 @@
         :active="account.active"
       >
         <template v-slot:name>{{ account.name }}</template>
-      </Acc>
+      </BankAccountItem>
     </div>
   </div>
-  <!-- fin card vos comptes -->
 </template>
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapGetters, mapState } from "vuex"
-  import Acc from "./yourAccs/Acc.vue"
+  import BankAccountItem from "./BankAccountItem.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
 
   @Options({
-    name: "YourAccs",
+    name: "TheBankAccountList",
     props: {
       loaded: Boolean,
     },
     components: {
-      Acc,
-      Loading: Loading,
+      BankAccountItem,
+      Loading,
     },
     computed: {
       totalAccountsLoaded(): number {
@@ -106,7 +104,7 @@
       },
     },
   })
-  export default class YourAccs extends Vue {}
+  export default class TheBankAccountList extends Vue {}
 </script>
 <style lang="scss" scoped>
   .refresh {
