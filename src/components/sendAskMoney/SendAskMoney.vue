@@ -294,81 +294,6 @@
     </div>
   </div>
   <div ref="isLoadinMoneyContainer"></div>
-  <MyModal
-    :first="true"
-    v-if="showModalFrameAskMoney1"
-    @close="showModalFrameAskMoney1 = false"
-  >
-    <template v-slot:header>
-      <div
-        class="custom-header-send-money is-flex is-align-items-center is-justify-content-space-between"
-      >
-        <div class="is-flex is-align-items-center ml-5">
-          <h3 class="is-size-4 ml-4">Demander de l'argent</h3>
-        </div>
-        <a class="mr-5 p-2" @click="showModalFrameAskMoney1 = false">
-          <img
-            class="cross-shape"
-            src="../../assets/media/Cross-Shape.png"
-            alt="cross_shape"
-          />
-        </a>
-      </div>
-    </template>
-    <template v-slot:body>
-      <div
-        class="is-flex is-flex-direction-column is-justify-content-space-evenly is-align-items-center mt-3"
-      >
-        <div class="is-flex is-flex-direction-column custom-montant-input">
-          <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-          <input
-            type="number"
-            min="0"
-            class="p-2"
-            v-model.number="amountAsked"
-          />
-          <textarea
-            v-model="message"
-            class="custom-textarea textarea mt-5"
-            placeholder="Ajoutez un texte (optionnel)"
-          ></textarea>
-          <div class="is-flex is-justify-content-center mt-6"></div>
-
-          <div
-            v-if="linkGenerated"
-            class="is-flex is-justify-content-center is-align-items-center mt-6"
-          >
-            <p class="mr-4" ref="mylink">{{ myLink }}</p>
-            <button
-              @click="copyUrl"
-              class="button custom-button custom-button-send-receive-money is-rounded action is-justify-content-space-evenly"
-            >
-              <img src="../../../src/assets/media/copy.svg" />
-              <p class="ml-4">copier le lien</p>
-            </button>
-          </div>
-
-          <div class="container custom-send-money mt-5">
-            <p class="has-text-centered">
-              vous pourrez partager ce lien par mail à vos contacts. Ils
-              recevront une invitation à se connecter ou à créer un compte pour
-              vous envoyer l’argent.
-            </p>
-          </div>
-        </div>
-      </div>
-    </template>
-    <template v-slot:footer>
-      <button
-        class="button custom-button custom-button-send-receive-money is-rounded action"
-        @click="genLink()"
-      >
-        <img src="../../../src/assets/media/Plane.svg" />
-        <p class="ml-4">Générer un lien de paiement</p>
-      </button>
-    </template>
-  </MyModal>
-
   <div
     class="modal is-active"
     v-if="showModalFrameCreditMoney1 || globalBalCall"
@@ -513,7 +438,6 @@
   import { Options, Vue } from "vue-class-component"
   import { mapGetters, mapState } from "vuex"
 
-  import MyModal from "../modal/MyModal.vue"
   import Acc from "../leftCol/yourAccs/Acc.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
@@ -531,9 +455,8 @@
   @Options({
     name: "SendAskMoney",
     components: {
-      MyModal: MyModal,
       Acc,
-      Loading: Loading,
+      Loading,
     },
     data() {
       return {
