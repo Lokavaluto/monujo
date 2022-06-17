@@ -2,8 +2,12 @@
   <main class="main">
     <div class="container mt-5">
       <div class="columns is-tablet">
-        <LeftCol />
-        <RightCol />
+        <div class="column">
+          <YourAccs />
+        </div>
+        <div class="column">
+          <TheTransactionList />
+        </div>
       </div>
     </div>
     <div class="action-footer-container">
@@ -16,9 +20,11 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import LeftCol from "./core/LeftCol.vue"
-  import RightCol from "./core/RightCol.vue"
+
+  import TheTransactionList from "./TheTransactionList.vue"
   import SendAskMoney from "./sendAskMoney/SendAskMoney.vue"
+
+  import YourAccs from "./leftCol/YourAccs.vue"
 
   @Options({
     name: "core",
@@ -26,9 +32,9 @@
       msg: String,
     },
     components: {
-      LeftCol,
-      RightCol,
+      TheTransactionList,
       SendAskMoney,
+      YourAccs,
     },
   })
   export default class Core extends Vue {}
