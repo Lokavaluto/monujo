@@ -34,6 +34,7 @@ jobs:
         run: |
           rm dist/config.sample.json
           echo "{
+            \"appName\": \"Monujo-CI-${GITHUB_REF_NAME}\",
             \"lokapiDb\": \"odoo\",
             \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
             \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
