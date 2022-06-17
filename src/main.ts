@@ -2,7 +2,7 @@ import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
 
 import App from "./App.vue"
-import router from "./router"
+import { mkRouter } from "./router"
 import store from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { LokAPI } from "./services/lokapiService"
@@ -39,6 +39,8 @@ fetchConfig("config.json").then((config: any) => {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
 
+  const appName = require("../package.json").name
+  const router = mkRouter(appName)
   const lokApiService = new LokAPI(
     config.lokapiHost,
     config.lokapiDb,

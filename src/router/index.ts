@@ -7,8 +7,6 @@ import CreateMyAccount from "../views/CreateMyAccount.vue"
 import PendingAccounts from "../views/admin/PendingAccounts.vue"
 import PendingCredits from "../views/admin/PendingCredits.vue"
 
-const appName = require("../../package.json").name
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
@@ -52,26 +50,28 @@ const routes: Array<RouteRecordRaw> = [
   },
 ]
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
-})
 
-// Authentication guard
-router.beforeEach((to, from, next) => {
-  if (
-    to.name !== "Login" &&
-    to.name !== "Carto" &&
-    store.getters.isAuthenticated === false
-  )
-    next({ name: "Carto" })
-  else next()
-})
-router.beforeEach((to, from, next) => {
-  if (typeof to.meta.title === "string") {
-    document.title = appName + " - " + to.meta.title
-  }
-  next()
-})
+export function mkRouter(appName: string) {
+  const router = createRouter({
+    history: createWebHashHistory(),
+    routes,
+  })
 
-export default router
+  // Authentication guard
+  router.beforeEach((to, from, next) => {
+    if (
+      to.name !== "Login" &&
+        to.name !== "Carto" &&
+        store.getters.isAuthenticated === false
+    )
+      next({ name: "Carto" })
+    else next()
+  })
+  router.beforeEach((to, from, next) => {
+    if (typeof to.meta.title === "string") {
+      document.title = appName + " - " + to.meta.title
+    }
+    next()
+  })
+  return router
+}
