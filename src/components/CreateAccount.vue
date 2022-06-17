@@ -144,14 +144,13 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import router from "@/router/index"
   import { LokAPIExc } from "@/services/lokapiService"
 
   @Options({
     name: "CreateAccount",
     mounted() {
       if (this.unconfiguredBackends.length === 0) {
-        router.push("/")
+        this.$router.push("/")
       }
       if (this.unconfiguredBackends.length === 1) {
         this.form.accountBackend = this.unconfiguredBackends[0]
@@ -241,7 +240,7 @@
           }
           this.$msg.warning("Compte déjà créé")
         }
-        router.push({ name: "dashboard" })
+        this.$router.push({ name: "dashboard" })
       },
     },
     props: {},
