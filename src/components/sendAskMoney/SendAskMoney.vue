@@ -385,6 +385,7 @@
       @click="
         ;(showModalFrameCreditMoney1 = false),
           (showCreditRefreshNotification = false),
+          resetCredit(),
           $store.commit('setModalState', false)
       "
     ></div>
