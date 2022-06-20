@@ -245,7 +245,7 @@
                 <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
                 <div class="is-flex mb-3">
                   <input
-                    v-model="amount"
+                    v-model.number="amount"
                     ref="amountSend"
                     type="number"
                     min="0"
@@ -318,7 +318,7 @@
       >
         <div class="is-flex is-flex-direction-column custom-montant-input">
           <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-          <input type="number" min="0" class="p-2" v-model="amountAsked" />
+          <input type="number" min="0" class="p-2" v-model.number="amountAsked" />
           <textarea
             v-model="message"
             class="custom-textarea textarea mt-5"
@@ -419,7 +419,7 @@
             <h2 class="frame3-sub-title mt-3 mb-3">Montant à créditer</h2>
             <div class="is-flex mb-3">
               <input
-                v-model="amountForCredit"
+                v-model.number="amountForCredit"
                 ref="amountcredit"
                 type="number"
                 min="0"
@@ -610,6 +610,8 @@
 
       async newLinkTab() {
         if (this.amountForCredit > 0) {
+          // This to ensure we are left with 2 decimals only
+          this.amountForCredit = this.amountForCredit.toFixed(2)
           if (!this.selectedCreditAccount) {
             if (this.creditableMoneyAccounts.length > 1) {
               throw new Error("Unexpected multiple creditable account found.")
@@ -743,6 +745,8 @@
       },
 
       async sendTransaction(): Promise<void> {
+        // This to ensure we are left with 2 decimals only
+        this.amount = this.amount.toFixed(2)
         let recipient = this.$store.state.lokapi.recipient
         try {
           this.isSendingMoney = true
