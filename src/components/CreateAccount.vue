@@ -1,6 +1,6 @@
 <template>
   <main class="main pb-4">
-    <div class="container">
+    <div v-if="unconfiguredBackends.length > 1" class="container">
       <div class="columns mt-5">
         <div class="column">
           <div class="card custom-card-wallet">
