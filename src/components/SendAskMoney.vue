@@ -586,6 +586,7 @@
       closeAndRefresh(): void {
         this.showCreditRefreshNotification = false
         this.showModalFrameCreditMoney1 = false
+        this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
         this.$store.dispatch("resetTransactions")
         this.$store.commit("setModalState", false)
