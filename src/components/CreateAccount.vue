@@ -1,41 +1,36 @@
 <template>
   <main class="main pb-4">
-    <div class="container-fluid top-bar"></div>
-    <div class="container mt-5">
-      <section class="top-column column">
-        <h1 class="welcome-user">Créer mon portefeuille</h1>
-      </section>
-    </div>
     <div class="container">
-      <div class="columns id-tablet">
+      <div class="columns mt-5">
         <div class="column">
-          <div class="card">
-            <div class="card-content">
-              <div class="tabs is-toggle is-toggle-rounded">
-                <ul>
-                  <template v-for="(backend, index) in unconfiguredBackends">
-                    <li
-                      v-bind:class="{
-                        'is-active': form.accountBackend === backend,
-                      }"
-                      @click="form.accountBackend = backend"
-                    >
-                      <a>
-                        <span>{{ backend }}</span>
+          <div class="card custom-card-wallet">
+            <div class="">
+              <ul>
+                <template v-for="(backend, index) in unconfiguredBackends">
+                  <div
+                    v-bind:class="{
+                      'is-wallet-active': form.accountBackend === backend,
+                    }"
+                    @click="form.accountBackend = backend"
+                    class="button is-wallet has-text-weight-medium is-rounded ml-3"
+                  >
+                    <li>
+                      <a class="wallet-tab">
+                        <div>{{ backend }}</div>
                       </a>
                     </li>
-                  </template>
-                </ul>
-              </div>
+                  </div>
+                </template>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="columns is-tablet">
+    <div class="container mt-5">
+      <div class="columns">
         <div class="column">
-          <div class="card">
+          <div class="card custom-card">
             <div class="card-content">
               <p class="mb-3">
                 Veuillez renseigner un mot de passe (et le confirmer) pour votre
@@ -54,8 +49,9 @@
           </div>
         </div>
         <div class="column">
-          <div class="card">
+          <div class="card custom-card">
             <div class="card-content">
+              <h2 class="custom-card-title">Créer mon portefeuille</h2>
               <div class="field">
                 <label class="label">Mot de passe</label>
                 <div class="control has-icons-left has-icons-right">
@@ -169,10 +165,9 @@
     mounted() {
       if (this.unconfiguredBackends.length === 0) {
         this.$router.push("/")
+        return
       }
-      if (this.unconfiguredBackends.length === 1) {
-        this.form.accountBackend = this.unconfiguredBackends[0]
-      }
+      this.form.accountBackend = this.unconfiguredBackends[0]
     },
     data() {
       return {
@@ -274,7 +269,7 @@
           }
           this.$msg.warning("Compte déjà créé")
         }
-        
+
         if (this.userAuthPref) {
           try {
             const [accountAuthService, userConfigInput] = this.userAuthPref
