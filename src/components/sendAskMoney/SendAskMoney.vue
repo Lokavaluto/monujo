@@ -243,7 +243,7 @@
                 class="is-flex is-flex-direction-column custom-montant-input"
               >
                 <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-                <div class="is-flex mb-3">
+                <div class="is-flex">
                   <input
                     v-model.number="amount"
                     ref="amountSend"
@@ -251,7 +251,10 @@
                     min="0"
                     class="input is-custom"
                     placeholder="ex: 50"
-                    :class="{ 'is-danger': errors.transfer.balance }"
+                    :class="{
+                      'is-danger':
+                        errors.transfer.balance || errors.transfer.amount,
+                    }"
                   />
                   <div class="amount-currency-symbol pl-2">
                     {{ recipientCurrencySymbol }}
@@ -262,6 +265,12 @@
                   v-if="errors.transfer.balance"
                 >
                   {{ errors.transfer.balance }}
+                </div>
+                <div
+                  class="notification is-danger is-light"
+                  v-if="errors.transfer.amount"
+                >
+                  {{ errors.transfer.amount }}
                 </div>
                 <textarea
                   v-model="message"
@@ -318,7 +327,12 @@
       >
         <div class="is-flex is-flex-direction-column custom-montant-input">
           <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
-          <input type="number" min="0" class="p-2" v-model.number="amountAsked" />
+          <input
+            type="number"
+            min="0"
+            class="p-2"
+            v-model.number="amountAsked"
+          />
           <textarea
             v-model="message"
             class="custom-textarea textarea mt-5"
@@ -417,7 +431,7 @@
             class="amount custom-montant-input w-100"
           >
             <h2 class="frame3-sub-title mt-3 mb-3">Montant à créditer</h2>
-            <div class="is-flex mb-3">
+            <div class="is-flex">
               <input
                 v-model.number="amountForCredit"
                 ref="amountcredit"
@@ -425,10 +439,17 @@
                 min="0"
                 class="input is-custom"
                 placeholder="ex: 50"
+                :class="{ 'is-danger': errors.credit.amount }"
               />
               <span class="amount-currency-symbol pl-2">{{
                 this.selectedCreditAccount?.curr
               }}</span>
+            </div>
+            <div
+              class="notification is-danger is-light"
+              v-if="errors.credit.amount"
+            >
+              {{ errors.credit.amount }}
             </div>
           </div>
           <template v-if="myHyperLink.length > 1">
@@ -563,6 +584,10 @@
         errors: {
           transfer: {
             balance: false,
+            amount: false,
+          },
+          credit: {
+            amount: false,
           },
         },
       }
@@ -598,6 +623,7 @@
         this.urlForHyperlink = ""
         this.linkGenerated = false
         this.amountForCredit = 0
+        this.errors.credit.amount = false
       },
 
       resetSendMoney(): void {
@@ -606,38 +632,37 @@
         this.searchName = ""
         this.activeClass = 0
         this.errors.transfer.balance = false
+        this.errors.transfer.amount = false
       },
 
       async newLinkTab() {
-        if (this.amountForCredit > 0) {
-          // This to ensure we are left with 2 decimals only
-          this.amountForCredit = this.amountForCredit.toFixed(2)
+        this.errors.credit.amount = false
+        if (this.amountForCredit <= 0) {
+          this.errors.credit.amount =
+            "Le montant à créditer doit être un nombre positif"
+          return
+        }
+        // This to ensure we are left with 2 decimals only
+        this.amountForCredit = this.amountForCredit.toFixed(2)
+        try {
           if (!this.selectedCreditAccount) {
             if (this.creditableMoneyAccounts.length > 1) {
               throw new Error("Unexpected multiple creditable account found.")
             }
             this.selectedCreditAccount = this.creditableMoneyAccounts[0]
           }
-          try {
-            this.isCreditingMoney = true
-            let url = await this.selectedCreditAccount._obj.getCreditUrl(
-              this.amountForCredit
-            )
-            this.urlForHyperlink = url.order_url
-          } catch (error) {
-            this.isCreditingMoney = false
-            console.log(error)
-            this.$Swal.fire({
-              position: "top",
-              icon: "error",
-              title:
-                "Il y a eu un problème lors de la tentative de crédit de votre compte",
-              showConfirmButton: false,
-              timer: 3000,
-            })
-          }
-          this.isCreditingMoney = false
+          this.isCreditingMoney = true
+          let url = await this.selectedCreditAccount._obj.getCreditUrl(
+            this.amountForCredit
+          )
+          this.urlForHyperlink = url.order_url
+        } catch (error) {
+          console.log("Payment failed:", error)
+          this.$msg.error(
+            "Il y a eu un problème lors de la tentative de crédit de votre compte"
+          )
         }
+        this.isCreditingMoney = false
       },
 
       navigateToCreditOrder(): void {
@@ -735,6 +760,8 @@
         await this.setRecipient(recipient)
         this.showModalFrame2 = true
         this.showModalFrame1 = false
+        this.errors.transfer.balance = false
+        this.errors.transfer.amount = false
         this.setFocusSend()
       },
 
@@ -745,6 +772,13 @@
       },
 
       async sendTransaction(): Promise<void> {
+        this.errors.transfer.amount = false
+        this.errors.transfer.balance = false
+        if (this.amount <= 0) {
+          this.errors.transfer.amount =
+            "Le montant à transférer doit être un nombre positif"
+          return
+        }
         // This to ensure we are left with 2 decimals only
         this.amount = this.amount.toFixed(2)
         let recipient = this.$store.state.lokapi.recipient
@@ -762,10 +796,16 @@
             this.$msg.warning("Transaction en cours annulée")
             return
           }
+          this.$msg.error(
+            `Une erreur inattendue est survenue pendant le transfert d'argent. ` +
+              `Veuillez nous excuser pour la gêne occasionnée.<br>` +
+              `Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre administrateur.`
+          )
           console.log("Payment failed:", err.message)
           throw err
         }
         this.errors.transfer.balance = false
+        this.errors.transfer.amount = false
         this.showModalFrame1 = false
         this.showModalFrame2 = false
 
