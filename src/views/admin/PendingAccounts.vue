@@ -114,35 +114,30 @@
       },
     },
     methods: {
-      validateUserAccount(account: any): void {
+      async validateUserAccount(account: any): Promise<void> {
         this.selectedItem = account
         this.isWaitingForValidation = true
-        account
-          .validateCreation()
-          .catch((err: any) => {
-            this.isWaitingForValidation = false
-            this.$Swal.fire({
-              position: "top",
-              icon: "error",
-              title:
-                "Il y a eu un problème lors de la tentative de validation de l'utilisateur " +
-                account.name,
-              showConfirmButton: false,
-              timer: 3000,
-            })
-          })
-          .then((result: any) => {
-            this.isWaitingForValidation = false
-            this.updatePendingAccount()
-            this.$Swal.fire({
-              position: "top",
-              icon: "success",
-              title:
-                "Le compte de l'utilisateur " + account.name + " a été validé",
-              showConfirmButton: false,
-              timer: 3000,
-            })
-          })
+        try {
+          await account.validateCreation()
+        } catch (err) {
+          this.isWaitingForValidation = false
+          if (err.message === "User canceled the dialog box") {
+            // A warning message should have already been sent
+            return
+          }
+
+          this.$msg.error(
+            "Il y a eu un problème lors de la tentative " +
+              "de validation de l'utilisateur " +
+              account.name
+          )
+          throw err
+        }
+        this.isWaitingForValidation = false
+        await this.updatePendingAccount()
+        this.$msg.success(
+          "Le compte de l'utilisateur " + account.name + " a été validé"
+        )
       },
       async updatePendingAccount() {
         this.isLoading = true

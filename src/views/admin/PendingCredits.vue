@@ -130,33 +130,24 @@
           await request.validate()
         } catch (err) {
           this.isWaitingForValidation = false
-
-          this.$Swal.fire({
-            position: "top",
-            icon: "error",
-            title:
-              "Il y a eu un problème lors de la tentative de validation de la demande de crédit" +
-              request.relatedUser,
-            showConfirmButton: false,
-            timer: 3000,
-          })
+          if (err.message === "User canceled the dialog box") {
+            // A warning message should have already been sent
+            return
+          }
+          this.$msg.error(
+            "Il y a eu un problème lors de la tentative de " +
+              "validation de la demande de crédit" +
+              request.relatedUser
+          )
           throw err
         }
         this.isWaitingForValidation = false
         this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
-        this.$Swal.fire({
-          position: "top",
-          icon: "success",
-          title:
-            "La demande de crédit de " +
-            request.relatedUser +
-            " d'un montant de " +
-            request.amount +
-            " a été validée",
-          showConfirmButton: false,
-          timer: 3000,
-        })
+        this.$msg.success(
+          `La demande de crédit de ${request.relatedUser} ` +
+          `d'un montant de ${request.amount} a été validée`,
+        )
         this.isLoading = false
       },
       async updatePendingCreditRequests() {
