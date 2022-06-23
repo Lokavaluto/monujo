@@ -6,10 +6,7 @@
       <TransactionListRecent />
     </div>
     <div class="modal is-active" v-if="showModal">
-      <div
-        class="modal-background"
-        @click=";(showModal = false), $store.commit('setModalState', false)"
-      ></div>
+      <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">Toutes les opérations</p>

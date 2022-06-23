@@ -1,6 +1,6 @@
 <template>
   <div class="modal is-active centered" v-if="visible">
-    <div class="modal-background" @click="cancelInput()"></div>
+    <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <span class="is-flex is-flex-shrink-0"> </span>
