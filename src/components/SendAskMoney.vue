@@ -57,12 +57,7 @@
     </div>
 
     <div class="modal is-active" v-if="showModalFrame1">
-      <div
-        class="modal-background"
-        @click="
-          ;(showModalFrame1 = false), $store.commit('setModalState', false)
-        "
-      ></div>
+      <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-justify-content-flex-start is-flex-shrink-0">
@@ -186,10 +181,7 @@
       </div>
     </div>
     <div class="modal is-active" v-if="showModalFrame2">
-      <div
-        class="modal-background"
-        @click=";(showModalFrame2 = false), (showModalFrame1 = true)"
-      ></div>
+      <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
@@ -298,15 +290,7 @@
     class="modal is-active"
     v-if="showModalFrameCreditMoney1 || globalBalCall"
   >
-    <div
-      class="modal-background"
-      @click="
-        ;(showModalFrameCreditMoney1 = false),
-          (showCreditRefreshNotification = false),
-          resetCredit(),
-          $store.commit('setModalState', false)
-      "
-    ></div>
+    <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title is-title-shrink">Créditer mon compte</p>
