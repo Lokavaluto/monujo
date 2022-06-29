@@ -107,7 +107,7 @@
       </div>
     </template>
 
-    <template v-if="step === 2">
+    <template v-if="step === 2 && selectedRecipient">
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
@@ -120,7 +120,7 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            Envoyer à {{ recipientName }}
+            Envoyer à {{ selectedRecipient.name }}
           </p>
           <button
             class="delete"
@@ -146,7 +146,7 @@
                       src="https://bulma.io/images/placeholders/128x128.png"
                     />
                   </figure>
-                  <h4 class="ml-1">{{ recipientName }}</h4>
+                  <h4 class="ml-1">{{ selectedRecipient.name }}</h4>
                 </div>
               </div>
               <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
@@ -163,7 +163,7 @@
                   }"
                 />
                 <div class="amount-currency-symbol pl-2">
-                  {{ recipientCurrencySymbol }}
+                  {{ selectedRecipient.currencySymbol }}
                 </div>
               </div>
               <div
@@ -218,8 +218,7 @@
         recipientsLoading: false,
         recipientsSearchString: "",
         recipientsSearchError: false,
-        recipientName: "",
-        recipientCurrencySymbol: "",
+        selectedRecipient: null,
         amount: null,
         errors: {
           balance: false,
@@ -278,16 +277,12 @@
         return true
       },
       async handleClickRecipient(recipient: any): Promise<void> {
-        await this.setRecipient(recipient)
+        this.selectedRecipient = recipient
+        this.selectedRecipient.currencySymbol = await recipient.getSymbol()
         this.step = 2
         this.errors.balance = false
         this.errors.amount = false
         this.setFocusSend()
-      },
-      async setRecipient(partner: any): Promise<void> {
-        this.$store.state.lokapi.recipient = partner
-        this.recipientName = partner.name
-        this.recipientCurrencySymbol = await partner.getSymbol()
       },
       async sendTransaction(): Promise<void> {
         this.errors.amount = false
@@ -299,10 +294,9 @@
         }
         // This to ensure we are left with 2 decimals only
         this.amount = this.amount.toFixed(2)
-        let recipient = this.$store.state.lokapi.recipient
         try {
           this.$store.commit("setRequestLoadingAfterCreds", true)
-          await recipient.transfer(this.amount.toString(), this.message)
+          await this.selectedRecipient.transfer(this.amount.toString(), this.message)
         } catch (err) {
           if (err instanceof LokapiExc.InsufficientBalance) {
             this.errors.balance =
@@ -328,20 +322,20 @@
         this.errors.amount = false
         this.$emit("close")
 
-        this.$msg.success(`Paiement effectué à ${this.recipientName}`)
-        if (!recipient.is_favorite) {
+        this.$msg.success(`Paiement effectué à ${this.selectedRecipient.name}`)
+        if (!this.selectedRecipient.is_favorite) {
           this.$Swal
             .fire({
-              title: `Voulez vous ajouter ${this.recipientName} aux favoris ?`,
+              title: `Voulez vous ajouter ${this.selectedRecipient.name} aux favoris ?`,
               showDenyButton: true,
               confirmButtonText: `Ajouter`,
               denyButtonText: `Plus tard`,
             })
             .then(async (result: any) => {
               if (!result.isConfirmed) {
-                if (await this.toggleFavorite(recipient)) {
+                if (await this.toggleFavorite(this.selectedRecipient)) {
                   this.$Swal.fire(
-                    `${this.recipientName} a bien été ajouté en favori`,
+                    `${this.selectedRecipient.name} a bien été ajouté en favori`,
                     "",
                     "success"
                   )
