@@ -38,7 +38,7 @@
           ></div>
           <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
-        <section class="modal-card-body custom-modal-card-body">
+        <section class="modal-card-body">
           <div v-if="recipientsLoading" class="loader-container">
             <loading
               v-model:active="recipientsLoading"
@@ -60,37 +60,18 @@
               v-if="ownCurrenciesPartners.length !== 0"
               class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between"
             >
-              <div v-if="ownCurrenciesPartners">
+              <template v-if="ownCurrenciesPartners">
                 <div
-                  class="pb-3 pt-3 is-flex flex-test is-flex-direction-row"
-                  v-for="partner in ownCurrenciesPartners"
-                  :key="partner"
+                  class="is-clickable py-2"
+                  v-for="partner, index in ownCurrenciesPartners"
                 >
-                  <div
-                    class="p-1 is-clickable is-align-items-center is-flex is-justify-content-flex-end favorit-icon-wrapper"
-                    :class="[partner.is_favorite ? 'is-active' : '']"
-                    @click="toggleFavorite(partner)"
-                  >
-                    <span>
-                      <i
-                        class="far fa-star"
-                        :class="[partner.is_favorite ? 'fas fa-star' : '']"
-                      ></i>
-                    </span>
-                  </div>
-                  <div
-                    class="p-2 is-clickable is-flex card-recipient-wrapper"
-                    @click="handleClickRecipient(partner)"
-                  >
-                    <span class="custom-card-destinataire">
-                      {{ partner.name }}
-                      {{
-                        partner.markBackend ? `(via ${partner.backendId})` : ""
-                      }}
-                    </span>
-                  </div>
+                  <PartnerItem
+                    :partner="partner"
+                    :key="index"
+                    @select="handleClickRecipient(partner)"
+                  />
                 </div>
-              </div>
+              </template>
             </div>
             <div
               v-else
@@ -136,19 +117,9 @@
               class="is-flex is-flex-direction-column custom-montant-input"
             >
               <h2 class="frame3-sub-title mb-3">Destinataire</h2>
-              <div
-                class="is-flex is-justify-content-space-between is-align-items-center custom-user-select p-1"
-              >
-                <div class="is-flex is-align-items-center">
-                  <figure class="image is-32x32">
-                    <img
-                      class="is-rounded"
-                      src="https://bulma.io/images/placeholders/128x128.png"
-                    />
-                  </figure>
-                  <h4 class="ml-1">{{ selectedRecipient.name }}</h4>
-                </div>
-              </div>
+              <PartnerItem
+                :partner="selectedRecipient"
+              />
               <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
               <div class="is-flex">
                 <input
@@ -204,11 +175,13 @@
 
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
+  import PartnerItem from "@/components/PartnerItem.vue"
 
   @Options({
     name: "MoneyTransferModal",
     components: {
       Loading,
+      PartnerItem,
     },
     data() {
       return {
@@ -257,24 +230,6 @@
         this.partners = this.displayFavoritesOnly
           ? recipients.filter((r: any) => r.is_favorite === true)
           : recipients
-      },
-      async toggleFavorite(contact: any): Promise<boolean> {
-        try {
-          await contact.toggleFavorite()
-        } catch (e) {
-          let errorMessage = ""
-          if (!contact.jsonData.odoo.is_favorite)
-            errorMessage = "Une erreur est survenue lors de la mise en favoris,"
-          else
-            errorMessage =
-              "Une erreur est survenue lors de la suppression du favori,"
-          this.$msg.error(
-            errorMessage +
-              " veuillez ré-essayer ou contacter votre administrateur"
-          )
-          return false
-        }
-        return true
       },
       async handleClickRecipient(recipient: any): Promise<void> {
         this.selectedRecipient = recipient
