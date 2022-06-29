@@ -4,7 +4,7 @@
     <template v-if="step === 1">
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title is-title-shrink">Envoyer de l'argent</p>
+          <p class="modal-card-title is-title-shrink">Envoyer de l'argent - 1/2</p>
           <button
             class="delete"
             aria-label="close"
@@ -100,9 +100,7 @@
               />
             </a>
           </span>
-          <p class="modal-card-title is-title-shrink">
-            Envoyer à {{ selectedRecipient.name }}
-          </p>
+          <p class="modal-card-title is-title-shrink">Envoyer de l'argent - 2/2</p>
           <button
             class="delete"
             aria-label="close"
