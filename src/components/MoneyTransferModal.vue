@@ -4,18 +4,7 @@
     <template v-if="step === 1">
       <div class="modal-card">
         <header class="modal-card-head">
-          <span class="is-flex is-justify-content-flex-start is-flex-shrink-0">
-            <a class="mr-3 mt-1" @click="$emit('close')">
-              <img
-                class="cross-shape"
-                src="../assets/media/Arrow-Shape.png"
-                alt="arrow_shape"
-              />
-            </a>
-          </span>
-          <p class="modal-card-title is-title-shrink">
-            <span> Envoyer de l'argent </span>
-          </p>
+          <p class="modal-card-title is-title-shrink">Envoyer de l'argent</p>
           <button
             class="delete"
             aria-label="close"
@@ -122,7 +111,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
-            <a class="mr-3 mt-1" @click="step = 1">
+            <a class="mr-3 is-flex" @click="step = 1">
               <img
                 class="cross-shape"
                 src="../assets/media/Arrow-Shape.png"
@@ -131,7 +120,7 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            <span> Envoyer à {{ recipientName }} </span>
+            Envoyer à {{ recipientName }}
           </p>
           <button
             class="delete"

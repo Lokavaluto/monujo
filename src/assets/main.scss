@@ -344,7 +344,6 @@ span.custom-card-destinataire {
   flex-shrink: 1 !important;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-left: 10px;
 }
 .transactions-loader-container {
   position: relative;
@@ -422,6 +421,7 @@ span.custom-card-destinataire {
 
 // action-footer-anchor-fin
 .modal-card-title {
+  line-height: 1.1;
   color: #ffffff;
 }
 
