@@ -13,7 +13,7 @@
       </div>
       <div class="action-footer-container">
         <div class="container">
-          <SendAskMoney />
+          <TheDashboardFooter />
         </div>
       </div>
     </main>
@@ -25,7 +25,7 @@
 
   import TheBankAccountList from "@/components//TheBankAccountList.vue"
   import TheTransactionList from "@/components/TheTransactionList.vue"
-  import SendAskMoney from "@/components/SendAskMoney.vue"
+  import TheDashboardFooter from "@/components/TheDashboardFooter.vue"
 
   @Options({
     name: "core",
@@ -34,8 +34,8 @@
     },
     components: {
       TheTransactionList,
-      SendAskMoney,
       TheBankAccountList,
+      TheDashboardFooter,
     },
   })
   export default class Core extends Vue {}

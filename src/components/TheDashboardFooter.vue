@@ -71,7 +71,7 @@
   import MoneyCreditModal from "./MoneyCreditModal.vue"
 
   @Options({
-    name: "SendAskMoney",
+    name: "TheDashboardFooter",
     components: {
       MoneyTransferModal,
       MoneyCreditModal,
@@ -88,7 +88,7 @@
       },
     },
   })
-  export default class SendAskMoney extends Vue {}
+  export default class TheDashboardFooter extends Vue {}
 </script>
 
 <style scoped lang="sass"></style>
