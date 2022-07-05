@@ -83,6 +83,9 @@
       }
     },
     mounted() {
+      if (this.$store.getters.isAuthenticated)
+        this.$router.push({ name: 'dashboard' })
+
       this.email = this.$persistentStore.get("loginEmail")
     },
     methods: {
