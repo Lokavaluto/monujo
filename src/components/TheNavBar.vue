@@ -41,6 +41,10 @@
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl">
           Carte
         </router-link>
+        <template v-if="!getLog">
+          <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
+          <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
+        </template>
         <router-link to="/" class="navbar-item" v-if="!getLog">
           Se connecter
         </router-link>
