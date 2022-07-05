@@ -14,7 +14,7 @@
       >
         <span>Rafraîchir</span>
         <span class="icon is-small">
-          <i class="fas fa-sync"></i>
+          <fa-icon icon="sync" />
         </span>
       </a>
       <div

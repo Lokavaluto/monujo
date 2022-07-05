@@ -35,6 +35,12 @@ import "./polyfill"
 
 import ToastService from "@/services/toastService"
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faEnvelope, faCheck, faLock, faLockOpen, faKey, faEdit, faSync, faArrowCircleUp, faArrowCircleDown, faPlusCircle, faSearch, faTriangleExclamation, faArrowLeft, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar as farStar} from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(faEnvelope, faCheck, faLock, faLockOpen, faKey, faEdit, faSync, faArrowCircleUp, faArrowCircleDown, faPlusCircle, faSearch, faTriangleExclamation, faArrowLeft, faArrowRight, faStar, farStar)
+
 require("@/assets/main.scss")
 require("@/assets/native.scss")
 
@@ -168,6 +174,7 @@ fetchConfig("config.json").then((config: any) => {
   app.use(Swal)
   app.use(Loading)
   app.provide("$store", store)
+  app.component("fa-icon", FontAwesomeIcon)
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$lokapi = lokApiService
   app.config.globalProperties.$config = config

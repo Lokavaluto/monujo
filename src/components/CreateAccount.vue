@@ -70,13 +70,13 @@
                     :disabled="useSimplifiedAuth"
                   />
                   <span class="icon is-small is-left">
-                    <i class="fas fa-key"></i>
+                    <fa-icon icon="key" />
                   </span>
                   <span
                     v-if="hasError('accountPassword')"
                     class="icon is-small is-right"
                   >
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <fa-icon icon="triangle-exclamation" />
                   </span>
                 </div>
                 <p v-if="hasError('accountPassword')" class="help is-danger">
@@ -105,13 +105,13 @@
                     :disabled="useSimplifiedAuth"
                   />
                   <span class="icon is-small is-left">
-                    <i class="fas fa-key"></i>
+                    <fa-icon icon="key" />
                   </span>
                   <span
                     v-if="hasError('accountPasswordConfirm')"
                     class="icon is-small is-right"
                   >
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <fa-icon icon="triangle-exclamation" />
                   </span>
                 </div>
                 <p

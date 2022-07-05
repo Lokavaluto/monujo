@@ -12,7 +12,7 @@
           >
             <span class="icon-text">
               <span class="icon">
-                <i class="fas fa-lg fa-arrow-circle-up"></i>
+                <fa-icon icon="arrow-circle-up" class="fa-lg" />
               </span>
               <span>Payer</span>
             </span>
@@ -25,7 +25,7 @@
           >
             <span class="icon-text">
               <span class="icon">
-                <i class="fas fa-lg fa-arrow-circle-down"></i>
+                <fa-icon icon="arrow-circle-down" class="fa-lg" />
               </span>
               <span>Recevoir</span>
             </span>
@@ -41,7 +41,7 @@
           >
             <span class="icon-text">
               <span class="icon">
-                <i class="fas fa-lg fa-plus-circle"></i>
+                <fa-icon icon="plus-circle" class="fa-lg" />
               </span>
               <span>Recharger</span>
             </span>
