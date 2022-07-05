@@ -35,76 +35,78 @@
     >
       <div class="burger-menu-overlay" v-if="showNav"></div>
       <div class="navbar-end">
-        <router-link to="/dashboard" class="navbar-item" v-if="getLog">
-          Tableau de bord
-        </router-link>
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl">
           Carte
         </router-link>
         <template v-if="!getLog">
           <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
           <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
+          <router-link to="/" class="navbar-item">
+            Se connecter
+          </router-link>
         </template>
-        <router-link to="/" class="navbar-item" v-if="!getLog">
-          Se connecter
-        </router-link>
-        <div class="navbar-item has-dropdown is-hoverable" v-if="getLog">
-          <a class="navbar-link">
-            {{ userProfile?.name ? userProfile.name : "Utilisateur" }}
-          </a>
-
-          <div class="navbar-dropdown is-right">
-            <a :href="profilePageUrl" target="_blank" class="navbar-item">
-              Profil
+        <template v-if="getLog">
+          <router-link to="/dashboard" class="navbar-item">
+            Tableau de bord
+          </router-link>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              {{ userProfile?.name ? userProfile.name : "Utilisateur" }}
             </a>
-            <router-link
-              v-if="hasPreferences"
-              to="/preferences" class="dropdown-item">
-              Préferences
-            </router-link>
 
-            <router-link
-              v-if="hasUnconfiguredBackend"
-              to="/create-account"
-              class="dropdown-item"
-            >
-              Créer mon portefeuille
-            </router-link>
-
-            <hr class="dropdown-divider" />
-
-            <template
-              v-if="
-                getLog &&
-                (hasUserAccountValidationRights ||
-                  hasCreditRequestValidationRights)
-              "
-            >
+            <div class="navbar-dropdown is-right">
+              <a :href="profilePageUrl" target="_blank" class="navbar-item">
+                Profil
+              </a>
               <router-link
-                v-if="hasUserAccountValidationRights"
-                to="/admin/pending-accounts"
+                v-if="hasPreferences"
+                to="/preferences" class="dropdown-item">
+                Préferences
+              </router-link>
+
+              <router-link
+                v-if="hasUnconfiguredBackend"
+                to="/create-account"
                 class="dropdown-item"
               >
-                Demandes de comptes
+                Créer mon portefeuille
               </router-link>
-              <router-link
-                v-if="hasCreditRequestValidationRights"
-                to="/admin/pending-credits"
-                class="dropdown-item"
-              >
-                Demandes de crédit
-              </router-link>
+
               <hr class="dropdown-divider" />
-            </template>
 
-            <a v-if="helpUrl" :href="helpUrl" class="dropdown-item"> Aide </a>
-            <a v-if="cguUrl" :href="cguUrl" class="dropdown-item"> CGU </a>
+              <template
+                v-if="
+                  getLog &&
+                  (hasUserAccountValidationRights ||
+                    hasCreditRequestValidationRights)
+                "
+              >
+                <router-link
+                  v-if="hasUserAccountValidationRights"
+                  to="/admin/pending-accounts"
+                  class="dropdown-item"
+                >
+                  Demandes de comptes
+                </router-link>
+                <router-link
+                  v-if="hasCreditRequestValidationRights"
+                  to="/admin/pending-credits"
+                  class="dropdown-item"
+                >
+                  Demandes de crédit
+                </router-link>
+                <hr class="dropdown-divider" />
+              </template>
 
-            <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
+              <a v-if="helpUrl" :href="helpUrl" class="dropdown-item"> Aide </a>
+              <a v-if="cguUrl" :href="cguUrl" class="dropdown-item"> CGU </a>
 
-            <a @click="logout" class="dropdown-item"> Déconnexion </a>
+              <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
+
+              <a @click="logout" class="dropdown-item"> Déconnexion </a>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
   </nav>
