@@ -29,7 +29,7 @@
                 placeholder="adresse mail, téléphone"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-search"></i>
+                <fa-icon icon="search" />
               </span>
             </p>
           </div>
@@ -93,11 +93,9 @@
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
             <a class="mr-3 is-flex" @click="step = 1">
-              <img
-                class="cross-shape"
-                src="../assets/media/Arrow-Shape.png"
-                alt="arrow_shape"
-              />
+              <span class="icon has-text-white">
+                <fa-icon icon="arrow-left" class="fa-lg" />
+              </span>
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">Envoyer de l'argent - 2/2</p>

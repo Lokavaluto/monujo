@@ -17,7 +17,7 @@
           autocomplete="new-password"
         />
         <span class="icon is-small is-left">
-          <i class="fas fa-key"></i>
+          <fa-icon icon="key" />
         </span>
       </div>
     </div>
