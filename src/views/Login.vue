@@ -12,10 +12,10 @@
                 placeholder="Courriel"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
+                <fa-icon icon="envelope" />
               </span>
               <span class="icon is-small is-right">
-                <i class="fas fa-check"></i>
+                <fa-icon icon="check" />
               </span>
             </p>
           </div>
@@ -28,7 +28,7 @@
                 placeholder="Mot de passe"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
+                <fa-icon icon="lock" />
               </span>
             </p>
           </div>

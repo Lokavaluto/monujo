@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "@0k.io/types-request": "^0.0.3",
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
     "@lokavaluto/lokapi-backend-comchain": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-backend-cyclos": "0.0.1 || >=0.0.2-alpha",
     "@lokavaluto/lokapi-browser": "0.0.2 || >=0.0.3-alpha",
