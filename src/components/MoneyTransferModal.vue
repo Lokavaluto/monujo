@@ -4,7 +4,9 @@
     <template v-if="step === 1">
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title is-title-shrink">Envoyer de l'argent - 1/2</p>
+          <p class="modal-card-title is-title-shrink">
+            Envoyer de l'argent - 1/2
+          </p>
           <button
             class="delete"
             aria-label="close"
@@ -63,7 +65,7 @@
               <template v-if="ownCurrenciesPartners">
                 <div
                   class="is-clickable py-2"
-                  v-for="partner, index in ownCurrenciesPartners"
+                  v-for="(partner, index) in ownCurrenciesPartners"
                 >
                   <PartnerItem
                     :partner="partner"
@@ -98,7 +100,9 @@
               </span>
             </a>
           </span>
-          <p class="modal-card-title is-title-shrink">Envoyer de l'argent - 2/2</p>
+          <p class="modal-card-title is-title-shrink">
+            Envoyer de l'argent - 2/2
+          </p>
           <button
             class="delete"
             aria-label="close"
@@ -109,13 +113,20 @@
           <div
             class="is-flex is-flex-direction-column is-justify-content-space-evenly"
           >
-            <div
-              class="is-flex is-flex-direction-column custom-montant-input"
-            >
-              <h2 class="frame3-sub-title mb-3">Destinataire</h2>
-              <PartnerItem
-                :partner="selectedRecipient"
-              />
+            <div class="is-flex is-flex-direction-column custom-montant-input">
+              <h2 class="frame3-sub-title mb-3">Depuis</h2>
+              <BankAccountItem
+                :bal="ownSelectedAccount.bal"
+                :curr="ownSelectedAccount.curr"
+                :backend="ownSelectedAccount.backend"
+                :type="ownSelectedAccount.type"
+                :active="ownSelectedAccount.active"
+                class="mb-4"
+              >
+                <template v-slot:name>{{ ownSelectedAccount.name }}</template>
+              </BankAccountItem>
+              <h2 class="frame3-sub-title mb-3">Vers</h2>
+              <PartnerItem :partner="selectedRecipient" />
               <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
               <div class="is-flex">
                 <input
@@ -139,10 +150,7 @@
               >
                 {{ errors.balance }}
               </div>
-              <div
-                class="notification is-danger is-light"
-                v-if="errors.amount"
-              >
+              <div class="notification is-danger is-light" v-if="errors.amount">
                 {{ errors.amount }}
               </div>
               <textarea
@@ -172,12 +180,14 @@
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
   import PartnerItem from "@/components/PartnerItem.vue"
+  import BankAccountItem from "@/components/BankAccountItem.vue"
 
   @Options({
     name: "MoneyTransferModal",
     components: {
       Loading,
       PartnerItem,
+      BankAccountItem,
     },
     data() {
       return {
@@ -188,6 +198,7 @@
         recipientsSearchString: "",
         recipientsSearchError: false,
         selectedRecipient: null,
+        ownSelectedAccount: null,
         amount: null,
         errors: {
           balance: false,
@@ -230,6 +241,10 @@
       async handleClickRecipient(recipient: any): Promise<void> {
         this.selectedRecipient = recipient
         this.selectedRecipient.currencySymbol = await recipient.getSymbol()
+        this.ownSelectedAccount =
+          this.$store.getters.activeVirtualAccounts.find(
+            (va: any) => va.currencyId === recipient.backendId
+          )
         this.step = 2
         this.errors.balance = false
         this.errors.amount = false
@@ -247,7 +262,10 @@
         this.amount = this.amount.toFixed(2)
         try {
           this.$store.commit("setRequestLoadingAfterCreds", true)
-          await this.selectedRecipient.transfer(this.amount.toString(), this.message)
+          await this.selectedRecipient.transfer(
+            this.amount.toString(),
+            this.message
+          )
         } catch (err) {
           if (err instanceof LokapiExc.InsufficientBalance) {
             this.errors.balance =
