@@ -48,6 +48,7 @@
           :type="account.type"
           :active="account.active"
           :subAccounts="account.subAccounts || []"
+          class="mb-5"
         >
           <template v-slot:name>{{ account.name }}</template>
         </BankAccountItem>
