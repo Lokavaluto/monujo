@@ -200,6 +200,7 @@
         selectedRecipient: null,
         ownSelectedAccount: null,
         amount: null,
+        message: null,
         errors: {
           balance: false,
           amount: false,

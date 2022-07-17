@@ -54,7 +54,7 @@
       desc: String,
       date: String,
       name: String,
-      unformatedDate: String,
+      unformatedDate: Date,
     },
   })
   export default class TransactionItem extends Vue {}
