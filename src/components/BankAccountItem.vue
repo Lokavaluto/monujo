@@ -1,48 +1,46 @@
 <template>
-  <div class="account card custom-inner-card custom-card-padding mb-4">
-    <span class="account-name">
-      <span class="is-size-6-mobile is-size-5-tablet">
+  <div class="account">
+    <div class="custom-inner-card card px-5 py-2 is-flex">
+      <div class="is-size-5 is-flex-grow-1">
         <slot name="name">default name</slot>
-      </span>
-    </span>
-    <span
-      class="account-backend is-size-6-mobile account-backend"
-      v-if="isMultiCurrency && !isSub"
-    >
-      - {{ backend }}
-    </span>
-    <span class="is-pulled-right">
-      <span class="is-size-6-mobile is-size-4-tablet account-bal" v-if="active">
-        {{
-          parseFloat(bal).toLocaleString("fr", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        }}
-      </span>
-      <span
-        class="is-size-6-mobile is-size-4-tablet account-bal inactive"
-        v-else
-        >-.---,--</span
+        <div v-if="isMultiCurrency && !isSub" class="account-backend is-size-6">
+          {{ backend }}
+        </div>
+      </div>
+      <div class="is-align-items-center is-flex">
+        <span class="is-size-6-mobile is-size-4-tablet account-bal" v-if="active">
+          {{
+            parseFloat(bal).toLocaleString("fr", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </span>
+        <span
+          class="is-size-6-mobile is-size-4-tablet account-bal inactive"
+          v-else
+          >-.---,--</span
+        >
+        <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
+          curr
+        }}</span>
+      </div>
+    </div>
+
+    <div class="sub-accounts" v-if="subAccounts && subAccounts.length > 0">
+      <BankAccountItem
+        v-for="account in subAccounts"
+        :bal="account.bal"
+        :curr="account.curr"
+        :backend="account.backend"
+        :type="account.type"
+        :active="account.active"
+        :isSub="true"
+        class="mt-4"
       >
-      <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
-        curr
-      }}</span>
-    </span>
-    <div class="is-clearfix"></div>
-  </div>
-  <div class="sub-accounts" v-if="subAccounts && subAccounts.length > 0">
-    <BankAccountItem
-      v-for="account in subAccounts"
-      :bal="account.bal"
-      :curr="account.curr"
-      :backend="account.backend"
-      :type="account.type"
-      :active="account.active"
-      :isSub="true"
-    >
-      <template v-slot:name>{{ account.name }}</template>
-    </BankAccountItem>
+        <template v-slot:name>{{ account.name }}</template>
+      </BankAccountItem>
+    </div>
   </div>
 </template>
 

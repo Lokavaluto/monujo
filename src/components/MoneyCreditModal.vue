@@ -21,7 +21,7 @@
               v-for="account in creditableMoneyAccounts"
               :class="[
                 selectedCreditAccount === account ? 'selected' : 'unselected',
-                'account-selector',
+                'account-selector mb-4',
               ]"
               @click="setSelectedCreditAccount(account), setFocus()"
             >
@@ -231,6 +231,9 @@
       opacity: 0.6
       box-shadow: none
       border: 2px #eee solid
+
+    .account
+      border-radius: 43px
 
   .button.action
     white-space: normal
