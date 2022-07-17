@@ -74,7 +74,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
                     const [name, bal, curr] = vals.map((a) => (<any>a).value)
                     const accountData = {
                       name,
-                      bal,
+                      bal: parseFloat(bal),
                       curr,
                       backend: account.parent.internalId.split(":")[0],
                       userAccountId: account.parent.internalId,

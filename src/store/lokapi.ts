@@ -15,7 +15,6 @@ export function lokapiStoreFactory(lokApiService: any) {
       moneyAccounts: [],
       recipient: "",
       isLog: null,
-      paymentUrl: "",
       recipientHistory: [],
       isMultiCurrency: false, // Are we displaying accounts with different currencies ?
       backends: {},
@@ -157,12 +156,6 @@ export function lokapiStoreFactory(lokApiService: any) {
       },
     },
     mutations: {
-      async genPaymentLink(state: any, amount: number) {
-        state.paymentUrl = await state.virtualAccountTree[0].getCreditUrl(
-          amount
-        )
-        // console.log("paymentUrl url =", state.paymentUrl.order_url)
-      },
       auth_request(state: any) {
         state.status = "loading"
         state.isLog = false
@@ -186,7 +179,6 @@ export function lokapiStoreFactory(lokApiService: any) {
         state.moneyAccounts = []
         state.recipient = ""
         state.isLog = false
-        state.paymentUrl = ""
         state.isMultiCurrency = false
         state.hasUserAccountValidationRights = false
         state.pendingUserAccounts = []
@@ -228,12 +220,8 @@ export function lokapiStoreFactory(lokApiService: any) {
           }
           maxTransactions -= 1
         }
-        var filtered = history.filter(function (el) {
-          return el != null
-        })
 
         state.transactions = transactions
-        state.recipientHistory = [...new Set(filtered)]
         state.thisWeektransactions = trs
       },
       storeBackends(state: any, backends: any) {
