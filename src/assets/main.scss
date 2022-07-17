@@ -759,17 +759,10 @@ input {
     }
 
     .account-name {
-      @media screen and (min-width: 768px) {
-        width: 30%;
-        margin-left: 1em;
-      }
     }
 
     .account-bal {
       text-align: right;
-      @media screen and (min-width: 768px) {
-        width: 20%;
-      }
     }
 
     .account-curr {
