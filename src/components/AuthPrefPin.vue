@@ -5,7 +5,7 @@
       @click=";(editMode = !editMode), setFocusPin()"
       >Configurer le code PIN
       <span class="icon" v-if="isConfigured">
-        <i class="fas fa-edit fa-large"></i>
+        <fa-icon icon="edit" class="fa-large" />
       </span>
     </label>
     <template v-if="editMode">
@@ -24,7 +24,7 @@
             ref="pin"
           />
           <span class="icon is-small is-left">
-            <i class="fas fa-key"></i>
+            <fa-icon icon="key" />
           </span>
         </div>
       </div>
@@ -43,7 +43,7 @@
             @input="isPinValid"
           />
           <span class="icon is-small is-left">
-            <i class="fas fa-key"></i>
+            <fa-icon icon="key" />
           </span>
         </div>
       </div>

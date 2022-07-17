@@ -12,7 +12,7 @@
         @keyup.enter="submitPassword"
       />
       <span class="icon is-small is-left">
-        <i class="fas fa-key"></i>
+        <fa-icon icon="key" />
       </span>
     </div>
     <button class="button is-primary" @click="submitPassword()">Envoyer</button>
