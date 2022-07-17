@@ -191,6 +191,7 @@
         recipientsSearchError: false,
         selectedRecipient: null,
         amount: null,
+        message: null,
         errors: {
           balance: false,
           amount: false,
