@@ -273,6 +273,13 @@
               "Transaction refusée en raison de fonds insuffisants"
             return
           }
+          if (err instanceof LokapiExc.InactiveAccount) {
+            this.$msg.error(
+              `Le compte destinataire du tranfert est désactivé.<br>` +
+              `Vous ne pouvez pas lui envoyer de l'argent`
+            )
+            return
+          }
           if (err.message === "User canceled the dialog box") {
             // A warning message should have already been sent
             return
