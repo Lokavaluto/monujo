@@ -8,11 +8,13 @@
       :class="[partner.is_favorite ? 'is-active' : '']"
       @click="toggleFavorite()"
     >
-      <span>
-        <i
-          class="far fa-star"
-          :class="[partner.is_favorite ? 'fas fa-star' : '']"
-        ></i>
+      <span class="icon">
+        <fa-icon
+          :class="!partner.is_favorite ? 'has-text-grey-light' : ''"
+          :icon="
+            partner.is_favorite ? 'fa fa-star' : 'far fa-star'
+          "
+        />
       </span>
     </div>
     <div

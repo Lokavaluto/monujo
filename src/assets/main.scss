@@ -8,7 +8,7 @@
 // Sweetalert2 override variables
 @import "swal-custom";
 // Roboto
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+@import "./fonts/roboto/style.css";
 
 html {
   height: 100%;
@@ -506,11 +506,6 @@ span.custom-card-destinataire {
   top: 0px;
   background: $color-2;
   border-radius: 16px 16px 0px 0px;
-}
-
-.cross-shape {
-  width: 14px;
-  height: 14px;
 }
 
 .custom-warning {

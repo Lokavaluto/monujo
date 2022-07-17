@@ -26,11 +26,8 @@
             :disabled="!locked"
           >
             <span>Modifier</span>
-            <span class="icon is-left mb-1">
-              <i
-                class="fas fa-md"
-                :class="[locked ? 'fa-lock' : 'fa-lock-open']"
-              ></i>
+            <span class="icon mb-1">
+              <fa-icon class="fa-md" :icon="locked ? 'lock' : 'lock-open'" />
             </span>
           </button>
         </div>
