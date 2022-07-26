@@ -92,7 +92,8 @@
           >
             <p class="control has-icons-left custom-search-bar">
               <input
-                v-model="searchName"
+                :value="searchName"
+                @input="(e) => (searchName = e.target.value)"
                 v-on:input="
                   searchName.length === 0 || searchName.length >= 3
                     ? searchRecipients()
