@@ -2,7 +2,7 @@ import { createToaster } from "@meforma/vue-toaster"
 
 class ToastService {
   private position = "top"
-  private duration = "5000"
+  private duration = 5000
   private show(message: string, type: string) {
     const toaster = createToaster({
       type,
