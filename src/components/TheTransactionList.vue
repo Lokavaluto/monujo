@@ -9,7 +9,31 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title is-title-shrink">Toutes les opérations</p>
+          <p class="modal-card-title is-title-shrink">
+            <span class="ml-2">Toutes les opérations</span
+            ><span v-if="!isAllTransactionsLoading">
+              <button
+                class="button is-ghost is-medium download-transactions is-responsive"
+                title="Exporter les transactions"
+              >
+                <i @click="downloadCsvFile()" class="ml-2 fas icon fa-download">
+                  <fa-icon icon="download"
+                /></i>
+              </button>
+            </span>
+            <span v-else class="export-container">
+              <div class="transactions-loader-container">
+                <loading
+                  v-model:active="isAllTransactionsLoading"
+                  :can-cancel="false"
+                  :opacity="0"
+                  :is-full-page="false"
+                  :width="20"
+                  :height="20"
+                />
+              </div>
+            </span>
+          </p>
           <button
             class="delete"
             aria-label="close"
@@ -66,7 +90,13 @@
   import TransactionListRecent from "./TransactionListRecent.vue"
   import TransactionListFull from "./TransactionListFull.vue"
   import Loading from "vue-loading-overlay"
+  import moment from "moment"
 
+  const numberFormat = new Intl.NumberFormat("fr-FR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+  moment.locale("fr")
   @Options({
     name: "TheTransactionList",
     components: {
@@ -78,9 +108,17 @@
     data() {
       return {
         showModal: false,
+        TransactionList: [],
+        isAllTransactionsLoading: false,
       }
     },
     computed: {
+      userProfile(): string {
+        return this.$store.state.lokapi.userProfile
+      },
+      getTransactions(): number {
+        return this.$store.state.lokapi.transactions
+      },
       getRecentTransactions(): any {
         return this.$store.state.lokapi.thisWeektransactions
       },
@@ -111,6 +149,80 @@
         ) {
           this.$store.dispatch("fetchTransactionsBatch")
         }
+      },
+
+      async createCsvFile() {
+        this.isAllTransactionsLoading = true
+        try {
+          await this.$store.dispatch("fetchAllTransactions")
+        } catch (e) {
+          this.$msg.error(
+            "Il y a eu un problème lors de la tentative de telechargement de la liste des transactions"
+          )
+          throw e
+        } finally {
+          this.isAllTransactionsLoading = false
+        }
+
+        const columnOrder = [
+          "sender",
+          "receiver",
+          "amount",
+          "date",
+          "description",
+        ]
+        let csvDataLine: { [key: string]: string }[] = [
+          {
+            sender: "Source",
+            receiver: "Destinataire",
+            amount: "Montant",
+            date: "Date",
+            description: "Description",
+          },
+        ]
+
+        for (let e of this.getTransactions) {
+          let name = e.relatedUser ? e.relatedUser.display : e.related.type.name
+          let [sender, receiver] = e.amount.startsWith("-")
+            ? [this.userProfile.name, name]
+            : [name, this.userProfile.name]
+          let data: { [key: string]: string } = {
+            sender,
+            receiver,
+            amount: numberFormat.format(e.amount),
+            date: moment(e.date).format(),
+            description: e.description || "",
+          }
+
+          for (const s of columnOrder) {
+            data[s] = '"' + data[s].replaceAll('"', '""') + '"'
+          }
+
+          csvDataLine.push(data)
+        }
+        return (
+          csvDataLine
+            .map((dataLine) =>
+              columnOrder.map((header) => dataLine[header]).join(",")
+            )
+            .join("\r\n") + "\r\n"
+        )
+      },
+      async downloadCsvFile() {
+        const csvContent = await this.createCsvFile()
+        try {
+          await this.$export.download(
+            csvContent,
+            "Transactions.csv",
+            "text/csv"
+          )
+        } catch (e) {
+          this.$msg.error(
+            "La liste des transactions n'a pas pu être téléchargée"
+          )
+          throw e
+        }
+        this.$msg.success("Liste des transactions téléchargée")
       },
     },
   })

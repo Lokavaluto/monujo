@@ -17,7 +17,7 @@ import {
 } from "./services/AuthService"
 
 import PrefsService from "./services/PrefsService"
-
+import ExportService from "./services/ExportService"
 import AuthPrefs from "@/components/AuthPrefs.vue"
 
 import AuthPrefDirect from "@/components/AuthPrefDirect.vue"
@@ -35,11 +35,46 @@ import "./polyfill"
 
 import ToastService from "@/services/toastService"
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEnvelope, faCheck, faLock, faLockOpen, faKey, faEdit, faSync, faArrowCircleUp, faArrowCircleDown, faPlusCircle, faSearch, faTriangleExclamation, faArrowLeft, faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
-import { faStar as farStar} from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faEnvelope, faCheck, faLock, faLockOpen, faKey, faEdit, faSync, faArrowCircleUp, faArrowCircleDown, faPlusCircle, faSearch, faTriangleExclamation, faArrowLeft, faArrowRight, faStar, farStar)
+import { library } from "@fortawesome/fontawesome-svg-core"
+import {
+  faEnvelope,
+  faCheck,
+  faLock,
+  faLockOpen,
+  faKey,
+  faEdit,
+  faSync,
+  faArrowCircleUp,
+  faArrowCircleDown,
+  faPlusCircle,
+  faSearch,
+  faTriangleExclamation,
+  faArrowLeft,
+  faArrowRight,
+  faStar,
+  faDownload,
+} from "@fortawesome/free-solid-svg-icons"
+import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+library.add(
+  faEnvelope,
+  faCheck,
+  faLock,
+  faLockOpen,
+  faKey,
+  faEdit,
+  faSync,
+  faArrowCircleUp,
+  faArrowCircleDown,
+  faPlusCircle,
+  faSearch,
+  faTriangleExclamation,
+  faArrowLeft,
+  faArrowRight,
+  faStar,
+  farStar,
+  faDownload
+)
 
 require("@/assets/main.scss")
 require("@/assets/native.scss")
@@ -182,5 +217,6 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$persistentStore = new LocalStore("monujo")
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$prefs = prefsService
+  app.config.globalProperties.$export = ExportService
   app.mount("#app")
 })
