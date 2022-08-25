@@ -167,7 +167,6 @@ body {
 }
 
 // card-anchor
-
 .custom-card {
   border-radius: 16px !important;
   min-height: 100px;
@@ -352,6 +351,11 @@ span.custom-card-destinataire {
   margin: auto;
   z-index: 1;
 }
+.export-container {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
 .custom-modal-card-foot {
   padding: 5px !important;
 }
@@ -479,6 +483,16 @@ span.custom-card-destinataire {
 }
 .modal-container {
   max-height: 70vh;
+}
+.fa-download {
+  cursor: pointer;
+}
+.download-transactions {
+  text-decoration: none;
+  padding: 0px;
+  margin: auto;
+  color: $color-1 !important;
+  height: auto;
 }
 /*
  * The following styles are auto-applied to elements with
@@ -612,7 +626,6 @@ rect {
   color: rgba(0, 0, 0, 0.4);
 }
 .custom-montant-input {
-
   .frame3-sub-title {
     font-style: normal;
     font-weight: 500;

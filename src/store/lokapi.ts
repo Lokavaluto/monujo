@@ -85,6 +85,17 @@ export function lokapiStoreFactory(lokApiService: any) {
         commit("setTransactions", transactions)
         commit("setTransactionsLoading", false)
       },
+      async fetchAllTransactions({ commit, dispatch, state }: any) {
+        let transactions = []
+        try {
+          for await (let transaction of lokApiService.getTransactions()) {
+            transactions.push(<any>transaction)
+          }
+        } catch (e) {
+          throw e
+        }
+        commit("setTransactions", transactions)
+      },
       async fetchTransactionsBatch({ commit, dispatch, state }: any) {
         let transactions =
             state.transactions.length > 0 ? state.transactions.slice(0) : [],
