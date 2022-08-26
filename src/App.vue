@@ -29,6 +29,8 @@
           }
           console.log("Error while trying to autolog", e)
         }
+        if (this.$store.getters.isAuthenticated && this.$route.name === "Login")
+          this.$router.push({ name: "dashboard" })
       }
     },
     computed: {
