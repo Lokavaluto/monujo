@@ -1,3 +1,25 @@
+Monujo sources used to build the web-app, and mobile (android, ios) app.
+
+
+# Requirements
+
+Monujo uses
+[browserlist](https://github.com/browserslist/browserslist) to produce
+web-app compatible with most browsers (see our
+[targets](https://github.com/Lokavaluto/monujo/blob/main/.browserslistrc)).
+
+On the mobile side, [capacitor](https://capacitorjs.com/) builds packages
+compatible with:
+
+  - iPhone 6s or SE or later (>= iOS 13)
+  - Android 5.1 or later (SDK >= 22)
+
+To build the packages from these current sources, you'll need:
+
+  - for iOS: Xcode 13 or better (requires BigSur)
+  - for Android: android SDK 22+ (requires Java 11+)
+
+
 # Web-app
 
 ## Project setup
