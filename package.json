@@ -31,10 +31,10 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
-    "@capacitor/android": "^3.3.2",
-    "@capacitor/cli": "^3.3.2",
-    "@capacitor/core": "^3.3.2",
-    "@capacitor/ios": "^3.3.2",
+    "@capacitor/android": "^4.0.0",
+    "@capacitor/cli": "^4.0.0",
+    "@capacitor/core": "^4.0.0",
+    "@capacitor/ios": "^4.0.0",
     "@types/node": "^15.12.2",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
