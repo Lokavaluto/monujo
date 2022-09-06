@@ -9,10 +9,15 @@
   import { Options, Vue } from "vue-class-component"
   import AuthChallenge from "@/components/AuthChallenge.vue"
   import TheNavBar from "@/components/TheNavBar.vue"
+  import { Capacitor } from "@capacitor/core"
+  import { StatusBar, Style } from "@capacitor/status-bar"
 
   @Options({
     components: { TheNavBar, AuthChallenge },
     async mounted() {
+      if (Capacitor.getPlatform() === "ios") {
+        await StatusBar.setStyle({ style: Style.Light })
+      }
       if (!this.userProfile) {
         try {
           await this.$store.dispatch("setupAfterLogin")
