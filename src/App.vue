@@ -9,10 +9,12 @@
   import { Options, Vue } from "vue-class-component"
   import AuthChallenge from "@/components/AuthChallenge.vue"
   import TheNavBar from "@/components/TheNavBar.vue"
-
+  import { StatusBar, Style } from '@capacitor/status-bar';
+  
   @Options({
     components: { TheNavBar, AuthChallenge },
     async mounted() {
+      await StatusBar.setStyle({ style: Style.Light });
       if (!this.userProfile) {
         try {
           await this.$store.dispatch("setupAfterLogin")
