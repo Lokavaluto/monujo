@@ -20,11 +20,14 @@
             <p class="control has-icons-left custom-search-bar">
               <input
                 v-model="recipientsSearchString"
-                v-on:input="
-                  recipientsSearchString.length === 0 ||
-                  recipientsSearchString.length >= 3
-                    ? searchRecipients()
-                    : null
+                @input="
+                  (e) => {
+                    ;(recipientsSearchString = e.target.value),
+                      this.recipientsSearchString.length === 0 ||
+                      this.recipientsSearchString.length >= 3
+                        ? this.searchRecipients()
+                        : null
+                  }
                 "
                 class="input"
                 type="text"
