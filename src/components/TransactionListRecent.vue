@@ -10,16 +10,14 @@
       v-if="hasTransactionsLoadingError"
     >
       <p class="mb-4">
-        Une erreur inattendue est survenue pendant le chargement des dernières
-        opérations de votre compte. Veuillez nous excuser pour le désagrément.
+        {{ $t('transactions.list.msg_error_loading_last_operations') }}
       </p>
-      <p>
-        Vous pouvez essayer de recharger la page, ou contacter votre
-        administrateur si l'erreur persiste.
+      <p class="mb-4">
+        {{ $t('transactions.list.msg_error_loading_last_operations_2') }}
       </p>
     </div>
     <p v-else-if="getRecentTransactions?.length === 0" class="notification is-default">
-      Aucune opération dans votre historique
+      {{ $t('transactions.list.msg_no_operation') }}
     </p>
     <div v-else>
       <h2 class="custom-card-title">Opérations</h2>

@@ -5,7 +5,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            Envoyer de l'argent - 1/2
+            {{ $t("transactions.transfer.title_1_on_2") }}
           </p>
           <button
             class="delete"
@@ -31,7 +31,9 @@
                 "
                 class="input"
                 type="text"
-                placeholder="adresse mail, téléphone"
+                :placeholder="
+                  $t('transactions.transfer.label_search_field_types')
+                "
               />
               <span class="icon is-small is-left">
                 <fa-icon icon="search" />
@@ -57,8 +59,7 @@
             v-else-if="recipientsSearchError"
             class="notification is-light is-danger"
           >
-            Une erreur inattendue est survenue lors de la recherche de
-            destinataires. Veuillez nous excuser pour la gêne occasionnée.
+            {{ $t("transactions.transfer.msg_error_recipient_search") }}
           </div>
           <div v-else>
             <div
@@ -82,7 +83,7 @@
               v-else
               class="is-flex is-align-items-center is-justify-content-center"
             >
-              Aucun destinataire de paiement a afficher
+              {{ $t("transactions.transfer.msg_no_recipient_search_result") }}
             </div>
           </div>
         </section>
@@ -104,7 +105,7 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            Envoyer de l'argent - 2/2
+            {{ $t("transactions.transfer.title_2_on_2") }}
           </p>
           <button
             class="delete"
@@ -117,7 +118,9 @@
             class="is-flex is-flex-direction-column is-justify-content-space-evenly"
           >
             <div class="is-flex is-flex-direction-column custom-montant-input">
-              <h2 class="frame3-sub-title mb-3">Depuis</h2>
+              <h2 class="frame3-sub-title mb-3">
+                {{ $t("transactions.transfer.label_from") }}
+              </h2>
               <BankAccountItem
                 :bal="ownSelectedAccount.bal"
                 :curr="ownSelectedAccount.curr"
@@ -128,9 +131,13 @@
               >
                 <template v-slot:name>{{ ownSelectedAccount.name }}</template>
               </BankAccountItem>
-              <h2 class="frame3-sub-title mb-3">Vers</h2>
+              <h2 class="frame3-sub-title mb-3">
+                {{ $t("transactions.transfer.label_to") }}
+              </h2>
               <PartnerItem :partner="selectedRecipient" />
-              <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
+              <h2 class="frame3-sub-title mt-3 mb-3">
+                {{ $t("transactions.transfer.label_amount") }}
+              </h2>
               <div class="is-flex">
                 <input
                   v-model.number="amount"
@@ -138,7 +145,9 @@
                   type="number"
                   min="0"
                   class="input is-custom"
-                  placeholder="ex: 50"
+                  :placeholder="
+                    $t('transactions.transfer.label_amount_example')
+                  "
                   :class="{
                     'is-danger': errors.balance || errors.amount,
                   }"
@@ -159,7 +168,9 @@
               <textarea
                 v-model="message"
                 class="custom-textarea textarea mt-5"
-                placeholder="Ajoutez un texte (optionnel)"
+                :placeholder="
+                  $t('transactions.transfer.label_add_optional_text')
+                "
               ></textarea>
             </div>
           </div>
@@ -169,7 +180,7 @@
             class="button custom-button custom-button-send-receive-money is-rounded action"
             @click="sendTransaction()"
           >
-            Envoyer
+            {{ $t("transactions.transfer.action_send") }}
           </button>
         </footer>
       </div>
@@ -258,8 +269,9 @@
         this.errors.amount = false
         this.errors.balance = false
         if (this.amount <= 0) {
-          this.errors.amount =
-            "Le montant à transférer doit être un nombre positif"
+          this.errors.amount = this.$t(
+            "transactions.transfer.msg_error_amount_must_be_positive"
+          )
           return
         }
         // This to ensure we are left with 2 decimals only
@@ -272,14 +284,16 @@
           )
         } catch (err) {
           if (err instanceof LokapiExc.InsufficientBalance) {
-            this.errors.balance =
-              "Transaction refusée en raison de fonds insuffisants"
+            this.errors.balance = this.$t(
+              "transactions.transfer.msg_error_refused_insufficient_funds"
+            )
             return
           }
           if (err instanceof LokapiExc.InactiveAccount) {
             this.$msg.error(
-              `Le compte destinataire du tranfert est désactivé.<br>` +
-              `Vous ne pouvez pas lui envoyer de l'argent`
+              this.$t(
+                "transactions.transfer.msg_error_recipient_account_deactivated"
+              )
             )
             return
           }
@@ -288,9 +302,7 @@
             return
           }
           this.$msg.error(
-            `Une erreur inattendue est survenue pendant le transfert d'argent. ` +
-              `Veuillez nous excuser pour la gêne occasionnée.<br>` +
-              `Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre administrateur.`
+            this.$t("transactions.transfer.msg_error_unknown_error")
           )
           console.log("Payment failed:", err.message)
           throw err
@@ -302,20 +314,33 @@
         this.errors.amount = false
         this.$emit("close")
 
-        this.$msg.success(`Paiement effectué à ${this.selectedRecipient.name}`)
+        this.$msg.success(
+          this.$t("transactions.transfer.msg_success", {
+            name: this.selectedRecipient.name,
+          })
+        )
         if (!this.selectedRecipient.is_favorite) {
           this.$Swal
             .fire({
-              title: `Voulez vous ajouter ${this.selectedRecipient.name} aux favoris ?`,
+              title: this.$t(
+                "transactions.transfer.msg_prompt_add_recipient_bookmark",
+                { name: this.selectedRecipient.name }
+              ),
               showDenyButton: true,
-              confirmButtonText: `Ajouter`,
-              denyButtonText: `Plus tard`,
+              confirmButtonText: this.$t(
+                "transactions.transfer.action_add_bookmark"
+              ),
+              denyButtonText: this.$t(
+                "transactions.transfer.action_deny_bookmark"
+              ),
             })
             .then(async (result: any) => {
               if (!result.isConfirmed) {
                 if (await this.toggleFavorite(this.selectedRecipient)) {
                   this.$Swal.fire(
-                    `${this.selectedRecipient.name} a bien été ajouté en favori`,
+                    this.$t("transactions.transfer.msg_success_bookmark", {
+                      name: this.selectedRecipient.name,
+                    }),
                     "",
                     "success"
                   )

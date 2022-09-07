@@ -2,7 +2,7 @@
   <div class="account">
     <div class="custom-inner-card card px-5 py-2 is-flex">
       <div class="is-size-5 is-flex-grow-1">
-        <slot name="name">default name</slot>
+        <slot name="name">{{ $t("wallets.wallet.label_default_name") }}</slot>
         <div v-if="isMultiCurrency && !isSub" class="account-backend is-size-6">
           {{ backend }}
         </div>

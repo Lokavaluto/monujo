@@ -36,32 +36,42 @@
       <div class="burger-menu-overlay" v-if="showNav"></div>
       <div class="navbar-end">
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl">
-          Carte
+          {{ $t("menu.label_map") }}
         </router-link>
         <template v-if="!getLog">
-          <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
-          <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
+          <a v-if="helpUrl" :href="helpUrl" class="navbar-item">
+            {{ $t("menu.label_help") }}
+          </a>
+          <a v-if="cguUrl" :href="cguUrl" class="navbar-item">
+            {{ $t("menu.label_tos") }}
+          </a>
           <router-link to="/" class="navbar-item">
-            Se connecter
+            {{ $t("menu.action_signin") }}
           </router-link>
         </template>
         <template v-if="getLog">
           <router-link to="/dashboard" class="navbar-item">
-            Tableau de bord
+            {{ $t("menu.label_dashboard") }}
           </router-link>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              {{ userProfile?.name ? userProfile.name : "Utilisateur" }}
+              {{
+                userProfile?.name
+                  ? userProfile.name
+                  : $t("menu.label_default_user")
+              }}
             </a>
 
             <div class="navbar-dropdown is-right">
               <a :href="profilePageUrl" target="_blank" class="navbar-item">
-                Profil
+                {{ $t("menu.label_profile") }}
               </a>
               <router-link
                 v-if="hasPreferences"
-                to="/preferences" class="dropdown-item">
-                Préferences
+                to="/preferences"
+                class="dropdown-item"
+              >
+                {{ $t("menu.label_preferences") }}
               </router-link>
 
               <router-link
@@ -69,7 +79,7 @@
                 to="/create-account"
                 class="dropdown-item"
               >
-                Créer mon portefeuille
+                {{ $t("menu.action_create_my_wallet") }}
               </router-link>
 
               <hr class="dropdown-divider" />
@@ -86,24 +96,30 @@
                   to="/admin/pending-accounts"
                   class="dropdown-item"
                 >
-                  Demandes de comptes
+                  {{ $t("menu.label_pending_accounts") }}
                 </router-link>
                 <router-link
                   v-if="hasCreditRequestValidationRights"
                   to="/admin/pending-credits"
                   class="dropdown-item"
                 >
-                  Demandes de crédit
+                  {{ $t("menu.label_pending_credit_requests") }}
                 </router-link>
                 <hr class="dropdown-divider" />
               </template>
 
-              <a v-if="helpUrl" :href="helpUrl" class="dropdown-item"> Aide </a>
-              <a v-if="cguUrl" :href="cguUrl" class="dropdown-item"> CGU </a>
+              <a v-if="helpUrl" :href="helpUrl" class="dropdown-item">
+                {{ $t("menu.label_help") }}
+              </a>
+              <a v-if="cguUrl" :href="cguUrl" class="dropdown-item">
+                {{ $t("menu.label_tos") }}
+              </a>
 
               <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
 
-              <a @click="logout" class="dropdown-item"> Déconnexion </a>
+              <a @click="logout" class="dropdown-item">
+                {{ $t("menu.action_signout") }}
+              </a>
             </div>
           </div>
         </template>

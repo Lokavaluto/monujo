@@ -15,30 +15,27 @@
                 v-if="hasLoadingError"
               >
                 <p class="mb-4">
-                  Une erreur inattendue est survenue pendant le chargement de la
-                  liste des comptes. Veuillez nous excuser pour le désagrément.
-                </p>
-                <p>
-                  Vous pouvez essayer de recharger la page, ou contacter votre
-                  administrateur si l'erreur persiste.
+                  {{ $t("admin.pending_accounts.msg_error_loading_list") }}
                 </p>
               </div>
               <p
                 class="notification is-default"
                 v-else-if="pendingUserAccounts.length === 0"
               >
-                Aucun compte en attente de validation
+                {{ $t("admin.pending_accounts.msg_no_pending_account") }}
               </p>
               <div v-else>
                 <h2 class="custom-card-title">
-                  Comptes en attente de validation
+                  {{ $t("admin.pending_accounts.title_pending_accounts") }}
                 </h2>
                 <table class="table is-striped is-fullwidth">
                   <thead>
                     <tr>
-                      <th class="row-user-header">Utilisateur</th>
+                      <th class="row-user-header">
+                        {{ $t("admin.pending_accounts.label_user") }}
+                      </th>
                       <th class="has-text-right row-validate-header">
-                        Valider
+                        {{ $t("admin.pending_accounts.label_validate") }}
                       </th>
                     </tr>
                   </thead>
@@ -63,7 +60,7 @@
                             selectedItem !== account || !isWaitingForValidation
                           "
                         >
-                          valider
+                          {{ $t("admin.pending_accounts.action_validate") }}
                         </a>
                         <div
                           v-else
@@ -127,16 +124,18 @@
           }
 
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative " +
-              "de validation de l'utilisateur " +
-              account.name
+            this.$t("admin.pending_accounts.msg_error_validating", {
+              name: account.name,
+            })
           )
           throw err
         }
         this.isWaitingForValidation = false
         await this.updatePendingAccount()
         this.$msg.success(
-          "Le compte de l'utilisateur " + account.name + " a été validé"
+          this.$t("admin.pending_accounts.msg_success_validating", {
+            name: account.name,
+          })
         )
       },
       async updatePendingAccount() {

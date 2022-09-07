@@ -4,7 +4,9 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <span class="is-flex is-flex-shrink-0"> </span>
-        <p class="modal-card-title is-title-shrink">Authentification</p>
+        <p class="modal-card-title is-title-shrink">
+          {{ $t("auth.challenge.title_auth") }}
+        </p>
         <button
           class="delete"
           aria-label="close"
@@ -13,7 +15,7 @@
       </header>
       <section class="modal-card-body">
         <p class="failed-unlock" v-if="state === 'failedUnlock'">
-          Échec de l'authentification. Veuillez ré-essayer.
+          {{ $t("auth.challenge.msg_error_failed_unlock") }}
         </p>
         <component
           :is="handler.Ui.Challenge.name"
@@ -63,8 +65,10 @@
 
       cancelInput(error?: any) {
         this.hide()
-        this.$msg.warning("Opération annulée")
-        this.callbacks.reject(error || new Error("User canceled the dialog box"))
+        this.$msg.warning(this.$t("auth.challenge.msg_operation_canceled"))
+        this.callbacks.reject(
+          error || new Error("User canceled the dialog box")
+        )
       },
 
       hide() {

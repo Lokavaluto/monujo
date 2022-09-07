@@ -1,5 +1,6 @@
 import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
+import { createI18n } from "vue-i18n"
 
 import App from "./App.vue"
 import { mkRouter } from "./router"
@@ -64,7 +65,33 @@ async function fetchConfig(path: string) {
   }
 }
 
-fetchConfig("config.json").then((config: any) => {
+async function fetchLocales(locales: Array<any>) {
+  let localesData
+
+  try {
+    localesData = await Promise.all(
+      ["fr-FR-monujo"].concat(Object.keys(locales)).map(async (locale) => {
+        let data = await fetch("/locales/" + locale + ".json")
+        let messages = await data.text()
+        return { locale, messages: JSON.parse(messages) }
+      })
+    ).then(async (results: any) => {
+      return await results.reduce(async (acc: any, loc: any) => {
+        let { locale, messages } = await loc
+        acc[locale] = messages
+        return acc
+      }, {})
+    })
+  } catch (error) {
+    console.log(`Failed to load locales: '${error}'.`)
+    throw error
+    return
+  }
+
+  return localesData
+}
+
+fetchConfig("config.json").then(async (config: any) => {
   if (!config.lokapiHost) {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
@@ -103,6 +130,41 @@ fetchConfig("config.json").then((config: any) => {
       root.style.setProperty(`--${key}`, value)
     })
   }
+
+  // Included in the repo is a "fr-FR-monujo" locale file which contains
+  // french strings. It is specified here as a fallback locale for all
+  // strings that have not been set in all other locale files.
+  //
+  // The config.json key "locales" will serve as a configuration option
+  // to show a menu to the Monujo user allowing him to select his locale
+  // for the app. The config.json key "defaultLocale" will be used to set
+  // a default locale at first load, before a user set one. See the
+  // "/public/config.sample.json" for an example of defining locale files.
+  // 
+  // to set the locale, just:
+  // `this.$i18n.global.locale.value = "fr-FR-monujo"`
+  // and
+  // `localStorage.setItem("locale", "fr-FR-monujo")`
+  // in any component.
+  //
+  // To display a list of locales:
+  // `this.$config.locales` will contain the `locale/name` pairs available
+  // to the app, so you can build the selector easily
+  //
+  const locale = localStorage.getItem("locale")
+    || config.defaultLocale
+    || "fr-FR-monujo"
+  let strings = {}
+  try {
+    strings = await fetchLocales(config.locales || [])
+  } catch (error) {
+    console.error(error)
+  }
+  const i18n = createI18n({
+    locale: locale,
+    fallbackLocale: "fr-FR-monujo",
+    messages: strings,
+  })
 
   const authService = new AuthService(
     config?.localAuthPolicy,
@@ -165,7 +227,7 @@ fetchConfig("config.json").then((config: any) => {
     return creds
   }
 
-  store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
+  store.registerModule("lokapi", lokapiStoreFactory(lokApiService, i18n))
   store.registerModule("prefs", prefsStoreFactory(prefsService))
 
   const app = createApp(App)
@@ -173,6 +235,7 @@ fetchConfig("config.json").then((config: any) => {
   app.use(router)
   app.use(Swal)
   app.use(Loading)
+  app.use(i18n)
   app.provide("$store", store)
   app.component("fa-icon", FontAwesomeIcon)
   app.config.globalProperties.$auth = authService

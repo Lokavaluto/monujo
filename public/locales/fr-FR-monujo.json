@@ -1,0 +1,167 @@
+{
+	"menu": {
+		"label_map": "Carte",
+		"label_dashboard": "Tableau de bord",
+		"label_tos": "CGU",
+		"label_help": "Aide",
+		"label_default_user": "Utilisateur",
+		"label_profile": "Profil",
+		"label_preferences": "Préférences",
+		"label_pending_accounts": "Demandes de comptes",
+		"label_pending_credit_requests": "Demandes de crédit",
+		"action_signin": "Se connecter",
+		"action_signout": "Déconnexion",
+		"action_create_my_walle": "Créer mon portefeuille"
+	},
+	"footer": {
+		"action_send": "payer",
+		"action_receive": "recevoir",
+		"action_recharge": "recharger"
+	},
+	"auth": {
+		"login": {
+			"label_email": "Courriel",
+			"label_password": "Mot de passe",
+			"action_forgot_password": "Mot de passe oublié ?",
+			"action_signin": "Se connecter",
+			"action_signup": "Créer un compte",
+			"msg_success": "Connection réussie",
+			"msg_error_invalid_credentials": "Identifiant ou mot de passe incorrect",
+			"msg_error_api_request_failed": "Refus du serveur distant, contactez votre administrateur.",
+			"msg_error_request_failed": "La requête a échoué, impossible de joindre le serveur distant.",
+			"msg_error_unknown": "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant."
+		},
+		"prefs": {
+			"title_security_preferences": "Préférences de sécurité",
+			"label_simplified_auth": "Authentification simplifiée sur ce périphérique",
+			"label_for_account": "pour le compte {name}",
+			"label_pincode": "Code PIN",
+			"label_pincode_confirm": "Confirmation du code PIN",
+			"action_configure_pincode": "Configurer le code PIN",
+			"action_edit": "Modifier",
+			"action_save": "Enregistrer",
+			"msg_success_saved": "Modifications enregistrées",
+			"msg_error_not_identical": "Le code pin entré n'est pas identique",
+			"msg_error_pin_length": "le code pin doit contenir {pinLength}"
+		},
+		"challenge": {
+			"title_auth": "Authentification",
+			"label_enter_password": "Entrez votre mot de passe",
+			"label_your_password": "Votre mot de passe",
+			"label_pincode": "Code PIN",
+			"action_send": "Envoyer",
+			"msg_operation_canceled": "Opération annulée",
+			"msg_failed_unlock": "Échec de l'authentification. Veuillez ré-essayer.",
+			"msg_error_pin_length": "le code pin doit contenir {pinLength} caractères"
+		}
+	},
+	"wallets": {
+		"wellet": {
+			"label_default_name": "Nom par défaut"
+		},
+		"create": {
+			"title_create_my_wallet": "Créer mon portefeuille",
+			"label_password": "Mot de passe",
+			"label_password_confirm": "Confirmation du mot de passe",
+			"action_create_wallet": "Créer mon portefeuille",
+			"msg_disclaimer_fill_in_password": "Veuillez renseigner un mot de passe (et le confirmer) pour votre nouveau compte {backend}.",
+			"msg_disclaimer_what_is_this_password": "Ce mot de passe est différent de votre mot de passe Monujo, il concerne uniquement votre portefeuille {backend}.",
+			"msg_disclaimer_warning_keep_it_safe": "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder dans un endroit sûr et accessible.",
+			"msg_error_not_identical": "Le mot de passe entré n'est pas identique",
+			"msg_error_interrupted": "Création de compte interrompue inopinément. Veuillez ré-éssayer ou contacter votre administrateur",
+			"msg_error_account_already_created": "Compte déjà créé",
+			"msg_error_simplified_auth": "L'enregistrement des préférences de l'authentification simplifiée ne s'est pas déroulée correctement... Veuillez ré-éssayer dans l'écran de préférences ou contacter votre administrateur."
+		},
+		"partner": {
+			"msg_error_adding_bookmark": "Une erreur est survenue lors de la mise en favoris, veuillez ré-essayer ou contacter votre administrateur",
+			"msg_error_deleting_bookmark": "Une erreur est survenue lors de la suppression du favori, veuillez ré-essayer ou contacter votre administrateur"
+		},
+		"list": {
+			"title_your_accounts": "Vos comptes",
+			"title_your_pending_accounts": "Vos comptes en attente de création",
+			"action_refresh": "Rafraîchir",
+			"action_refresh_link_title": "Rafraîchir le solde et les transactions",
+			"msg_error_loading_wallets": "Une erreur inattendue est survenue pendant le chargement des portefeuilles. Veuillez nous excuser pour le désagrément.</p><p>Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.",
+			"msg_no_account_yet": "Vous n'avez pas encore de portefeuille, {0} pour en créer un.",
+			"msg_no_account_yet_link_text": "cliquez ici"
+		}
+	},
+	"transactions": {
+		"credit": {
+			"title_credit_my_wallet": "Créditer mon compte",
+			"label_recipient_wallet": "Compte à créditer",
+			"label_credit_amount": "Montant à créditer",
+			"action_next": "Suivant",
+			"action_complete_transaction": "Compléter la transaction dans mon espace personnel",
+			"action_close_and_refresh": "Fermer et rafraîchir",
+			"msg_success_order_issued": "Un bon de commande pour votre rechargement a été créé",
+			"msg_success_order_continue_instructions": "Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace personnel Odoo:",
+			"msg_success_order_finalize_instructions_comchain": "Une fois votre opération complétée dans votre espace personnel, votre crédit sera en attente de validation par un administrateur. Vous pourrez alors fermer cette fenêtre pour actualiser votre solde.",
+			"msg_success_order_finalize_instructions_cyclos": "Une fois votre opération complétée dans votre espace personnel, fermez cette fenêtre pour actualiser votre solde.",
+			"msg_error_amount_must_be_positive": "Le montant à créditer doit être un nombre positif",
+			"msg_error_wallet_credit_action": "Il y a eu un problème lors de la tentative de crédit de votre compte"
+		},
+		"transfer": {
+			"title_1_on_2": "Envoyer de l'argent - 1/2",
+			"title_2_on_2": "Envoyer de l'argent - 2/2",
+			"label_search_field_types": "adresse mail, téléphone",
+			"label_from": "Depuis",
+			"label_to": "Vers",
+			"label_amount": "amount",
+			"label_amount_example": "ex: 50",
+			"label_add_optional_text": "Ajoutez un texte (optionnel)",
+			"action_send": "Envoyer",
+			"action_add_bookmark": "Ajouter",
+			"action_deny_bookmark": "Plus tard",
+			"msg_error_recipient_search": "Une erreur inattendue est survenue lors de la recherche de destinataires. Veuillez nous excuser pour la gêne occasionnée.",
+			"msg_no_recipient_search_result": "Aucun destinataire de paiement a afficher",
+			"msg_error_amount_must_be_positive": "Le montant à transférer doit être un nombre positif",
+			"msg_error_refused_insufficient_funds": "Transaction refusée en raison de fonds insuffisants",
+			"msg_error_recipient_account_deactivated": "Le compte destinataire du tranfert est désactivé. Vous ne pouvez pas lui envoyer de l'argent",
+			"msg_error_unknown_error": "`Une erreur inattendue est survenue pendant le transfert d'argent. Veuillez nous excuser pour la gêne occasionnée. Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre administrateur.",
+			"msg_success": "Paiement effectué à {name}",
+			"msg_prompt_add_recipient_bookmark": "Voulez vous ajouter {name} aux favoris ?",
+			"msg_success_bookmark": "{name} a bien été ajouté aux favoris"
+		},
+		"list": {
+			"title_operations": "Opérations",
+			"title_all_operations": "Toutes les opérations",
+			"actions_see_all": "Voir tout",
+			"msg_error_loading_last_operations": "Une erreur inattendue est survenue pendant le chargement des dernières opérations de votre compte. Veuillez nous excuser pour le désagrément.",
+			"msg_error_loading_last_operations_2": "Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.",
+			"msg_no_operation": "Aucune opération dans votre historique"
+		}
+	},
+	"admin": {
+		"pending_accounts": {
+			"title_pending_accounts": "Comptes en attente de validation",
+			"label_user": "Utilisateur",
+			"label_validate": "Valider",
+			"action_validate": "valider",
+			"msg_error_loading_list": "Une erreur inattendue est survenue pendant le chargement de la liste des comptes. Veuillez nous excuser pour le désagrément. Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.",
+			"msg_no_pending_account": "Aucun compte en attente de validation",
+			"msg_error_validating": "Il y a eu un problème lors de la tentative de validation de l'utilisateur {name}",
+			"msg_success_validating": "La demande de crédit de {name} d'un montant de {amount} a été validée"
+		},
+		"pending_credits": {
+			"title_pending_credit_requests": "Opérations de crédit en attente de validation",
+			"label_user": "Utilisateur",
+			"label_amount": "Montant",
+			"label_validate": "Valider",
+			"action_validate": "valider",
+			"msg_error_loading_list": "Une erreur inattendue est survenue pendant le chargement de la liste de demandes de crédits. Veuillez nous excuser pour le désagrément. Vous pouvez essayer de recharger la page, ou contacter votre administrateur si l'erreur persiste.",
+			"msg_no_pending_request": "Aucune demande de crédit en attente de validation",
+			"msg_error_validating": "Il y a eu un problème lors de la tentative de validation de la demande de crédit de {name}",
+			"msg_success_validating": "Le compte de l'utilisateur {name} a été validé"
+		}
+	},
+	"lokapi": {
+		"validation": {
+			"msg_error_password_too_short": "Le mot de passe doit faire au moins {password_length} caractères",
+			"msg_error_password_no_lowercase": "Le mot de passe doit contenir au moins une lettre minuscule",
+			"msg_error_password_no_uppercase": "Le mot de passe doit contenir au moins une lettre majuscule",
+			"msg_error_password_no_digit": "Le mot de passe doit contenir au moins un nombre",
+			"msg_error_password_no_symbol": "Le mot de passe doit contenir au moins un caractère spécial"
+		}
+	}
+}

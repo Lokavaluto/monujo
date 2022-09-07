@@ -30,7 +30,7 @@
     methods: {
       saveConfig(accountAuthService: any, userConfig: string) {
         accountAuthService.setUserConfig(userConfig)
-        this.$msg.success("Modifications enregistrés")
+        this.$msg.success(this.$t("auth.prefs.msg_success_saved"))
       },
 
       async getUserAccounts() {

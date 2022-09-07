@@ -1,11 +1,11 @@
 <template>
   <div class="field">
-    <label class="label">Entrez votre mot de passe</label>
+    <label class="label">{{ $t("auth.challenge.label_enter_password") }}</label>
     <div class="control has-icons-left has-icons-right mb-3">
       <input
         class="input"
         type="password"
-        placeholder="Votre mot de passe"
+        :placeholder="$t('auth.challenge.label_enter_password')"
         v-model="password"
         @input="isPasswordValid"
         ref="creds"
@@ -15,7 +15,9 @@
         <fa-icon icon="key" />
       </span>
     </div>
-    <button class="button is-primary" @click="submitPassword()">Envoyer</button>
+    <button class="button is-primary" @click="submitPassword()">
+      {{ $t("auth.challenge.action_send") }}
+    </button>
   </div>
 </template>
 <script lang="ts">

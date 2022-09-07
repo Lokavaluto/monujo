@@ -5,7 +5,9 @@
         <div class="auth-preferences">
           <div class="card custom-card custom-card-padding custom-card-prefs">
             <div class="mb-5">
-              <label class="custom-card-title"> Préférences de sécurité </label>
+              <label class="custom-card-title">{{
+                $t("auth.prefs.title_security_preferences")
+              }}</label>
             </div>
             <div v-for="componentDef in componentDefs" :key="componentDef">
               <component

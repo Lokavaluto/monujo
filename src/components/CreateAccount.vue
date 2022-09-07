@@ -33,17 +33,21 @@
           <div class="card custom-card">
             <div class="card-content">
               <p class="mb-3">
-                Veuillez renseigner un mot de passe (et le confirmer) pour votre
-                nouveau compte {{ form.accountBackend }}.
+                {{
+                  $t("wallets.create.msg_disclaimer_fill_in_password", {
+                    backend: form.accountBackend,
+                  })
+                }}
               </p>
               <p class="mb-3">
-                Ce mot de passe est différent de votre mot de passe Monujo, il
-                concerne uniquement votre portefeuille
-                {{ form.accountBackend }}.
+                {{
+                  $t("wallets.create.msg_disclaimer_what_is_this_password", {
+                    backend: form.accountBackend,
+                  })
+                }}
               </p>
               <p class="notification is-danger">
-                Attention, ce mot de passe n'est pas récupérable, alors veillez
-                à le garder dans un endroit sûr et accessible.
+                {{ $t("wallets.create.msg_disclaimer_warning_keep_it_safe") }}
               </p>
             </div>
           </div>
@@ -51,9 +55,13 @@
         <div class="column">
           <div class="card custom-card">
             <div class="card-content">
-              <h2 class="custom-card-title">Créer mon portefeuille</h2>
+              <h2 class="custom-card-title">
+                {{ $t("wallets.create.title_create_my_wallet") }}
+              </h2>
               <div class="field">
-                <label class="label">Mot de passe</label>
+                <label class="label">{{
+                  $t("wallets.create.label_password")
+                }}</label>
                 <div class="control has-icons-left has-icons-right">
                   <input
                     class="input"
@@ -65,7 +73,7 @@
                         form.accountPassword.length > 1,
                     }"
                     type="password"
-                    placeholder="Mot de passe"
+                    :placeholder="$t('wallets.create.label_password')"
                     v-model="form.accountPassword"
                     :disabled="useSimplifiedAuth"
                   />
@@ -87,7 +95,9 @@
               </div>
 
               <div class="field">
-                <label class="label">Confirmation du mot de passe</label>
+                <label class="label">{{
+                  $t("wallets.create.label_password_confirm")
+                }}</label>
                 <div class="control has-icons-left has-icons-right">
                   <input
                     @keyup.enter="createUserAccount"
@@ -100,7 +110,7 @@
                         form.accountPasswordConfirm.length > 1,
                     }"
                     type="password"
-                    placeholder="Confirmation du mot de passe"
+                    :placeholder="$t('wallets.create.label_password_confirm')"
                     v-model="form.accountPasswordConfirm"
                     :disabled="useSimplifiedAuth"
                   />
@@ -138,7 +148,7 @@
                     @click="createUserAccount()"
                     :disabled="hasFieldErrors"
                   >
-                    Créer mon portefeuille
+                    {{ $t("wallets.create.action_create_wallet") }}
                   </button>
                 </div>
               </div>
@@ -235,7 +245,7 @@
       checkIsSame(fieldOne: string, fieldTwo: string): void {
         if (this.form[fieldOne] !== this.form[fieldTwo]) {
           this.form.errors[fieldOne] = [
-            "Le mot de passe entré n'est pas identique",
+            this.$t("wallets.create.msg_error_not_identical"),
           ]
         } else {
           this.form.errors[fieldOne] = []
@@ -260,14 +270,13 @@
             err
           )
           if (!(err instanceof LokAPIExc.UserAccountAlreadyExists)) {
-            this.$msg.error(
-              "Création de compte interrompue inopinément." +
-                "Veuillez ré-éssayer ou contacter votre administrateur"
-            )
+            this.$msg.error(this.$t("wallets.create.msg_error_interrupted"))
 
             return // stay on page
           }
-          this.$msg.warning("Compte déjà créé")
+          this.$msg.warning(
+            this.$t("wallets.create.msg_error_account_already_created")
+          )
         }
 
         if (this.userAuthPref) {
@@ -280,10 +289,7 @@
               "Something went wrong on createUserAccount request",
               err
             )
-            this.$msg.error(
-              "L'enregistrement des préférences de l'authentification simplifiée ne s'est pas déroulée correctement... " +
-                "Veuillez ré-éssayer dans l'écran de préférences ou contacter votre administrateur"
-            )
+            this.$msg.error(this.$t("wallets.create.msg_error_simplified_auth"))
           }
         }
         this.$store.dispatch("fetchComponentDefs")

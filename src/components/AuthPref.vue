@@ -15,17 +15,19 @@
             </label>
           </div>
           <div class="mr-1 switch-centered">
-            Authentification simplifiée sur ce périphérique
+            {{ $t("auth.prefs.label_simplified_auth") }}
           </div>
         </div>
-        <div v-if="name">pour le compte {{ name }}</div>
+        <div v-if="name">
+          {{ $t("auth.prefs.label_for_account", { name }) }}
+        </div>
         <div v-if="useSimplifiedAuth" class="switch-centered">
           <button
             class="button is-payer has-text-weight-medium is-rounded action"
             @click="unlock()"
             :disabled="!locked"
           >
-            <span>Modifier</span>
+            <span>{{ $t("auth.prefs.action_edit") }}</span>
             <span class="icon mb-1">
               <fa-icon class="fa-md" :icon="locked ? 'lock' : 'lock-open'" />
             </span>
@@ -137,7 +139,7 @@
         e.preventDefault()
         if (this.useSimplifiedAuth) {
           // Was on, switching off
-          if (!await this.triggerDefaultChallenge()) {
+          if (!(await this.triggerDefaultChallenge())) {
             // XXXvlab: vuejs won't see any changes so won't force
             // the checkbox to be unchecked. But it is automatically checked
             // despite the preventDefault.

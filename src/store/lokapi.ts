@@ -1,23 +1,32 @@
 ///<reference types="@types/node"/>
 
-export function lokapiStoreFactory(lokApiService: any) {
+export function lokapiStoreFactory(lokApiService: any, i18n: any) {
   const transactionsBatchLength = 10
   let transactionsGen = lokApiService.getTransactions()
   function translatePwdFieldErrors(errors: string[]) {
     return errors.map((e: string) => {
       if (e.indexOf("tooShort") > -1) {
         let segments = e.split(":")
-        return (
-          "Le mot de passe doit faire au moins " + segments[1] + " caractères"
-        )
+        return i18n.global.t(
+          "lokapi.validation.msg_error_password_too_short", {
+          password_length: segments[1],
+        })
       } else if (e === "noLowerCase") {
-        return "Le mot de passe doit contenir au moins une lettre minuscule"
+        return i18n.global.t(
+          "lokapi.validation.msg_error_password_no_lowercase"
+        )
       } else if (e === "noUpperCase") {
-        return "Le mot de passe doit contenir au moins une lettre majuscule"
+        return i18n.global.t(
+          "lokapi.validation.msg_error_password_no_uppercase"
+        )
       } else if (e === "noDigit") {
-        return "Le mot de passe doit contenir au moins un nombre"
+        return i18n.global.t(
+          "lokapi.validation.msg_error_password_no_digit"
+        )
       } else if (e === "noSymbol") {
-        return "Le mot de passe doit contenir au moins un caractère spécial"
+        return i18n.global.t(
+          "lokapi.validation.msg_error_password_no_symbol"
+        )
       }
     })
   }

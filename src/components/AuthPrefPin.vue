@@ -3,7 +3,7 @@
     <label
       class="label edit-pin"
       @click=";(editMode = !editMode), setFocusPin()"
-      >Configurer le code PIN
+      >{{ $t("auth.prefs.action_configure_pincode") }}
       <span class="icon" v-if="isConfigured">
         <fa-icon icon="edit" class="fa-large" />
       </span>
@@ -15,7 +15,7 @@
             class="input"
             type="password"
             v-on:keypress="onlyNumbers"
-            placeholder="Code pin"
+            :placeholder="$t('auth.prefs.label_pincode')"
             pattern="[0-9]{4}"
             inputmode="numeric"
             maxlength="4"
@@ -29,13 +29,15 @@
         </div>
       </div>
       <div class="field" v-if="showConfPin">
-        <label class="label">Confirmation code PIN</label>
+        <label class="label">{{
+          $t("auth.prefs.label_pincode_confirm")
+        }}</label>
         <div class="control has-icons-left has-icons-right">
           <input
             class="input"
             type="password"
             v-on:keypress="onlyNumbers"
-            placeholder="Confirmation Code pin"
+            placeholder="$t('auth.prefs.label_pincode_confirm')"
             pattern="[0-9]{4}"
             inputmode="numeric"
             maxlength="4"
@@ -62,7 +64,7 @@
                 @click="submitConfig()"
                 ref="submit"
               >
-                Enregistrer
+                {{ $t("auth.prefs.action_save") }}
               </button>
             </div>
           </div>
@@ -118,13 +120,16 @@
         }
 
         if (this.pin !== this.pinConf) {
-          this.errors.pinConfirmation = "Le code pin entré n'est pas identique"
+          this.errors.pinConfirmation = this.$t(
+            "auth.prefs.msg_error_not_identical"
+          )
         } else {
           this.errors.pinConfirmation = false
         }
         if (this.pin.length < this.pinLength) {
-          this.errors.pinSize =
-            "le code pin doit contenir " + this.pinLength + " chiffres"
+          this.errors.pinSize = this.$t("auth.prefs.msg_error_pin_length", {
+            pinLength: this.pinLength,
+          })
         } else {
           this.errors.pinSize = false
         }

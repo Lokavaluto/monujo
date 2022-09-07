@@ -46,14 +46,11 @@
         } catch (e) {
           let errorMessage = ""
           if (!this.partner.jsonData.odoo.is_favorite)
-            errorMessage = "Une erreur est survenue lors de la mise en favoris,"
+            this.$msg.error(this.$t("wallets.create.msg_error_adding_bookmark"))
           else
-            errorMessage =
-              "Une erreur est survenue lors de la suppression du favori,"
-          this.$msg.error(
-            errorMessage +
-              " veuillez ré-essayer ou contacter votre administrateur"
-          )
+            this.$msg.error(
+              this.$t("wallets.create.msg_error_deleting_bookmark")
+            )
           return false
         }
         return true

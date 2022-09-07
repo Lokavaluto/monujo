@@ -9,10 +9,10 @@
     <div class="active" v-if="!isLoadingAccounts">
       <a
         @click="refreshBalanceAndTransactions"
-        title="Rafraîchir le solde et les transactions"
+        :title="$t('wallets.list.action_refresh_link_title')"
         class="button is-default is-pulled-right is-rounded refresh"
       >
-        <span>Rafraîchir</span>
+        <span>{{ $t("wallets.list.action_refresh") }}</span>
         <span class="icon is-small">
           <fa-icon icon="sync" />
         </span>
@@ -21,25 +21,25 @@
         class="notification is-danger is-light"
         v-if="hasAccountsLoadingError"
       >
-        <p class="mb-4">
-          Une erreur inattendue est survenue pendant le chargement des
-          portefeuilles. Veuillez nous excuser pour le désagrément.
-        </p>
-        <p>
-          Vous pouvez essayer de recharger la page, ou contacter votre
-          administrateur si l'erreur persiste.
-        </p>
+        <p
+          class="mb-4"
+          v-html="$t('wallets.list.msg_error_loading_wallets')"
+        ></p>
       </div>
       <p
         class="notification is-default notification-no-accounts"
         v-else-if="totalAccountsLoaded === 0"
       >
-        Vous n'avez pas encore de portefeuille,
-        <router-link to="/create-account">cliquez ici</router-link> pour en
-        créer un.
+        <i18n-t keypath="wallets.list.msg_no_account_yet" tag="span">
+          <router-link to="/create-account">{{
+            $t("wallets.list.msg_no_account_yet_link_text")
+          }}</router-link>
+        </i18n-t>
       </p>
       <div v-else>
-        <h2 class="custom-card-title">vos comptes</h2>
+        <h2 class="custom-card-title">
+          {{ $t("wallets.list.title_your_accounts") }}
+        </h2>
         <BankAccountItem
           v-for="account in activeVirtualAccounts"
           :bal="account.bal"
@@ -55,7 +55,9 @@
       </div>
     </div>
     <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
-      <h2 class="custom-card-title">vos comptes en attente de création</h2>
+      <h2 class="custom-card-title">
+        {{ $t("wallets.list.title_your_pending_accounts") }}
+      </h2>
       <BankAccountItem
         v-for="account in inactiveVirtualAccounts"
         :bal="account.bal"

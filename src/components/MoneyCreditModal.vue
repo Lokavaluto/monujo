@@ -3,7 +3,9 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title is-title-shrink">Créditer mon compte</p>
+        <p class="modal-card-title is-title-shrink">
+          {{ $t("transactions.credit.title_credit_my_wallet") }}
+        </p>
         <button
           class="delete"
           aria-label="close"
@@ -16,7 +18,9 @@
           class="custom-montant-input"
         >
           <div v-if="creditableMoneyAccounts.length > 1">
-            <h2 class="frame3-sub-title mb-3">Compte à créditer</h2>
+            <h2 class="frame3-sub-title mb-3">
+              {{ $t("transactions.credit.label_recipient_wallet") }}
+            </h2>
             <div
               v-for="account in creditableMoneyAccounts"
               :class="[
@@ -42,7 +46,9 @@
             "
             class="amount custom-montant-input"
           >
-            <h2 class="frame3-sub-title mt-3 mb-3">Montant à créditer</h2>
+            <h2 class="frame3-sub-title mt-3 mb-3">
+              {{ $t("transactions.credit.label_credit_amount") }}
+            </h2>
             <div class="is-flex">
               <input
                 v-model.number="amount"
@@ -65,25 +71,32 @@
         <template v-if="creditOrderUrl.length > 1">
           <div class="notification is-info">
             <p class="mb-3">
-              Un bon de commande pour votre rechargement a été créé.
+              {{ $t("transactions.credit.msg_success_order_issued") }}
             </p>
             <p class="mb-3">
-              Pour compléter la demande de crédit, vous devez finaliser la
-              transaction en vous rendant dans votre espace personnel Odoo:
+              {{
+                $t(
+                  "transactions.credit.msg_success_order_continue_instructions"
+                )
+              }}
             </p>
           </div>
         </template>
         <template v-if="showCreditRefreshNotification">
           <div class="notification is-info">
             <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">
-              Une fois votre opération complétée dans votre espace personnel,
-              votre crédit sera en attente de validation par un administrateur.
-              Vous pourrez alors fermer cette fenêtre pour actualiser votre
-              solde.
+              {{
+                $t(
+                  "transactions.credit.msg_success_order_finalize_instructions_comchain"
+                )
+              }}
             </p>
             <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">
-              Une fois votre opération complétée dans votre espace personnel,
-              fermez cette fenêtre pour actualiser votre solde.
+              {{
+                $t(
+                  "transactions.credit.msg_success_order_finalize_instructions_cyclos"
+                )
+              }}
             </p>
           </div>
         </template>
@@ -100,21 +113,21 @@
             class="button custom-button custom-button-send-receive-money is-rounded action"
             @click="newLinkTab()"
           >
-            Suivant
+            {{ $t("transactions.credit.action_next") }}
           </button>
         </template>
         <template v-if="creditOrderUrl.length > 1">
           <a
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
             @click="navigateToCreditOrder"
-            >Compléter la transaction dans mon espace personnel</a
+            >{{ $t("transactions.credit.action_complete_transaction") }}</a
           >
         </template>
         <template v-if="showCreditRefreshNotification">
           <a
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
             @click="closeAndRefresh"
-            >Fermer et rafraîchir</a
+            >{{ $t("transactions.credit.action_close_and_refresh") }}</a
           >
         </template>
       </footer>
@@ -167,8 +180,9 @@
       async newLinkTab() {
         this.errors.amount = false
         if (this.amount <= 0) {
-          this.errors.amount =
-            "Le montant à créditer doit être un nombre positif"
+          this.errors.amount = this.$t(
+            "transactions.credit.msg_error_amount_must_be_positive"
+          )
           return
         }
         // This to ensure we are left with 2 decimals only
@@ -188,7 +202,7 @@
         } catch (error) {
           console.log("Payment failed:", error)
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative de crédit de votre compte"
+            this.$t("transactions.credit.msg_error_wallet_credit_action")
           )
         } finally {
           this.$loading.hide()

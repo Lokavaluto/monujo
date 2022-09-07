@@ -15,32 +15,30 @@
                 v-if="hasLoadingError"
               >
                 <p class="mb-4">
-                  Une erreur inattendue est survenue pendant le chargement de la
-                  liste de demandes de crédits. Veuillez nous excuser pour le
-                  désagrément.
-                </p>
-                <p>
-                  Vous pouvez essayer de recharger la page, ou contacter votre
-                  administrateur si l'erreur persiste.
+                  {{ $t("admin.pending_credits.msg_error_loading_list") }}
                 </p>
               </div>
               <p
                 class="notification is-default"
                 v-else-if="pendingCreditRequests.length === 0"
               >
-                Aucune demande de crédit en attente de validation
+                {{ $t("admin.pending_credits.msg_no_pending_request") }}
               </p>
               <div v-else>
                 <h2 class="custom-card-title">
-                  Opérations de crédit en attente de validation
+                  {{ $t("admin.pending_credits.title_pending_credit_request") }}
                 </h2>
                 <table class="table is-striped is-fullwidth">
                   <thead>
                     <tr>
-                      <th class="row-user-header">Utilisateur</th>
-                      <th class="row-amount-header">Montant</th>
+                      <th class="row-user-header">
+                        {{ $t("admin.pending_credits.label_user") }}
+                      </th>
+                      <th class="row-amount-header">
+                        {{ $t("admin.pending_credits.label_amount") }}
+                      </th>
                       <th class="row-validate-header has-text-right">
-                        Valider
+                        {{ $t("admin.pending_credits.label_validate") }}
                       </th>
                     </tr>
                   </thead>
@@ -72,7 +70,7 @@
                             selectedItem !== request || !isWaitingForValidation
                           "
                         >
-                          valider
+                          {{ $t("admin.pending_credits.action_validate") }}
                         </a>
                         <div
                           v-else
@@ -135,9 +133,9 @@
             return
           }
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative de " +
-              "validation de la demande de crédit" +
-              request.relatedUser
+            this.$t("admin.pending_credits.msg_error_validating", {
+              name: request.relatedUser,
+            })
           )
           throw err
         }
@@ -145,8 +143,10 @@
         this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$msg.success(
-          `La demande de crédit de ${request.relatedUser} ` +
-          `d'un montant de ${request.amount} a été validée`,
+          this.$t("admin.pending_credits.msg_success_validating", {
+            name: request.relatedUser,
+            amount: request.amount,
+          })
         )
         this.isLoading = false
       },
