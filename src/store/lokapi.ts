@@ -1,4 +1,5 @@
 ///<reference types="@types/node"/>
+import { RestExc } from "@lokavaluto/lokapi-browser"
 
 export function lokapiStoreFactory(lokApiService: any) {
   const transactionsBatchLength = 10
@@ -44,7 +45,15 @@ export function lokapiStoreFactory(lokApiService: any) {
         dispatch("setupAfterLogin")
       },
       async setupAfterLogin({ commit, dispatch }: any) {
-        commit("setUserProfile", await lokApiService.getMyContact())
+        try {
+          commit("setUserProfile", await lokApiService.getMyContact())
+        } catch (err) {
+          commit("auth_error")
+          if (err instanceof RestExc.TokenRequired) {
+            return
+          }
+          throw err
+        }
         dispatch("fetchAccounts")
         dispatch("resetTransactions")
         commit("auth_success")
