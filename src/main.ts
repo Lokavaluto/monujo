@@ -77,10 +77,11 @@ fetchConfig("config.json").then((config: any) => {
   const defaultAppName = require("../package.json").name
   const router = mkRouter(config.appName || defaultAppName)
   const lokApiService = new LokAPI(config.lokapiHost, config.lokapiDb)
-  lokApiService.requestLogin = () => {
+  lokApiService.requestLogin = async () => {
     const lastUrlSegment = window.location.href.split("/").pop()
     if (lastUrlSegment !== "carto" && lastUrlSegment !== "") {
       console.log("Login requested !")
+      await store.dispatch("askLogOut")
       router.push("/")
     }
   }
@@ -175,7 +176,6 @@ fetchConfig("config.json").then((config: any) => {
 
   const app = createApp(App)
   app.use(store)
-  app.use(router)
   app.use(Swal)
   app.use(Loading)
   app.provide("$store", store)
@@ -188,5 +188,15 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$prefs = prefsService
   app.config.globalProperties.$export = ExportService
-  app.mount("#app")
+
+  const unwatch = store.watch(
+    (state, getters) => getters.isAuthenticated,
+    () => {
+      app.use(router)
+      app.mount("#app")
+      unwatch()
+    }
+  )
+
+  store.dispatch("setupAfterLogin")
 })

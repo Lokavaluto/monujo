@@ -68,10 +68,12 @@ export function mkRouter(appName: string) {
   router.beforeEach((to, from, next) => {
     if (
       to.name !== "Login" &&
-        to.name !== "Carto" &&
-        store.getters.isAuthenticated === false
+      to.name !== "Carto" &&
+      !store.getters.isAuthenticated
     )
       next({ name: "Carto" })
+    else if (to.name === "Login" && store.getters.isAuthenticated)
+      next({ name: "dashboard" })
     else next()
   })
   router.beforeEach((to, from, next) => {
