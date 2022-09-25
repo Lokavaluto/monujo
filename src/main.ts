@@ -2,6 +2,7 @@ import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
 import "vue-loading-overlay/dist/vue-loading.css"
 
+import { UIError } from "./exception"
 import App from "./App.vue"
 import { mkRouter } from "./router"
 import Swal from "./useSwal"
@@ -175,6 +176,14 @@ fetchConfig("config.json").then((config: any) => {
   store.registerModule("prefs", prefsStoreFactory(prefsService))
 
   const app = createApp(App)
+  app.config.errorHandler = function (err: any, vm, info) {
+    if (err instanceof UIError) {
+      ToastService.error(err.message)
+      throw err.origException
+    }
+    throw err
+  }
+
   app.use(store)
   app.use(Swal)
   app.use(Loading)
@@ -188,6 +197,7 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$prefs = prefsService
   app.config.globalProperties.$export = ExportService
+  app.config.globalProperties.$errorHandler = app.config.errorHandler
 
   const unwatch = store.watch(
     (state, getters) => getters.isAuthenticated,

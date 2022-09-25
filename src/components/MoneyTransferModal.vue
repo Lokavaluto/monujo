@@ -312,15 +312,20 @@
               denyButtonText: `Plus tard`,
             })
             .then(async (result: any) => {
-              if (!result.isConfirmed) {
-                if (await this.toggleFavorite(this.selectedRecipient)) {
-                  this.$Swal.fire(
-                    `${this.selectedRecipient.name} a bien été ajouté en favori`,
-                    "",
-                    "success"
-                  )
-                }
+              if (!result.isConfirmed) return
+              try {
+                await this.selectedRecipient.toggleFavorite()
+              } catch (err) {
+                // XXXvlab: using ``.then`` makes it trigger outside of
+                // view js grasp.
+                this.$errorHandler(err)
+                return
               }
+              this.$Swal.fire(
+                `${this.selectedRecipient.name} a bien été ajouté en favori`,
+                "",
+                "success"
+              )
             })
         }
         await this.$store.dispatch("fetchAccounts")

@@ -1,7 +1,8 @@
-import { LokAPIBrowserAbstract, e } from "@lokavaluto/lokapi-browser"
+import { LokAPIBrowserAbstract, e, t } from "@lokavaluto/lokapi-browser"
 import comchain from "@lokavaluto/lokapi-backend-comchain"
 import cyclos from "@lokavaluto/lokapi-backend-cyclos"
 
+import { UIError } from "../exception"
 
 export class LokAPI extends LokAPIBrowserAbstract {
   BackendFactories = {
@@ -142,6 +143,17 @@ export class LokAPI extends LokAPIBrowserAbstract {
       .map((accountWithrequiresUnlock: any) => accountWithrequiresUnlock[0])
   }
 
+  public async searchRecipients(value: string): Promise<t.IRecipient[]> {
+    const uiRecipients = []
+    // Not using a ``.map`` because we expect ``super.searchRecipient``
+    // to return a generator anyway in the near future.
+    const recipients = await super.searchRecipients(value)
+    for (const recipient of recipients) {
+      uiRecipients.push(makeUIProxyRecipient(recipient))
+    }
+    return uiRecipients
+  }
+
   // XXXvlab: this is less than ideal way to handle the cache
   // clearance. Waiting for a generalized cache management
   clearBackendCache() {
@@ -181,6 +193,34 @@ export function replaceOrInsertElt<T>(
     replace = 1
   }
   array.splice(idx, replace, elt)
+}
+
+function makeUIProxyRecipient(recipient: t.IRecipient) {
+  return new Proxy(recipient, {
+    get: (target, prop, receiver) => {
+      if (prop == "toggleFavorite") {
+        return async function toggleFavorite(this: any): Promise<void> {
+          try {
+            await Reflect.get(target, prop, receiver).apply(this)
+          } catch (e) {
+            let errorMessage = ""
+            if (!target.is_favorite)
+              errorMessage =
+                "Une erreur est survenue lors de la mise en favoris,"
+            else
+              errorMessage =
+                "Une erreur est survenue lors de la suppression du favori,"
+            throw new UIError(
+              errorMessage +
+                " veuillez ré-essayer ou contacter votre administrateur",
+              e
+            )
+          }
+        }
+      }
+      return Reflect.get(target, prop, receiver)
+    },
+  })
 }
 
 export const LokAPIExc = e

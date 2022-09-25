@@ -6,7 +6,7 @@
     <div
       class="pr-3 is-clickable is-align-items-center is-flex"
       :class="[partner.is_favorite ? 'is-active' : '']"
-      @click="toggleFavorite()"
+      @click="partner.toggleFavorite()"
     >
       <span class="icon">
         <fa-icon
@@ -38,26 +38,6 @@
     name: "PartnerItem",
     props: {
       partner: Object,
-    },
-    methods: {
-      async toggleFavorite(): Promise<boolean> {
-        try {
-          await this.partner.toggleFavorite()
-        } catch (e) {
-          let errorMessage = ""
-          if (!this.partner.jsonData.odoo.is_favorite)
-            errorMessage = "Une erreur est survenue lors de la mise en favoris,"
-          else
-            errorMessage =
-              "Une erreur est survenue lors de la suppression du favori,"
-          this.$msg.error(
-            errorMessage +
-              " veuillez ré-essayer ou contacter votre administrateur"
-          )
-          return false
-        }
-        return true
-      },
     },
   })
   export default class PartnerItem extends Vue {}
