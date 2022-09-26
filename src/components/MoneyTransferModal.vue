@@ -62,18 +62,18 @@
           </div>
           <div v-else>
             <div
-              v-if="ownCurrenciesPartners.length !== 0"
+              v-if="ownCurrenciesRecipients.length !== 0"
               class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between"
             >
-              <template v-if="ownCurrenciesPartners">
+              <template v-if="ownCurrenciesRecipients">
                 <div
                   class="is-clickable py-2"
-                  v-for="(partner, index) in ownCurrenciesPartners"
+                  v-for="(recipient, index) in ownCurrenciesRecipients"
                 >
-                  <PartnerItem
-                    :partner="partner"
+                  <RecipientItem
+                    :recipient="recipient"
                     :key="index"
-                    @select="handleClickRecipient(partner)"
+                    @select="handleClickRecipient(recipient)"
                   />
                 </div>
               </template>
@@ -129,7 +129,7 @@
                 <template v-slot:name>{{ ownSelectedAccount.name }}</template>
               </BankAccountItem>
               <h2 class="frame3-sub-title mb-3">Vers</h2>
-              <PartnerItem :partner="selectedRecipient" />
+              <RecipientItem :recipient="selectedRecipient" />
               <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
               <div class="is-flex">
                 <input
@@ -182,20 +182,20 @@
 
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
-  import PartnerItem from "@/components/PartnerItem.vue"
+  import RecipientItem from "@/components/RecipientItem.vue"
   import BankAccountItem from "@/components/BankAccountItem.vue"
 
   @Options({
     name: "MoneyTransferModal",
     components: {
       Loading,
-      PartnerItem,
+      RecipientItem,
       BankAccountItem,
     },
     data() {
       return {
         step: 1,
-        partners: [],
+        recipients: [],
         displayFavoritesOnly: false,
         recipientsLoading: false,
         recipientsSearchString: "",
@@ -214,18 +214,18 @@
       this.searchRecipients()
     },
     computed: {
-      ownCurrenciesPartners(): Array<any> {
+      ownCurrenciesRecipients(): Array<any> {
         let currencyIds = this.$store.getters.activeVirtualAccounts.map(
           (a: any) => a.currencyId
         )
-        return this.partners.filter((p: any) => {
+        return this.recipients.filter((p: any) => {
           return currencyIds.indexOf(p.backendId) > -1
         })
       },
     },
     methods: {
       async searchRecipients(): Promise<void> {
-        this.partners = []
+        this.recipients = []
         this.recipientsSearchError = false
         var recipients
         try {
@@ -238,7 +238,7 @@
           console.log("searchRecipients() Failed", err)
         }
         this.recipientsLoading = false
-        this.partners = this.displayFavoritesOnly
+        this.recipients = this.displayFavoritesOnly
           ? recipients.filter((r: any) => r.is_favorite === true)
           : recipients
       },
@@ -279,7 +279,7 @@
           if (err instanceof LokapiExc.InactiveAccount) {
             this.$msg.error(
               `Le compte destinataire du tranfert est désactivé.<br>` +
-              `Vous ne pouvez pas lui envoyer de l'argent`
+                `Vous ne pouvez pas lui envoyer de l'argent`
             )
             return
           }
@@ -331,7 +331,7 @@
         await this.$store.dispatch("fetchAccounts")
         await this.$store.dispatch("resetTransactions")
         this.searchName = ""
-        this.partners = []
+        this.recipients = []
         this.amount = 0
         this.activeClass = 0
       },
