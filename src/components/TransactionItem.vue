@@ -23,7 +23,7 @@
         {{ symbol }}
       </h3>
       <h4 class="custom-card-destinataire">{{ name }}</h4>
-      <h5 class="has-text-grey-light">
+      <h5 class="has-text-grey-light transaction-desc">
         {{ desc }}
       </h5>
     </div>
@@ -64,5 +64,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .transaction-desc {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
   }
 </style>
