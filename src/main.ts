@@ -1,12 +1,19 @@
 import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
+import "vue-loading-overlay/dist/vue-loading.css"
 
 import App from "./App.vue"
 import { mkRouter } from "./router"
+import Swal from "./useSwal"
+import "./polyfill"
+
+// Store
+
 import store from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { prefsStoreFactory } from "./store/prefs"
-import { LokAPI } from "./services/lokapiService"
+
+// Services
 
 import {
   AuthService,
@@ -14,72 +21,33 @@ import {
   RetentionAuthHandler,
   DirectAuthHandler,
   PersistentConfigStore,
-} from "./services/AuthService"
-
-import PrefsService from "./services/PrefsService"
-import ExportService from "./services/ExportService"
+} from "@/services/AuthService"
+import PrefsService from "@/services/PrefsService"
+import ExportService from "@/services/ExportService"
 import AuthPrefs from "@/components/AuthPrefs.vue"
+import ToastService from "@/services/toastService"
+import { LokAPI } from "./services/lokapiService"
+
+// Components
 
 import AuthPrefDirect from "@/components/AuthPrefDirect.vue"
 import AuthPrefRetention from "@/components/AuthPrefRetention.vue"
 import AuthPrefPin from "@/components/AuthPrefPin.vue"
-
 import AuthChallengeRetention from "@/components/AuthChallengeRetention.vue"
 import AuthChallengeDirect from "@/components/AuthChallengeDirect.vue"
 import AuthChallengePin from "@/components/AuthChallengePin.vue"
 
-import Swal from "./useSwal"
+// Plugins
+
 import Loading from "./plugins/loading"
-import "vue-loading-overlay/dist/vue-loading.css"
-import "./polyfill"
 
-import ToastService from "@/services/toastService"
+// Assets
 
-import { library } from "@fortawesome/fontawesome-svg-core"
-import {
-  faEnvelope,
-  faCheck,
-  faLock,
-  faLockOpen,
-  faKey,
-  faEdit,
-  faSync,
-  faArrowCircleUp,
-  faArrowCircleDown,
-  faPlusCircle,
-  faSearch,
-  faTriangleExclamation,
-  faArrowLeft,
-  faArrowRight,
-  faStar,
-  faDownload,
-  faShare,
-} from "@fortawesome/free-solid-svg-icons"
-import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-library.add(
-  faEnvelope,
-  faCheck,
-  faLock,
-  faLockOpen,
-  faKey,
-  faEdit,
-  faSync,
-  faArrowCircleUp,
-  faArrowCircleDown,
-  faPlusCircle,
-  faSearch,
-  faTriangleExclamation,
-  faArrowLeft,
-  faArrowRight,
-  faStar,
-  farStar,
-  faDownload,
-  faShare
-)
-
+import FontAwesomeIcon from "@/utils/fonts"
 require("@/assets/main.scss")
 require("@/assets/native.scss")
+
+// Code
 
 async function fetchConfig(path: string) {
   let response: Response
