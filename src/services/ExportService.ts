@@ -1,7 +1,8 @@
 import { Capacitor, Plugins } from "@capacitor/core"
 import { Directory, Encoding } from "@capacitor/filesystem"
 
-const { Filesystem } = Plugins
+const { Filesystem, Share } = Plugins
+
 class ExportService {
   public async download(data: any, fileName: string, mimetype: string) {
     if (Capacitor.getPlatform() === "web") {
@@ -24,6 +25,28 @@ class ExportService {
       } catch (err) {
         throw new Error("Unable to download file")
       }
+    }
+  }
+  public async share(data: any, fileName: string) {
+    if (Capacitor.getPlatform() !== "web") {
+      await Filesystem.writeFile({
+        path: fileName,
+        data: data,
+        directory: Directory.Cache,
+        encoding: Encoding.UTF8,
+      })
+
+      const fileResult = await Filesystem.getUri({
+        directory: Directory.Cache,
+        path: fileName,
+      })
+
+      await Share.share({
+        title: "liste des transactions",
+        text: "liste des transactions",
+        url: fileResult.uri,
+        dialogTitle: "liste des transactions",
+      })
     }
   }
 }

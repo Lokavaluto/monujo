@@ -36,6 +36,7 @@
     "@capacitor/core": "^4.0.0",
     "@capacitor/filesystem": "^4.1.0",
     "@capacitor/ios": "^4.0.0",
+    "@capacitor/share": "^4.0.1",
     "@types/node": "^16.11.7",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",

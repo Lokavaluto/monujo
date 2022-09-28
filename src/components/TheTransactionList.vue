@@ -10,28 +10,61 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            <span class="ml-2">Toutes les opérations</span
-            ><span v-if="!isAllTransactionsLoading">
-              <button
-                class="button is-ghost is-medium download-transactions is-responsive"
-                title="Exporter les transactions"
+            <span class="ml-2">Toutes les opérations</span>
+            <span v-if="getPlatform !== 'ios'">
+              <span
+                v-if="!isAllTransactionsLoading || selectExportLoader !== 1"
               >
-                <i @click="downloadCsvFile()" class="ml-2 fas icon fa-download">
-                  <fa-icon icon="download"
-                /></i>
-              </button>
+                <button
+                  class="button is-ghost is-medium download-transactions is-responsive"
+                  title="Exporter les transactions"
+                >
+                  <i
+                    @click="downloadCsvFile()"
+                    class="ml-2 fas icon fa-download"
+                  >
+                    <fa-icon icon="download"
+                  /></i>
+                </button>
+              </span>
+              <span v-else class="export-container">
+                <div class="transactions-loader-container">
+                  <loading
+                    v-model:active="isAllTransactionsLoading"
+                    :can-cancel="false"
+                    :opacity="0"
+                    :is-full-page="false"
+                    :width="20"
+                    :height="20"
+                  />
+                </div>
+              </span>
             </span>
-            <span v-else class="export-container">
-              <div class="transactions-loader-container">
-                <loading
-                  v-model:active="isAllTransactionsLoading"
-                  :can-cancel="false"
-                  :opacity="0"
-                  :is-full-page="false"
-                  :width="20"
-                  :height="20"
-                />
-              </div>
+            <span v-if="getPlatform !== 'web'">
+              <span
+                v-if="!isAllTransactionsLoading || selectExportLoader !== 2"
+              >
+                <button
+                  class="button is-ghost is-medium download-transactions is-responsive"
+                  title="Exporter les transactions"
+                >
+                  <i @click="shareCsvFile()" class="ml-2 fas icon fa-share">
+                    <fa-icon icon="share"
+                  /></i>
+                </button>
+              </span>
+              <span v-else class="export-container">
+                <div class="transactions-loader-container">
+                  <loading
+                    v-model:active="isAllTransactionsLoading"
+                    :can-cancel="false"
+                    :opacity="0"
+                    :is-full-page="false"
+                    :width="20"
+                    :height="20"
+                  />
+                </div>
+              </span>
             </span>
           </p>
           <button
@@ -91,6 +124,7 @@
   import TransactionListFull from "./TransactionListFull.vue"
   import Loading from "vue-loading-overlay"
   import moment from "moment"
+  import { Capacitor } from "@capacitor/core"
 
   const numberFormat = new Intl.NumberFormat("fr-FR", {
     minimumFractionDigits: 2,
@@ -108,8 +142,8 @@
     data() {
       return {
         showModal: false,
-        TransactionList: [],
         isAllTransactionsLoading: false,
+        selectExportLoader: null,
       }
     },
     computed: {
@@ -127,6 +161,9 @@
       },
       isLoadingTransactionsBatch(): boolean {
         return this.$store.state.lokapi.transactionsBatchLoading
+      },
+      getPlatform(): string {
+        return Capacitor.getPlatform()
       },
     },
     watch: {
@@ -209,6 +246,7 @@
         )
       },
       async downloadCsvFile() {
+        this.selectExportLoader = 1
         const csvContent = await this.createCsvFile()
         try {
           await this.$export.download(
@@ -223,6 +261,17 @@
           throw e
         }
         this.$msg.success("Liste des transactions téléchargée")
+      },
+      async shareCsvFile() {
+        this.selectExportLoader = 2
+        let csvContent = await this.createCsvFile()
+        try {
+          await this.$export.share(csvContent, "Transactions.csv")
+        } catch (e) {
+          this.$msg.error("La liste des transactions n'a pas pu être partagée")
+          return
+        }
+        this.$msg.success("Liste des transactions partagée")
       },
     },
   })

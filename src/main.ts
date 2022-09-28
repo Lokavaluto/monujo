@@ -53,6 +53,7 @@ import {
   faArrowRight,
   faStar,
   faDownload,
+  faShare,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -73,7 +74,8 @@ library.add(
   faArrowRight,
   faStar,
   farStar,
-  faDownload
+  faDownload,
+  faShare
 )
 
 require("@/assets/main.scss")
