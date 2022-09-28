@@ -3,10 +3,10 @@
     <main class="main">
       <div class="container mt-5">
         <div class="columns is-tablet">
-          <div class="column">
+          <div class="column is-half">
             <TheBankAccountList />
           </div>
-          <div class="column">
+          <div class="column is-half">
             <TheTransactionList />
           </div>
         </div>
