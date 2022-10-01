@@ -50,7 +50,7 @@
                       v-bind:key="request"
                     >
                       <td class="row-user">
-                        {{ request.relatedUser }}
+                        {{ request.related }}
                         {{
                           request.markBackend ? `(on ${request.backendId})` : ""
                         }}
@@ -137,7 +137,7 @@
           this.$msg.error(
             "Il y a eu un problème lors de la tentative de " +
               "validation de la demande de crédit" +
-              request.relatedUser
+              request.related
           )
           throw err
         }
@@ -145,7 +145,7 @@
         this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$msg.success(
-          `La demande de crédit de ${request.relatedUser} ` +
+          `La demande de crédit de ${request.related} ` +
           `d'un montant de ${request.amount} a été validée`,
         )
         this.isLoading = false

@@ -211,7 +211,7 @@
         ]
 
         for (let e of this.transactions) {
-          let name = e.relatedUser ? e.relatedUser.display : e.related.type.name
+          let name = e.related
           let [sender, receiver] = e.amount.startsWith("-")
             ? [this.userProfile.name, name]
             : [name, this.userProfile.name]

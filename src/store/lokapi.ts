@@ -234,7 +234,7 @@ export function lokapiStoreFactory(lokApiService: any) {
         let history = []
         for (let el of transactions) {
           trs.push(el)
-          history.push(el.relatedUser ? el.relatedUser.display : null)
+          history.push(el.related !== "Admin" ? el.related : null)
           if (maxTransactions === 1) {
             break
           }

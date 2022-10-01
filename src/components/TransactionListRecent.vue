@@ -34,11 +34,7 @@
         :desc="transaction.description"
         :date="dateFormated(transaction.date)"
         :unformatedDate="transaction.date"
-        :name="
-          transaction.relatedUser
-            ? transaction.relatedUser.display
-            : transaction.related.type.name
-        "
+        :name="transaction.related"
         picto="QR"
       />
     </div>
