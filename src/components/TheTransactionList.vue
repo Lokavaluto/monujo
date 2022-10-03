@@ -10,62 +10,20 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            <span class="ml-2">Toutes les opérations</span>
-            <span v-if="getPlatform !== 'ios'">
-              <span
-                v-if="!isAllTransactionsLoading || selectExportLoader !== 1"
+            <span class="ml-2">Toutes les transactions</span>
+            <button
+              class="button is-ghost is-medium download-transactions is-responsive"
+              title="Exporter les transactions"
+            >
+              <i
+                @click="
+                  ;(this.showModal = false), (this.showExportModal = true)
+                "
+                class="ml-2 fas icon fa-file-export"
               >
-                <button
-                  class="button is-ghost is-medium download-transactions is-responsive"
-                  title="Exporter les transactions"
-                >
-                  <i
-                    @click="downloadCsvFile()"
-                    class="ml-2 fas icon fa-download"
-                  >
-                    <fa-icon icon="download"
-                  /></i>
-                </button>
-              </span>
-              <span v-else class="export-container">
-                <div class="transactions-loader-container">
-                  <loading
-                    v-model:active="isAllTransactionsLoading"
-                    :can-cancel="false"
-                    :opacity="0"
-                    :is-full-page="false"
-                    :width="20"
-                    :height="20"
-                  />
-                </div>
-              </span>
-            </span>
-            <span v-if="getPlatform !== 'web'">
-              <span
-                v-if="!isAllTransactionsLoading || selectExportLoader !== 2"
-              >
-                <button
-                  class="button is-ghost is-medium download-transactions is-responsive"
-                  title="Exporter les transactions"
-                >
-                  <i @click="shareCsvFile()" class="ml-2 fas icon fa-share">
-                    <fa-icon icon="share"
-                  /></i>
-                </button>
-              </span>
-              <span v-else class="export-container">
-                <div class="transactions-loader-container">
-                  <loading
-                    v-model:active="isAllTransactionsLoading"
-                    :can-cancel="false"
-                    :opacity="0"
-                    :is-full-page="false"
-                    :width="20"
-                    :height="20"
-                  />
-                </div>
-              </span>
-            </span>
+                <fa-icon icon="file-export"
+              /></i>
+            </button>
           </p>
           <button
             class="delete"
@@ -103,6 +61,103 @@
         </footer>
       </div>
     </div>
+    <div class="modal is-active" v-if="showExportModal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title is-title-shrink">
+            <span class="ml-2">Exporter en format CSV </span>
+          </p>
+          <button
+            class="delete"
+            aria-label="close"
+            @click=";(showExportModal = false), (showModal = true)"
+          ></button>
+        </header>
+        <section class="modal-card-body custom-card-transactions">
+          <div>
+            <loading
+              v-model:active="isAllTransactionsLoading"
+              :can-cancel="false"
+              :opacity="0"
+              :is-full-page="false"
+            />
+          </div>
+          <div
+            class="modal-container custom-modal-container"
+            ref="transactionsContainer"
+            @scroll="handleScroll"
+          >
+            <div
+              class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
+            >
+              <div class="mb-2">
+                <strong>Sélectionnez un intervalle de temps: </strong>
+              </div>
+              <div class="datepicker-export">
+                <date-picker
+                  v-model:value="exportDate"
+                  range
+                  prefix-class="xmx"
+                  :editable="false"
+                  @close="normalizeEndDate"
+                  placeholder="Toutes les transactions"
+                >
+                  <template #header="{ emit }">
+                    <div>
+                      <div v-for="selector in selectors"
+                           class="is-grid-align">
+                        <span class="mr-5">{{selector.label}}:</span>
+                        <span v-for="pos in Object.keys(selector.labels)"
+                          ><button
+                            class="mx-btn mx-btn-text"
+                            @click="makeTimeSpan(selector.timeSpan, -pos, emit)"
+                          >
+                            {{selector.labels[pos]}}
+                          </button></span
+                        >
+                      </div>
+                    </div>
+                  </template>
+                </date-picker>
+              </div>
+              <div class="mt-5">
+                <span v-if="getPlatform !== 'ios'" class="mr-2"
+                  ><button
+                    class="button custom-button is-payer has-text-weight-medium is-rounded action"
+                    title="Exporter les transactions"
+                    @click="downloadCsvFile()"
+                    :disabled="isAllTransactionsLoading"
+                  >
+                    <span class="fa-download">
+                      <span class="icon">
+                        <fa-icon icon="fa-download" class="fa-lg" />
+                      </span>
+                      <span>Télécharger</span>
+                    </span>
+                  </button></span
+                ><span v-if="getPlatform !== 'web'" class="ml-2"
+                  ><button
+                    class="button custom-button is-payer has-text-weight-medium is-rounded action"
+                    title="Exporter les transactions"
+                    @click="shareCsvFile()"
+                    :disabled="isAllTransactionsLoading"
+                  >
+                    <span class="fa-share">
+                      <span class="icon">
+                        <fa-icon icon="fa-share" class="fa-lg" />
+                      </span>
+                      <span>Partager</span>
+                    </span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot"></footer>
+      </div>
+    </div>
     <div
       v-if="!transactionsLoading && thisWeektransactions?.length"
       class="has-text-centered mt-5"
@@ -119,11 +174,20 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import Loading from "vue-loading-overlay"
+  import DatePicker from "vue-datepicker-next"
+
+  import { Capacitor } from "@capacitor/core"
+  import moment from "moment"
+
   import TransactionListRecent from "./TransactionListRecent.vue"
   import TransactionListFull from "./TransactionListFull.vue"
-  import Loading from "vue-loading-overlay"
-  import moment from "moment"
-  import { Capacitor } from "@capacitor/core"
+
+  // Assets
+
+  import "vue-datepicker-next/index.css"
+  import "@/assets/datepicker.scss"
+  import "vue-datepicker-next/locale/fr"
 
   const numberFormat = new Intl.NumberFormat("fr-FR", {
     minimumFractionDigits: 2,
@@ -137,6 +201,7 @@
       TransactionListRecent,
       TransactionListFull,
       Loading,
+      DatePicker,
     },
 
     data() {
@@ -144,6 +209,43 @@
         showModal: false,
         isAllTransactionsLoading: false,
         selectExportLoader: null,
+        showExportModal: false,
+        exportDate: [null, null],
+        shortcutExport: null,
+        selectors: [
+          {
+            label: "Jour",
+            labels: {
+              0: "Courant",
+              1: "Précédent",
+            },
+            timeSpan: "day"
+          },
+          {
+            label: "Semaine",
+            labels: {
+              0: "Courante",
+              1: "Précédente"
+            },
+            timeSpan: "week"
+          },
+          {
+            label: "Mois",
+            labels: {
+              0: "Courant",
+              1: "Précédent"
+            },
+            timeSpan: "month"
+          },
+          {
+            label: "Année",
+            labels: {
+              0: "Courante",
+              1: "Précédente"
+            },
+            timeSpan: "year"
+          },
+        ]
       }
     },
     computed: {
@@ -183,7 +285,7 @@
       async createCsvFile() {
         this.isAllTransactionsLoading = true
         try {
-          await this.$store.dispatch("fetchAllTransactions")
+          await this.$store.dispatch("fetchAllTransactions", this.exportDate)
         } catch (e) {
           this.$msg.error(
             "Il y a eu un problème lors de la tentative de telechargement de la liste des transactions"
@@ -264,6 +366,19 @@
           return
         }
         this.$msg.success("Liste des transactions partagée")
+      },
+      makeTimeSpan(timeSpan: any, pos: number, emit: any) {
+        emit(
+          [moment().startOf(timeSpan), moment().endOf(timeSpan)]
+            .map((date) => date.subtract(-pos, timeSpan))
+            .map((m) => m.toDate())
+        )
+      },
+      normalizeEndDate() {
+        this.exportDate = [
+          moment(this.exportDate[0]).startOf("day").toDate(),
+          moment(this.exportDate[1]).endOf("day").toDate(),
+        ]
       },
     },
   })

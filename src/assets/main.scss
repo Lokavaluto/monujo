@@ -805,3 +805,22 @@ input {
     opacity: 0.6;
   }
 }
+.datepicker-export {
+  .xmx-datepicker-range {
+    width: auto !important;
+  }
+
+}
+div.xmx-datepicker-content {
+  user-select: none;
+}
+
+.is-grid-align {
+  width: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mx-btn:hover {
+  color: $color-2 !important;
+}

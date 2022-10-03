@@ -24,6 +24,7 @@
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-cookie-next": "^1.0.3",
+    "vue-datepicker-next": "^1.0.2",
     "vue-loading-overlay": "^4.0.4",
     "vue-pincode-input": "^0.4.0",
     "vue-router": "^4.0.0-0",

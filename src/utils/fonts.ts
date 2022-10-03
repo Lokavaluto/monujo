@@ -17,6 +17,7 @@ import {
   faStar,
   faDownload,
   faShare,
+  faFileExport,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -38,7 +39,8 @@ library.add(
   faStar,
   farStar,
   faDownload,
-  faShare
+  faShare,
+  faFileExport
 )
 
 export default FontAwesomeIcon

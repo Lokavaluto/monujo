@@ -50,7 +50,10 @@
     "tabs-link-active-color": "rgba(0, 0, 0, 0.8)",
     "tabs-link-active-border-bottom-color": "$color-2",
     "tabs-link-color": "rgba(0, 0, 0, 0.6)",
-    "navbar-fixed-z": "50"
+    "navbar-fixed-z": "50",
+    "primary-color": "#41b0a6",
+    "primary-color-lighter": "#d9efed",
+    "default-color": "$color-2"
   },
   "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}"
 }

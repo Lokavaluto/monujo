@@ -1,0 +1,8 @@
+@import "custom-variables";
+
+$namespace: "xmx";
+$today-color: $primary-color;
+$time-hover-background-color: $primary-color;
+$calendar-hover-background-color: $primary-color;
+$calendar-in-range-background-color: $primary-color-lighter;
+@import "~vue-datepicker-next/scss/index.scss";

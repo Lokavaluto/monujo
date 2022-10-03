@@ -61,3 +61,8 @@ $tabs-link-active-color: var(--tabs-link-active-color, rgba(0, 0, 0, 0.8));
 $tabs-link-active-border-bottom-color: var(--tabs-link-active-border-bottom-color, $color-2);
 $tabs-link-color: var(--tabs-link-color, rgba(0, 0, 0, 0.6));
 $navbar-fixed-z: var(--navbar-fixed-z, 50);
+
+// Calendars vars:
+$primary-color: var(--primary-color, #41b0a6);
+$primary-color-lighter: var(--primary-color-lighter, #d9efed);
+$default-color: var(--default-color, $color-2);
