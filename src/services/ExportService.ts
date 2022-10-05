@@ -4,7 +4,17 @@ import { Directory, Encoding } from "@capacitor/filesystem"
 const { Filesystem, Share } = Plugins
 
 class ExportService {
-  public async download(data: any, fileName: string, mimetype: string) {
+  gettext: any
+
+  constructor(gettext: any) {
+    this.gettext = gettext
+  }
+
+  public async download(
+    data: any,
+    fileName: string,
+    mimetype: string
+  ): Promise<any> {
     if (Capacitor.getPlatform() === "web") {
       const link = document.createElement("a")
       const url = `data:${mimetype};charset=utf-8,${encodeURIComponent(data)}`
@@ -27,7 +37,7 @@ class ExportService {
       }
     }
   }
-  public async share(data: any, fileName: string) {
+  public async share(data: any, fileName: string): Promise<any> {
     if (Capacitor.getPlatform() !== "web") {
       await Filesystem.writeFile({
         path: fileName,
@@ -40,15 +50,16 @@ class ExportService {
         directory: Directory.Cache,
         path: fileName,
       })
+      const { $gettext } = this.gettext
 
       await Share.share({
-        title: "liste des transactions",
-        text: "liste des transactions",
+        title: $gettext("Transaction list"),
+        text: $gettext("Transaction list"),
         url: fileResult.uri,
-        dialogTitle: "liste des transactions",
+        dialogTitle: $gettext("Transaction list"),
       })
     }
   }
 }
 
-export default new ExportService()
+export default ExportService

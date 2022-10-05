@@ -10,22 +10,25 @@
       v-if="transactionsLoadingError"
     >
       <p class="mb-4">
-        Une erreur inattendue est survenue pendant le chargement des dernières
-        opérations de votre compte. Veuillez nous excuser pour le désagrément.
+        {{ $gettext(
+            'An unexpected issue occurred while loading the last ' +
+            'transactions. Sorry for the inconvenience.')
+        }}
       </p>
-      <p>
-        Vous pouvez essayer de recharger la page, ou contacter votre
-        administrateur si l'erreur persiste.
+      <p class="mb-4">
+        {{ $gettext(
+        'You can try to refresh the page, if the issue persists, '+
+        'you may want to contact your administrator') }}
       </p>
     </div>
     <p
       v-else-if="thisWeektransactions?.length === 0"
       class="notification is-default"
     >
-      Aucune opération dans votre historique
+      {{ $gettext('No previous transactions in your history.') }}
     </p>
     <div v-else>
-      <h2 class="custom-card-title">Opérations</h2>
+      <h2 class="custom-card-title">{{ $gettext('Transactions') }}</h2>
       <TransactionItem
         v-for="transaction in thisWeektransactions"
         :key="transaction"

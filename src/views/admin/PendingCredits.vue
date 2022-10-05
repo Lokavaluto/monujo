@@ -15,32 +15,40 @@
                 v-if="hasLoadingError"
               >
                 <p class="mb-4">
-                  Une erreur inattendue est survenue pendant le chargement de la
-                  liste de demandes de crédits. Veuillez nous excuser pour le
-                  désagrément.
+                  {{ $gettext(
+                      "An unexpected issue occurred while loading the " +
+                      "top up request list. Sorry for the inconvenience")
+                  }}
                 </p>
                 <p>
-                  Vous pouvez essayer de recharger la page, ou contacter votre
-                  administrateur si l'erreur persiste.
+                  {{ $gettext(
+                      "You can try to refresh the page, if the issue " +
+                      "persists, you may want to contact your "+
+                      "administrator"
+                  ) }}
                 </p>
               </div>
               <p
                 class="notification is-default"
                 v-else-if="pendingCreditRequests.length === 0"
               >
-                Aucune demande de crédit en attente de validation
+                {{ $gettext("No top up request awaiting approval") }}
               </p>
               <div v-else>
                 <h2 class="custom-card-title">
-                  Opérations de crédit en attente de validation
+                  {{ $gettext("Top up requests await approval") }}
                 </h2>
                 <table class="table is-striped is-fullwidth">
                   <thead>
                     <tr>
-                      <th class="row-user-header">Utilisateur</th>
-                      <th class="row-amount-header">Montant</th>
+                      <th class="row-user-header">
+                        {{ $gettext("User") }}
+                      </th>
+                      <th class="row-amount-header">
+                        {{ $gettext("Amount") }}
+                      </th>
                       <th class="row-validate-header has-text-right">
-                        Valider
+                        {{ $gettext("Approve") }}
                       </th>
                     </tr>
                   </thead>
@@ -69,7 +77,7 @@
                             selectedItem !== request || !isWaitingForValidation
                           "
                         >
-                          valider
+                          {{ $gettext("Approve") }}
                         </a>
                         <div
                           v-else
@@ -134,9 +142,11 @@
             return
           }
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative de " +
-              "validation de la demande de crédit" +
-              request.related
+            this.$gettext(
+              "An issue occured upon the approval of the credit " +
+              "request of %{ name }", {
+              name: request.related,
+            })
           )
           throw err
         }
@@ -144,8 +154,10 @@
         this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$msg.success(
-          `La demande de crédit de ${request.related} ` +
-          `d'un montant de ${request.amount} a été validée`,
+          this.$gettext("Top up request from %{ name } of %{ amount } was validated.", {
+            name: request.relatedUser,
+            amount: request.amount,
+          })
         )
         this.isLoading = false
       },

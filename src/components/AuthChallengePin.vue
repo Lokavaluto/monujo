@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="field">
-      <label class="label">Code PIN</label>
+      <label class="label">{{ $gettext("PIN code") }}</label>
       <div class="control has-icons-left has-icons-right">
         <input
           class="input"
           type="password"
           v-on:keypress="onlyNumbers"
-          placeholder="Code pin"
+          :placeholder="$gettext('PIN code')"
           pattern="[0-9]{4}"
           inputmode="numeric"
           maxlength="4"
@@ -56,8 +56,14 @@
 
       async isPinValid() {
         if (this.pin.length < this.pinLength) {
-          this.errors.pinSize =
-            "le code pin doit contenir " + this.pinLength + " caractaires"
+          this.errors.pinSize = this.$gettext(
+            "PIN code must contain %{ pinLength }", {
+              pinLength: this.$ngettext(
+                "%{ pinLength } digit", "%{ pinLength } digits", 1, {
+                pinLength: this.pinLength
+              }),
+            }
+          )
           return false
         } else {
           this.errors.pinSize = false

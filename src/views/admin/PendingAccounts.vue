@@ -15,30 +15,37 @@
                 v-if="hasLoadingError"
               >
                 <p class="mb-4">
-                  Une erreur inattendue est survenue pendant le chargement de la
-                  liste des comptes. Veuillez nous excuser pour le désagrément.
+                  {{ $gettext(
+                      "An unexpected issue occurred while loading the " +
+                      "pending account list. Sorry for the inconvenience."
+                  ) }}
                 </p>
                 <p>
-                  Vous pouvez essayer de recharger la page, ou contacter votre
-                  administrateur si l'erreur persiste.
+                  {{ $gettext(
+                      "You can try to refresh the page, if the issue " +
+                      "persists, you may want to contact your "+
+                      "administrator"
+                  ) }}
                 </p>
               </div>
               <p
                 class="notification is-default"
                 v-else-if="pendingUserAccounts.length === 0"
               >
-                Aucun compte en attente de validation
+                {{ $gettext("No account pending for approval") }}
               </p>
               <div v-else>
                 <h2 class="custom-card-title">
-                  Comptes en attente de validation
+                  {{ $gettext("Accounts waiting for approval") }}
                 </h2>
                 <table class="table is-striped is-fullwidth">
                   <thead>
                     <tr>
-                      <th class="row-user-header">Utilisateur</th>
+                      <th class="row-user-header">
+                        {{ $gettext("User") }}
+                      </th>
                       <th class="has-text-right row-validate-header">
-                        Valider
+                        {{ $gettext("Approve") }}
                       </th>
                     </tr>
                   </thead>
@@ -63,7 +70,7 @@
                             selectedItem !== account || !isWaitingForValidation
                           "
                         >
-                          valider
+                          {{ $gettext("Approve") }}
                         </a>
                         <div
                           v-else
@@ -127,16 +134,20 @@
           }
 
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative " +
-              "de validation de l'utilisateur " +
-              account.name
+            this.$gettext(
+              "An unexpected issue occurred while approving " +
+                "the wallet account creation of user %{ name }", {
+              name: account.name,
+            })
           )
           throw err
         }
         this.isWaitingForValidation = false
         await this.updatePendingAccount()
         this.$msg.success(
-          "Le compte de l'utilisateur " + account.name + " a été validé"
+          this.$gettext("User %{ name }'s account creation was approved", {
+            name: account.name,
+          })
         )
       },
       async updatePendingAccount() {

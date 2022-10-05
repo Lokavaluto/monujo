@@ -7,7 +7,7 @@
           <div v-for="group in componentDefs" :key="group.name">
             <div class="mb-5">
               <label class="custom-card-title">{{
-                group.label
+                group.label()
               }}</label>
             </div>
             <div v-for="componentDef in group.componentDefs" :key="componentDef">

@@ -9,10 +9,10 @@
     <div class="active" v-if="!accountsLoading">
       <a
         @click="refreshBalanceAndTransactions"
-        title="Rafraîchir le solde et les transactions"
+        :title="$gettext('Refresh balance and transaction list')"
         class="button is-default is-pulled-right is-rounded refresh"
       >
-        <span>Rafraîchir</span>
+        <span>{{ $gettext("Refresh") }}</span>
         <span class="icon is-small">
           <fa-icon icon="sync" />
         </span>
@@ -22,24 +22,38 @@
 	v-if="accountsLoadingError"
       >
         <p class="mb-4">
-          Une erreur inattendue est survenue pendant le chargement des
-          portefeuilles. Veuillez nous excuser pour le désagrément.
+          {{
+            $gettext(
+              "An unexpected issue occurred while loading your " +
+                "wallet information."
+            )
+          }}
+          {{ $gettext("Sorry for the inconvenience.") }}
         </p>
-        <p>
-          Vous pouvez essayer de recharger la page, ou contacter votre
-          administrateur si l'erreur persiste.
+        <p class="mb-4">
+          {{
+            $gettext(
+              "You can try to refresh the page, if the issue " +
+                "persists, you may want to contact your " +
+                "administrator"
+            )
+          }}
         </p>
       </div>
       <p
         class="notification is-default notification-no-accounts"
         v-else-if="totalAccountsLoaded === 0"
       >
-        Vous n'avez pas encore de portefeuille,
-        <router-link to="/create-account">cliquez ici</router-link> pour en
-        créer un.
+        {{ $gettext("You don't have any wallet yet,") }}
+        <router-link to="/create-account">{{
+          $gettext("click here")
+        }}</router-link>
+        {{ $gettext("to create one.") }}
       </p>
       <div v-else>
-        <h2 class="custom-card-title">vos comptes</h2>
+        <h2 class="custom-card-title">
+          {{ $gettext("your accounts") }}
+        </h2>
         <BankAccountItem
           v-for="account in activeVirtualAccounts"
           :bal="account.bal"
@@ -50,12 +64,14 @@
           :subAccounts="account.subAccounts || []"
           class="mb-5"
         >
-          <template v-slot:name>{{ account.name }}</template>
+          <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>
       </div>
     </div>
     <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
-      <h2 class="custom-card-title">vos comptes en attente de création</h2>
+      <h2 class="custom-card-title">
+        {{ $gettext("your pending accounts") }}
+      </h2>
       <BankAccountItem
         v-for="account in inactiveVirtualAccounts"
         :bal="account.bal"
@@ -64,7 +80,7 @@
         :type="account.type"
         :active="account.active"
       >
-        <template v-slot:name>{{ account.name }}</template>
+        <template v-slot:name>{{ account.name() }}</template>
       </BankAccountItem>
     </div>
   </div>

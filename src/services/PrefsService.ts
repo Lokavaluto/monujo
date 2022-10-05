@@ -13,7 +13,7 @@ export default class PrefsService {
     this.prefs.splice(0, 0, ...args)
   }
 
-  public setGroup(name: string, label: string) {
+  public setGroup(name: string, label: () => string) {
     this.groups[name] = label
     this.group_order.push(name)
   }

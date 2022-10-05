@@ -3,7 +3,7 @@
     <label
       class="label edit-pin"
       @click=";(editMode = !editMode), setFocusPin()"
-      >Configurer le code PIN
+      >{{ $gettext("configure PIN code") }}
       <span class="icon" v-if="isConfigured">
         <fa-icon icon="edit" class="fa-large" />
       </span>
@@ -15,7 +15,7 @@
             class="input"
             type="password"
             v-on:keypress="onlyNumbers"
-            placeholder="Code pin"
+            :placeholder="$gettext('PIN code')"
             pattern="[0-9]{4}"
             inputmode="numeric"
             maxlength="4"
@@ -29,13 +29,15 @@
         </div>
       </div>
       <div class="field" v-if="showConfPin">
-        <label class="label">Confirmation code PIN</label>
+        <label class="label">{{
+          $gettext("PIN code confirmation")
+        }}</label>
         <div class="control has-icons-left has-icons-right">
           <input
             class="input"
             type="password"
             v-on:keypress="onlyNumbers"
-            placeholder="Confirmation Code pin"
+            :placeholder="$gettext('PIN code confirmation')"
             pattern="[0-9]{4}"
             inputmode="numeric"
             maxlength="4"
@@ -62,7 +64,7 @@
                 @click="submitConfig()"
                 ref="submit"
               >
-                Enregistrer
+                {{ $gettext("Save") }}
               </button>
             </div>
           </div>
@@ -118,13 +120,19 @@
         }
 
         if (this.pin !== this.pinConf) {
-          this.errors.pinConfirmation = "Le code pin entré n'est pas identique"
+          this.errors.pinConfirmation = this.$gettext(
+            "Given PINs are different"
+          )
         } else {
           this.errors.pinConfirmation = false
         }
         if (this.pin.length < this.pinLength) {
-          this.errors.pinSize =
-            "le code pin doit contenir " + this.pinLength + " chiffres"
+          const msgNbDigits = this.$ngettext("digit", "digits", this.pinLength)
+          this.errors.pinSize = this.$gettext(
+            "PIN code must contain %{ pinLength }", {
+              pinLength: this.$ngettext("digit", "digits", this.pinLength),
+            }
+          )
         } else {
           this.errors.pinSize = false
         }

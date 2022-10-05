@@ -28,6 +28,7 @@ import ExportService from "@/services/ExportService"
 import AuthPrefs from "@/components/AuthPrefs.vue"
 import ToastService from "@/services/toastService"
 import { LokAPI } from "./services/lokapiService"
+import mkGettext from "./services/Gettext"
 
 // Components
 
@@ -90,6 +91,20 @@ fetchConfig("config.json").then((config: any) => {
     lokApiService.persistentStore,
     "localSettings"
   )
+  const gettext = mkGettext(config?.locales || {}, localSettings || {})
+  const { $gettext } = gettext
+  lokApiService.getBankAccountName = async (bankAccount: any) => {
+    if (bankAccount.getDisplayName) {
+      return await bankAccount.getDisplayName()
+    }
+    const backend = bankAccount.internalId.split(":")[0]
+    if (backend === "comchain" && bankAccount.type) {
+      return bankAccount.type === "Nant"
+        ? () => $gettext("Pledged account")
+        : () => $gettext("Mutual credit")
+    }
+    return () => $gettext("Main account")
+  }
 
   const root = document.querySelector(":root") as HTMLElement
 
@@ -149,7 +164,7 @@ fetchConfig("config.json").then((config: any) => {
   )
 
   const prefsService = new PrefsService()
-  prefsService.setGroup("security", "Préférences de sécurité")
+  prefsService.setGroup("security", () => $gettext("Security settings"))
   prefsService.register(async () => {
     const userAccounts = await lokApiService.getUserAccountsRequiringUnlock()
     if (userAccounts.length == 0) {
@@ -183,7 +198,7 @@ fetchConfig("config.json").then((config: any) => {
     return creds
   }
 
-  store.registerModule("lokapi", lokapiStoreFactory(lokApiService))
+  store.registerModule("lokapi", lokapiStoreFactory(lokApiService, gettext))
   store.registerModule("prefs", prefsStoreFactory(prefsService))
 
   const app = createApp(App)
@@ -198,6 +213,7 @@ fetchConfig("config.json").then((config: any) => {
   app.use(store)
   app.use(Swal)
   app.use(Loading)
+  app.use(gettext)
   app.provide("$store", store)
   app.component("fa-icon", FontAwesomeIcon)
   app.config.globalProperties.$auth = authService
@@ -208,7 +224,7 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$persistentStore = new LocalStore("monujo")
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$prefs = prefsService
-  app.config.globalProperties.$export = ExportService
+  app.config.globalProperties.$export = new ExportService(gettext)
   app.config.globalProperties.$errorHandler = app.config.errorHandler
 
   const unwatch = store.watch(

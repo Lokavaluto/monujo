@@ -33,7 +33,7 @@
         :isSub="true"
         class="mt-4"
       >
-        <template v-slot:name>{{ account.name }}</template>
+        <template v-slot:name>{{ account.name() }}</template>
       </BankAccountItem>
     </div>
   </div>

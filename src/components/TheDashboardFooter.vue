@@ -14,7 +14,7 @@
               <span class="icon">
                 <fa-icon icon="arrow-circle-up" class="fa-lg" />
               </span>
-              <span>Payer</span>
+              <span>{{ $gettext("Pay") }}</span>
             </span>
           </button>
         </div>
@@ -27,7 +27,7 @@
               <span class="icon">
                 <fa-icon icon="arrow-circle-down" class="fa-lg" />
               </span>
-              <span>Recevoir</span>
+              <span>{{ $gettext("Request") }}</span>
             </span>
           </button>
         </div>
@@ -43,7 +43,7 @@
               <span class="icon">
                 <fa-icon icon="plus-circle" class="fa-lg" />
               </span>
-              <span>Recharger</span>
+              <span>{{ $gettext("Top up") }}</span>
             </span>
           </button>
         </div>

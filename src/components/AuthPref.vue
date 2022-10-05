@@ -15,17 +15,19 @@
             </label>
           </div>
           <div class="mr-1 switch-centered">
-            Authentification simplifiée sur ce périphérique
+            {{ $gettext("Simplified authentication for this device") }}
           </div>
         </div>
-        <div v-if="name">pour le compte {{ name }}</div>
+        <div v-if="name">
+          {{ $gettext("for account %{ name }", { name }) }}
+        </div>
         <div v-if="useSimplifiedAuth" class="switch-centered">
           <button
             class="button is-payer has-text-weight-medium is-rounded action"
             @click="unlock()"
             :disabled="!locked"
           >
-            <span>Modifier</span>
+            <span>{{ $gettext("Edit") }}</span>
             <span class="icon mb-1">
               <fa-icon class="fa-md" :icon="locked ? 'lock' : 'lock-open'" />
             </span>

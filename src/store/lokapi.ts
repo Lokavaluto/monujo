@@ -1,8 +1,10 @@
 ///<reference types="@types/node"/>
 import { RestExc } from "@lokavaluto/lokapi-browser"
 
-export function lokapiStoreFactory(lokApiService: any) {
+export function lokapiStoreFactory(lokApiService: any, gettext: any) {
   const transactionsBatchLength = 10
+  const { $gettext, $ngettext } = gettext
+
   let transactionsGen = lokApiService.getTransactions()
   return {
     state: {
@@ -339,23 +341,28 @@ export function lokapiStoreFactory(lokApiService: any) {
       },
     },
   }
-}
 
-function translatePwdFieldErrors(errors: string[]) {
-  return errors.map((e: string) => {
-    if (e.indexOf("tooShort") > -1) {
-      let segments = e.split(":")
-      return (
-        "Le mot de passe doit faire au moins " + segments[1] + " caractères"
-      )
-    } else if (e === "noLowerCase") {
-      return "Le mot de passe doit contenir au moins une lettre minuscule"
-    } else if (e === "noUpperCase") {
-      return "Le mot de passe doit contenir au moins une lettre majuscule"
-    } else if (e === "noDigit") {
-      return "Le mot de passe doit contenir au moins un nombre"
-    } else if (e === "noSymbol") {
-      return "Le mot de passe doit contenir au moins un caractère spécial"
-    }
-  })
+  function translatePwdFieldErrors(errors: string[]) {
+    return errors.map((e: string) => {
+      if (e.indexOf("tooShort") > -1) {
+        const [_, nbChar] = e.split(":")
+        const msgSizePassword = $ngettext(
+          "%{ nbChar } character",
+          "%{ nbChar } characters",
+          parseInt(nbChar)
+        )
+        return $gettext("Password must be at least %{ msgSizePassword } long", {
+          msgSizePassword,
+        })
+      } else if (e === "noLowerCase") {
+        return $gettext("Password should use at least one lowercase character")
+      } else if (e === "noUpperCase") {
+        return $gettext("Password should use at least one uppercase character")
+      } else if (e === "noDigit") {
+        return $gettext("Password should use at least one digit")
+      } else if (e === "noSymbol") {
+        return $gettext("Password should use at least one symbol")
+      }
+    })
+  }
 }

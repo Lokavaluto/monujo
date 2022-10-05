@@ -12,6 +12,8 @@ export class LokAPI extends LokAPIBrowserAbstract {
 
   requestLogin = () => {}
 
+  getBankAccountName: (bankAccount: any) => Promise<any> = async () => {}
+
   /**
    * This function will build asynchronously the virtual account
    * array that can be used to display the list of accounts
@@ -42,7 +44,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
         (userAccount: any) =>
           new Promise((resolve, reject) => {
             Promise.allSettled([
-              getBankAccountName(userAccount),
+              this.getBankAccountName(userAccount),
               userAccount.getBalance ? userAccount.getBalance() : "-.---,--",
               userAccount.getSymbol ? userAccount.getSymbol() : "",
               userAccount.getAccounts(),
@@ -68,7 +70,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
               Promise.allSettled(
                 (moneyAccounts || []).map((account: any) =>
                   Promise.allSettled([
-                    getBankAccountName(account),
+                    this.getBankAccountName(account),
                     account.getBalance(),
                     account.getSymbol(),
                   ]).then((vals) => {
@@ -163,19 +165,6 @@ export class LokAPI extends LokAPIBrowserAbstract {
 }
 
 // utilities function
-
-export async function getBankAccountName(bankAccount: any) {
-  if (bankAccount.getDisplayName) {
-    return await bankAccount.getDisplayName()
-  }
-  const backend = bankAccount.internalId.split(":")[0]
-  // XXXvlab: hopefully temporary solution to give a sane
-  // french name to account types in comchain
-  if (backend === "comchain" && bankAccount.type) {
-    return bankAccount.type === "Nant" ? "Compte nantis" : "Crédit mutuel"
-  }
-  return "Compte principal"
-}
 
 export function replaceOrInsertElt<T>(
   array: Array<T>,

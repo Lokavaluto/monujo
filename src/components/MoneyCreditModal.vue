@@ -3,7 +3,9 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title is-title-shrink">Créditer mon compte</p>
+        <p class="modal-card-title is-title-shrink">
+          {{ $gettext("Top up my account") }}
+        </p>
         <button
           class="delete"
           aria-label="close"
@@ -16,7 +18,9 @@
           class="custom-montant-input"
         >
           <div v-if="creditableMoneyAccounts.length > 1">
-            <h2 class="frame3-sub-title mb-3">Compte à créditer</h2>
+            <h2 class="frame3-sub-title mb-3">
+              {{ $gettext("Wallet to top up") }}
+            </h2>
             <div
               v-for="account in creditableMoneyAccounts"
               :class="[
@@ -32,7 +36,7 @@
                 :type="account.type"
                 :active="account.active"
               >
-                <template v-slot:name>{{ account.name }}</template>
+                <template v-slot:name>{{ account.name() }}</template>
               </BankAccountItem>
             </div>
           </div>
@@ -42,7 +46,9 @@
             "
             class="amount custom-montant-input"
           >
-            <h2 class="frame3-sub-title mt-3 mb-3">Montant à créditer</h2>
+            <h2 class="frame3-sub-title mt-3 mb-3">
+              {{ $gettext("Top up amount") }}
+            </h2>
             <div class="is-flex">
               <input
                 v-model.number="amount"
@@ -50,7 +56,7 @@
                 type="number"
                 min="0"
                 class="input is-custom"
-                placeholder="ex: 50"
+                :placeholder="$gettext('e.g. 50')"
                 :class="{ 'is-danger': errors.amount }"
               />
               <span class="amount-currency-symbol pl-2">{{
@@ -65,25 +71,37 @@
         <template v-if="creditOrderUrl.length > 1">
           <div class="notification is-info">
             <p class="mb-3">
-              Un bon de commande pour votre rechargement a été créé.
+              {{ $gettext("A purchase order for the top up was created.") }}
             </p>
             <p class="mb-3">
-              Pour compléter la demande de crédit, vous devez finaliser la
-              transaction en vous rendant dans votre espace personnel Odoo:
+              {{
+                $gettext(
+                   "To complete your top up request, you need to finalize the " +
+                   "transaction by logging in your Odoo account:"
+                )
+              }}
             </p>
           </div>
         </template>
         <template v-if="showCreditRefreshNotification">
           <div class="notification is-info">
             <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">
-              Une fois votre opération complétée dans votre espace personnel,
-              votre crédit sera en attente de validation par un administrateur.
-              Vous pourrez alors fermer cette fenêtre pour actualiser votre
-              solde.
+              {{
+                $gettext(
+                  "Once your transaction finalized in your personal account, " +
+                  "your top up request will by waiting for an administrator's " +
+                  "approval. You may then close this windows to refresh your " +
+                  "balance."
+                )
+              }}
             </p>
             <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">
-              Une fois votre opération complétée dans votre espace personnel,
-              fermez cette fenêtre pour actualiser votre solde.
+              {{
+                $gettext(
+                  "Once your transaction finalized in your personal account, " +
+                  "you may close this windows to refresh your balance."
+                )
+              }}
             </p>
           </div>
         </template>
@@ -100,21 +118,21 @@
             class="button custom-button custom-button-send-receive-money is-rounded action"
             @click="newLinkTab()"
           >
-            Suivant
+            {{ $gettext("Next") }}
           </button>
         </template>
         <template v-if="creditOrderUrl.length > 1">
           <a
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
             @click="navigateToCreditOrder"
-            >Compléter la transaction dans mon espace personnel</a
+            >{{ $gettext("Finalize order from your account") }}</a
           >
         </template>
         <template v-if="showCreditRefreshNotification">
           <a
             class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
             @click="closeAndRefresh"
-            >Fermer et rafraîchir</a
+            >{{ $gettext("Close and refresh") }}</a
           >
         </template>
       </footer>
@@ -167,8 +185,9 @@
       async newLinkTab() {
         this.errors.amount = false
         if (this.amount <= 0) {
-          this.errors.amount =
-            "Le montant à créditer doit être un nombre positif"
+          this.errors.amount = this.$gettext(
+            "The top up amount must be greater than 0"
+          )
           return
         }
         // This to ensure we are left with 2 decimals only
@@ -188,7 +207,9 @@
         } catch (error) {
           console.log("Payment failed:", error)
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative de crédit de votre compte"
+            this.$gettext(
+              "An unexpected issue occurred while attempting to top up your account"
+            )
           )
         } finally {
           this.$loading.hide()

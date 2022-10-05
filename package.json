@@ -29,6 +29,7 @@
     "vue-pincode-input": "^0.4.0",
     "vue-router": "^4.0.0-0",
     "vue-sweetalert2": "^5.0.2",
+    "vue3-gettext": "^2.2.0-alpha.1",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@
               <input
                 v-model.trim="email"
                 class="input"
-                placeholder="Courriel"
+                :placeholder="$gettext('Email')"
               />
               <span class="icon is-small is-left">
                 <fa-icon icon="envelope" />
@@ -25,7 +25,7 @@
                 v-model="password"
                 class="input"
                 type="password"
-                placeholder="Mot de passe"
+                :placeholder="$gettext('Password')"
               />
               <span class="icon is-small is-left">
                 <fa-icon icon="lock" />
@@ -34,14 +34,14 @@
           </div>
           <div class="forgot-password mb-4">
             <button @click="openResetPasswordUrl()" type="button">
-              Mot de passe oublié ?
+              {{ $gettext("Forgot password ?") }}
             </button>
           </div>
           <div class="login-buttons">
             <div>
               <p class="control has-text-centered">
                 <button type="submit" class="button is-login">
-                  Se connecter
+                  {{ $gettext("Sign in") }}
                 </button>
               </p>
             </div>
@@ -52,7 +52,7 @@
                   type="button"
                   class="button create-account"
                 >
-                  Créer un compte
+                  {{ $gettext("Sign up") }}
                 </button>
               </p>
             </div>
@@ -99,27 +99,24 @@
             login: this.email,
             password: this.password,
           })
-          this.success = "Connection réussie"
+          this.success = this.$gettext("Connection successful")
           this.$router.push({ name: "dashboard" })
           this.$persistentStore.set("loginEmail", this.email)
         } catch (e) {
           // { APIRequestFailed, InvalidCredentials }
           if (e instanceof RestExc.APIRequestFailed) {
-            this.fail =
-              "Refus du serveur distant, contactez votre administrateur"
+            this.fail = this.$gettext("Request refused by remote server. Contact your administrator")
             return
           }
           if (e instanceof RestExc.InvalidCredentials) {
-            this.fail = "Identifiant ou mot de passe incorrect"
+            this.fail = this.$gettext("Invalid credentials")
             return
           }
           if (e instanceof RequestExc.RequestFailed) {
-            this.fail =
-              "La requête a échoué, impossible de joindre le serveur distant."
+            this.fail = this.$gettext("Request failed to remote server.")
             return
           }
-          this.fail =
-            "La requête s'est terminée de façon inattendue, impossible de joindre le serveur distant."
+          this.fail = this.$gettext("Unexpected issue when attempting to connect to remote server.")
           throw e
         } finally {
           this.$loading.hide()

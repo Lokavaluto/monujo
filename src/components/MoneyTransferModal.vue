@@ -5,7 +5,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            Envoyer de l'argent - 1/2
+            {{ $gettext("Send money") }} - 1/2
           </p>
           <button
             class="delete"
@@ -31,7 +31,7 @@
                 "
                 class="input"
                 type="text"
-                placeholder="adresse mail, téléphone"
+                :placeholder="$gettext('email, phone')"
               />
               <span class="icon is-small is-left">
                 <fa-icon icon="search" />
@@ -57,8 +57,12 @@
             v-else-if="recipientsSearchError"
             class="notification is-light is-danger"
           >
-            Une erreur inattendue est survenue lors de la recherche de
-            destinataires. Veuillez nous excuser pour la gêne occasionnée.
+            {{
+              $gettext(
+                "An unexpected issue occurred while performing recipient lookup. " +
+                  "We apologise for the inconvenience."
+              )
+            }}
           </div>
           <div v-else>
             <div
@@ -82,7 +86,7 @@
               v-else
               class="is-flex is-align-items-center is-justify-content-center"
             >
-              Aucun destinataire de paiement a afficher
+              {{ $gettext("No recipient found") }}
             </div>
           </div>
         </section>
@@ -104,7 +108,7 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            Envoyer de l'argent - 2/2
+            {{ $gettext("Send money") }} - 2/2
           </p>
           <button
             class="delete"
@@ -117,7 +121,9 @@
             class="is-flex is-flex-direction-column is-justify-content-space-evenly"
           >
             <div class="is-flex is-flex-direction-column custom-montant-input">
-              <h2 class="frame3-sub-title mb-3">Depuis</h2>
+              <h2 class="frame3-sub-title mb-3">
+                {{ $gettext("From") }}
+              </h2>
               <BankAccountItem
                 :bal="ownSelectedAccount.bal"
                 :curr="ownSelectedAccount.curr"
@@ -126,11 +132,15 @@
                 :active="ownSelectedAccount.active"
                 class="mb-4"
               >
-                <template v-slot:name>{{ ownSelectedAccount.name }}</template>
+                <template v-slot:name>{{ ownSelectedAccount.name() }}</template>
               </BankAccountItem>
-              <h2 class="frame3-sub-title mb-3">Vers</h2>
-              <RecipientItem :recipient="selectedRecipient" />
-              <h2 class="frame3-sub-title mt-3 mb-3">Montant</h2>
+              <h2 class="frame3-sub-title mb-3">
+                {{ $gettext("To") }}
+              </h2>
+              <RecipientItem :partner="selectedRecipient" />
+              <h2 class="frame3-sub-title mt-3 mb-3">
+                {{ $gettext("Amount") }}
+              </h2>
               <div class="is-flex">
                 <input
                   v-model.number="amount"
@@ -138,7 +148,7 @@
                   type="number"
                   min="0"
                   class="input is-custom"
-                  placeholder="ex: 50"
+                  :placeholder="$gettext('e.g. 50')"
                   :class="{
                     'is-danger': errors.balance || errors.amount,
                   }"
@@ -159,7 +169,7 @@
               <textarea
                 v-model="message"
                 class="custom-textarea textarea mt-5"
-                placeholder="Ajoutez un texte (optionnel)"
+                :placeholder="$gettext('Add a memo (optional)')"
               ></textarea>
             </div>
           </div>
@@ -169,7 +179,7 @@
             class="button custom-button custom-button-send-receive-money is-rounded action"
             @click="sendTransaction()"
           >
-            Envoyer
+            {{ $gettext("Send") }}
           </button>
         </footer>
       </div>
@@ -258,8 +268,9 @@
         this.errors.amount = false
         this.errors.balance = false
         if (this.amount <= 0) {
-          this.errors.amount =
-            "Le montant à transférer doit être un nombre positif"
+          this.errors.amount = this.$gettext(
+            "Amount to send must be greater than 0"
+          )
           return
         }
         // This to ensure we are left with 2 decimals only
@@ -272,14 +283,16 @@
           )
         } catch (err) {
           if (err instanceof LokapiExc.InsufficientBalance) {
-            this.errors.balance =
-              "Transaction refusée en raison de fonds insuffisants"
+            this.errors.balance = this.$gettext(
+              "Transaction was refused due to insufficient balance"
+            )
             return
           }
           if (err instanceof LokapiExc.InactiveAccount) {
             this.$msg.error(
-              `Le compte destinataire du tranfert est désactivé.<br>` +
-                `Vous ne pouvez pas lui envoyer de l'argent`
+              this.$gettext("Target account is inactive.") +
+                "<br/>" +
+                this.$gettext("You can't send money to this account.")
             )
             return
           }
@@ -288,10 +301,17 @@
             return
           }
           this.$msg.error(
-            `Une erreur inattendue est survenue pendant le transfert d'argent. ` +
-              `Veuillez nous excuser pour la gêne occasionnée.<br>` +
-              `Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre administrateur.`
+            this.$gettext(
+              "An unexpected issue occurred during the money transfer. " +
+                "We are sorry for the inconvenience."
+            ) +
+              "<br/>" +
+              this.$gettext(
+                "You can try again. If the issue persists, " +
+                  "please contact your administrator."
+              )
           )
+
           console.log("Payment failed:", err.message)
           throw err
         } finally {
@@ -302,14 +322,21 @@
         this.errors.amount = false
         this.$emit("close")
 
-        this.$msg.success(`Paiement effectué à ${this.selectedRecipient.name}`)
+        this.$msg.success(
+          this.$gettext("Payment issued to %{ name }", {
+            name: this.selectedRecipient.name,
+          })
+        )
         if (!this.selectedRecipient.is_favorite) {
           this.$Swal
             .fire({
-              title: `Voulez vous ajouter ${this.selectedRecipient.name} aux favoris ?`,
+              title: this.$gettext(
+                "Do you want to add %{ name } to your favorite list ?",
+                { name: this.selectedRecipient.name }
+              ),
               showDenyButton: true,
-              confirmButtonText: `Ajouter`,
-              denyButtonText: `Plus tard`,
+              confirmButtonText: this.$gettext("Add"),
+              denyButtonText: this.$gettext("Later"),
             })
             .then(async (result: any) => {
               if (!result.isConfirmed) return
@@ -322,7 +349,9 @@
                 return
               }
               this.$Swal.fire(
-                `${this.selectedRecipient.name} a bien été ajouté en favori`,
+                this.$gettext("%{ name } was added to your favorite list", {
+                  name: this.selectedRecipient.name,
+                }),
                 "",
                 "success"
               )

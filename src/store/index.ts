@@ -5,9 +5,9 @@
 import { createStore } from "vuex"
 import moment from "moment"
 
-const DEFAULT_NUMERIC_FORMAT_LANGUAGE = "fr-FR"
-const DEFAULT_DATE_FORMAT_LANGUAGE = "fr-FR"
-const DEFAULT_DATE_PICKER_LANGUAGE = "fr"
+const DEFAULT_NUMERIC_FORMAT_LANGUAGE = "en-US"
+const DEFAULT_DATE_FORMAT_LANGUAGE = "en-US"
+const DEFAULT_DATE_PICKER_LANGUAGE = "en"
 
 function mkNumericFormat(language: string) {
   return new Intl.NumberFormat(language, {

@@ -10,10 +10,10 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            <span class="ml-2">Toutes les transactions</span>
+            <span class="ml-2">{{ $gettext("All transactions") }}</span>
             <button
               class="button is-ghost is-medium download-transactions is-responsive"
-              title="Exporter les transactions"
+              :title="$gettext('Export all transactions')"
             >
               <i
                 @click="
@@ -66,7 +66,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            <span class="ml-2">Exporter en format CSV </span>
+            <span class="ml-2">{{ $gettext("Export in CSV format") }}</span>
           </p>
           <button
             class="delete"
@@ -92,7 +92,7 @@
               class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
             >
               <div class="mb-2">
-                <strong>Sélectionnez un intervalle de temps: </strong>
+                <strong>{{ $gettext("Select timespan:") }}</strong>
               </div>
               <div class="datepicker-export">
                 <date-picker
@@ -101,19 +101,18 @@
                   prefix-class="xmx"
                   :editable="false"
                   @close="normalizeEndDate"
-                  placeholder="Toutes les transactions"
+                  :placeholder="$gettext('All transactions')"
                 >
                   <template #header="{ emit }">
                     <div>
-                      <div v-for="selector in selectors"
-                           class="is-grid-align">
-                        <span class="mr-5">{{selector.label}}:</span>
+                      <div v-for="selector in selectors" class="is-grid-align">
+                        <span class="mr-5">{{ selector.label }}:</span>
                         <span v-for="pos in Object.keys(selector.labels)"
                           ><button
                             class="mx-btn mx-btn-text"
                             @click="makeTimeSpan(selector.timeSpan, -pos, emit)"
                           >
-                            {{selector.labels[pos]}}
+                            {{ selector.labels[pos] }}
                           </button></span
                         >
                       </div>
@@ -125,7 +124,7 @@
                 <span v-if="getPlatform !== 'ios'" class="mr-2"
                   ><button
                     class="button custom-button is-payer has-text-weight-medium is-rounded action"
-                    title="Exporter les transactions"
+                    :title="$gettext('Export all transactions')"
                     @click="downloadCsvFile()"
                     :disabled="isAllTransactionsLoading"
                   >
@@ -133,13 +132,13 @@
                       <span class="icon">
                         <fa-icon icon="fa-download" class="fa-lg" />
                       </span>
-                      <span>Télécharger</span>
+                      <span>{{ $gettext("Download") }}</span>
                     </span>
                   </button></span
                 ><span v-if="getPlatform !== 'web'" class="ml-2"
                   ><button
                     class="button custom-button is-payer has-text-weight-medium is-rounded action"
-                    title="Exporter les transactions"
+                    :title="$gettext('Send transactions')"
                     @click="shareCsvFile()"
                     :disabled="isAllTransactionsLoading"
                   >
@@ -147,7 +146,7 @@
                       <span class="icon">
                         <fa-icon icon="fa-share" class="fa-lg" />
                       </span>
-                      <span>Partager</span>
+                      <span>{{ $gettext("Share") }}</span>
                     </span>
                   </button>
                 </span>
@@ -166,7 +165,7 @@
         @click=";(showModal = true), $store.commit('setModalState', true)"
         class="button custom-button custom-inverted"
       >
-        Voir tout
+        {{ $gettext("See more") }}
       </button>
     </div>
   </div>
@@ -211,38 +210,38 @@
         shortcutExport: null,
         selectors: [
           {
-            label: "Jour",
+            label: this.$gettext("Day"),
             labels: {
-              0: "Courant",
-              1: "Précédent",
+              0: this.$pgettext("day", "Current"),
+              1: this.$pgettext("day", "Previous"),
             },
-            timeSpan: "day"
+            timeSpan: "day",
           },
           {
-            label: "Semaine",
+            label: this.$gettext("Week"),
             labels: {
-              0: "Courante",
-              1: "Précédente"
+              0: this.$pgettext("week", "Current"),
+              1: this.$pgettext("week", "Previous"),
             },
-            timeSpan: "week"
+            timeSpan: "week",
           },
           {
-            label: "Mois",
+            label: this.$gettext("Month"),
             labels: {
-              0: "Courant",
-              1: "Précédent"
+              0: this.$pgettext("month", "Current"),
+              1: this.$pgettext("month", "Previous"),
             },
-            timeSpan: "month"
+            timeSpan: "month",
           },
           {
-            label: "Année",
+            label: this.$gettext("Year"),
             labels: {
-              0: "Courante",
-              1: "Précédente"
+              0: this.$pgettext("year", "Current"),
+              1: this.$pgettext("year", "Previous"),
             },
-            timeSpan: "year"
+            timeSpan: "year",
           },
-        ]
+        ],
       }
     },
     computed: {
@@ -286,7 +285,9 @@
           await this.$store.dispatch("fetchAllTransactions", this.exportDate)
         } catch (e) {
           this.$msg.error(
-            "Il y a eu un problème lors de la tentative de telechargement de la liste des transactions"
+            this.$gettext(
+              "An unexpected issue occured while downloading transaction list"
+            )
           )
           throw e
         } finally {
@@ -302,11 +303,11 @@
         ]
         let csvDataLine: { [key: string]: string }[] = [
           {
-            sender: "Source",
-            receiver: "Destinataire",
-            amount: "Montant",
-            date: "Date",
-            description: "Description",
+            sender: this.$gettext("Source"),
+            receiver: this.$gettext("Target"),
+            amount: this.$gettext("Amount"),
+            date: this.$gettext("Date"),
+            description: this.$gettext("Description"),
           },
         ]
 
@@ -348,11 +349,13 @@
           )
         } catch (e) {
           this.$msg.error(
-            "La liste des transactions n'a pas pu être téléchargée"
+            this.$gettext("Transaction list could not be downloaded")
           )
           throw e
         }
-        this.$msg.success("Liste des transactions téléchargée")
+        this.$msg.success(
+          this.$gettext("Transaction list downloaded")
+        )
       },
       async shareCsvFile() {
         this.selectExportLoader = 2
@@ -360,10 +363,14 @@
         try {
           await this.$export.share(csvContent, "Transactions.csv")
         } catch (e) {
-          this.$msg.error("La liste des transactions n'a pas pu être partagée")
-          return
+          this.$msg.error(
+            this.$gettext("Transaction list could not be downloaded")
+          )
+          throw e
         }
-        this.$msg.success("Liste des transactions partagée")
+        this.$msg.success(
+          this.$gettext("Transaction list shared")
+        )
       },
       makeTimeSpan(timeSpan: any, pos: number, emit: any) {
         emit(
