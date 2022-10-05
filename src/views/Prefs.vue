@@ -1,18 +1,22 @@
 <template>
   <main class="main">
     <div class="container mt-5">
-      <div class="security-prefs">
+      <div class="container-prefs">
         <div class="auth-preferences">
           <div class="card custom-card custom-card-padding custom-card-prefs">
+          <div v-for="group in componentDefs" :key="group.name">
             <div class="mb-5">
-              <label class="custom-card-title"> Préférences de sécurité </label>
+              <label class="custom-card-title">{{
+                group.label
+              }}</label>
             </div>
-            <div v-for="componentDef in componentDefs" :key="componentDef">
+            <div v-for="componentDef in group.componentDefs" :key="componentDef">
               <component
                 :is="componentDef.component.name"
                 :prefs-data="componentDef.data"
               />
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -41,5 +45,8 @@
   .custom-card-prefs {
     max-width: 550px;
     margin: auto;
+  }
+  .container-prefs {
+    margin-bottom: 1em;
   }
 </style>

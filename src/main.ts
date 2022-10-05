@@ -145,6 +145,7 @@ fetchConfig("config.json").then((config: any) => {
   )
 
   const prefsService = new PrefsService()
+  prefsService.setGroup("security", "Préférences de sécurité")
   prefsService.register(async () => {
     const userAccounts = await lokApiService.getUserAccountsRequiringUnlock()
     if (userAccounts.length == 0) {
@@ -152,6 +153,7 @@ fetchConfig("config.json").then((config: any) => {
     }
     return [
       {
+        group: "security",
         component: AuthPrefs,
         data: {
           userAccountsRequiringAuth: userAccounts,
