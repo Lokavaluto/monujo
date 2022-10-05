@@ -263,7 +263,7 @@
           return
         }
         // This to ensure we are left with 2 decimals only
-        this.amount = this.amount.toFixed(2)
+        this.amount = parseFloat(this.amount).toFixed(2)
         try {
           this.$store.commit("setRequestLoadingAfterCreds", true)
           await this.selectedRecipient.transfer(
