@@ -86,6 +86,10 @@ fetchConfig("config.json").then((config: any) => {
       router.push("/")
     }
   }
+  const localSettings = new PersistentConfigStore(
+    lokApiService.persistentStore,
+    "localSettings"
+  )
 
   const root = document.querySelector(":root") as HTMLElement
 
@@ -199,6 +203,7 @@ fetchConfig("config.json").then((config: any) => {
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$lokapi = lokApiService
   app.config.globalProperties.$config = config
+  app.config.globalProperties.$localSettings = localSettings
   app.config.globalProperties.$msg = ToastService
   app.config.globalProperties.$persistentStore = new LocalStore("monujo")
   app.config.globalProperties.$auth = authService
