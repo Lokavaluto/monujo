@@ -1,13 +1,10 @@
 /* eslint-disable */
 
 ///<reference types="@types/node"/>
+import DatePicker from "vue-datepicker-next"
 
 import { createStore } from "vuex"
 import moment from "moment"
-
-const DEFAULT_NUMERIC_FORMAT_LANGUAGE = "en-US"
-const DEFAULT_DATE_FORMAT_LANGUAGE = "en-US"
-const DEFAULT_DATE_PICKER_LANGUAGE = "en"
 
 function mkNumericFormat(language: string) {
   return new Intl.NumberFormat(language, {
@@ -33,50 +30,141 @@ function mkRelativeDateFormat(language: string) {
   }
 }
 
-function mkDatePicker(language: string) {
-  let lang = import(`vue-datepicker-next/locale/${language}.es`)
+async function mkDatePicker(language: string, datePickerConfig: any) {
+  function mkLocaleDatePickerConfig(
+    localeName: string,
+    localeDatePickerSettings: any
+  ) {
+    if (!localeDatePickerSettings.months) {
+      const format = new Intl.DateTimeFormat(localeName, { month: "long" })
+        .format
+      localeDatePickerSettings.months = [...Array(12).keys()].map((m) =>
+        format(new Date(Date.UTC(2021, m % 12, 5)))
+      )
+    }
+    if (!localeDatePickerSettings.monthsShort) {
+      const format = new Intl.DateTimeFormat(localeName, { month: "short" })
+        .format
+      localeDatePickerSettings.monthsShort = [...Array(12).keys()].map((m) =>
+        format(new Date(Date.UTC(2021, m % 12, 5)))
+      )
+    }
+    if (!localeDatePickerSettings.weekdays) {
+      const format = new Intl.DateTimeFormat(localeName, { weekday: "long" })
+        .format
+      localeDatePickerSettings.weekdays = [...Array(7).keys()].map((d) =>
+        format(new Date(Date.UTC(2021, 7, 1 + d)))
+      )
+    }
+    if (!localeDatePickerSettings.weekdaysShort) {
+      const format = new Intl.DateTimeFormat(localeName, { weekday: "short" })
+        .format
+      localeDatePickerSettings.weekdaysShort = [...Array(7).keys()].map((d) =>
+        format(new Date(Date.UTC(2021, 7, 1 + d)))
+      )
+    }
+    if (!localeDatePickerSettings.weekdaysMin) {
+      const format = new Intl.DateTimeFormat(localeName, { weekday: "short" })
+        .format
+      localeDatePickerSettings.weekdaysMin = [...Array(7).keys()].map((d) =>
+        format(new Date(Date.UTC(2021, 7, 1 + d))).substring(0, 2)
+      )
+    }
+    if (!localeDatePickerSettings.firstDayOfWeek) {
+      localeDatePickerSettings.firstDayOfWeek = 1
+    }
+    if (!localeDatePickerSettings.firstWeekContainsDate) {
+      localeDatePickerSettings.firstWeekContainsDate = 1
+    }
+    return localeDatePickerSettings
+  }
+
+  const langConfig: any = {
+    formatLocale: mkLocaleDatePickerConfig(
+      language,
+      datePickerConfig?.formatLocale || {}
+    ),
+    yearFormat: datePickerConfig?.yearFormat || "YYYY",
+    monthFormat: datePickerConfig?.monthFormat || "MMM",
+    monthBeforeYear:
+      typeof datePickerConfig?.monthBeforeYear === "undefined"
+        ? true
+        : datePickerConfig.monthBeforeYear,
+  }
+  DatePicker.locale(language.split("-")[0], langConfig)
   return // XXXvlab: would be nice to use a local DatePicker
 }
 
-export default createStore({
-  state: {
-    showCredit: false,
-    isModalOpen: false,
-    numericFormatLanguage: DEFAULT_NUMERIC_FORMAT_LANGUAGE,
-    numericFormat: mkNumericFormat(DEFAULT_NUMERIC_FORMAT_LANGUAGE),
-    dateFormatLanguage: DEFAULT_DATE_FORMAT_LANGUAGE,
-    dateFormat: mkDateFormat(DEFAULT_DATE_FORMAT_LANGUAGE),
-    relativeDateFormat: mkRelativeDateFormat(DEFAULT_DATE_FORMAT_LANGUAGE),
-    datePickerLanguage: DEFAULT_DATE_PICKER_LANGUAGE,
-    datePicker: mkDatePicker(DEFAULT_DATE_PICKER_LANGUAGE),
-    requestLoadingAfterCreds: false,
-  },
-  mutations: {
-    setModalState(state: any, modalState: boolean) {
-      state.isModalOpen = modalState
+export default async function mkStore(localesConfig: any, gettext: any) {
+  const store = createStore({
+    state: {
+      showCredit: false,
+      isModalOpen: false,
+      numericFormatLanguage: false,
+      numericFormat: false,
+      dateFormatLanguage: false,
+      dateFormat: false,
+      relativeDateFormat: false,
+      datePickerLanguage: false,
+      datePicker: false,
+      requestLoadingAfterCreds: false,
     },
+    mutations: {
+      setModalState(state: any, modalState: boolean) {
+        state.isModalOpen = modalState
+      },
 
-    setRequestLoadingAfterCreds(state: any, requestLoadingAfterCreds: boolean) {
-      state.requestLoadingAfterCreds = requestLoadingAfterCreds
-    },
+      setRequestLoadingAfterCreds(
+        state: any,
+        requestLoadingAfterCreds: boolean
+      ) {
+        state.requestLoadingAfterCreds = requestLoadingAfterCreds
+      },
 
-    setNumericFormatLanguage(state: any, numericFormatLanguage: string) {
-      state.numericFormatLanguage = numericFormatLanguage
-      state.numericFormat = mkNumericFormat(numericFormatLanguage)
-    },
+      setNumericFormatLanguage(state: any, numericFormatLanguage: string) {
+        state.numericFormatLanguage = numericFormatLanguage
+        state.numericFormat = mkNumericFormat(numericFormatLanguage)
+      },
 
-    setDateFormatLanguage(state: any, dateFormatLanguage: string) {
-      state.dateFormatLanguage = dateFormatLanguage
-      state.dateFormat = mkDateFormat(dateFormatLanguage)
-      state.relativeDateFormat = mkRelativeDateFormat(dateFormatLanguage)
-    },
+      setDateFormatLanguage(state: any, dateFormatLanguage: string) {
+        state.dateFormatLanguage = dateFormatLanguage
+        state.dateFormat = mkDateFormat(dateFormatLanguage)
+        state.relativeDateFormat = mkRelativeDateFormat(dateFormatLanguage)
+      },
 
-    setDatePickerLanguage(state: any, datePickerLanguage: string) {
-      state.datePickerLanguage = datePickerLanguage
-      state.datePicker = mkDatePicker(datePickerLanguage)
+      setDatePickerLanguage(state: any, datePickerLanguage: string) {
+        state.datePickerLanguage = datePickerLanguage
+        const availableLanguages = localesConfig.availableLanguages || {}
+        const localeConfig = availableLanguages[datePickerLanguage]
+        state.datePicker = mkDatePicker(
+          datePickerLanguage,
+          localeConfig?.datePickerFormat
+        )
+      },
     },
-  },
-  actions: {},
-  modules: {},
-  getters: {},
-})
+    actions: {
+      async switchLocale({ commit }: any, localeIdentifier) {
+        const availableLanguages = localesConfig?.availableLanguages || {}
+
+        // If localeIdentifier is null, gettext will resolve the name
+        // of the default language. It can still return "false"
+        localeIdentifier = await gettext.loadTranslation(localeIdentifier)
+        const localeConfig = availableLanguages[localeIdentifier] || {}
+        localeIdentifier = localeIdentifier || "en-US"
+        commit(
+          "setNumericFormatLanguage",
+          localeConfig?.numericFormat || localeIdentifier
+        )
+        commit(
+          "setDateFormatLanguage",
+          localeConfig?.dateFormat || localeIdentifier
+        )
+        commit("setDatePickerLanguage", localeIdentifier)
+      },
+    },
+    modules: {},
+    getters: {},
+  })
+  await store.dispatch("switchLocale")
+  return store
+}

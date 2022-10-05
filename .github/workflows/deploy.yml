@@ -39,7 +39,20 @@ jobs:
             \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
             \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
             \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
-            \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\"
+            \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"locales\": {
+              \"availableLanguages\": {
+                \"en-US\": {
+                  \"label\": \"English (US)\"
+                },
+                \"fr-FR\": {
+                  \"label\": \"Français (France)\",
+                  \"url\": \"https://docker.0k.io/downloads/monujo.fr-FR.json\"
+                }
+              },
+              \"appStringsLanguage\": \"en-US\",
+              \"defaultLanguage\": \"en-US\"
+            }
           }" > dist/config.json
           cat dist/config.json
       - name: "📂 SFTP Sync files"

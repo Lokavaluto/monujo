@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
-import store from "../store"
 import Dashboard from "../views/Dashboard.vue"
 import Carto from "../views/Carto.vue"
 import Login from "../views/Login.vue"
@@ -57,8 +56,7 @@ const routes: Array<RouteRecordRaw> = [
   },
 ]
 
-
-export function mkRouter(appName: string) {
+export function mkRouter(appName: string, store: any): any {
   const router = createRouter({
     history: createWebHashHistory(),
     routes,

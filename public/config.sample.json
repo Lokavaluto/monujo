@@ -13,6 +13,19 @@
     }],
   "logoUrl": "https://example.com/img/logo.png",
   "loginLogoUrl": "https://example.com/img/logo-2.png",
+  "locales": {
+    "availableLanguages": {
+      "en-US": {
+        "label": "English (US)"
+      },
+      "fr-FR": {
+        "label": "Français (France)",
+        "url": "/i18n/fr-FR.json"
+      }
+    },
+    "appStringsLanguage": "en-US",
+    "defaultLanguage": "en-US"
+  },
   "theme": {
     "color-1": "#e4f2f1",
     "color-2": "#009688",

@@ -10,7 +10,7 @@ import "./polyfill"
 
 // Store
 
-import store from "./store"
+import mkStore from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { prefsStoreFactory } from "./store/prefs"
 
@@ -71,14 +71,23 @@ async function fetchConfig(path: string) {
   }
 }
 
-fetchConfig("config.json").then((config: any) => {
+fetchConfig("config.json").then(async (config: any) => {
   if (!config.lokapiHost) {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
 
   const defaultAppName = require("../package.json").name
-  const router = mkRouter(config.appName || defaultAppName)
   const lokApiService = new LokAPI(config.lokapiHost, config.lokapiDb)
+  const localSettings = new PersistentConfigStore(
+    lokApiService.persistentStore,
+    "localSettings"
+  )
+  const gettext = await mkGettext(config?.locales || {}, localSettings || {})
+  const store = await mkStore(config?.locales || {}, gettext)
+  const router = mkRouter(config.appName || defaultAppName, store)
+
+  const { $gettext } = gettext
+
   lokApiService.requestLogin = async () => {
     const lastUrlSegment = window.location.href.split("/").pop()
     if (lastUrlSegment !== "carto" && lastUrlSegment !== "") {
@@ -87,12 +96,7 @@ fetchConfig("config.json").then((config: any) => {
       router.push("/")
     }
   }
-  const localSettings = new PersistentConfigStore(
-    lokApiService.persistentStore,
-    "localSettings"
-  )
-  const gettext = mkGettext(config?.locales || {}, localSettings || {})
-  const { $gettext } = gettext
+
   lokApiService.getBankAccountName = async (bankAccount: any) => {
     if (bankAccount.getDisplayName) {
       return await bankAccount.getDisplayName()
