@@ -30,10 +30,6 @@
     name: "Prefs",
     components: { AuthPrefs, Loading },
     computed: {
-      // componentDefs() {
-      //   console.log("querying:", this.$store.state.prefs.componentDefs)
-      //   return this.$store.state.prefs.componentDefs
-      // },
       ...mapState({
         componentDefs: (state: any) => state.prefs.componentDefs,
       }),
