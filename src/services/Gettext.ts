@@ -1,9 +1,18 @@
 import { createGettext } from "vue3-gettext"
 
-function getDefaultLanguage(localesConfig: any) {
+async function getDefaultLanguage(localesConfig: any, localesSettings: any) {
   const availableLanguages = localesConfig?.availableLanguages
 
   if (!availableLanguages) return false
+
+  // any locale preferences ?
+
+  const languageSetting = (await localesSettings.load())?.language
+  if (languageSetting) {
+    if (availableLanguages[languageSetting]) {
+      return languageSetting
+    }
+  }
 
   // Do we have a preference in global config ?
 
@@ -34,7 +43,8 @@ export default async function mkGettext(
   }) as unknown as any
 
   gettext.loadTranslation = async function (l?: string) {
-    l = (l || getDefaultLanguage(localesConfig)) as string
+    l = (l ||
+      (await getDefaultLanguage(localesConfig, localesSettings))) as string
     if (!l) return
     if (l === this.current) return
     if (l !== localesConfig.appStringsLanguage && !this.translations[l]) {

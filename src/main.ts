@@ -26,6 +26,8 @@ import {
 import PrefsService from "@/services/PrefsService"
 import ExportService from "@/services/ExportService"
 import AuthPrefs from "@/components/AuthPrefs.vue"
+import LangPrefs from "@/components/LangPrefs.vue"
+
 import ToastService from "@/services/toastService"
 import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
@@ -181,6 +183,19 @@ fetchConfig("config.json").then(async (config: any) => {
         data: {
           userAccountsRequiringAuth: userAccounts,
         },
+      },
+    ]
+  })
+
+  prefsService.setGroup("language", () => $gettext("Language settings"))
+  prefsService.register(async () => {
+    if (Object.keys(gettext.available).length <= 1) {
+      return []
+    }
+    return [
+      {
+        group: "language",
+        component: LangPrefs,
       },
     ]
   })
