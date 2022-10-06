@@ -32,6 +32,11 @@
     props: {
       msg: String,
     },
+    watch: {
+      $route(to, from) {
+        this.$store.commit("setModalState", false)
+      },
+    },
     components: {
       TheTransactionList,
       TheBankAccountList,
