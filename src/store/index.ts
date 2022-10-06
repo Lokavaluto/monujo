@@ -7,6 +7,7 @@ import moment from "moment"
 
 const DEFAULT_NUMERIC_FORMAT_LANGUAGE = "fr-FR"
 const DEFAULT_DATE_FORMAT_LANGUAGE = "fr-FR"
+const DEFAULT_DATE_PICKER_LANGUAGE = "fr"
 
 function mkNumericFormat(language: string) {
   return new Intl.NumberFormat(language, {
@@ -32,6 +33,11 @@ function mkRelativeDateFormat(language: string) {
   }
 }
 
+function mkDatePicker(language: string) {
+  let lang = import(`vue-datepicker-next/locale/${language}.es`)
+  return // XXXvlab: would be nice to use a local DatePicker
+}
+
 export default createStore({
   state: {
     showCredit: false,
@@ -41,6 +47,8 @@ export default createStore({
     dateFormatLanguage: DEFAULT_DATE_FORMAT_LANGUAGE,
     dateFormat: mkDateFormat(DEFAULT_DATE_FORMAT_LANGUAGE),
     relativeDateFormat: mkRelativeDateFormat(DEFAULT_DATE_FORMAT_LANGUAGE),
+    datePickerLanguage: DEFAULT_DATE_PICKER_LANGUAGE,
+    datePicker: mkDatePicker(DEFAULT_DATE_PICKER_LANGUAGE),
     requestLoadingAfterCreds: false,
   },
   mutations: {
@@ -61,6 +69,11 @@ export default createStore({
       state.dateFormatLanguage = dateFormatLanguage
       state.dateFormat = mkDateFormat(dateFormatLanguage)
       state.relativeDateFormat = mkRelativeDateFormat(dateFormatLanguage)
+    },
+
+    setDatePickerLanguage(state: any, datePickerLanguage: string) {
+      state.datePickerLanguage = datePickerLanguage
+      state.datePicker = mkDatePicker(datePickerLanguage)
     },
   },
   actions: {},

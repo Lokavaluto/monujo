@@ -189,7 +189,6 @@
 
   import "vue-datepicker-next/index.css"
   import "@/assets/datepicker.scss"
-  import "vue-datepicker-next/locale/fr"
 
   import { mapModuleState } from "@/utils/vuex"
 
