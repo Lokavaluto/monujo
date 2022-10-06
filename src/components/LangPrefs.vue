@@ -23,7 +23,6 @@
             <option
               v-for="(name, key) in $language.available"
               :key="key"
-              @click="setCustomLanguage(key)"
               :value="key"
             >
               {{ name }}
@@ -56,6 +55,11 @@
         this.useCustomLanguage = true
       }
       this.userLanguage = this.userLanguage || this.$language.current
+    },
+    watch: {
+      "userLanguage": function (): void {
+        this.setCustomLanguage(this.userLanguage)
+      },
     },
     methods: {
       setUseCustomLanguage(value: any) {
