@@ -24,7 +24,8 @@
       }
     },
     "appStringsLanguage": "en-US",
-    "defaultLanguage": "en-US"
+    "defaultLanguage": "en-US",
+    "preferNavigatorLanguage": true
   },
   "theme": {
     "color-1": "#e4f2f1",

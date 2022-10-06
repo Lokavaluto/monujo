@@ -14,6 +14,25 @@ async function getDefaultLanguage(localesConfig: any, localesSettings: any) {
     }
   }
 
+  // prefer navigator language ?
+
+  if (localesConfig?.preferNavigatorLanguage) {
+    let matchingLanguage = null
+    const navigatorLanguages = navigator.languages
+      ? navigator.languages
+      : [navigator.language]
+
+    for (const language of navigatorLanguages) {
+      if (availableLanguages[language]) {
+        matchingLanguage = language
+        break
+      }
+    }
+    if (matchingLanguage) {
+      return matchingLanguage
+    }
+  }
+
   // Do we have a preference in global config ?
 
   const defaultLanguage = localesConfig?.defaultLanguage
