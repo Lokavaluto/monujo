@@ -9,12 +9,7 @@
       </div>
       <div class="is-align-items-center is-flex">
         <span class="is-size-6-mobile is-size-4-tablet account-bal" v-if="active">
-          {{
-            parseFloat(bal).toLocaleString("fr", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-          }}
+          {{ numericFormat.format(parseFloat(bal)) }}
         </span>
         <span
           class="is-size-6-mobile is-size-4-tablet account-bal inactive"
@@ -45,6 +40,7 @@
 </template>
 
 <script lang="ts">
+  import { mapState } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
 
@@ -62,6 +58,7 @@
     },
     computed: {
       ...mapModuleState("lokapi", ["isMultiCurrency"]),
+      ...mapState(["numericFormat"]),
     },
   })
   export default class BankAccountItem extends Vue {}

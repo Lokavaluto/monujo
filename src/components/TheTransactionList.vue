@@ -173,6 +173,8 @@
 </template>
 
 <script lang="ts">
+  import { mapState } from "vuex"
+
   import { Options, Vue } from "vue-class-component"
   import Loading from "vue-loading-overlay"
   import DatePicker from "vue-datepicker-next"
@@ -189,10 +191,6 @@
   import "@/assets/datepicker.scss"
   import "vue-datepicker-next/locale/fr"
 
-  const numberFormat = new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
   moment.locale("fr")
   import { mapModuleState } from "@/utils/vuex"
   @Options({
@@ -259,6 +257,7 @@
         "transactions",
         "userProfile",
       ]),
+      ...mapState(["numericFormat"]),
     },
     watch: {
       showModal(newval: boolean, oldval: boolean) {
@@ -320,7 +319,7 @@
           let data: { [key: string]: string } = {
             sender,
             receiver,
-            amount: numberFormat.format(e.amount),
+            amount: this.numericFormat.format(e.amount),
             date: moment(e.date).format(),
             description: e.description || "",
           }

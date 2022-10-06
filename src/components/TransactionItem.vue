@@ -14,12 +14,7 @@
             : 'custom-card-destinataire has-text-success',
         ]"
       >
-        {{
-          parseFloat(amount).toLocaleString("fr", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-        }}
+        {{ numericFormat.format(parseFloat(amount)) }}
         {{ symbol }}
       </h3>
       <h4 class="custom-card-destinataire">{{ name }}</h4>
@@ -32,6 +27,7 @@
 </template>
 
 <script lang="ts">
+  import { mapState } from "vuex"
   import { Options, Vue } from "vue-class-component"
 
   import moment from "moment"
@@ -55,6 +51,9 @@
       date: String,
       name: String,
       unformatedDate: Date,
+    },
+    computed: {
+      ...mapState(["numericFormat"]),
     },
   })
   export default class TransactionItem extends Vue {}
