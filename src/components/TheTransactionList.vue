@@ -191,8 +191,8 @@
   import "@/assets/datepicker.scss"
   import "vue-datepicker-next/locale/fr"
 
-  moment.locale("fr")
   import { mapModuleState } from "@/utils/vuex"
+
   @Options({
     name: "TheTransactionList",
     components: {
@@ -257,7 +257,7 @@
         "transactions",
         "userProfile",
       ]),
-      ...mapState(["numericFormat"]),
+      ...mapState(["numericFormat", "dateFormat"]),
     },
     watch: {
       showModal(newval: boolean, oldval: boolean) {
@@ -320,7 +320,7 @@
             sender,
             receiver,
             amount: this.numericFormat.format(e.amount),
-            date: moment(e.date).format(),
+            date: this.dateFormat.format(e.date),
             description: e.description || "",
           }
 

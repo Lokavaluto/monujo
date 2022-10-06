@@ -3,7 +3,7 @@
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">{{ date }}</h5>
       <h5 class="card-paiement-defaut-carte has-text-right mt-1">
-        {{ calcDays(unformatedDate) }}
+        {{ relativeDateFormat.format(unformatedDate) }}
       </h5>
     </div>
     <div class="is-flex-direction-column">
@@ -30,18 +30,11 @@
   import { mapState } from "vuex"
   import { Options, Vue } from "vue-class-component"
 
-  import moment from "moment"
-
   @Options({
     name: "TransactionItem",
     components: {
     },
     methods: {
-      calcDays(date: string): string {
-        moment.locale("fr")
-        var test = moment(date).fromNow()
-        return test
-      },
     },
     props: {
       picto: String,
@@ -53,7 +46,7 @@
       unformatedDate: Date,
     },
     computed: {
-      ...mapState(["numericFormat"]),
+      ...mapState(["numericFormat", "relativeDateFormat"]),
     },
   })
   export default class TransactionItem extends Vue {}

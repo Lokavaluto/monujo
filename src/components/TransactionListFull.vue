@@ -6,7 +6,7 @@
       :amount="transaction.amount"
       :symbol="transaction.currency"
       :desc="transaction.description"
-      :date="dateFormated(transaction.date)"
+      :date="dateFormat.format(transaction.date)"
       :unformatedDate="transaction.date"
       :name="transaction.related"
       picto="QR"
@@ -14,6 +14,8 @@
   </div>
 </template>
 <script lang="ts">
+  import { mapState } from "vuex"
+
   import { Options, Vue } from "vue-class-component"
   import TransactionItem from "./TransactionItem.vue"
   import { mapModuleState } from "@/utils/vuex"
@@ -24,17 +26,9 @@
     },
     computed: {
       ...mapModuleState("lokapi", ["transactions"]),
+      ...mapState(["dateFormat"]),
     },
-    methods: {
-      dateFormated(badDate: string): string {
-        var date = new Date(badDate)
-        var options = { weekday: "long", day: "numeric", month: "numeric" }
-        // eslint-disable-next-line
-        //@ts-ignore-next-line
-        const DateFr = new Intl.DateTimeFormat("fr-FR", options).format(date)
-        return DateFr
-      },
-    },
+    methods: {},
   })
   export default class TransactionListFull extends Vue {}
 </script>
