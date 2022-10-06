@@ -142,3 +142,77 @@ npx cap open
 
 From there you can sign package, upload to store, etc... the way you
 would do it for any mobile app.
+
+# Translation
+
+By default, the current files are set up to maintain a french
+translation but the translation itself is not stored in the
+repository.
+
+In the following section you'll get to learn how to add or maintain a
+translation for monujo.
+
+## Preparing for translation in a new language
+
+Monujo uses [gettext
+standard](https://en.wikipedia.org/wiki/Gettext). You can create (and
+maintain) ready-for-translation PO files with:
+
+```
+npm run gettext:extract
+```
+
+It parses the full code for any strings (and changes to strings) and
+produces (or updates), these files:
+
+```
+src/i18n/LINGUA
+src/i18n/message.pot
+src/i18n/fr-FR/app.po
+```
+
+You can configure the exact set of PO language files (here
+``fr-FR/app.po``) to prepare/update in ``gettext.config.js`` in the
+``output.locales`` value. Many languages can be maintained at the same
+time.
+
+For more information about this configuration file, you may want to
+have a look at [vue3-gettext documentation of
+it](https://jshmrtn.github.io/vue3-gettext/extraction.html#configuration),
+and the defaults we provide in the current code.
+
+## Edit the PO file with the actual translation
+
+The previous extraction will have made changes to each ``app.po``, you
+must then either fill the missing translation, review the "fuzzy"
+entries. And finally save your file.
+
+Many dedicated PO editors exists for easing the process of translating
+apps. [POEdit](https://poedit.net/) is cross platform and up to the
+task, or you might have a look at other softwares advertised in
+[gettext
+manual](https://www.gnu.org/software/gettext/manual/gettext.html#Editing).
+
+## Integrating a translated PO to monujo
+
+Once the PO file is ready (all the new entries were translated and all
+the modified entries were unfuzzied), you need to produce a ``json``
+file so monujo can read it. This is done with:
+
+```
+npm run gettext:compile
+```
+
+This will produce files in ``public/i18n/fr-FR.json`` (using the default
+`gettext.config.json` provided with the source code).
+
+You then need to tell monujo (or make sure it is already done), that
+this language translation is available: you can force a language,
+provide a default or give the choice to the user among any number of
+languages in the ``config.json`` (you may want to look at the
+``config.sample.json``, in the ``locales`` value).
+
+Each language (except the one listed as ``appStringsLanguage`` require
+it's ``url`` field to be set to the corresponding translation file
+(the ``json`` file). Note that these translation files can be served
+along with the current monujo deployment, or from any other location.

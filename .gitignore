@@ -6,6 +6,10 @@ package-lock.json
 yarn.lock
 /public/config.json
 /public/config.theme.scss
+/public/i18n/*.json
+/src/i18n/LINGUAS
+/src/i18n/*.pot
+/src/i18n/*/*.po
 
 # local env files
 .env.local
