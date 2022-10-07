@@ -59,7 +59,7 @@
               <router-link
                 v-if="hasPreferences"
                 to="/preferences"
-                class="dropdown-item"
+                class="navbar-item"
               >
                 Préferences
               </router-link>
@@ -67,7 +67,7 @@
               <router-link
                 v-if="hasUnconfiguredBackend"
                 to="/create-account"
-                class="dropdown-item"
+                class="navbar-item"
               >
                 Créer mon portefeuille
               </router-link>
@@ -84,26 +84,26 @@
                 <router-link
                   v-if="hasUserAccountValidationRights"
                   to="/admin/pending-accounts"
-                  class="dropdown-item"
+                  class="navbar-item"
                 >
                   Demandes de comptes
                 </router-link>
                 <router-link
                   v-if="hasCreditRequestValidationRights"
                   to="/admin/pending-credits"
-                  class="dropdown-item"
+                  class="navbar-item"
                 >
                   Demandes de crédit
                 </router-link>
                 <hr class="dropdown-divider" />
               </template>
 
-              <a v-if="helpUrl" :href="helpUrl" class="dropdown-item"> Aide </a>
-              <a v-if="cguUrl" :href="cguUrl" class="dropdown-item"> CGU </a>
+              <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
+              <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
 
               <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
 
-              <a @click="logout" class="dropdown-item"> Déconnexion </a>
+              <a @click="logout" class="navbar-item"> Déconnexion </a>
             </div>
           </div>
         </template>
