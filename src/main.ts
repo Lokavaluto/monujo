@@ -110,6 +110,11 @@ fetchConfig("config.json").then((config: any) => {
       root.style.setProperty(`--${key}`, value)
     })
   }
+  if (root !== null && typeof config.css === "string") {
+    const sheet = document.createElement("style")
+    sheet.innerHTML = config.css
+    document.body.appendChild(sheet)
+  }
 
   const authService = new AuthService(
     config?.localAuthPolicy,
