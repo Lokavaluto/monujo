@@ -1,7 +1,7 @@
 <template>
   <div>
     <TransactionItem
-      v-for="transaction in getTransactions"
+      v-for="transaction in transactions"
       :key="transaction"
       :amount="transaction.amount"
       :symbol="transaction.currency"
@@ -20,16 +20,14 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import TransactionItem from "./TransactionItem.vue"
-
+  import { mapModuleState } from "@/utils/vuex"
   @Options({
     name: "TransactionListFull",
     components: {
       TransactionItem,
     },
     computed: {
-      getTransactions(): number {
-        return this.$store.state.lokapi.transactions
-      },
+      ...mapModuleState("lokapi", ["transactions"]),
     },
     methods: {
       dateFormated(badDate: string): string {
