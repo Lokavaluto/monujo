@@ -1,12 +1,12 @@
 <template>
   <main class="main pb-4">
-    <div v-if="unconfiguredBackends.length > 1" class="container">
+    <div v-if="getUnconfiguredBackends.length > 1" class="container">
       <div class="columns mt-5">
         <div class="column">
           <div class="card custom-card-wallet">
             <div class="">
               <ul>
-                <template v-for="(backend, index) in unconfiguredBackends">
+                <template v-for="(backend, index) in getUnconfiguredBackends">
                   <div
                     v-bind:class="{
                       'is-wallet-active': form.accountBackend === backend,
@@ -155,6 +155,7 @@
   import { Options, Vue } from "vue-class-component"
   import { LokAPIExc } from "@/services/lokapiService"
   import AuthPref from "@/components/AuthPref.vue"
+  import { mapGetters } from "vuex"
   @Options({
     name: "CreateAccount",
     components: { AuthPref },
@@ -163,11 +164,11 @@
       this.handler = markRaw(accountAuth.authPrefHandler)
     },
     mounted() {
-      if (this.unconfiguredBackends.length === 0) {
+      if (this.getUnconfiguredBackends.length === 0) {
         this.$router.push("/")
         return
       }
-      this.form.accountBackend = this.unconfiguredBackends[0]
+      this.form.accountBackend = this.getUnconfiguredBackends[0]
     },
     data() {
       return {
@@ -185,7 +186,7 @@
       }
     },
     watch: {
-      unconfiguredBackends(newval, oldval): void {
+      getUnconfiguredBackends(newval, oldval): void {
         if (newval.length === 1) {
           this.form.accountBackend = newval[0]
         }
@@ -199,9 +200,6 @@
       },
     },
     computed: {
-      unconfiguredBackends(): object {
-        return this.$store.getters.getUnconfiguredBackends()
-      },
       hasFieldErrors(): boolean {
         if (
           this.form.accountPassword.length === 0 ||
@@ -224,6 +222,8 @@
           return this.form.accountPassword
         }
       },
+
+      ...mapGetters(["getUnconfiguredBackends"]),
     },
     methods: {
       async checkPasswordField(fieldname: string, accountBackend: string) {

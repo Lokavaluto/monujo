@@ -1,13 +1,13 @@
 <template>
   <loading
-    v-model:active="isLoadingTransactions"
+    v-model:active="transactionsLoading"
     :can-cancel="false"
     :is-full-page="false"
   />
-  <div v-if="!isLoadingTransactions">
+  <div v-if="!transactionsLoading">
     <div
       class="notification is-danger is-light"
-      v-if="hasTransactionsLoadingError"
+      v-if="transactionsLoadingError"
     >
       <p class="mb-4">
         Une erreur inattendue est survenue pendant le chargement des dernières
@@ -18,13 +18,16 @@
         administrateur si l'erreur persiste.
       </p>
     </div>
-    <p v-else-if="getRecentTransactions?.length === 0" class="notification is-default">
+    <p
+      v-else-if="thisWeektransactions?.length === 0"
+      class="notification is-default"
+    >
       Aucune opération dans votre historique
     </p>
     <div v-else>
       <h2 class="custom-card-title">Opérations</h2>
       <TransactionItem
-        v-for="transaction in getRecentTransactions"
+        v-for="transaction in thisWeektransactions"
         :key="transaction"
         :amount="transaction.amount"
         :symbol="transaction.currency"
@@ -47,7 +50,7 @@
   import TransactionItem from "./TransactionItem.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
-
+  import { mapModuleState } from "@/utils/vuex"
   @Options({
     name: "TransactionListRecent",
     components: {
@@ -58,15 +61,11 @@
       return {}
     },
     computed: {
-      getRecentTransactions(): any {
-        return this.$store.state.lokapi.thisWeektransactions
-      },
-      isLoadingTransactions(): boolean {
-        return this.$store.state.lokapi.transactionsLoading
-      },
-      hasTransactionsLoadingError(): boolean {
-        return this.$store.state.lokapi.transactionsLoadingError
-      },
+      ...mapModuleState("lokapi", [
+        "thisWeektransactions",
+        "transactionsLoading",
+        "transactionsLoadingError",
+      ]),
     },
 
     methods: {

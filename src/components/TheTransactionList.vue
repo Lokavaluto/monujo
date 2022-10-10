@@ -93,7 +93,7 @@
         <footer class="modal-card-foot custom-modal-card-foot">
           <div class="transactions-loader-container">
             <loading
-              v-model:active="isLoadingTransactionsBatch"
+              v-model:active="transactionsBatchLoading"
               :can-cancel="false"
               :is-full-page="false"
               :width="30"
@@ -103,9 +103,8 @@
         </footer>
       </div>
     </div>
-
     <div
-      v-if="!isLoadingTransactions && getRecentTransactions?.length"
+      v-if="!transactionsLoading && thisWeektransactions?.length"
       class="has-text-centered mt-5"
     >
       <button
@@ -131,6 +130,7 @@
     maximumFractionDigits: 2,
   })
   moment.locale("fr")
+  import { mapModuleState } from "@/utils/vuex"
   @Options({
     name: "TheTransactionList",
     components: {
@@ -147,24 +147,16 @@
       }
     },
     computed: {
-      userProfile(): string {
-        return this.$store.state.lokapi.userProfile
-      },
-      getTransactions(): number {
-        return this.$store.state.lokapi.transactions
-      },
-      getRecentTransactions(): any {
-        return this.$store.state.lokapi.thisWeektransactions
-      },
-      isLoadingTransactions(): boolean {
-        return this.$store.state.lokapi.transactionsLoading
-      },
-      isLoadingTransactionsBatch(): boolean {
-        return this.$store.state.lokapi.transactionsBatchLoading
-      },
       getPlatform(): string {
         return Capacitor.getPlatform()
       },
+      ...mapModuleState("lokapi", [
+        "transactionsLoading",
+        "transactionsBatchLoading",
+        "thisWeektransactions",
+        "transactions",
+        "userProfile",
+      ]),
     },
     watch: {
       showModal(newval: boolean, oldval: boolean) {
@@ -218,7 +210,7 @@
           },
         ]
 
-        for (let e of this.getTransactions) {
+        for (let e of this.transactions) {
           let name = e.relatedUser ? e.relatedUser.display : e.related.type.name
           let [sender, receiver] = e.amount.startsWith("-")
             ? [this.userProfile.name, name]

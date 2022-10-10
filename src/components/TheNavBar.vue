@@ -38,14 +38,12 @@
         <router-link to="/carto" class="navbar-item" v-if="hasMapUrl">
           Carte
         </router-link>
-        <template v-if="!getLog">
+        <template v-if="!isLog">
           <a v-if="helpUrl" :href="helpUrl" class="navbar-item"> Aide </a>
           <a v-if="cguUrl" :href="cguUrl" class="navbar-item"> CGU </a>
-          <router-link to="/" class="navbar-item">
-            Se connecter
-          </router-link>
+          <router-link to="/" class="navbar-item"> Se connecter </router-link>
         </template>
-        <template v-if="getLog">
+        <template v-if="isLog">
           <router-link to="/dashboard" class="navbar-item">
             Tableau de bord
           </router-link>
@@ -60,7 +58,9 @@
               </a>
               <router-link
                 v-if="hasPreferences"
-                to="/preferences" class="dropdown-item">
+                to="/preferences"
+                class="dropdown-item"
+              >
                 Préferences
               </router-link>
 
@@ -76,7 +76,7 @@
 
               <template
                 v-if="
-                  getLog &&
+                  isLog &&
                   (hasUserAccountValidationRights ||
                     hasCreditRequestValidationRights)
                 "
@@ -114,7 +114,8 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-
+  import { mapModuleState } from "@/utils/vuex"
+  import { mapGetters } from "vuex"
   @Options({
     name: "TheNavBar",
     data() {
@@ -130,25 +131,8 @@
       },
     },
     computed: {
-      getLog(): string {
-        return this.$store.state.lokapi.isLog
-      },
       hasPreferences(): boolean {
         return this.$store.state.prefs.componentDefs.length > 0
-      },
-      hasUnconfiguredBackend(): boolean {
-        // Display of the account creation button should be displayed only
-        // if there's an un-configured backend
-        return this.$store.getters.hasUnconfiguredBackend()
-      },
-      hasUserAccountValidationRights(): boolean {
-        return this.$store.state.lokapi.hasUserAccountValidationRights
-      },
-      hasCreditRequestValidationRights(): boolean {
-        return this.$store.state.lokapi.hasCreditRequestValidationRights
-      },
-      userProfile(): string {
-        return this.$store.state.lokapi.userProfile
       },
       profilePageUrl(): string {
         return this.$store.getters.getOdooUrl() + "/web/login"
@@ -162,6 +146,14 @@
       cguUrl(): string {
         return this.$config.cguUrl
       },
+
+      ...mapModuleState("lokapi", [
+        "isLog",
+        "hasUserAccountValidationRights",
+        "hasCreditRequestValidationRights",
+        "userProfile",
+      ]),
+      ...mapGetters(["hasUnconfiguredBackend"]),
     },
   })
   export default class TheNavBar extends Vue {}

@@ -1,12 +1,12 @@
 <template>
   <div class="accounts card custom-card custom-card-padding">
     <loading
-      v-model:active="isLoadingAccounts"
+      v-model:active="accountsLoading"
       :can-cancel="false"
       :is-full-page="false"
     />
 
-    <div class="active" v-if="!isLoadingAccounts">
+    <div class="active" v-if="!accountsLoading">
       <a
         @click="refreshBalanceAndTransactions"
         title="Rafraîchir le solde et les transactions"
@@ -18,8 +18,8 @@
         </span>
       </a>
       <div
-        class="notification is-danger is-light"
-        v-if="hasAccountsLoadingError"
+	class="notification is-danger is-light"
+	v-if="accountsLoadingError"
       >
         <p class="mb-4">
           Une erreur inattendue est survenue pendant le chargement des
@@ -76,7 +76,7 @@
   import BankAccountItem from "./BankAccountItem.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
-
+  import { mapModuleState } from "@/utils/vuex"
   @Options({
     name: "TheBankAccountList",
     props: {
@@ -90,13 +90,9 @@
       totalAccountsLoaded(): number {
         return this.$store.state.lokapi.virtualAccountTree.length
       },
-      isLoadingAccounts(): boolean {
-        return this.$store.state.lokapi.accountsLoading
-      },
-      hasAccountsLoadingError(): boolean {
-        return this.$store.state.lokapi.accountsLoadingError
-      },
       ...mapGetters(["activeVirtualAccounts", "inactiveVirtualAccounts"]),
+
+      ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingError"]),
     },
     methods: {
       refreshBalanceAndTransactions() {

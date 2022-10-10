@@ -46,6 +46,7 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import { mapModuleState } from "@/utils/vuex"
 
   @Options({
     name: "BankAccountItem",
@@ -60,9 +61,7 @@
       isSub: Boolean,
     },
     computed: {
-      isMultiCurrency(): any {
-        return this.$store.state.lokapi.isMultiCurrency
-      },
+      ...mapModuleState("lokapi", ["isMultiCurrency"]),
     },
   })
   export default class BankAccountItem extends Vue {}
