@@ -1,10 +1,11 @@
 /* eslint-disable */
 
 ///<reference types="@types/node"/>
-import DatePicker from "vue-datepicker-next"
 
 import { createStore } from "vuex"
 import moment from "moment"
+
+import DatePicker from "../services/DatePicker"
 
 function mkNumericFormat(language: string) {
   return new Intl.NumberFormat(language, {
@@ -30,71 +31,6 @@ function mkRelativeDateFormat(language: string) {
   }
 }
 
-async function mkDatePicker(language: string, datePickerConfig: any) {
-  function mkLocaleDatePickerConfig(
-    localeName: string,
-    localeDatePickerSettings: any
-  ) {
-    if (!localeDatePickerSettings.months) {
-      const format = new Intl.DateTimeFormat(localeName, { month: "long" })
-        .format
-      localeDatePickerSettings.months = [...Array(12).keys()].map((m) =>
-        format(new Date(Date.UTC(2021, m % 12, 5)))
-      )
-    }
-    if (!localeDatePickerSettings.monthsShort) {
-      const format = new Intl.DateTimeFormat(localeName, { month: "short" })
-        .format
-      localeDatePickerSettings.monthsShort = [...Array(12).keys()].map((m) =>
-        format(new Date(Date.UTC(2021, m % 12, 5)))
-      )
-    }
-    if (!localeDatePickerSettings.weekdays) {
-      const format = new Intl.DateTimeFormat(localeName, { weekday: "long" })
-        .format
-      localeDatePickerSettings.weekdays = [...Array(7).keys()].map((d) =>
-        format(new Date(Date.UTC(2021, 7, 1 + d)))
-      )
-    }
-    if (!localeDatePickerSettings.weekdaysShort) {
-      const format = new Intl.DateTimeFormat(localeName, { weekday: "short" })
-        .format
-      localeDatePickerSettings.weekdaysShort = [...Array(7).keys()].map((d) =>
-        format(new Date(Date.UTC(2021, 7, 1 + d)))
-      )
-    }
-    if (!localeDatePickerSettings.weekdaysMin) {
-      const format = new Intl.DateTimeFormat(localeName, { weekday: "short" })
-        .format
-      localeDatePickerSettings.weekdaysMin = [...Array(7).keys()].map((d) =>
-        format(new Date(Date.UTC(2021, 7, 1 + d))).substring(0, 2)
-      )
-    }
-    if (!localeDatePickerSettings.firstDayOfWeek) {
-      localeDatePickerSettings.firstDayOfWeek = 1
-    }
-    if (!localeDatePickerSettings.firstWeekContainsDate) {
-      localeDatePickerSettings.firstWeekContainsDate = 1
-    }
-    return localeDatePickerSettings
-  }
-
-  const langConfig: any = {
-    formatLocale: mkLocaleDatePickerConfig(
-      language,
-      datePickerConfig?.formatLocale || {}
-    ),
-    yearFormat: datePickerConfig?.yearFormat || "YYYY",
-    monthFormat: datePickerConfig?.monthFormat || "MMM",
-    monthBeforeYear:
-      typeof datePickerConfig?.monthBeforeYear === "undefined"
-        ? true
-        : datePickerConfig.monthBeforeYear,
-  }
-  DatePicker.locale(language.split("-")[0], langConfig)
-  return // XXXvlab: would be nice to use a local DatePicker
-}
-
 export default async function mkStore(localesConfig: any, gettext: any) {
   const store = createStore({
     state: {
@@ -106,7 +42,6 @@ export default async function mkStore(localesConfig: any, gettext: any) {
       dateFormat: false,
       relativeDateFormat: false,
       datePickerLanguage: false,
-      datePicker: false,
       requestLoadingAfterCreds: false,
     },
     mutations: {
@@ -134,12 +69,6 @@ export default async function mkStore(localesConfig: any, gettext: any) {
 
       setDatePickerLanguage(state: any, datePickerLanguage: string) {
         state.datePickerLanguage = datePickerLanguage
-        const availableLanguages = localesConfig.availableLanguages || {}
-        const localeConfig = availableLanguages[datePickerLanguage]
-        state.datePicker = mkDatePicker(
-          datePickerLanguage,
-          localeConfig?.datePickerFormat
-        )
       },
     },
     actions: {
@@ -160,6 +89,7 @@ export default async function mkStore(localesConfig: any, gettext: any) {
           localeConfig?.dateFormat || localeIdentifier
         )
         commit("setDatePickerLanguage", localeIdentifier)
+        DatePicker.setLocale(localeIdentifier, localeConfig?.datePickerFormat)
       },
     },
     modules: {},
