@@ -21,7 +21,7 @@
       class="recipient-name is-size-5"
       @click="$emit('select', recipient)"
     >
-      {{ recipient.name }}
+     {{ recipient.name }}
       <div v-if="recipient.markBackend" class="is-size-6 has-text-grey-light">
         {{ `${recipient.backendId}` }}
       </div>

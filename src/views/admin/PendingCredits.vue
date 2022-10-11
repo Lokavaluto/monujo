@@ -65,7 +65,7 @@
                       </td>
                       <td>
                         {{
-                          numericFormat.format(parseFloat(request.amount))
+                          numericFormat(parseFloat(request.amount))
                         }}
                         {{ request.currency }}
                       </td>
@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts">
-  import { mapState } from "vuex"
+  import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import Loading from "vue-loading-overlay"
 
@@ -127,7 +127,7 @@
       pendingCreditRequests(): Array<any> {
         return this.$store.state.lokapi.pendingCreditRequests
       },
-      ...mapState(["numericFormat"]),
+      ...mapGetters(["numericFormat"]),
     },
     methods: {
       async validateCreditRequest(request: any): Promise<void> {

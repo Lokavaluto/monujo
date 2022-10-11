@@ -7,27 +7,18 @@ import moment from "moment"
 
 import DatePicker from "../services/DatePicker"
 
-function mkNumericFormat(language: string) {
-  return new Intl.NumberFormat(language, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-}
-
-function mkDateFormat(language: string) {
-  return new Intl.DateTimeFormat(language, {
-    weekday: "long",
-    day: "numeric",
-    month: "numeric",
-  })
-}
-
-function mkRelativeDateFormat(language: string) {
-  moment.locale(language)
-  return {
-    format(date: string): string {
-      return moment(date).fromNow()
-    },
+// XXXvlab: required to make vuex getters cached in vue 3 (as they
+// should be).  (cf: https://vuex.vuejs.org/guide/getters.html#getters
+// ) this is temporary as cached getters were promised and/or we might
+// want to move to pinia anytime soon.
+function PoorMansCachedGetter(getter: any, stateAttrName: string) {
+  let cacheStore: any = {}
+  return (state: any) => {
+    let arg = state[stateAttrName]
+    if (!(arg in cacheStore)) {
+      cacheStore[arg] = getter(state)
+    }
+    return cacheStore[arg]
   }
 }
 
@@ -37,10 +28,7 @@ export default async function mkStore(localesConfig: any, gettext: any) {
       showCredit: false,
       isModalOpen: false,
       numericFormatLanguage: false,
-      numericFormat: false,
       dateFormatLanguage: false,
-      dateFormat: false,
-      relativeDateFormat: false,
       datePickerLanguage: false,
       requestLoadingAfterCreds: false,
     },
@@ -58,13 +46,10 @@ export default async function mkStore(localesConfig: any, gettext: any) {
 
       setNumericFormatLanguage(state: any, numericFormatLanguage: string) {
         state.numericFormatLanguage = numericFormatLanguage
-        state.numericFormat = mkNumericFormat(numericFormatLanguage)
       },
 
       setDateFormatLanguage(state: any, dateFormatLanguage: string) {
         state.dateFormatLanguage = dateFormatLanguage
-        state.dateFormat = mkDateFormat(dateFormatLanguage)
-        state.relativeDateFormat = mkRelativeDateFormat(dateFormatLanguage)
       },
 
       setDatePickerLanguage(state: any, datePickerLanguage: string) {
@@ -88,12 +73,38 @@ export default async function mkStore(localesConfig: any, gettext: any) {
           "setDateFormatLanguage",
           localeConfig?.dateFormat || localeIdentifier
         )
+
         commit("setDatePickerLanguage", localeIdentifier)
+        // DatePicker locale is unfortunately global
         DatePicker.setLocale(localeIdentifier, localeConfig?.datePickerFormat)
       },
     },
     modules: {},
-    getters: {},
+    getters: {
+      numericFormat: PoorMansCachedGetter(
+        (state: any) =>
+          new Intl.NumberFormat(state.numericFormatLanguage, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format,
+        "numericFormatLanguage"
+      ),
+      dateFormat: PoorMansCachedGetter(
+        (state: any) =>
+          new Intl.DateTimeFormat(state.dateFormatLanguage, {
+            weekday: "long",
+            day: "numeric",
+            month: "numeric",
+          }).format,
+        "dateFormatLanguage"
+      ),
+      relativeDateFormat: PoorMansCachedGetter((state: any) => {
+        moment.locale(state.dateFormatLanguage)
+        return (date: string): string => {
+          return moment(date).fromNow()
+        }
+      }, "dateFormatLanguage"),
+    },
   })
   await store.dispatch("switchLocale")
   return store

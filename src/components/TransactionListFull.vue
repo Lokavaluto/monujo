@@ -6,7 +6,7 @@
       :amount="transaction.amount"
       :symbol="transaction.currency"
       :desc="transaction.description"
-      :date="dateFormat.format(transaction.date)"
+      :date="dateFormat(transaction.date)"
       :unformatedDate="transaction.date"
       :name="transaction.related"
       picto="QR"
@@ -14,7 +14,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { mapState } from "vuex"
+  import { mapGetters } from "vuex"
 
   import { Options, Vue } from "vue-class-component"
   import TransactionItem from "./TransactionItem.vue"
@@ -26,7 +26,7 @@
     },
     computed: {
       ...mapModuleState("lokapi", ["transactions"]),
-      ...mapState(["dateFormat"]),
+      ...mapGetters(["dateFormat"]),
     },
     methods: {},
   })

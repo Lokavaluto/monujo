@@ -3,7 +3,7 @@
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">{{ date }}</h5>
       <h5 class="card-paiement-defaut-carte has-text-right mt-1">
-        {{ relativeDateFormat.format(unformatedDate) }}
+        {{ relativeDateFormat(unformatedDate) }}
       </h5>
     </div>
     <div class="is-flex-direction-column">
@@ -14,7 +14,7 @@
             : 'custom-card-destinataire has-text-success',
         ]"
       >
-        {{ numericFormat.format(parseFloat(amount)) }}
+        {{ numericFormat(parseFloat(amount)) }}
         {{ symbol }}
       </h3>
       <h4 class="custom-card-destinataire">{{ name }}</h4>
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-  import { mapState } from "vuex"
+  import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
 
   @Options({
@@ -46,7 +46,7 @@
       unformatedDate: Date,
     },
     computed: {
-      ...mapState(["numericFormat", "relativeDateFormat"]),
+      ...mapGetters(["numericFormat", "relativeDateFormat"]),
     },
   })
   export default class TransactionItem extends Vue {}

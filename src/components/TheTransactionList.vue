@@ -172,7 +172,7 @@
 </template>
 
 <script lang="ts">
-  import { mapState } from "vuex"
+  import { mapGetters } from "vuex"
 
   import { Options, Vue } from "vue-class-component"
   import Loading from "vue-loading-overlay"
@@ -255,7 +255,7 @@
         "transactions",
         "userProfile",
       ]),
-      ...mapState(["numericFormat", "dateFormat"]),
+      ...mapGetters(["numericFormat", "dateFormat"]),
     },
     watch: {
       showModal(newval: boolean, oldval: boolean) {
@@ -319,8 +319,8 @@
           let data: { [key: string]: string } = {
             sender,
             receiver,
-            amount: this.numericFormat.format(e.amount),
-            date: this.dateFormat.format(e.date),
+            amount: this.numericFormat(e.amount),
+            date: this.dateFormat(e.date),
             description: e.description || "",
           }
 
