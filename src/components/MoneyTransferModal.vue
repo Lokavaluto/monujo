@@ -137,7 +137,7 @@
               <h2 class="frame3-sub-title mb-3">
                 {{ $gettext("To") }}
               </h2>
-              <RecipientItem :partner="selectedRecipient" />
+              <RecipientItem :recipient="selectedRecipient" />
               <h2 class="frame3-sub-title mt-3 mb-3">
                 {{ $gettext("Amount") }}
               </h2>
