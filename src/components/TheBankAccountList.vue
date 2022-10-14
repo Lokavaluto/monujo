@@ -18,8 +18,8 @@
         </span>
       </a>
       <div
-	class="notification is-danger is-light"
-	v-if="accountsLoadingError"
+	    class="notification is-danger is-light"
+	    v-if="accountsLoadingError"
       >
         <p class="mb-4">
           {{

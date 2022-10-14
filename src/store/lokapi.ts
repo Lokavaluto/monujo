@@ -305,7 +305,7 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
       },
       hasUnconfiguredBackend: (state: any, getters: any) => {
         return function (): any {
-          let unconfiguredBackends = getters.getUnconfiguredBackends()
+          const unconfiguredBackends = getters.getUnconfiguredBackends()
           return unconfiguredBackends.length > 0
         }
       },
