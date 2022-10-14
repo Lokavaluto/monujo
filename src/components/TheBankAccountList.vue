@@ -50,7 +50,7 @@
         }}</router-link>
         {{ $gettext("to create one.") }}
       </p>
-      <div v-else>
+      <div v-else-if="activeVirtualAccounts.length !== 0">
         <h2 class="custom-card-title">
           {{ $gettext("your accounts") }}
         </h2>
