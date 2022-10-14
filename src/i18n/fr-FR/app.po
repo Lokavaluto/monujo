@@ -50,7 +50,7 @@ msgid "All transactions"
 msgstr "Toutes les opérations"
 
 #: src/components/MoneyTransferModal.vue:142
-#: src/components/TheTransactionList.vue:315
+#: src/components/TheTransactionList.vue:308
 #: src/views/admin/PendingCredits.vue:48
 msgid "Amount"
 msgstr "Montant"
@@ -65,7 +65,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/TheTransactionList.vue:295
+#: src/components/TheTransactionList.vue:288
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -170,15 +170,15 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TheTransactionList.vue:316
+#: src/components/TheTransactionList.vue:309
 msgid "Date"
 msgstr "Date"
 
-#: src/components/TheTransactionList.vue:212
+#: src/components/TheTransactionList.vue:213
 msgid "Day"
 msgstr "Jour"
 
-#: src/components/TheTransactionList.vue:317
+#: src/components/TheTransactionList.vue:310
 msgid "Description"
 msgstr "Description"
 
@@ -263,7 +263,7 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/main.ts:185
+#: src/main.ts:190
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -279,7 +279,7 @@ msgstr "Compte principal"
 msgid "Map"
 msgstr "Carte"
 
-#: src/components/TheTransactionList.vue:228
+#: src/components/TheTransactionList.vue:229
 msgid "Month"
 msgstr "Mois"
 
@@ -359,7 +359,7 @@ msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 
-#: src/components/CreateAccount.vue:255
+#: src/components/CreateAccount.vue:256
 msgid "Passwords do not match"
 msgstr "Le mot de passe entré n'est pas identique"
 
@@ -399,7 +399,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/CreateAccount.vue:282
+#: src/components/CreateAccount.vue:283
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -435,12 +435,12 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:168
+#: src/main.ts:173
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
-#: src/components/TheTransactionList.vue:163
-#: src/components/TheTransactionList.vue:166
+#: src/components/TheTransactionList.vue:162
+#: src/components/TheTransactionList.vue:165
 msgid "See more"
 msgstr "Voir tout"
 
@@ -467,7 +467,7 @@ msgstr "Envoyer les opérations"
 msgid "Settings"
 msgstr "Préferences"
 
-#: src/components/CreateAccount.vue:303
+#: src/components/CreateAccount.vue:304
 msgid ""
 "Settings for simplified authentication were not saved correctly... Please "
 "try again in the \"Settings\" page or contact your administrator"
@@ -500,11 +500,11 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheTransactionList.vue:313
+#: src/components/TheTransactionList.vue:306
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TheTransactionList.vue:314
+#: src/components/TheTransactionList.vue:307
 msgid "Target"
 msgstr "Destination"
 
@@ -570,16 +570,16 @@ msgstr "Opérations de crédit en attente de validation"
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TheTransactionList.vue:359
-#: src/components/TheTransactionList.vue:374
+#: src/components/TheTransactionList.vue:352
+#: src/components/TheTransactionList.vue:367
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TheTransactionList.vue:364
+#: src/components/TheTransactionList.vue:357
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/components/TheTransactionList.vue:379
+#: src/components/TheTransactionList.vue:372
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
@@ -587,7 +587,7 @@ msgstr "Liste des transactions partagée"
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
-#: src/components/TransactionListRecent.vue:28
+#: src/components/TransactionListRecent.vue:31
 msgid "Transactions"
 msgstr "Opérations"
 
@@ -611,11 +611,11 @@ msgstr "Utilisateur"
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
-#: src/components/CreateAccount.vue:289
+#: src/components/CreateAccount.vue:290
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
 
-#: src/components/CreateAccount.vue:280
+#: src/components/CreateAccount.vue:281
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
@@ -623,11 +623,11 @@ msgstr "Création de compte interrompue inopinément."
 msgid "Wallet to top up"
 msgstr "Compte à créditer"
 
-#: src/components/TheTransactionList.vue:220
+#: src/components/TheTransactionList.vue:221
 msgid "Week"
 msgstr "Semaine"
 
-#: src/components/TheTransactionList.vue:236
+#: src/components/TheTransactionList.vue:237
 msgid "Year"
 msgstr "Année"
 
@@ -668,42 +668,42 @@ msgstr "Votre mot de passe"
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
 
-#: src/components/TheTransactionList.vue:214
+#: src/components/TheTransactionList.vue:215
 msgctxt "day"
 msgid "Current"
 msgstr "Courant"
 
-#: src/components/TheTransactionList.vue:215
+#: src/components/TheTransactionList.vue:216
 msgctxt "day"
 msgid "Previous"
 msgstr "Précédent"
-
-#: src/components/TheTransactionList.vue:230
-msgctxt "month"
-msgid "Current"
-msgstr "Courant"
 
 #: src/components/TheTransactionList.vue:231
 msgctxt "month"
+msgid "Current"
+msgstr "Courant"
+
+#: src/components/TheTransactionList.vue:232
+msgctxt "month"
 msgid "Previous"
 msgstr "Précédent"
 
-#: src/components/TheTransactionList.vue:222
+#: src/components/TheTransactionList.vue:223
 msgctxt "week"
 msgid "Current"
 msgstr "Courante"
 
-#: src/components/TheTransactionList.vue:223
+#: src/components/TheTransactionList.vue:224
 msgctxt "week"
 msgid "Previous"
 msgstr "Précédente"
 
-#: src/components/TheTransactionList.vue:238
+#: src/components/TheTransactionList.vue:239
 msgctxt "year"
 msgid "Current"
 msgstr "Courante"
 
-#: src/components/TheTransactionList.vue:239
+#: src/components/TheTransactionList.vue:240
 msgctxt "year"
 msgid "Previous"
 msgstr "Précédente"
