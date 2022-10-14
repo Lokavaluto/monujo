@@ -1,12 +1,12 @@
 <template>
   <main class="main pb-4">
-    <div v-if="getUnconfiguredBackends.length > 1" class="container">
+    <div v-if="getUnconfiguredBackends().length > 1" class="container">
       <div class="columns mt-5">
         <div class="column">
           <div class="card custom-card-wallet">
             <div class="">
               <ul>
-                <template v-for="(backend, index) in getUnconfiguredBackends">
+                <template v-for="(backend, index) in getUnconfiguredBackends()">
                   <div
                     v-bind:class="{
                       'is-wallet-active': form.accountBackend === backend,
@@ -181,11 +181,12 @@
       this.handler = markRaw(accountAuth.authPrefHandler)
     },
     mounted() {
-      if (this.getUnconfiguredBackends.length === 0) {
+      const unconfiguredBackends = this.getUnconfiguredBackends()
+      if (unconfiguredBackends.length === 0) {
         this.$router.push("/")
         return
       }
-      this.form.accountBackend = this.getUnconfiguredBackends[0]
+      this.form.accountBackend = unconfiguredBackends[0]
     },
     data() {
       return {

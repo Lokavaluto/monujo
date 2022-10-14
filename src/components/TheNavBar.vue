@@ -75,7 +75,7 @@
               </router-link>
 
               <router-link
-                v-if="hasUnconfiguredBackend"
+                v-if="hasUnconfiguredBackend()"
                 to="/create-account"
                 class="navbar-item"
               >
