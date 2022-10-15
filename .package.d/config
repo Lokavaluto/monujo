@@ -1,0 +1,5 @@
+NAME="@lokavaluto/monujo"
+DESCRIPTION="Lokavaluto currency client library"
+EMAIL="contact@lokavaluto.org"
+AUTHOR="Lokavaluto"
+AUTHOR_EMAIL="$AUTHOR <$EMAIL>"

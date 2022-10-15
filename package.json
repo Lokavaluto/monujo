@@ -1,13 +1,14 @@
 {
   "name": "Monujo",
-  "version": "0.1.0-alpha",
+  "version": "%%version%%",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "gettext:extract": "vue-gettext-extract",
-    "gettext:compile": "vue-gettext-compile"
+    "gettext:compile": "vue-gettext-compile",
+    "preinstall": "./autogen.sh"
   },
   "dependencies": {
     "@0k.io/types-request": "^0.0.3",

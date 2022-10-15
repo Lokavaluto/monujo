@@ -1,0 +1,19 @@
+# -*- mode: shell-script -*-
+
+
+releaseable_tags="^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?"
+
+get_current_version() {
+
+    version=$("$git" describe --tags)
+    if matches "$version" "$releaseable_tags"; then
+        echo "$version"
+    else
+        version=$(echo "$version" | compat_sed "$get_short_tag")
+        rev=$(echo "$version" | cut -f 3 -d. )
+        rev="$((rev + 1))"
+        major_minor=$(echo "$version" | cut -f 1,2 -d. )
+        echo "${major_minor}.${rev}-alpha.$(dev_version_tag)"
+    fi
+
+}
