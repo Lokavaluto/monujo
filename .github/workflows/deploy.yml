@@ -23,6 +23,8 @@ jobs:
           node-version: 16.x
       - name: 🚚 Get deps
         run: |
+          git fetch --unshallow --tags &&
+          ./autogen.sh &&
           npm install &&
           npm ls -a
       ## Build stage need to be kept before configuration to test the
