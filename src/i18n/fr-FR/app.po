@@ -141,9 +141,21 @@ msgstr ""
 msgid "Approve"
 msgstr "Valider"
 
+#: src/views/Login.vue:189
+msgid "Ask me later"
+msgstr "Plus tard"
+
 #: src/components/AuthChallenge.vue:8
 msgid "Authentication"
 msgstr "Authentification"
+
+#: src/components/BiometryPrefs.vue:87
+msgid "Biometric login successfully disabled"
+msgstr "Identification biométrique désactivée"
+
+#: src/views/Login.vue:221
+msgid "Biometric login successfully set up"
+msgstr "Identification biométrique mise en place"
 
 #: src/components/TheBankAccountList.vue:49
 msgid "click here"
@@ -157,7 +169,7 @@ msgstr "Fermer et rafraîchir"
 msgid "configure PIN code"
 msgstr "Configurer le code PIN"
 
-#: src/views/Login.vue:102
+#: src/views/Login.vue:144
 msgid "Connection successful"
 msgstr "Connection réussie"
 
@@ -222,6 +234,10 @@ msgstr "Courriel"
 msgid "email, phone"
 msgstr "adresse mail, téléphone"
 
+#: src/views/Login.vue:182
+msgid "Enable biometric login"
+msgstr "Activer le login biométrique"
+
 #: src/components/AuthChallengeDirect.vue:3
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
@@ -247,7 +263,7 @@ msgstr "Compléter la transaction dans mon espace personnel"
 msgid "for account %{ name }"
 msgstr "pour le compte %{ name }"
 
-#: src/views/Login.vue:37
+#: src/views/Login.vue:42
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
@@ -263,11 +279,11 @@ msgstr "Les codes PINs entrés ne sont pas identiques"
 msgid "Help"
 msgstr "Aide"
 
-#: src/views/Login.vue:112
+#: src/views/Login.vue:156
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/main.ts:191
+#: src/main.ts:219
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -275,7 +291,15 @@ msgstr "Préférences de langue"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:113
+#: src/main.ts:101
+msgid "Log in"
+msgstr "Se connecter"
+
+#: src/main.ts:100
+msgid "Login into Monujo"
+msgstr "S'authentifier pour accéder à Monujo"
+
+#: src/main.ts:129
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -287,13 +311,17 @@ msgstr "Carte"
 msgid "Month"
 msgstr "Mois"
 
-#: src/main.ts:111
+#: src/main.ts:127
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
 #: src/components/MoneyCreditModal.vue:118
 msgid "Next"
 msgstr "Suivant"
+
+#: src/views/Login.vue:188
+msgid "No"
+msgstr "Non"
 
 #: src/views/admin/PendingAccounts.vue:32
 msgid "No account pending for approval"
@@ -334,7 +362,7 @@ msgid "Operation canceled"
 msgstr "Opération annulée"
 
 #: src/components/CreateAccount.vue:70 src/components/CreateAccount.vue:83
-#: src/views/Login.vue:28
+#: src/views/Login.vue:33
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -407,7 +435,7 @@ msgstr ""
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:110
+#: src/main.ts:126
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -427,11 +455,11 @@ msgstr "Rafraîchir le solde et les transactions"
 msgid "Request"
 msgstr "Recevoir"
 
-#: src/views/Login.vue:116
+#: src/views/Login.vue:160
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/views/Login.vue:108
+#: src/views/Login.vue:150
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
 
@@ -439,7 +467,7 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:174
+#: src/main.ts:190
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
@@ -484,7 +512,7 @@ msgstr ""
 msgid "Share"
 msgstr "Partager"
 
-#: src/components/TheNavBar.vue:49 src/views/Login.vue:44
+#: src/components/TheNavBar.vue:49 src/views/Login.vue:49
 msgid "Sign in"
 msgstr "Se connecter"
 
@@ -492,7 +520,7 @@ msgstr "Se connecter"
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: src/views/Login.vue:51
+#: src/views/Login.vue:56
 msgid "Sign up"
 msgstr "Créer un compte"
 
@@ -595,11 +623,19 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/views/Login.vue:119
+#: src/views/Login.vue:214
+msgid "Unexpected issue occurred while saving your credentials"
+msgstr "Une erreur inattendue est survenue pendant l'enregistrement de vos identifiants"
+
+#: src/views/Login.vue:163
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
+
+#: src/components/BiometryPrefs.vue:17
+msgid "Use biometry for login"
+msgstr "Activer le login biométrique"
 
 #: src/components/LangPrefs.vue:17
 msgid "Use custom language"
@@ -631,9 +667,19 @@ msgstr "Compte à créditer"
 msgid "Week"
 msgstr "Semaine"
 
+#: src/views/Login.vue:183
+msgid ""
+"Would you like to use your device's biometric (fingerprint, face "
+"recognition, ...) capability to login ?"
+msgstr "Souhaitez-vous vous logger en utilisant les capacités biométriques de votre périphérique (empreinte digitale, reconnaissance faciale, ...)"
+
 #: src/components/TheTransactionList.vue:237
 msgid "Year"
 msgstr "Année"
+
+#: src/views/Login.vue:187
+msgid "Yes"
+msgstr "Oui"
 
 #: src/components/MoneyTransferModal.vue:309
 msgid ""
@@ -663,6 +709,10 @@ msgstr "Vous n'avez pas encore de portefeuille,"
 #: src/components/TheBankAccountList.vue:55
 msgid "your accounts"
 msgstr "vos comptes"
+
+#: src/components/BiometryPrefs.vue:39
+msgid "Your credentials will be saved after your next login"
+msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 
 #: src/components/AuthChallengeDirect.vue:8
 msgid "Your password"

@@ -22,12 +22,13 @@
   import { Options, Vue } from "vue-class-component"
   import AuthPrefs from "@/components/AuthPrefs.vue"
   import LangPrefs from "@/components/LangPrefs.vue"
+  import BiometryPrefs from "@/components/BiometryPrefs.vue"
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
 
   @Options({
     name: "Prefs",
-    components: { AuthPrefs, LangPrefs, Loading },
+    components: { AuthPrefs, LangPrefs, Loading, BiometryPrefs },
     computed: {
       ...mapState({
         componentDefs: (state: any) => state.prefs.componentDefs,

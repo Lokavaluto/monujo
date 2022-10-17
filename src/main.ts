@@ -26,8 +26,10 @@ import PrefsService from "@/services/PrefsService"
 import ExportService from "@/services/ExportService"
 import AuthPrefs from "@/components/AuthPrefs.vue"
 import LangPrefs from "@/components/LangPrefs.vue"
+import BiometryPrefs from "@/components/BiometryPrefs.vue"
 
 import Dialog from "@/services/Dialog"
+import Biometry from "@/services/Biometry"
 import ToastService from "@/services/toastService"
 import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
@@ -90,6 +92,20 @@ fetchConfig("config.json").then(async (config: any) => {
   const router = mkRouter(config.appName || defaultAppName, store)
 
   const { $gettext } = gettext
+  const biometry = new Biometry(
+    new PersistentConfigStore(lokApiService.persistentStore, "biometry"),
+    {
+      login: {
+        ui: {
+          reason: $gettext("Login into Monujo"),
+          title: $gettext("Log in"),
+          // subtitle: "Maybe add subtitle here?",
+          // description: "Maybe a description too?",
+        },
+        creds: { server: config.lokapiHost },
+      },
+    }
+  )
 
   lokApiService.requestLogin = async () => {
     const lastUrlSegment = window.location.href.split("/").pop()
@@ -188,6 +204,18 @@ fetchConfig("config.json").then(async (config: any) => {
     ]
   })
 
+  prefsService.register(async () => {
+    if (await biometry.isAvailable())
+      return [
+        {
+          group: "security",
+          component: BiometryPrefs,
+          data: {},
+        },
+      ]
+    return []
+  })
+
   prefsService.setGroup("language", () => $gettext("Language settings"))
   prefsService.register(async () => {
     if (Object.keys(gettext.available).length <= 1) {
@@ -234,6 +262,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.use(Loading)
   app.use(gettext)
   app.use(dialog)
+  app.use(biometry)
   app.provide("$store", store)
   app.component("fa-icon", FontAwesomeIcon)
   app.config.globalProperties.$auth = authService
