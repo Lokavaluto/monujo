@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/components/MoneyTransferModal.vue:352
+#: src/components/MoneyTransferModal.vue:354
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -36,13 +36,17 @@ msgstr "Demandes de comptes"
 msgid "Accounts waiting for approval"
 msgstr "Comptes en attente de validation"
 
-#: src/components/MoneyTransferModal.vue:338
+#: src/components/MoneyTransferModal.vue:339
 msgid "Add"
 msgstr "Ajouter"
 
 #: src/components/MoneyTransferModal.vue:172
 msgid "Add a memo (optional)"
 msgstr "Ajoutez un texte (optionnel)"
+
+#: src/components/MoneyTransferModal.vue:333
+msgid "Add as favorite"
+msgstr "Ajouter aux favoris"
 
 #: src/components/TheTransactionList.vue:104
 #: src/components/TheTransactionList.vue:13
@@ -188,7 +192,7 @@ msgid_plural "digits"
 msgstr[0] "chiffre"
 msgstr[1] "chiffres"
 
-#: src/components/MoneyTransferModal.vue:333
+#: src/components/MoneyTransferModal.vue:334
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -263,15 +267,15 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/main.ts:192
+#: src/main.ts:191
 msgid "Language settings"
 msgstr "Préférences de langue"
 
-#: src/components/MoneyTransferModal.vue:339
+#: src/components/MoneyTransferModal.vue:340
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:114
+#: src/main.ts:113
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -283,7 +287,7 @@ msgstr "Carte"
 msgid "Month"
 msgstr "Mois"
 
-#: src/main.ts:112
+#: src/main.ts:111
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -403,7 +407,7 @@ msgstr ""
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:111
+#: src/main.ts:110
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -435,7 +439,7 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:175
+#: src/main.ts:174
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 

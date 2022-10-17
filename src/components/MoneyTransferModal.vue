@@ -328,18 +328,20 @@
           })
         )
         if (!this.selectedRecipient.is_favorite) {
-          this.$Swal
-            .fire({
-              title: this.$gettext(
+          this.$dialog
+            .show({
+              title: this.$gettext("Add as favorite"),
+              content: this.$gettext(
                 "Do you want to add %{ name } to your favorite list ?",
                 { name: this.selectedRecipient.name }
               ),
-              showDenyButton: true,
-              confirmButtonText: this.$gettext("Add"),
-              denyButtonText: this.$gettext("Later"),
+              buttons: [
+                { label: this.$gettext("Add"), id: "add" },
+                { label: this.$gettext("Later"), id: "later" },
+              ],
             })
             .then(async (result: any) => {
-              if (!result.isConfirmed) return
+              if (result === "later") return
               try {
                 await this.selectedRecipient.toggleFavorite()
               } catch (err) {
@@ -348,12 +350,10 @@
                 this.$errorHandler(err)
                 return
               }
-              this.$Swal.fire(
+              this.$msg.success(
                 this.$gettext("%{ name } was added to your favorite list", {
                   name: this.selectedRecipient.name,
-                }),
-                "",
-                "success"
+                })
               )
             })
         }

@@ -5,8 +5,6 @@
 @import "custom-variables";
 // Bulma Import */
 @import "~bulma/bulma";
-// Sweetalert2 override variables
-@import "swal-custom";
 // Roboto
 @import "./fonts/roboto/style.css";
 
@@ -805,7 +803,6 @@ input {
   .xmx-datepicker-range {
     width: auto !important;
   }
-
 }
 div.xmx-datepicker-content {
   user-select: none;

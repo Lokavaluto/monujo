@@ -5,7 +5,6 @@ import "vue-loading-overlay/dist/vue-loading.css"
 import { UIError } from "./exception"
 import App from "./App.vue"
 import { mkRouter } from "./router"
-import Swal from "./useSwal"
 import "./polyfill"
 
 // Store
@@ -232,7 +231,6 @@ fetchConfig("config.json").then(async (config: any) => {
   }
 
   app.use(store)
-  app.use(Swal)
   app.use(Loading)
   app.use(gettext)
   app.use(dialog)
