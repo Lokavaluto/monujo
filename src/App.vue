@@ -1,18 +1,20 @@
 <template>
   <AuthChallenge />
+  <Dialog />
   <TheNavBar />
   <router-view />
 </template>
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import Dialog from "@/components/Dialog.vue"
   import AuthChallenge from "@/components/AuthChallenge.vue"
   import TheNavBar from "@/components/TheNavBar.vue"
   import { Capacitor } from "@capacitor/core"
   import { StatusBar, Style } from "@capacitor/status-bar"
 
   @Options({
-    components: { TheNavBar, AuthChallenge },
+    components: { TheNavBar, AuthChallenge, Dialog, },
     async mounted() {
       if (Capacitor.getPlatform() === "ios") {
         await StatusBar.setStyle({ style: Style.Light })

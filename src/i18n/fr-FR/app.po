@@ -263,7 +263,7 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/main.ts:190
+#: src/main.ts:192
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -271,7 +271,7 @@ msgstr "Préférences de langue"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:112
+#: src/main.ts:114
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -283,7 +283,7 @@ msgstr "Carte"
 msgid "Month"
 msgstr "Mois"
 
-#: src/main.ts:110
+#: src/main.ts:112
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -325,7 +325,7 @@ msgstr ""
 "sera en attente de validation par un administrateur. Vous pourrez alors "
 "fermer cette fenêtre pour actualiser votre solde."
 
-#: src/components/AuthChallenge.vue:68
+#: src/components/AuthChallenge.vue:68 src/components/Dialog.vue:65
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
@@ -403,7 +403,7 @@ msgstr ""
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:109
+#: src/main.ts:111
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -435,7 +435,7 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:173
+#: src/main.ts:175
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 

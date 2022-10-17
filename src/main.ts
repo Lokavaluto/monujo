@@ -28,6 +28,7 @@ import ExportService from "@/services/ExportService"
 import AuthPrefs from "@/components/AuthPrefs.vue"
 import LangPrefs from "@/components/LangPrefs.vue"
 
+import Dialog from "@/services/Dialog"
 import ToastService from "@/services/toastService"
 import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
@@ -79,6 +80,7 @@ fetchConfig("config.json").then(async (config: any) => {
   }
 
   const defaultAppName = require("../package.json").name
+  const dialog = new Dialog()
   const lokApiService = new LokAPI(config.lokapiHost, config.lokapiDb)
   const localSettings = new PersistentConfigStore(
     lokApiService.persistentStore,
@@ -233,6 +235,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.use(Swal)
   app.use(Loading)
   app.use(gettext)
+  app.use(dialog)
   app.provide("$store", store)
   app.component("fa-icon", FontAwesomeIcon)
   app.config.globalProperties.$auth = authService
