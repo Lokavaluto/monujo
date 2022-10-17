@@ -820,3 +820,7 @@ div.xmx-datepicker-content {
 .mx-btn:hover {
   color: $color-2 !important;
 }
+
+.vld-overlay.is-active {
+    z-index: 0;
+}
