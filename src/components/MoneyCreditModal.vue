@@ -46,9 +46,17 @@
             "
             class="amount custom-montant-input"
           >
-            <h2 class="frame3-sub-title mt-3 mb-3">
+            <h2 class="frame3-sub-title mt-3">
               {{ $gettext("Top up amount") }}
             </h2>
+            <div
+              v-if="selectedCreditAccount?.minCreditAmount"
+              class="ml-2 min-credit-amount"
+            >
+              {{ $gettext("Minimum credit amount: ") }}
+              {{ selectedCreditAccount?.minCreditAmount }}
+              {{ selectedCreditAccount?.curr || "" }}
+            </div>
             <div class="is-flex">
               <input
                 v-model.number="amount"
@@ -66,6 +74,12 @@
             <div class="notification is-danger is-light" v-if="errors.amount">
               {{ errors.amount }}
             </div>
+            <div
+              class="notification is-danger is-light"
+              v-if="errors.minCreditAmount"
+            >
+              {{ errors.minCreditAmount }}
+            </div>
           </div>
         </div>
         <template v-if="creditOrderUrl.length > 1">
@@ -76,8 +90,8 @@
             <p class="mb-3">
               {{
                 $gettext(
-                   "To complete your top up request, you need to finalize the " +
-                   "transaction by logging in your Odoo account:"
+                  "To complete your top up request, you need to finalize the " +
+                    "transaction by logging in your Odoo account:"
                 )
               }}
             </p>
@@ -89,9 +103,9 @@
               {{
                 $gettext(
                   "Once your transaction finalized in your personal account, " +
-                  "your top up request will by waiting for an administrator's " +
-                  "approval. You may then close this windows to refresh your " +
-                  "balance."
+                    "your top up request will by waiting for an administrator's " +
+                    "approval. You may then close this windows to refresh your " +
+                    "balance."
                 )
               }}
             </p>
@@ -99,7 +113,7 @@
               {{
                 $gettext(
                   "Once your transaction finalized in your personal account, " +
-                  "you may close this windows to refresh your balance."
+                    "you may close this windows to refresh your balance."
                 )
               }}
             </p>
@@ -158,11 +172,13 @@
         amount: 0,
         errors: {
           amount: false,
+          minCreditAmount: false,
         },
       }
     },
     mounted() {
       this.setFocus()
+      this.resetCredit()
     },
     computed: {
       ...mapGetters(["creditableMoneyAccounts"]),
@@ -173,6 +189,7 @@
         this.amount = 0
         this.errors = {
           amount: false,
+          minCreditAmount: false,
         }
         this.selectedCreditAccount =
           this.creditableMoneyAccounts.length === 1
@@ -180,13 +197,32 @@
             : false
       },
       setSelectedCreditAccount(account: any): void {
+        this.errors = {
+          amount: false,
+          minCreditAmount: false,
+        }
         this.selectedCreditAccount = account
       },
       async newLinkTab() {
-        this.errors.amount = false
+        this.errors = {
+          amount: false,
+          minCreditAmount: false,
+        }
         if (this.amount <= 0) {
           this.errors.amount = this.$gettext(
             "The top up amount must be greater than 0"
+          )
+          return
+        }
+        if (this.amount < this.selectedCreditAccount.minCreditAmount) {
+          this.errors.minCreditAmount = this.$gettext(
+            "The minimum top up amount is %{ amount }",
+            {
+              amount:
+                this.selectedCreditAccount.minCreditAmount +
+                " " +
+                this.selectedCreditAccount?.curr,
+            }
           )
           return
         }
@@ -277,4 +313,7 @@
     padding-left: calc(0.75em - 1px)
     padding-right: calc(0.75em - 1px)
     padding-top: calc(0.5em - 1px)
+
+  .min-credit-amount
+    font-size: 0.95em
 </style>
