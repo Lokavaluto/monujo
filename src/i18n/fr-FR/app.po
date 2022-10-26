@@ -24,7 +24,7 @@ msgid_plural "%{ pinLength } digits"
 msgstr[0] "%{ pinLength } chiffre"
 msgstr[1] "%{ pinLength } chiffres"
 
-#: src/components/MoneyCreditModal.vue:74
+#: src/components/MoneyCreditModal.vue:88
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
@@ -91,7 +91,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de l'utilisateur "
 "%{ name }"
 
-#: src/components/MoneyCreditModal.vue:210
+#: src/components/MoneyCreditModal.vue:246
 msgid "An unexpected issue occurred while attempting to top up your account"
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -161,7 +161,7 @@ msgstr "Identification biométrique mise en place"
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/MoneyCreditModal.vue:132
+#: src/components/MoneyCreditModal.vue:146
 msgid "Close and refresh"
 msgstr "Fermer et rafraîchir"
 
@@ -212,7 +212,7 @@ msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 msgid "Download"
 msgstr "Télécharger"
 
-#: src/components/MoneyCreditModal.vue:59
+#: src/components/MoneyCreditModal.vue:67
 #: src/components/MoneyTransferModal.vue:151
 msgid "e.g. 50"
 msgstr "ex: 50"
@@ -255,7 +255,7 @@ msgstr "Exporter en format CSV"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
-#: src/components/MoneyCreditModal.vue:125
+#: src/components/MoneyCreditModal.vue:139
 msgid "Finalize order from your account"
 msgstr "Compléter la transaction dans mon espace personnel"
 
@@ -307,6 +307,10 @@ msgstr "Compte principal"
 msgid "Map"
 msgstr "Carte"
 
+#: src/components/MoneyCreditModal.vue:53
+msgid "Minimum credit amount: "
+msgstr "Montant minimum à créditer : "
+
 #: src/components/TheTransactionList.vue:229
 msgid "Month"
 msgstr "Mois"
@@ -315,7 +319,7 @@ msgstr "Mois"
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
-#: src/components/MoneyCreditModal.vue:118
+#: src/components/MoneyCreditModal.vue:132
 msgid "Next"
 msgstr "Suivant"
 
@@ -339,7 +343,7 @@ msgstr "Aucun destinataire de paiement à afficher"
 msgid "No top up request awaiting approval"
 msgstr "Aucune demande de crédit en attente de validation"
 
-#: src/components/MoneyCreditModal.vue:100
+#: src/components/MoneyCreditModal.vue:114
 msgid ""
 "Once your transaction finalized in your personal account, you may close this "
 "windows to refresh your balance."
@@ -347,7 +351,7 @@ msgstr ""
 "Une fois votre opération complétée dans votre espace personnel, fermez cette "
 "fenêtre pour actualiser votre solde."
 
-#: src/components/MoneyCreditModal.vue:90
+#: src/components/MoneyCreditModal.vue:104
 msgid ""
 "Once your transaction finalized in your personal account, your top up "
 "request will by waiting for an administrator's approval. You may then close "
@@ -548,7 +552,11 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/MoneyCreditModal.vue:188
+#: src/components/MoneyCreditModal.vue:218
+msgid "The minimum top up amount is %{ amount }"
+msgstr "Le montant minimum de crédit est %{ amount }"
+
+#: src/components/MoneyCreditModal.vue:212
 msgid "The top up amount must be greater than 0"
 msgstr "Le montant à créditer doit être un nombre positif"
 
@@ -564,7 +572,7 @@ msgstr ""
 msgid "To"
 msgstr "Vers"
 
-#: src/components/MoneyCreditModal.vue:78
+#: src/components/MoneyCreditModal.vue:92
 msgid ""
 "To complete your top up request, you need to finalize the transaction by "
 "logging in your Odoo account:"
@@ -625,7 +633,9 @@ msgstr "Opérations"
 
 #: src/views/Login.vue:214
 msgid "Unexpected issue occurred while saving your credentials"
-msgstr "Une erreur inattendue est survenue pendant l'enregistrement de vos identifiants"
+msgstr ""
+"Une erreur inattendue est survenue pendant l'enregistrement de vos "
+"identifiants"
 
 #: src/views/Login.vue:163
 msgid "Unexpected issue when attempting to connect to remote server."
@@ -671,7 +681,9 @@ msgstr "Semaine"
 msgid ""
 "Would you like to use your device's biometric (fingerprint, face "
 "recognition, ...) capability to login ?"
-msgstr "Souhaitez-vous vous logger en utilisant les capacités biométriques de votre périphérique (empreinte digitale, reconnaissance faciale, ...)"
+msgstr ""
+"Souhaitez-vous vous logger en utilisant les capacités biométriques de votre "
+"périphérique (empreinte digitale, reconnaissance faciale, ...)"
 
 #: src/components/TheTransactionList.vue:237
 msgid "Year"
