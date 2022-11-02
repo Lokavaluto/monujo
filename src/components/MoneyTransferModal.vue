@@ -174,9 +174,11 @@
             </div>
           </div>
         </section>
-        <footer class="modal-card-foot is-justify-content-flex-end">
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        >
           <button
-            class="button custom-button custom-button-send-receive-money is-rounded action"
+            class="button custom-button-modal has-text-weight-medium"
             @click="sendTransaction()"
           >
             {{ $gettext("Send") }}
