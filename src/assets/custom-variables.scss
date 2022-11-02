@@ -66,3 +66,8 @@ $navbar-fixed-z: var(--navbar-fixed-z, 50);
 $primary-color: var(--primary-color, #41b0a6);
 $primary-color-lighter: var(--primary-color-lighter, #d9efed);
 $default-color: var(--default-color, $color-2);
+
+// modal buttons:
+$modal-btn-background-color: var(--modal-btn-background-color, $color-2) !default;
+$modal-btn-text-color: var(--modal-btn-text-color, #ffffff) !default;
+$modal-btn-border-color: var(--modal-btn-border-color, $color-2) !default;

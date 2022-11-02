@@ -120,7 +120,9 @@
           </div>
         </template>
       </section>
-      <footer class="modal-card-foot is-justify-content-flex-end">
+      <footer
+        class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+      >
         <template
           v-if="
             creditOrderUrl.length === 0 &&
@@ -129,7 +131,7 @@
           "
         >
           <button
-            class="button custom-button custom-button-send-receive-money is-rounded action"
+            class="button custom-button-modal button-modal has-text-weight-medium action"
             @click="newLinkTab()"
           >
             {{ $gettext("Next") }}
@@ -137,14 +139,14 @@
         </template>
         <template v-if="creditOrderUrl.length > 1">
           <a
-            class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
+            class="button custom-button-modal has-text-weight-medium action"
             @click="navigateToCreditOrder"
             >{{ $gettext("Finalize order from your account") }}</a
           >
         </template>
         <template v-if="showCreditRefreshNotification">
           <a
-            class="button custom-button has-text-weight-medium custom-inverted is-rounded action"
+            class="button custom-button-modal has-text-weight-medium"
             @click="closeAndRefresh"
             >{{ $gettext("Close and refresh") }}</a
           >
