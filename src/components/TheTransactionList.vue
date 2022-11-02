@@ -11,19 +11,6 @@
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
             <span class="ml-2">{{ $gettext("All transactions") }}</span>
-            <button
-              class="button is-ghost is-medium download-transactions is-responsive"
-              :title="$gettext('Export all transactions')"
-            >
-              <i
-                @click="
-                  ;(this.showModal = false), (this.showExportModal = true)
-                "
-                class="ml-2 fas icon fa-file-export"
-              >
-                <fa-icon icon="file-export"
-              /></i>
-            </button>
           </p>
           <button
             class="delete"
@@ -57,6 +44,18 @@
               :width="30"
               :height="30"
             />
+          </div>
+          <div>
+            <button
+              class="button custom-button is-payer has-text-weight-medium is-rounded action"
+              :title="$gettext('Export all transactions')"
+              @click=";(this.showModal = false), (this.showExportModal = true)"
+            >
+              <i class="ml-2 fas icon fa-file-export">
+                <fa-icon icon="file-export"
+              /></i>
+              <span>{{ $gettext("Export") }}</span>
+            </button>
           </div>
         </footer>
       </div>
@@ -120,41 +119,42 @@
                   </template>
                 </date-picker>
               </div>
-              <div class="mt-5">
-                <span v-if="getPlatform !== 'ios'" class="mr-2"
-                  ><button
-                    class="button custom-button is-payer has-text-weight-medium is-rounded action"
-                    :title="$gettext('Export all transactions')"
-                    @click="downloadCsvFile()"
-                    :disabled="isAllTransactionsLoading"
-                  >
-                    <span class="fa-download">
-                      <span class="icon">
-                        <fa-icon icon="fa-download" class="fa-lg" />
-                      </span>
-                      <span>{{ $gettext("Download") }}</span>
-                    </span>
-                  </button></span
-                ><span v-if="getPlatform !== 'web'" class="ml-2"
-                  ><button
-                    class="button custom-button is-payer has-text-weight-medium is-rounded action"
-                    :title="$gettext('Send transactions')"
-                    @click="shareCsvFile()"
-                    :disabled="isAllTransactionsLoading"
-                  >
-                    <span class="fa-share">
-                      <span class="icon">
-                        <fa-icon icon="fa-share" class="fa-lg" />
-                      </span>
-                      <span>{{ $gettext("Share") }}</span>
-                    </span>
-                  </button>
-                </span>
-              </div>
             </div>
           </div>
         </section>
-        <footer class="modal-card-foot"></footer>
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        >
+          <span v-if="getPlatform !== 'ios'" class="mr-2"
+            ><button
+              class="button custom-button-modal has-text-weight-medium"
+              :title="$gettext('Export all transactions')"
+              @click="downloadCsvFile()"
+              :disabled="isAllTransactionsLoading"
+            >
+              <span class="fa-download">
+                <span class="icon">
+                  <fa-icon icon="fa-download" class="fa-lg" />
+                </span>
+                <span>{{ $gettext("Download") }}</span>
+              </span>
+            </button></span
+          ><span v-if="getPlatform !== 'web'" class="ml-2"
+            ><button
+              class="button custom-button-modal has-text-weight-medium"
+              :title="$gettext('Send transactions')"
+              @click="shareCsvFile()"
+              :disabled="isAllTransactionsLoading"
+            >
+              <span class="fa-share">
+                <span class="icon">
+                  <fa-icon icon="fa-share" class="fa-lg" />
+                </span>
+                <span>{{ $gettext("Share") }}</span>
+              </span>
+            </button>
+          </span>
+        </footer>
       </div>
     </div>
     <div
