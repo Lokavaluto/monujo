@@ -300,6 +300,15 @@
         } finally {
           this.isAllTransactionsLoading = false
         }
+        let exportFileName
+        if (dateBegin && dateEnd) {
+          let dateBeginStr = moment(dateBegin).format("YYYY-MM-DD")
+          let dateEndStr = moment(dateEnd).format("YYYY-MM-DD")
+          exportFileName = `transactions_${dateBeginStr}_${dateEndStr}.csv`
+        } else {
+          exportFileName = "transactions.csv"
+        }
+
         const columnOrder = [
           "sender",
           "receiver",
@@ -336,23 +345,22 @@
 
           csvDataLine.push(data)
         }
-        return (
-          csvDataLine
-            .map((dataLine) =>
-              columnOrder.map((header) => dataLine[header]).join(",")
-            )
-            .join("\r\n") + "\r\n"
-        )
+
+        return {
+          csvContent:
+            csvDataLine
+              .map((dataLine) =>
+                columnOrder.map((header) => dataLine[header]).join(",")
+              )
+              .join("\r\n") + "\r\n",
+          exportFileName,
+        }
       },
       async downloadCsvFile() {
         this.selectExportLoader = 1
-        const csvContent = await this.createCsvFile()
+        const { csvContent, exportFileName } = await this.createCsvFile()
         try {
-          await this.$export.download(
-            csvContent,
-            "Transactions.csv",
-            "text/csv"
-          )
+          await this.$export.download(csvContent, exportFileName, "text/csv")
         } catch (e) {
           this.$msg.error(
             this.$gettext("Transaction list could not be downloaded")
@@ -363,9 +371,9 @@
       },
       async shareCsvFile() {
         this.selectExportLoader = 2
-        let csvContent = await this.createCsvFile()
+        const { csvContent, exportFileName } = await this.createCsvFile()
         try {
-          await this.$export.share(csvContent, "Transactions.csv")
+          await this.$export.share(csvContent, exportFileName)
         } catch (e) {
           this.$msg.error(
             this.$gettext("Transaction list could not be downloaded")
