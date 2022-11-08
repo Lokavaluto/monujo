@@ -54,7 +54,7 @@ msgid "All transactions"
 msgstr "Toutes les opérations"
 
 #: src/components/MoneyTransferModal.vue:142
-#: src/components/TheTransactionList.vue:314
+#: src/components/TheTransactionList.vue:323
 #: src/views/admin/PendingCredits.vue:48
 msgid "Amount"
 msgstr "Montant"
@@ -186,7 +186,7 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TheTransactionList.vue:315
+#: src/components/TheTransactionList.vue:324
 msgid "Date"
 msgstr "Date"
 
@@ -194,7 +194,7 @@ msgstr "Date"
 msgid "Day"
 msgstr "Jour"
 
-#: src/components/TheTransactionList.vue:316
+#: src/components/TheTransactionList.vue:325
 msgid "Description"
 msgstr "Description"
 
@@ -541,11 +541,11 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheTransactionList.vue:312
+#: src/components/TheTransactionList.vue:321
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TheTransactionList.vue:313
+#: src/components/TheTransactionList.vue:322
 msgid "Target"
 msgstr "Destination"
 
@@ -615,16 +615,16 @@ msgstr "Opérations de crédit en attente de validation"
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TheTransactionList.vue:358
-#: src/components/TheTransactionList.vue:371
+#: src/components/TheTransactionList.vue:366
+#: src/components/TheTransactionList.vue:379
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TheTransactionList.vue:362
+#: src/components/TheTransactionList.vue:370
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/components/TheTransactionList.vue:375
+#: src/components/TheTransactionList.vue:383
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
