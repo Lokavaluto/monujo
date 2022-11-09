@@ -63,6 +63,13 @@
     <div class="modal is-active" v-if="showExportModal">
       <div class="modal-background"></div>
       <div class="modal-card">
+        <div class="transactions-loader">
+          <loading
+            v-model:active="isAllTransactionsLoading"
+            :can-cancel="false"
+            :is-full-page="false"
+          />
+        </div>
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
             <span class="ml-2">{{ $gettext("Export in CSV format") }}</span>
@@ -74,14 +81,6 @@
           ></button>
         </header>
         <section class="modal-card-body custom-card-transactions">
-          <div>
-            <loading
-              v-model:active="isAllTransactionsLoading"
-              :can-cancel="false"
-              :opacity="0"
-              :is-full-page="false"
-            />
-          </div>
           <div
             class="modal-container custom-modal-container"
             ref="transactionsContainer"
