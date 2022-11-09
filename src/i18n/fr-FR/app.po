@@ -610,8 +610,8 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/services/ExportService.ts:56 src/services/ExportService.ts:57
-#: src/services/ExportService.ts:59
+#: src/services/ExportService.ts:63 src/services/ExportService.ts:64
+#: src/services/ExportService.ts:66
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
