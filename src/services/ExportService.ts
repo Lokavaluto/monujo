@@ -15,7 +15,8 @@ class ExportService {
     fileName: string,
     mimetype: string
   ): Promise<any> {
-    if (Capacitor.getPlatform() === "web") {
+    const platform = Capacitor.getPlatform()
+    if (platform === "web") {
       const link = document.createElement("a")
       const url = `data:${mimetype};charset=utf-8,${encodeURIComponent(data)}`
       link.setAttribute("href", url)
@@ -24,21 +25,27 @@ class ExportService {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-    } else if (Capacitor.getPlatform() === "android") {
-      try {
-        await Filesystem.writeFile({
-          path: fileName,
-          data: data,
-          directory: Directory.Documents,
-          encoding: Encoding.UTF8,
-        })
-      } catch (err) {
-        throw new Error("Unable to download file")
-      }
+    } else {
+      console.log(`Download is not yet available on ${platform} platform.`)
+      // // disabled while searching solution for permission issue
+      // // issue: https://github.com/ionic-team/capacitor-plugins/issues/457
+      //
+      // if (platform === "android") {
+      // try {
+      //   await Filesystem.writeFile({
+      //     path: fileName,
+      //     data: data,
+      //     directory: Directory.Documents,
+      //     encoding: Encoding.UTF8,
+      //   })
+      // } catch (err) {
+      //   throw new Error("Unable to download file")
+      // }
     }
   }
   public async share(data: any, fileName: string): Promise<any> {
-    if (Capacitor.getPlatform() !== "web") {
+    const platform = Capacitor.getPlatform()
+    if (platform !== "web") {
       await Filesystem.writeFile({
         path: fileName,
         data: data,
@@ -58,6 +65,8 @@ class ExportService {
         url: fileResult.uri,
         dialogTitle: $gettext("Transaction list"),
       })
+    } else {
+      console.log(`Share is not yet available on ${platform} platform.`)
     }
   }
 }
