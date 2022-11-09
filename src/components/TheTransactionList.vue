@@ -126,7 +126,7 @@
         <footer
           class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
         >
-          <span v-if="getPlatform !== 'ios'" class="mr-2"
+          <span v-if="getPlatform === 'web'" class="mr-2"
             ><button
               class="button custom-button-modal has-text-weight-medium"
               :title="$gettext('Export all transactions')"
@@ -140,7 +140,7 @@
                 <span>{{ $gettext("Download") }}</span>
               </span>
             </button></span
-          ><span v-if="getPlatform !== 'web'" class="ml-2"
+          ><span v-else class="ml-2"
             ><button
               class="button custom-button-modal has-text-weight-medium"
               :title="$gettext('Send transactions')"
