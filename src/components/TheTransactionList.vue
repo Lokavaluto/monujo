@@ -252,7 +252,6 @@
         "transactionsLoading",
         "transactionsBatchLoading",
         "thisWeektransactions",
-        "transactions",
         "userProfile",
       ]),
       ...mapGetters(["numericFormat", "dateFormat"]),
@@ -280,9 +279,17 @@
       },
 
       async createCsvFile() {
+        const transactions = []
+        const [dateBegin, dateEnd] = this.exportDate
+
         this.isAllTransactionsLoading = true
         try {
-          await this.$store.dispatch("fetchAllTransactions", this.exportDate)
+          for await (const transaction of this.$lokapi.getTransactions({
+            ...(dateBegin && { dateBegin }),
+            ...(dateEnd && { dateEnd }),
+          })) {
+            transactions.push(<any>transaction)
+          }
         } catch (e) {
           this.$msg.error(
             this.$gettext(
@@ -293,7 +300,6 @@
         } finally {
           this.isAllTransactionsLoading = false
         }
-
         const columnOrder = [
           "sender",
           "receiver",
@@ -311,7 +317,7 @@
           },
         ]
 
-        for (let e of this.transactions) {
+        for (let e of transactions) {
           let name = e.related
           let [sender, receiver] = e.amount.startsWith("-")
             ? [this.userProfile.name, name]
