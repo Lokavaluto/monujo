@@ -96,24 +96,6 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         commit("setTransactions", transactions)
         commit("setTransactionsLoading", false)
       },
-      async fetchAllTransactions(
-        { commit, dispatch, state }: any,
-        exportDate: [Date, Date]
-      ) {
-        const transactions = []
-        const [dateBegin, dateEnd] = exportDate
-        try {
-          for await (const transaction of lokApiService.getTransactions({
-            ...(dateBegin && { dateBegin }),
-            ...(dateEnd && { dateEnd }),
-          })) {
-            transactions.push(<any>transaction)
-          }
-        } catch (e) {
-          throw e
-        }
-        commit("setTransactions", transactions)
-      },
       async fetchTransactionsBatch({ commit, dispatch, state }: any) {
         let transactions =
             state.transactions.length > 0 ? state.transactions.slice(0) : [],
