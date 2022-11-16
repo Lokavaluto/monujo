@@ -575,10 +575,8 @@ msgstr "Vers"
 #: src/components/MoneyCreditModal.vue:92
 msgid ""
 "To complete your top up request, you need to finalize the transaction by "
-"logging in your Odoo account:"
-msgstr ""
-"Pour compléter la demande de crédit, vous devez finaliser la transaction en "
-"vous rendant dans votre espace personnel Odoo :"
+"logging in your administrative account:"
+msgstr "Pour compléter la demande de crédit, vous devez finaliser la transaction en vous rendant dans votre espace administratif personnel : "
 
 #: src/components/TheBankAccountList.vue:48
 msgid "to create one."
