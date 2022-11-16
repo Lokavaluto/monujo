@@ -91,7 +91,7 @@
               {{
                 $gettext(
                   "To complete your top up request, you need to finalize the " +
-                    "transaction by logging in your Odoo account:"
+                    "transaction by logging in your administrative account:"
                 )
               }}
             </p>
