@@ -91,7 +91,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de l'utilisateur "
 "%{ name }"
 
-#: src/components/MoneyCreditModal.vue:248
+#: src/components/MoneyCreditModal.vue:225
 msgid "An unexpected issue occurred while attempting to top up your account"
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -161,7 +161,7 @@ msgstr "Identification biométrique mise en place"
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/MoneyCreditModal.vue:148
+#: src/components/MoneyCreditModal.vue:149
 msgid "Close and refresh"
 msgstr "Fermer et rafraîchir"
 
@@ -259,7 +259,7 @@ msgstr "Exporter en format CSV"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
-#: src/components/MoneyCreditModal.vue:141
+#: src/components/MoneyCreditModal.vue:142
 msgid "Finalize order from your account"
 msgstr "Compléter la transaction dans mon espace personnel"
 
@@ -557,13 +557,9 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/MoneyCreditModal.vue:220
-msgid "The minimum top up amount is %{ amount }"
-msgstr "Le montant minimum de crédit est %{ amount }"
-
-#: src/components/MoneyCreditModal.vue:214
-msgid "The top up amount must be greater than 0"
-msgstr "Le montant à créditer doit être un nombre positif"
+#: src/components/MoneyCreditModal.vue:266
+msgid "The minimum top up amount must be equal or greater than %{ amount }"
+msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
 
 #: src/components/CreateAccount.vue:45
 msgid ""
@@ -778,6 +774,3 @@ msgstr "Courante"
 msgctxt "year"
 msgid "Previous"
 msgstr "Précédente"
-
-#~ msgid "liste des transactions"
-#~ msgstr "Transaction list"

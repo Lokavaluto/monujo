@@ -65,20 +65,20 @@
                 min="0"
                 class="input is-custom"
                 :placeholder="$gettext('e.g. 50')"
-                :class="{ 'is-danger': errors.amount }"
+                :class="{ 'is-danger': errors.minCreditAmount }"
+                v-on:input="showAmountErrors()"
               />
               <span class="amount-currency-symbol pl-2">{{
                 this.selectedCreditAccount?.curr
               }}</span>
             </div>
-            <div class="notification is-danger is-light" v-if="errors.amount">
-              {{ errors.amount }}
-            </div>
-            <div
-              class="notification is-danger is-light"
-              v-if="errors.minCreditAmount"
-            >
-              {{ errors.minCreditAmount }}
+            <div>
+              <div
+                class="notification is-danger is-light"
+                v-if="errors.minCreditAmount"
+              >
+                {{ errors.minCreditAmount }}
+              </div>
             </div>
           </div>
         </div>
@@ -133,6 +133,7 @@
           <button
             class="button custom-button-modal button-modal has-text-weight-medium action"
             @click="newLinkTab()"
+            :disabled="isTopUpButtonDisabled"
           >
             {{ $gettext("Next") }}
           </button>
@@ -173,9 +174,9 @@
         showCreditRefreshNotification: false,
         amount: 0,
         errors: {
-          amount: false,
           minCreditAmount: false,
         },
+        isTopUpButtonDisabled: true,
       }
     },
     mounted() {
@@ -190,7 +191,6 @@
         this.creditOrderUrl = ""
         this.amount = 0
         this.errors = {
-          amount: false,
           minCreditAmount: false,
         }
         this.selectedCreditAccount =
@@ -200,34 +200,11 @@
       },
       setSelectedCreditAccount(account: any): void {
         this.errors = {
-          amount: false,
           minCreditAmount: false,
         }
         this.selectedCreditAccount = account
       },
       async newLinkTab() {
-        this.errors = {
-          amount: false,
-          minCreditAmount: false,
-        }
-        if (this.amount <= 0) {
-          this.errors.amount = this.$gettext(
-            "The top up amount must be greater than 0"
-          )
-          return
-        }
-        if (this.amount < this.selectedCreditAccount.minCreditAmount) {
-          this.errors.minCreditAmount = this.$gettext(
-            "The minimum top up amount is %{ amount }",
-            {
-              amount:
-                this.selectedCreditAccount.minCreditAmount +
-                " " +
-                this.selectedCreditAccount?.curr,
-            }
-          )
-          return
-        }
         // This to ensure we are left with 2 decimals only
         this.amount = this.amount.toFixed(2)
         try {
@@ -275,6 +252,35 @@
             this.$refs.amountcredit.select()
           }
         })
+      },
+      showAmountErrors() {
+        this.errors = {
+          minCreditAmount: false,
+        }
+        const minCreditAmount = this.selectedCreditAccount.minCreditAmount
+        if (this.amount <= minCreditAmount) {
+          if (this.amount > 0 && this.amount == minCreditAmount) {
+            this.isTopUpButtonDisabled = false
+            return
+          }
+          this.errors.minCreditAmount = this.$gettext(
+            "The minimum top up amount must be equal or greater than %{ amount }",
+            {
+              amount:
+                minCreditAmount === 0
+                  ? 1
+                  : minCreditAmount + " " + this.selectedCreditAccount?.curr,
+            }
+          )
+        } else {
+          this.isTopUpButtonDisabled = false
+        }
+        if (this.amount === "") {
+          this.errors = {
+            minCreditAmount: false,
+          }
+          this.isTopUpButtonDisabled = true
+        }
       },
     },
   })
