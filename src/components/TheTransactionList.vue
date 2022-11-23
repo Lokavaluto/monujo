@@ -450,6 +450,14 @@
         }
         this.$msg.success(this.$gettext("Transaction list shared"))
       },
+      makeTimeSpan(timeSpan: any, pos: number, emit: any) {
+        emit(
+          [
+            moment().subtract(-pos, timeSpan).startOf(timeSpan),
+            moment().subtract(-pos, timeSpan).endOf(timeSpan),
+          ].map((m) => m.toDate())
+        )
+      },
       normalizeEndDate() {
         this.exportDate = [
           moment(this.exportDate[0]).startOf("day").toDate(),
