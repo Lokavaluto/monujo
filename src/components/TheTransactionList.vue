@@ -2,6 +2,7 @@
   <div class="card custom-card custom-card-padding">
     <div
       class="is-flex-direction-column is-align-items-center is-justify-content-space-between"
+      id="TransactionListRecent"
     >
       <TransactionListRecent />
     </div>
