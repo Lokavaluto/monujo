@@ -1,0 +1,260 @@
+
+
+to_publish = Hash.new
+
+
+desc "Produce final bundled javascript and css"
+private_lane :build_web_pack do |options|
+  Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
+    sh "npm ci"
+    FileUtils.mkdir_p("public/i18n")
+    sh "npm run gettext:compile"
+    sh "npm run build"
+  end
+end
+
+
+desc "Check signing info are available and setup"
+private_lane :_setup_signing do |options|
+
+  case lane_context[SharedValues::PLATFORM_NAME]
+  when :android
+    ## Fail early if we don't have required info for signing
+    check_signing_secrets_are_available(
+      keystore_base64: options[:keystore_base64],
+      keystore_file: options[:keystore_file],
+      keystore_password: options[:keystore_password],
+      keystore_password_file: options[:keystore_password_file],
+    )
+  when :ios
+    UI.user_error!("not yet implemented")
+  when :web
+    ## Nothing to do
+    UI.important "No signing happening for web. Ignoring."
+  else
+    UI.user_error!("Unknown platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+  end
+
+end
+
+
+desc "Build release packages"
+private_lane :_build_apps do |options|
+  _setup_signing
+
+  apps = options[:app]
+  data = load_releases_data
+  if apps != "monujo"
+    apps = apps.split(",") if apps
+    apps = data.keys unless apps
+  else
+    apps = ["monujo", ]
+  end
+
+  version_name_from_tag tag: options[:tag]
+  version_code_from_tag tag: options[:tag], rev: options[:rev]
+
+  for app in apps
+    load_app_data app: app
+
+    ## Load the platform dependent packaging
+    package options
+  end
+
+end
+
+
+desc "Common platform preparation before build"
+private_lane :_prepare_package do |options|
+
+  ## Create sandboxed clone and customize app
+  sandbox
+  customize_app_with_resource unless lane_context[SharedValues::PLATFORM_NAME] == :web
+
+  ## Fetch, transpiles and pack all web components
+  build_web_pack
+
+  if lane_context[SharedValues::PLATFORM_NAME] != :web
+    prepare_mobile_package
+  end
+end
+
+
+desc "Mobile platform preparation before build"
+private_lane :_prepare_mobile_package do |options|
+  capacitor_prepare
+  version_prepare
+end
+
+
+desc "Publish Github"
+private_lane :_publish_github do |options|
+  build options
+  gen_changelog
+  send_github options
+end
+
+
+desc "Send Github"
+private_lane :send_github do |options|
+  tag = lane_context[SharedValues::VERSION_NAME]
+  changelog = File.read("../release/#{tag}/CHANGELOG").lines
+  title = (changelog.shift).strip
+  github_release(
+    repository_name: options[:github_repository] || ENV["GITHUB_REPOSITORY"],
+    name: title,
+    tag_name: tag,
+    description: changelog.join,
+    commitish: "master",
+    upload_assets: to_publish,
+    overwrite_existing_assets: options[:overwrite_existing_assets],
+    is_draft: options[:draft],
+    is_prerelease: tag.include?("-rc."),
+  )
+end
+
+
+platform :android do
+
+  lane :build do |options|
+    _build_apps options
+  end
+
+  lane :publish_github do |options|
+    _publish_github options
+  end
+
+  private_lane :send_stores do |options|
+    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+  end
+
+  private_lane :prepare_mobile_package do |options|
+    _prepare_mobile_package
+  end
+
+  private_lane :package do |options|
+
+    app = lane_context[SharedValues::APP_NAME]
+    version_name = lane_context[SharedValues::VERSION_NAME]
+    version_code = lane_context[SharedValues::VERSION_CODE]
+
+    file_name = "#{app}_#{version_name}_#{version_code}"
+    bundle_file_name = "#{file_name}.aab"
+    package_file_name = "#{file_name}.apk"
+    result_dir="release/#{version_name}"
+    result_file_label="#{app} - #{version_name} (#{version_code})"
+    if File.exist? "../#{result_dir}/#{bundle_file_name}"
+      if ! options[:force]
+        UI.important "Release file of #{app} already exists in '#{result_dir}/#{bundle_file_name}'."
+        UI.message "  Ignoring build. If you want to overwrite it, provide 'force:true' as an argument."
+        to_publish["#{result_dir}/#{bundle_file_name}"] = "Android Bundle (AAB) - #{result_file_label}"
+        if File.exist? "../#{result_dir}/#{package_file_name}"
+          to_publish["#{result_dir}/#{package_file_name}"] = "Android App (APK) - #{result_file_label}"
+        end
+        next
+      else
+        UI.important "Existing release file for #{app} #{result_dir}/#{bundle_file_name} will be overwritten."
+      end
+    end
+
+    _prepare_package
+
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/android",
+      properties: {
+        ## Versioning
+        "android.injected.version.code" => version_code,
+        "android.injected.version.name" => version_name,
+
+        ## Signing
+        "android.injected.signing.store.file" => lane_context[SharedValues::ANDROID_KEYSTORE],
+        "android.injected.signing.store.password" => ENV["RELEASE_KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => lane_context[SharedValues::ANDROID_KEY_ALIAS],
+        "android.injected.signing.key.password" => ENV["RELEASE_KEY_PASSWORD"],
+      },
+      print_command: false,
+    )
+
+    FileUtils.mkdir_p "../#{result_dir}"
+    FileUtils.mv(lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+                 "../#{result_dir}/#{bundle_file_name}")
+    to_publish["#{result_dir}/#{bundle_file_name}"] = "Android Bundle (AAB) - #{result_file_label}"
+
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/android",
+      properties: {
+        ## Versioning
+        "android.injected.version.code" => version_code,
+        "android.injected.version.name" => version_name,
+
+        ## Signing
+        "android.injected.signing.store.file" => lane_context[SharedValues::ANDROID_KEYSTORE],
+        "android.injected.signing.store.password" => ENV["RELEASE_KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => lane_context[SharedValues::ANDROID_KEY_ALIAS],
+        "android.injected.signing.key.password" => ENV["RELEASE_KEY_PASSWORD"],
+      },
+      print_command: false,
+    )
+
+    FileUtils.mv(lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
+                 "../#{result_dir}/#{package_file_name}")
+    to_publish["#{result_dir}/#{package_file_name}"] = "Android App (APK) - #{result_file_label}"
+
+  end
+
+
+end
+
+
+platform :web do
+
+  lane :build do |options|
+    version_name_from_tag tag: options[:tag]
+    gen_changelog
+
+    lane_context[SharedValues::APP_NAME] = "monujo"
+    ## Load the platform dependent packaging
+    package options
+  end
+
+  lane :publish_github do |options|
+    _publish_github options
+  end
+
+  private_lane :send_stores do |options|
+    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+  end
+
+  private_lane :package do |options|
+
+    app = lane_context[SharedValues::APP_NAME]
+    tag = lane_context[SharedValues::VERSION_NAME]
+
+    file_name = "#{app}_#{tag}"
+    package_file_name = "#{file_name}.tar.bz2"
+    result_dir="release/#{tag}"
+    if File.exist? "../#{result_dir}/#{package_file_name}"
+      if ! options[:force]
+        UI.important "Release file of #{app} already exists in '#{result_dir}/#{package_file_name}'."
+        UI.message "  Ignoring build. If you want to overwrite it, provide 'force:true' as an argument."
+        to_publish["#{result_dir}/#{package_file_name}"] = "Web (tar.bz2) - #{tag}"
+        next
+      else
+        UI.important "Existing release file for #{app} #{result_dir}/#{package_file_name} will be overwritten."
+      end
+    end
+
+    _prepare_package
+
+    FileUtils.mkdir_p "../#{result_dir}"
+    sh ("( cd \"#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/dist\" ; tar cj . ) > " +
+        "\"../#{result_dir}/#{package_file_name}\"")
+
+    to_publish["#{result_dir}/#{package_file_name}"] = "Web (tar.bz2) - #{tag}"
+
+  end
+end

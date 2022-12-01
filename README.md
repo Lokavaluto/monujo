@@ -321,55 +321,119 @@ along with the current Monujo deployment, or from any other location.
 
 To build the final assets (signed packages for mobiles and for the web
 app) and optionally create a github release (if you have the
-appropriate rights), you can use `bin/release`.
+appropriate rights), `fastlane` is used.
+
+First, you need `ruby` on your system (note that you might require
+also `ruby-dev` package on debian related system).
 
 For that you'll need to install some dependencies:
 
 ```bash
+bundle install            ## to install all ruby dependencies
 pip install gitchangelog  ## to generate CHANGELOG information from git log
-npm install -g semver     ## install 'semver' utility to sort versions according
-                          ## to semantic versionning
-apt-get install yq jq     ## or use `brew` on macosx
 ```
 
-To create the release on github, you'll need `hub`:
+#### General usage
+
+These following commands will create a release as long as your current
+commit is tagged with a valid tag identifier (following
+`X.Y.Z(-rc.R)` syntax).
 
 ```
-apt-get install hub       ## or use `brew` on macosx
+bundle exec fastlane web build      ## Build web deployment package
+bundle exec fastlane android build  ## Build android APK and AAB
 ```
 
-#### Getting help
+Will produce build outputs in `release/$TAG` directory.
+
+##### Specifying which version to build
+
+If the checkout of your current code is on a commit that has a TAG of the
+form `X.Y.Z` (optionally with `-rc.R` postfixed, as `1.0.0-rc.9` or
+`2.1.0` for instance) it'll be automatically used as the version name.
+
+You can force the build of another tag by adding a `tag:1.0.0-rc.9`
+argument on the command line.
+
+For instance:
 
 ```
-$ bin/release --help
-release [-t TAG|--tag TAG] [-f|--force] [-p|--platform PLATFORM]
-
-    ## android build options:
-
-    [-r REV|--rev REV] [-a APP|--app APP]
-    [--keystore-password PASSWORD] [--keystore-password-file FILE]
-    [--keystore FILE]
-
-    ## publish options
-
-    [-P|--publish] [-d|--draft]
-
+bundle exec fastlane android build tag:1.0.0-rc.9
 ```
 
-#### Basic usage
+##### Build is happening in a temporary directory
+
+You don't need to clean your directory or care about the state of your
+current work dir: the source will be cloned in a temporary directory
+prior to any package building.
+
+##### Platforms supported
+
+This will be the first argument after your `bundle exec fastlane ...`
+command.
+
+Current infrastructure can drive the builds for:
+
+###### web
+
+This is a simple html/js/css web server archive ready for deployment
+and should be buildable in all environment.
+
+###### android
+
+Provided that you have the correct dependencies ready... it will
+produce:
+
+- APK files for direct installs on android mobile phones.
+- AAB files to provide to the playstore for deployment on it.
+
+Note that you can provide a revision number for the released android
+package by adding an argument to the command line as `android_rev:N`
+(that will be 0 by default).
+
+##### Applications
+
+Multiple variations of the application are automatically built for
+the `android` platform depending on the content of [this external
+resource](https://docker.0k.io/downloads/lokavaluto-releases.yml).
+
+You can limit your build to one or more of these by adding an
+`app:APP1,[APP2, ...]` argument to the command line. By default, if
+you don't specify any `app` argument, all apps will be built.
+
+For instance:
 
 ```
-bin/release
+bundle exec fastlane android build app:roue,pive
 ```
 
-Will attempt to find the tag of the current commit, and build all the
-assets. If something is missing on the way, you'll be informed by a
-hopefully useful error message.
-
-If you want to build a specific version, for a specific platform, of a
-custom app you can:
+#### Publish to github
 
 ```
-bin/release -t 1.0.0-rc.7 -p android -a roue
+bundle exec fastlane web publish_github
+bundle exec fastlane android publish_github
 ```
 
+Will build packages in `release/$TAG` and create/update github release
+provided that you have the credentials for this.
+
+To setup your credentials, you'll be required to setup the
+`GITHUB_API_TOKEN` environment variable with an api token that you'll
+create in your github account.
+
+You can change the default github repository on which the release are
+created/updated by adding a `github_repository:OWNER/REPOS` command
+line argument.
+
+For instance:
+
+```
+bundle exec fastlane android publish_github \
+    tag:1.0.0-rc.8 github_repository:vaab/monujo \
+    app:monujo android_rev:1
+```
+
+.. will build android packages (APK and AAB) from source code of tag
+`1.0.0-rc.8` with the added revision 1 in the android version code,
+only for application "monujo" and create/update the github release
+`1.0.0-rc.8` of the github repository "vaab/monujo".

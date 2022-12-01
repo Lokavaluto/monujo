@@ -6,13 +6,24 @@ on:
       - '[0-9]+.[0-9].+[0-9]+-rc.[0-9]+'
 
 jobs:
-  deploy:
-    name: Github Release
+  release-matrix:
+    strategy:
+      matrix:
+        platform: [web, android]
+    name: Github Release ${{ matrix.platform }}
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get code
         uses: actions/checkout@v2
-      - name: Setup java
+      - name: 🚚 Get Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+      - name: 🚚 Get Ruby Deps
+        run: |
+          bundle install
+      - if: matrix.platform == 'android'
+        name: Setup java
         uses: actions/setup-java@v1
         with:
             distribution: 'zulu'
@@ -24,9 +35,11 @@ jobs:
       - name: 🚚 Create assets and github release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
+          KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE }}
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
         run: |
+          git fetch --unshallow --tags &&
+          npm -g install semver &&
           pip install gitchangelog pystache &&
-          npm install -g semver &&
-          bin/release -P -d
+          bundle exec fastlane ${{ matrix.platform }} publish_github draft:true
+

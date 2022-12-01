@@ -38,3 +38,12 @@ resources/android/icon
 resources/android/splash
 resources/ios/icon
 resources/ios/splash
+
+# Fastlane
+fastlane/README.md
+fastlane/report.xml
+keys/
+release/
+
+# GEM
+.gembundle
