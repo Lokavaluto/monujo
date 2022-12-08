@@ -8,7 +8,7 @@
             <p class="control has-icons-left is-expanded">
               <input
                 v-model.trim="email"
-                class="input"
+                class="input login-email"
                 :placeholder="$gettext('Email')"
               />
               <span class="icon is-small is-left">
@@ -28,7 +28,7 @@
             <p class="control has-icons-left">
               <input
                 v-model="password"
-                class="input"
+                class="input login-password"
                 type="password"
                 :placeholder="$gettext('Password')"
               />
@@ -45,7 +45,7 @@
           <div class="login-buttons">
             <div>
               <p class="control has-text-centered">
-                <button type="submit" class="button is-login">
+                <button type="submit" class="button is-login login-button">
                   {{ $gettext("Sign in") }}
                 </button>
               </p>
