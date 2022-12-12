@@ -7,7 +7,7 @@ permissions:
   issues: write
   pull-requests: write
 jobs:
-  cypress-screenshots:
+  cypress-tests-check:
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -73,3 +73,19 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           pathname: cypress/reports/mocha/report-merge.json
         if: always()
+  check-translation:
+    needs: cypress-tests-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          git fetch --unshallow --tags &&
+          npm install
+          sudo apt-get install gettext
+      - name: Check gettext translation/
+        run: |
+          npm run gettext:extract
+      - name: git diff
+        run: |
+          if [ -n "$(git diff src/i18n/)" ]; then exit 1; fi

@@ -243,6 +243,7 @@ msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
 #: src/components/TheTransactionList.vue:57
+#, fuzzy
 msgid "Export"
 msgstr "Exporter"
 
