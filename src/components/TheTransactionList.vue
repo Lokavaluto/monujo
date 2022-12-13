@@ -446,8 +446,19 @@
       async shareCsvFile() {
         this.selectExportLoader = 2
         const { csvContent, exportFileName } = await this.createCsvFile()
+        let dateBeginStr, dateEndStr
+        if (this.exportDate[0] && this.exportDate[1]) {
+          dateBeginStr = moment(this.exportDate[0]).format("YYYY-MM-DD")
+          dateEndStr = moment(this.exportDate[1]).format("YYYY-MM-DD")
+        } else {
+          dateBeginStr = ""
+          dateEndStr = ""
+        }
         try {
-          await this.$export.share(csvContent, exportFileName)
+          await this.$export.share(csvContent, exportFileName, [
+            dateBeginStr,
+            dateEndStr,
+          ])
         } catch (e) {
           this.$msg.error(
             this.$gettext("Transaction list could not be downloaded")

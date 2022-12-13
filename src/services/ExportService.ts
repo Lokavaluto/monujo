@@ -43,7 +43,11 @@ class ExportService {
       // }
     }
   }
-  public async share(data: any, fileName: string): Promise<any> {
+  public async share(
+    data: any,
+    fileName: string,
+    exportDates: [string, string]
+  ): Promise<any> {
     const platform = Capacitor.getPlatform()
     if (platform !== "web") {
       await Filesystem.writeFile({
@@ -58,12 +62,20 @@ class ExportService {
         path: fileName,
       })
       const { $gettext } = this.gettext
+      const [begin, end] = exportDates
+      const message =
+        begin && end
+          ? $gettext("Transaction list from %{ begin } to %{ end }", {
+              begin,
+              end,
+            })
+          : $gettext("Transaction list")
 
       await Share.share({
-        title: $gettext("Transaction list"),
-        text: $gettext("Transaction list"),
+        title: message,
+        text: message,
         url: fileResult.uri,
-        dialogTitle: $gettext("Transaction list"),
+        dialogTitle: message,
       })
     } else {
       console.log(`Share is not yet available on ${platform} platform.`)

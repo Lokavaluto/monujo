@@ -614,13 +614,12 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/services/ExportService.ts:63 src/services/ExportService.ts:64
-#: src/services/ExportService.ts:66
+#: src/services/ExportService.ts:68
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
 #: src/components/TheTransactionList.vue:440
-#: src/components/TheTransactionList.vue:453
+#: src/components/TheTransactionList.vue:464
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
@@ -628,7 +627,11 @@ msgstr "La liste des transactions n'a pas pu être téléchargée"
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/components/TheTransactionList.vue:457
+#: src/services/ExportService.ts:67
+msgid "Transaction list from %{ begin } to %{ end }"
+msgstr "Liste des transactions du %{ begin } au %{ end }"
+
+#: src/components/TheTransactionList.vue:468
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
