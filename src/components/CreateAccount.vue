@@ -12,7 +12,13 @@
                       'is-wallet-active': form.accountBackend === backend,
                     }"
                     @click="form.accountBackend = backend"
-                    class="button is-wallet has-text-weight-medium is-rounded ml-3"
+                    class="
+                      button
+                      is-wallet
+                      has-text-weight-medium
+                      is-rounded
+                      ml-3
+                    "
                   >
                     <li>
                       <a class="wallet-tab">
@@ -33,27 +39,33 @@
           <div class="card custom-card">
             <div class="card-content">
               <p class="mb-3">
-                {{ $gettext(
+                {{
+                  $gettext(
                     "Please enter a password (and confirm it) " +
-                    "for your new wallet %{ backend }.", {
-                    backend: form.accountBackend,
-                  })
+                      "for your new wallet %{ backend }.",
+                    {
+                      backend: form.accountBackend,
+                    }
+                  )
                 }}
               </p>
               <p class="mb-3">
                 {{
-                $gettext(
+                  $gettext(
                     "This password is different from your login password, " +
-                    "it protects your wallet %{ backend }.", {
-                    backend: form.accountBackend,
-                  })
+                      "it protects your wallet %{ backend }.",
+                    {
+                      backend: form.accountBackend,
+                    }
+                  )
                 }}
               </p>
               <p class="notification is-danger">
-                  {{
+                {{
                   $gettext(
-                      "Please note that this password can not be retrieved, " +
-                      "so be sure to keep it in a safe and reachable place.")
+                    "Please note that this password can not be retrieved, " +
+                      "so be sure to keep it in a safe and reachable place."
+                  )
                 }}
               </p>
             </div>
@@ -66,9 +78,7 @@
                 {{ $gettext("Create my wallet") }}
               </h2>
               <div class="field">
-                <label class="label">{{
-                  $gettext("Password")
-                }}</label>
+                <label class="label">{{ $gettext("Password") }}</label>
                 <div class="control has-icons-left has-icons-right">
                   <input
                     class="input"
@@ -252,9 +262,7 @@
       },
       checkIsSame(fieldOne: string, fieldTwo: string): void {
         if (this.form[fieldOne] !== this.form[fieldTwo]) {
-          this.form.errors[fieldOne] = [
-            this.$gettext("Passwords do not match"),
-          ]
+          this.form.errors[fieldOne] = [this.$gettext("Passwords do not match")]
         } else {
           this.form.errors[fieldOne] = []
         }
@@ -278,17 +286,15 @@
             err
           )
           if (!(err instanceof LokAPIExc.UserAccountAlreadyExists)) {
-            this.$msg.error(this.$gettext(
-              "Wallet creation unexpectedly failed."
-            ) + " " + this.$gettext(
-              "Please try again or contact your administrator"
-            ))
+            this.$msg.error(
+              this.$gettext("Wallet creation unexpectedly failed.") +
+                " " +
+                this.$gettext("Please try again or contact your administrator")
+            )
 
             return // stay on page
           }
-          this.$msg.warning(
-            this.$gettext("Wallet already created")
-          )
+          this.$msg.warning(this.$gettext("Wallet already created"))
         }
 
         if (this.userAuthPref) {
@@ -301,10 +307,12 @@
               "Something went wrong on createUserAccount request",
               err
             )
-            this.$msg.error(this.$gettext(
-              "Settings for simplified authentication were not saved correctly... " +
-                "Please try again in the \"Settings\" page or contact your administrator"
-            ))
+            this.$msg.error(
+              this.$gettext(
+                "Settings for simplified authentication were not saved correctly... " +
+                  'Please try again in the "Settings" page or contact your administrator'
+              )
+            )
           }
         }
         this.$store.dispatch("fetchComponentDefs")

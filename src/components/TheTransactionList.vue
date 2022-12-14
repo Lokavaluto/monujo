@@ -1,7 +1,11 @@
 <template>
   <div class="card custom-card custom-card-padding">
     <div
-      class="is-flex-direction-column is-align-items-center is-justify-content-space-between"
+      class="
+        is-flex-direction-column
+        is-align-items-center
+        is-justify-content-space-between
+      "
     >
       <TransactionListRecent />
     </div>
@@ -29,7 +33,13 @@
             @scroll="handleScroll"
           >
             <div
-              class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
+              class="
+                custom-card
+                is-flex-direction-column
+                is-align-items-center
+                is-justify-content-space-between
+                mb-4
+              "
             >
               <TransactionListFull />
             </div>
@@ -47,7 +57,14 @@
           </div>
           <div>
             <button
-              class="button custom-button is-payer has-text-weight-medium is-rounded action"
+              class="
+                button
+                custom-button
+                is-payer
+                has-text-weight-medium
+                is-rounded
+                action
+              "
               :title="$gettext('Export all transactions')"
               @click=";(this.showModal = false), (this.showExportModal = true)"
             >
@@ -87,7 +104,13 @@
             @scroll="handleScroll"
           >
             <div
-              class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between mb-4"
+              class="
+                custom-card
+                is-flex-direction-column
+                is-align-items-center
+                is-justify-content-space-between
+                mb-4
+              "
             >
               <div class="mb-2">
                 <strong>{{ $gettext("Select timespan:") }}</strong>
@@ -122,7 +145,11 @@
           </div>
         </section>
         <footer
-          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+          class="
+            modal-card-foot
+            custom-modal-card-foot
+            is-justify-content-flex-end
+          "
         >
           <span v-if="getPlatform === 'web'" class="mr-2"
             ><button

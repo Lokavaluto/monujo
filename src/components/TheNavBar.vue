@@ -55,11 +55,7 @@
           </router-link>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              {{
-                userProfile?.name
-                  ? userProfile.name
-                  : $gettext("User")
-              }}
+              {{ userProfile?.name ? userProfile.name : $gettext("User") }}
             </a>
 
             <div class="navbar-dropdown is-right">

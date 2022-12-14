@@ -8,7 +8,14 @@
             @click="
               ;(showTransferModal = true), $store.commit('setModalState', true)
             "
-            class="button custom-button is-payer has-text-weight-medium is-rounded action"
+            class="
+              button
+              custom-button
+              is-payer
+              has-text-weight-medium
+              is-rounded
+              action
+            "
           >
             <span class="icon-text">
               <span class="icon">
@@ -21,7 +28,14 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="true"
-            class="button custom-button is-recevoir has-text-weight-medium is-rounded action"
+            class="
+              button
+              custom-button
+              is-recevoir
+              has-text-weight-medium
+              is-rounded
+              action
+            "
           >
             <span class="icon-text">
               <span class="icon">
@@ -34,7 +48,14 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
-            class="button custom-button is-recharger has-text-weight-medium is-rounded action"
+            class="
+              button
+              custom-button
+              is-recharger
+              has-text-weight-medium
+              is-rounded
+              action
+            "
             @click="
               ;(showCreditModal = true), $store.commit('setModalState', true)
             "

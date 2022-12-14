@@ -8,7 +8,10 @@
         </div>
       </div>
       <div class="is-align-items-center is-flex">
-        <span class="is-size-6-mobile is-size-4-tablet account-bal" v-if="active">
+        <span
+          class="is-size-6-mobile is-size-4-tablet account-bal"
+          v-if="active"
+        >
           {{ numericFormat(parseFloat(bal)) }}
         </span>
         <span

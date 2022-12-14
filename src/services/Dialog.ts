@@ -1,7 +1,6 @@
-
 export default class Dialog {
   fn: null | ((opts: any) => Promise<string>) = null
-  
+
   public register(fn: (opts: any) => Promise<string>): void {
     this.fn = fn
   }
@@ -11,8 +10,7 @@ export default class Dialog {
   }
 
   public async show(opts: any): Promise<string> {
-    if (!this.fn)
-      throw new Error("No callback registered to manage dialog.")
+    if (!this.fn) throw new Error("No callback registered to manage dialog.")
     return await this.fn(opts)
   }
 }

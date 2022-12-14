@@ -57,11 +57,16 @@
       async isPinValid() {
         if (this.pin.length < this.pinLength) {
           this.errors.pinSize = this.$gettext(
-            "PIN code must contain %{ pinLength }", {
+            "PIN code must contain %{ pinLength }",
+            {
               pinLength: this.$ngettext(
-                "%{ pinLength } digit", "%{ pinLength } digits", 1, {
-                pinLength: this.pinLength
-              }),
+                "%{ pinLength } digit",
+                "%{ pinLength } digits",
+                1,
+                {
+                  pinLength: this.pinLength,
+                }
+              ),
             }
           )
           return false

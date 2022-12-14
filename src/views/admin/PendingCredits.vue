@@ -15,17 +15,21 @@
                 v-if="hasLoadingError"
               >
                 <p class="mb-4">
-                  {{ $gettext(
+                  {{
+                    $gettext(
                       "An unexpected issue occurred while loading the " +
-                      "top up request list. Sorry for the inconvenience")
+                        "top up request list. Sorry for the inconvenience"
+                    )
                   }}
                 </p>
                 <p>
-                  {{ $gettext(
+                  {{
+                    $gettext(
                       "You can try to refresh the page, if the issue " +
-                      "persists, you may want to contact your "+
-                      "administrator"
-                  ) }}
+                        "persists, you may want to contact your " +
+                        "administrator"
+                    )
+                  }}
                 </p>
               </div>
               <p
@@ -64,14 +68,17 @@
                         }}
                       </td>
                       <td>
-                        {{
-                          numericFormat(parseFloat(request.amount))
-                        }}
+                        {{ numericFormat(parseFloat(request.amount)) }}
                         {{ request.currency }}
                       </td>
                       <td class="has-text-right">
                         <a
-                          class="button is-primary custom-button custom-inverted is-small is-pulled-right"
+                          class="
+                            button
+                            is-primary
+                            custom-button custom-inverted
+                            is-small is-pulled-right
+                          "
                           v-on:click="validateCreditRequest(request)"
                           v-if="
                             selectedItem !== request || !isWaitingForValidation
@@ -144,9 +151,11 @@
           this.$msg.error(
             this.$gettext(
               "An issue occured upon the approval of the credit " +
-              "request of %{ name }", {
-              name: request.related,
-            })
+                "request of %{ name }",
+              {
+                name: request.related,
+              }
+            )
           )
           throw err
         }
@@ -154,10 +163,13 @@
         this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$msg.success(
-          this.$gettext("Top up request from %{ name } of %{ amount } was validated.", {
-            name: request.relatedUser,
-            amount: request.amount,
-          })
+          this.$gettext(
+            "Top up request from %{ name } of %{ amount } was validated.",
+            {
+              name: request.relatedUser,
+              amount: request.amount,
+            }
+          )
         )
         this.isLoading = false
       },
