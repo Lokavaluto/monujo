@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="is-flex is-justify-content-flex-start"
-    v-if="recipient"
-  >
+  <div class="is-flex is-justify-content-flex-start" v-if="recipient">
     <div
       class="pr-3 is-clickable is-align-items-center is-flex"
       :class="[recipient.is_favorite ? 'is-active' : '']"
@@ -11,17 +8,12 @@
       <span class="icon">
         <fa-icon
           :class="!recipient.is_favorite ? 'has-text-grey-light' : ''"
-          :icon="
-            recipient.is_favorite ? 'fa fa-star' : 'far fa-star'
-          "
+          :icon="recipient.is_favorite ? 'fa fa-star' : 'far fa-star'"
         />
       </span>
     </div>
-    <div
-      class="recipient-name is-size-5"
-      @click="$emit('select', recipient)"
-    >
-     {{ recipient.name }}
+    <div class="recipient-name is-size-5" @click="$emit('select', recipient)">
+      {{ recipient.name }}
       <div v-if="recipient.markBackend" class="is-size-6 has-text-grey-light">
         {{ `${recipient.backendId}` }}
       </div>

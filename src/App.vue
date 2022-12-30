@@ -14,7 +14,7 @@
   import { StatusBar, Style } from "@capacitor/status-bar"
 
   @Options({
-    components: { TheNavBar, AuthChallenge, Dialog, },
+    components: { TheNavBar, AuthChallenge, Dialog },
     async mounted() {
       if (Capacitor.getPlatform() === "ios") {
         await StatusBar.setStyle({ style: Style.Light })

@@ -29,9 +29,7 @@
         </div>
       </div>
       <div class="field" v-if="showConfPin">
-        <label class="label">{{
-          $gettext("PIN code confirmation")
-        }}</label>
+        <label class="label">{{ $gettext("PIN code confirmation") }}</label>
         <div class="control has-icons-left has-icons-right">
           <input
             class="input"
@@ -129,7 +127,8 @@
         if (this.pin.length < this.pinLength) {
           const msgNbDigits = this.$ngettext("digit", "digits", this.pinLength)
           this.errors.pinSize = this.$gettext(
-            "PIN code must contain %{ pinLength }", {
+            "PIN code must contain %{ pinLength }",
+            {
               pinLength: this.$ngettext("digit", "digits", this.pinLength),
             }
           )

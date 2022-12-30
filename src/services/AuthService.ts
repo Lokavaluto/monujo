@@ -127,7 +127,7 @@ export class DirectAuthHandler extends AbstractAuthHandler {
 export class RetentionAuthHandler extends AbstractAuthHandlerWrapper {
   static globalRetentionMemStore: any = {}
 
-  async checkUserInput(userInput: string = ""): Promise<boolean> {
+  async checkUserInput(userInput = ""): Promise<boolean> {
     // we actually don't have user input
     const configId = this.accountAuthService.configId
     if (typeof configId !== "string") {

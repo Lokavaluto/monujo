@@ -36,7 +36,7 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         { commit, dispatch }: any,
         credentials: { login: string; password: string }
       ) {
-        let { login, password } = credentials
+        const { login, password } = credentials
         commit("auth_request")
         try {
           await lokApiService.login(login, password)
@@ -150,19 +150,19 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         }
       },
       async fetchUserAccountValidationRights({ commit, state }: any) {
-        let hasRight = await lokApiService.hasUserAccountValidationRights()
+        const hasRight = await lokApiService.hasUserAccountValidationRights()
         commit("setHasUserAccountValidationRights", hasRight)
       },
       async fetchPendingUserAccounts({ commit, state }: any) {
-        let accounts = await lokApiService.getStagingUserAccounts()
+        const accounts = await lokApiService.getStagingUserAccounts()
         commit("setPendingUserAccounts", accounts)
       },
       async fetchCreditRequestValidationRights({ commit, state }: any) {
-        let hasRight = await lokApiService.hasCreditRequestValidationRights()
+        const hasRight = await lokApiService.hasCreditRequestValidationRights()
         commit("setHasCreditRequestValidationRights", hasRight)
       },
       async fetchPendingCreditRequests({ commit, state }: any) {
-        let requests = await lokApiService.getCreditRequests()
+        const requests = await lokApiService.getCreditRequests()
         commit("setPendingCreditRequests", requests)
       },
     },
@@ -208,7 +208,7 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         // we are testing the backend and not the currency symbol
 
         if (state.virtualAccountTree.length > 1) {
-          let currencyId = state.virtualAccountTree[0].currencyId
+          const currencyId = state.virtualAccountTree[0].currencyId
           state.isMultiCurrency = state.virtualAccountTree
             .slice(1)
             .some((account: any) => account.currencyId !== currencyId)
@@ -220,10 +220,10 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
       },
 
       setTransactions(state: any, transactions: any[]) {
-        var maxTransactions = 5
-        let trs = []
-        let history = []
-        for (let el of transactions) {
+        let maxTransactions = 5
+        const trs = []
+        const history = []
+        for (const el of transactions) {
           trs.push(el)
           history.push(el.related !== "Admin" ? el.related : null)
           if (maxTransactions === 1) {

@@ -119,8 +119,19 @@ You can find an example of a valid config file in
 
 #### Lints and fixes files
 
+We use both `ESLint` and `prettierx` to ensure a solid
+consistent style and some coding guidelines.
+
+To check (and correct when possible) coding guidelines:
+
 ```
 npm run lint
+```
+
+To format the code according with `prettierx`:
+
+```
+npx prettierx -w src/
 ```
 
 ### Mobile app

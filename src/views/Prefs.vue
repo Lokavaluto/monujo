@@ -2,7 +2,11 @@
   <main class="main">
     <div class="container mt-5">
       <div class="card custom-card custom-card-padding custom-card-prefs">
-        <div v-for="group in componentDefs" :key="group.name" class="prefs-group">
+        <div
+          v-for="group in componentDefs"
+          :key="group.name"
+          class="prefs-group"
+        >
           <div class="mb-5">
             <label class="custom-card-title">{{ group.label() }}</label>
           </div>
@@ -43,6 +47,6 @@
     margin: auto;
   }
   .prefs-group + .prefs-group {
-      margin-top: 3em;
+    margin-top: 3em;
   }
 </style>

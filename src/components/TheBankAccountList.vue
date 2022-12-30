@@ -17,10 +17,7 @@
           <fa-icon icon="sync" />
         </span>
       </a>
-      <div
-	    class="notification is-danger is-light"
-	    v-if="accountsLoadingError"
-      >
+      <div class="notification is-danger is-light" v-if="accountsLoadingError">
         <p class="mb-4">
           {{
             $gettext(

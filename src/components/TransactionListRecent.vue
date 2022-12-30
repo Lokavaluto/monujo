@@ -10,25 +10,30 @@
       v-if="transactionsLoadingError"
     >
       <p class="mb-4">
-        {{ $gettext(
-            'An unexpected issue occurred while loading the last ' +
-            'transactions. Sorry for the inconvenience.')
+        {{
+          $gettext(
+            "An unexpected issue occurred while loading the last " +
+              "transactions. Sorry for the inconvenience."
+          )
         }}
       </p>
       <p class="mb-4">
-        {{ $gettext(
-        'You can try to refresh the page, if the issue persists, '+
-        'you may want to contact your administrator') }}
+        {{
+          $gettext(
+            "You can try to refresh the page, if the issue persists, " +
+              "you may want to contact your administrator"
+          )
+        }}
       </p>
     </div>
     <p
       v-else-if="thisWeektransactions?.length === 0"
       class="notification is-default"
     >
-      {{ $gettext('No previous transactions in your history.') }}
+      {{ $gettext("No previous transactions in your history.") }}
     </p>
     <div v-else>
-      <h2 class="custom-card-title">{{ $gettext('Transactions') }}</h2>
+      <h2 class="custom-card-title">{{ $gettext("Transactions") }}</h2>
       <TransactionItem
         v-for="transaction in thisWeektransactions"
         :key="transaction"

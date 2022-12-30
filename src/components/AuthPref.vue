@@ -106,14 +106,12 @@
        * Trigger direct default challenge an disable any retention
        */
       triggerDefaultChallenge() {
-        return this.triggerChallenge(
-          async (state: any, userAccount: any) => {
-            // By not asking the specific userAccount's auth, we remove
-            // any retention mecanism aspect.
-            const accountAuthService = await this.$auth.getAccountAuth()
-            return await accountAuthService.requestCredentials(state)
-          }
-        )
+        return this.triggerChallenge(async (state: any, userAccount: any) => {
+          // By not asking the specific userAccount's auth, we remove
+          // any retention mecanism aspect.
+          const accountAuthService = await this.$auth.getAccountAuth()
+          return await accountAuthService.requestCredentials(state)
+        })
       },
       async submitConfig(subUserConfig: string) {
         let userConfig = { subConfig: subUserConfig }
@@ -139,7 +137,7 @@
         e.preventDefault()
         if (this.useSimplifiedAuth) {
           // Was on, switching off
-          if (!await this.triggerDefaultChallenge()) {
+          if (!(await this.triggerDefaultChallenge())) {
             // XXXvlab: vuejs won't see any changes so won't force
             // the checkbox to be unchecked. But it is automatically checked
             // despite the preventDefault.
