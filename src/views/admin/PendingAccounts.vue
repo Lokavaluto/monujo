@@ -15,17 +15,21 @@
                 v-if="hasLoadingError"
               >
                 <p class="mb-4">
-                  {{ $gettext(
+                  {{
+                    $gettext(
                       "An unexpected issue occurred while loading the " +
-                      "pending account list. Sorry for the inconvenience."
-                  ) }}
+                        "pending account list. Sorry for the inconvenience."
+                    )
+                  }}
                 </p>
                 <p>
-                  {{ $gettext(
+                  {{
+                    $gettext(
                       "You can try to refresh the page, if the issue " +
-                      "persists, you may want to contact your "+
-                      "administrator"
-                  ) }}
+                        "persists, you may want to contact your " +
+                        "administrator"
+                    )
+                  }}
                 </p>
               </div>
               <p
@@ -64,7 +68,12 @@
                       </td>
                       <td class="has-text-right">
                         <a
-                          class="button is-primary custom-button custom-inverted is-small is-pulled-right"
+                          class="
+                            button
+                            is-primary
+                            custom-button custom-inverted
+                            is-small is-pulled-right
+                          "
                           v-on:click="validateUserAccount(account)"
                           v-if="
                             selectedItem !== account || !isWaitingForValidation
@@ -136,9 +145,11 @@
           this.$msg.error(
             this.$gettext(
               "An unexpected issue occurred while approving " +
-                "the wallet account creation of user %{ name }", {
-              name: account.name,
-            })
+                "the wallet account creation of user %{ name }",
+              {
+                name: account.name,
+              }
+            )
           )
           throw err
         }

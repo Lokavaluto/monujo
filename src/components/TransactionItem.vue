@@ -32,10 +32,8 @@
 
   @Options({
     name: "TransactionItem",
-    components: {
-    },
-    methods: {
-    },
+    components: {},
+    methods: {},
     props: {
       picto: String,
       amount: String,

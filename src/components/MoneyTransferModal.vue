@@ -15,7 +15,11 @@
         </header>
         <div class="search-area">
           <div
-            class="mt-4 is-flex is-justify-content-space-evenly is-align-items-center custom-search-bar"
+            class="
+              mt-4
+              is-flex is-justify-content-space-evenly is-align-items-center
+              custom-search-bar
+            "
           >
             <p class="control has-icons-left custom-search-bar">
               <input
@@ -39,7 +43,10 @@
             </p>
           </div>
           <div
-            class="is-flex is-justify-content-space-evenly is-align-items-center mt-3"
+            class="
+              is-flex is-justify-content-space-evenly is-align-items-center
+              mt-3
+            "
           ></div>
           <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
@@ -67,7 +74,12 @@
           <div v-else>
             <div
               v-if="ownCurrenciesRecipients.length !== 0"
-              class="custom-card is-flex-direction-column is-align-items-center is-justify-content-space-between"
+              class="
+                custom-card
+                is-flex-direction-column
+                is-align-items-center
+                is-justify-content-space-between
+              "
             >
               <template v-if="ownCurrenciesRecipients">
                 <div
@@ -118,7 +130,9 @@
         </header>
         <section class="modal-card-body">
           <div
-            class="is-flex is-flex-direction-column is-justify-content-space-evenly"
+            class="
+              is-flex is-flex-direction-column is-justify-content-space-evenly
+            "
           >
             <div class="is-flex is-flex-direction-column custom-montant-input">
               <h2 class="frame3-sub-title mb-3">
@@ -175,7 +189,11 @@
           </div>
         </section>
         <footer
-          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+          class="
+            modal-card-foot
+            custom-modal-card-foot
+            is-justify-content-flex-end
+          "
         >
           <button
             class="button custom-button-modal has-text-weight-medium"

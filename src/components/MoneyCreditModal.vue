@@ -121,7 +121,11 @@
         </template>
       </section>
       <footer
-        class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        class="
+          modal-card-foot
+          custom-modal-card-foot
+          is-justify-content-flex-end
+        "
       >
         <template
           v-if="
@@ -131,7 +135,13 @@
           "
         >
           <button
-            class="button custom-button-modal button-modal has-text-weight-medium action"
+            class="
+              button
+              custom-button-modal
+              button-modal
+              has-text-weight-medium
+              action
+            "
             @click="newLinkTab()"
             :disabled="isTopUpButtonDisabled"
           >

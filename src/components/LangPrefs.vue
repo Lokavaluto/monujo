@@ -57,7 +57,7 @@
       this.userLanguage = this.userLanguage || this.$language.current
     },
     watch: {
-      "userLanguage": function (): void {
+      userLanguage: function (): void {
         this.setCustomLanguage(this.userLanguage)
       },
     },
