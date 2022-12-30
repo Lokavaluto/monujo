@@ -1,0 +1,71 @@
+name: "test"
+on:
+  pull_request:
+    types: [synchronize]
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+jobs:
+  cypress-tests-check:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: 🚚 Get node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: install dependencies
+        run: |
+          ## Need to unshallow to allow making the version number from
+          ## git history.
+          git fetch --unshallow --tags &&
+          npm install
+      - name: 🔨 Config
+        run: |
+          rm public/config.sample.json
+          export GITHUB_REF_NAME=dev3
+          echo "{
+            \"appName\": \"Monujo-CI-${GITHUB_REF_NAME}\",
+            \"lokapiDb\": \"odoo\",
+            \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
+            \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
+            \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"locales\": {
+              \"availableLanguages\": {
+                \"en-US\": {
+                  \"label\": \"English (US)\"
+                },
+                \"fr-FR\": {
+                  \"label\": \"Français (France)\",
+                  \"url\": \"https://docker.0k.io/downloads/monujo.fr-FR.json\"
+                }
+              },
+              \"appStringsLanguage\": \"en-US\",
+              \"defaultLanguage\": \"en-US\",
+              \"preferNavigatorLanguage\": true
+            }
+          }" > public/config.json
+          cat public/config.json
+      - name: run server
+        run: npm run serve &
+      - name: run cypress test
+        run: npx cypress run --project test
+      - name: Prepare reports
+        if: always()
+        id: test_report
+        run: |
+          REPORTS_PATH='test/cypress/reports/mocha'
+          npm i mochawesome-merge mochawesome-report-generator &&
+          npx mochawesome-merge "$REPORTS_PATH"/*.json -o "$REPORTS_PATH"/index.json &&
+          npx marge  --charts=true --showPassed=false --saveJson --reportFilename=report-merge  -o  "$REPORTS_PATH"  "$REPORTS_PATH"/index.json
+      - name: Cypress report
+        uses: dmitry/cypress-report-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pathname: test/cypress/reports/mocha/report-merge.json
