@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   cypress-e2e:
-    needs: [check-translation]
+    needs: [check-translation, check-prettierx]
     strategy:
       matrix:
         resolution:
@@ -190,3 +190,61 @@ jobs:
           recreate: true
           message: |
             ${{steps.translation.outputs.result}}
+
+
+  check-prettierx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🚚 Install dependencies
+        run: |
+          git fetch --unshallow --tags &&
+          npm install
+      - name: ⚔ Check prettierx
+        id: linter
+        run: |
+          npx prettierx -w src/
+          if out=$(git diff --exit-code -- src/i18n/); then
+              cat <<BASHEOF >> $GITHUB_OUTPUT
+          result<<EOF
+          ## ✅ code style matches our guidelines
+          EOF
+          BASHEOF
+              exit 0
+          fi
+          echo "=== raw diff output ==="
+          echo "$out"
+          echo "======================="
+          short_stat=$(git diff --shortstat -- src)
+          cat <<BASHEOF >> $GITHUB_OUTPUT
+          result<<EOF
+
+          <details>
+              <summary>$short_stat</summary>
+          <p>
+
+          \`\`\`diff
+          $out
+          \`\`\`
+
+          </p>
+
+          </details>
+          EOF
+          BASHEOF
+          exit 1
+      - name: 🖅 Send/Update report as PR comment
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Linter report
+          recreate: true
+          message: |
+            ## :x: code style needs update
+
+            It seems your code wasn't properly formatted using our current rules.
+
+            Please run `npx prettierx -w src/` on your code before submitting the
+            PR. You can amend this current PR.
+
+            ${{steps.linter.outputs.result}}
