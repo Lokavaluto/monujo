@@ -8,6 +8,7 @@ permissions:
   pull-requests: write
 jobs:
   cypress-tests-check:
+    needs: [check-translation]
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -69,3 +70,57 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pathname: test/cypress/reports/mocha/report-merge.json
+  check-translation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          git fetch --unshallow --tags &&
+          npm install &&
+          sudo apt install gettext
+      - name: Check gettext translation
+        id: translation
+        run: |
+          npm run gettext:extract
+          out=$(git diff --exit-code -- src/i18n/) && exit 0
+          echo "$out"
+          comment_diff=$(echo "$out" | egrep -v '^(---|\+\+\+) ' | egrep '^(\+|-)' | egrep -v '^(\+|-)#: ') || true
+          if [ -z "$comment_diff" ]; then
+            comment_diff=$(git diff -- src/i18n/fr-FR/  | egrep -v '^(---|\+\+\+) ' | egrep '^(\+|-)' | egrep '^\+#: ' | cut -f 2 -d " " | cut -f 1 -d : | sort | uniq -c)
+            message='It looks like there are no "fuzzy" lines in the code, but the PO file needs to be updated. Please run the command npm run gettext:extract before pushing the code to ensure that all necessary translations are included and the PO file is up-to-date.'
+          else
+            message='It looks like there are some parts of the code that were not translated. Please run the command npm run gettext:extract before pushing the code to ensure that all necessary translations are included.'
+          fi
+          short_stat=$(git diff --shortstat -- src/i18n/)
+          cat <<BASHEOF >> $GITHUB_OUTPUT
+          result<<EOF
+
+          <p>
+
+          $message
+
+          </p>
+
+          <details>
+          <summary>$short_stat</summary>
+          <p>
+
+          \`\`\`diff
+          $comment_diff
+          \`\`\`
+
+          </p>
+          </details>
+          EOF
+          BASHEOF
+          exit 1
+      - name: Comment PR
+        if: ${{ failure() }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Translation report
+          recreate: true
+          message: |
+            ## :x: Translation report:
+            ${{steps.translation.outputs.result}}
