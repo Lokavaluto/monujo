@@ -12,9 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
+    "types": ["webpack-env", "mocha", "cypress"],
     "paths": {
       "@/*": [
         "src/*"

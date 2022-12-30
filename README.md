@@ -203,6 +203,22 @@ npx cap open
 From there you can sign package, upload to store, etc... the way you
 would do it for any mobile app.
 
+### Tests
+Make sure that the application is running on ``http://localhost:8080`` before running the tests.
+
+To run in local existing tests:
+
+```
+npx cypress run --project test
+```
+It is also possible to run and to create new tests in GUI mode, the following commande will open a browser window and run the tests:
+```
+npx cypress open --project test
+```
+To add a new E2E test, create a new file in the ``test/cypress/e2e`` folder and write your test cases, 
+for more information on how to write E2E tests with Cypress, you can check out the Cypress documentation 
+(https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-your-first-test)
+
 ### Translation
 
 By default, the current files are set up to maintain a french
