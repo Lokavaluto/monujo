@@ -253,6 +253,45 @@ task, or you might have a look at other softwares advertised in
 [gettext
 manual](https://www.gnu.org/software/gettext/manual/gettext.html#Editing).
 
+##### Emacs PO Editor mode
+
+With Emacs PO Editor mode, the `ufo` cycle to review a PO file:
+
+- Check all untranslated entries with `u`/`U` (next/previous
+  untranslated entry, knowing that it'll cycle once it reach the
+  bottom/top, so you can just use `u` until it tells you it can't find
+  any more untranslated entries).
+
+  These are new strings for which no translation was yet provided.
+
+  - On an untranslated entry, just use `ENTER` key. Edit the
+    translation, then accept with `C-c C-c`.
+
+- Check all fuzzy entries with `f`/`F` (next/previous fuzzy entry,
+  knowing that it'll cycle once it reach the bottom/top, so you can
+  just use `f` until it tells you it can't find any more fuzzy
+  entries),
+
+  These are entries whose message id have been modified and should be
+  reviewed for probable adaptation.
+
+  - correct if necessary with `ENTER` key as specified for
+    untranslated entries.
+  - unfuzzy the entries once you've reviewed it and/or finished
+    editing it with `<TAB>` key.
+
+- Check all obsolete entries with `o`/`O` (next/previous obsolete
+  entry, knowing that it'll cycle once it reach the bottom/top, so you
+  can just use `o` until it tells you it can't find any more obsolete
+  entries),
+
+  These are entries that are not used anymore. You should usually
+  delete them.
+
+  - Use `<BACKSPACE>` to delete the entry.
+
+Once you've finished the `ufo` cycle, the `PO` file is ready !
+
 #### Integrating a translated PO to Monujo
 
 Once the PO file is ready (all the new entries were translated and all
