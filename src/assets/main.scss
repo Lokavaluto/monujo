@@ -378,6 +378,15 @@ span.custom-card-destinataire {
   padding: 5px !important;
   min-height: 3.6em;
 }
+.button-timespan {
+  display: inline-block;
+  width: 2em;
+}
+.custom-xmx-input {
+  display: inline-block;
+  vertical-align: top;
+  width: 7em;
+}
 
 // card-opération-anchor-fin
 
@@ -831,7 +840,10 @@ div.xmx-datepicker-content {
 .is-grid-align {
   width: 50%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 2em 5em 2em;
+  span {
+    margin: auto;
+  }
 }
 
 .mx-btn:hover {

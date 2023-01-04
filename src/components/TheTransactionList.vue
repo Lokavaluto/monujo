@@ -77,7 +77,11 @@
         </footer>
       </div>
     </div>
-    <div class="modal is-active" v-if="showExportModal">
+    <div
+      class="modal is-active"
+      v-if="showExportModal"
+      @click="datePickerState = null"
+    >
       <div class="modal-background"></div>
       <div class="modal-card">
         <div class="transactions-loader">
@@ -118,25 +122,65 @@
               <div class="datepicker-export">
                 <date-picker
                   v-model:value="exportDate"
+                  :open="datePickerState"
                   range
                   prefix-class="xmx"
                   :editable="false"
                   @close="normalizeEndDate"
                   :placeholder="$gettext('All transactions')"
+                  @change="datePickerState = true"
+                  @click="setDefaultTimeSpan('month')"
                 >
                   <template #header="{ emit }">
                     <div>
-                      <div v-for="selector in selectors" class="is-grid-align">
-                        <span class="mr-5">{{ selector.label }}:</span>
-                        <span v-for="pos in Object.keys(selector.labels)"
-                          ><button
-                            class="mx-btn mx-btn-text"
-                            @click="makeTimeSpan(selector.timeSpan, -pos, emit)"
-                          >
-                            {{ selector.labels[pos] }}
-                          </button></span
+                      <span class="button-timespan">
+                        <button
+                          class="mt-2 mx-btn mx-btn-text"
+                          @click="makeTimeSpan(selectedTimeSpan, -1, emit)"
                         >
-                      </div>
+                          <span>
+                            <span class="icon">
+                              <fa-icon
+                                icon="circle-chevron-left"
+                                class="fa-lg"
+                              />
+                            </span>
+                          </span>
+                        </button>
+                      </span>
+                      <span>
+                        <select
+                          class="xmx-input custom-xmx-input"
+                          v-model="selectedTimeSpan"
+                          @change="makeTimeSpan(selectedTimeSpan, 0, emit)"
+                        >
+                          <option
+                            v-for="selector in selectorsOrder"
+                            class="is-grid-align"
+                            :value="selector"
+                            :selected="selector == selectedTimeSpan"
+                          >
+                            {{ selectorLabels[selector] }}
+                          </option>
+                        </select>
+                      </span>
+                      <span v-if="!isUpToDate" class="button-timespan">
+                        <button
+                          class="mt-2 mx-btn mx-btn-text"
+                          @click="
+                            makeTimeSpan(selectedTimeSpan, 1, emit)
+                          "
+                        >
+                          <span>
+                            <span class="icon">
+                              <fa-icon
+                                icon="circle-chevron-right"
+                                class="fa-lg"
+                              />
+                            </span>
+                          </span>
+                        </button>
+                      </span>
                     </div>
                   </template>
                 </date-picker>
@@ -234,40 +278,17 @@
         showExportModal: false,
         exportDate: [null, null],
         shortcutExport: null,
-        selectors: [
-          {
-            label: this.$gettext("Day"),
-            labels: {
-              0: this.$pgettext("day", "Current"),
-              1: this.$pgettext("day", "Previous"),
-            },
-            timeSpan: "day",
-          },
-          {
-            label: this.$gettext("Week"),
-            labels: {
-              0: this.$pgettext("week", "Current"),
-              1: this.$pgettext("week", "Previous"),
-            },
-            timeSpan: "week",
-          },
-          {
-            label: this.$gettext("Month"),
-            labels: {
-              0: this.$pgettext("month", "Current"),
-              1: this.$pgettext("month", "Previous"),
-            },
-            timeSpan: "month",
-          },
-          {
-            label: this.$gettext("Year"),
-            labels: {
-              0: this.$pgettext("year", "Current"),
-              1: this.$pgettext("year", "Previous"),
-            },
-            timeSpan: "year",
-          },
-        ],
+        datePickerState: null, //to keep the date picker open
+        dateParams: { offset: 0, timeSpan: "" },
+        selectorLabels: {
+          day: this.$gettext("Day"),
+          week: this.$gettext("Week"),
+          month: this.$gettext("Month"),
+          year: this.$gettext("Year"),
+        },
+        selectorsOrder: ["day", "week", "month", "year"],
+        selectedTimeSpan: "month",
+        isUpToDate: true,
       }
     },
     computed: {
@@ -409,10 +430,24 @@
         this.$msg.success(this.$gettext("Transaction list shared"))
       },
       makeTimeSpan(timeSpan: any, pos: number, emit: any) {
+        const dateParams = this.dateParams
+        if (dateParams.timeSpan !== timeSpan) {
+          dateParams.offset = 0
+          dateParams.timeSpan = timeSpan
+        }
+        dateParams.offset += pos
+        if (dateParams.offset > 0) {
+          dateParams.offset = 0
+        }
+        const { offset } = dateParams
         emit(
           [moment().startOf(timeSpan), moment().endOf(timeSpan)]
-            .map((date) => date.subtract(-pos, timeSpan))
+            .map((date) => date.subtract(-offset, timeSpan))
             .map((m) => m.toDate())
+        )
+        this.isUpToDate = moment().isBetween(
+          this.exportDate[0],
+          this.exportDate[1]
         )
       },
       normalizeEndDate() {
@@ -420,6 +455,13 @@
           moment(this.exportDate[0]).startOf("day").toDate(),
           moment(this.exportDate[1]).endOf("day").toDate(),
         ]
+      },
+      handleDatePickerState(value: boolean) {
+        this.datePickerState = value
+      },
+      setDefaultTimeSpan(timeSpan: any) {
+        this.exportDate = [moment().startOf(timeSpan), moment().endOf(timeSpan)]
+        this.normalizeEndDate()
       },
     },
   })
