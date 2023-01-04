@@ -16,6 +16,7 @@ Monujo supports:
 - Send money to any member
 - Top up your account with credit cards
 - Bio-metric authentication on your device when available
+- Export transaction list on a given time range
 - ... more to come ...
 
 You'll find here additional information for local complementary
