@@ -2,7 +2,11 @@
   <section id="login">
     <div class="login-container">
       <div class="card">
-        <img :src="$config.loginLogoUrl" class="pt-2 pb-5" />
+        <img
+          v-if="$config.loginLogoUrl"
+          :src="$config.loginLogoUrl"
+          class="pt-2 pb-5"
+        />
         <form @submit.prevent="submit">
           <div class="field mb-5 has-addons">
             <p class="control has-icons-left is-expanded">

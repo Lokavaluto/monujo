@@ -9,6 +9,7 @@
         :to="{ name: 'dashboard' }"
         class="navbar-item"
         @click="showNav = false"
+        v-if="$config.logoUrl"
       >
         <img class="is-rounded" :src="$config.logoUrl" />
       </router-link>
@@ -17,7 +18,7 @@
         class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
-        data-target="navbarBasicExample"
+        data-target="appNavbar"
         @click="showNav = !showNav"
         :class="{ 'is-active': showNav }"
       >
@@ -28,7 +29,7 @@
     </div>
 
     <div
-      id="navbarBasicExample"
+      id="appNavbar"
       class="navbar-menu"
       :class="{ 'is-active': showNav }"
       @click="showNav = false"
