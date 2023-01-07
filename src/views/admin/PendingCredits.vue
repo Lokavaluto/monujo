@@ -166,7 +166,7 @@
           this.$gettext(
             "Top up request from %{ name } of %{ amount } was validated.",
             {
-              name: request.relatedUser,
+              name: request.related,
               amount: request.amount,
             }
           )
