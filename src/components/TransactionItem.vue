@@ -60,4 +60,19 @@
     overflow-wrap: break-word;
     width: 100%;
   }
+  .card-paiement-defaut-carte {
+    font-style: normal;
+    font-weight: normal;
+    line-height: 16px;
+    color: rgba(53, 53, 53, 0.64);
+  }
+  .custom-card-destinataire {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    width: auto !important;
+  }
+  .custom-line-separator {
+    display: flex;
+    height: 2px;
+  }
 </style>

@@ -395,31 +395,72 @@
   })
   export default class MoneyTransferModal extends Vue {}
 </script>
-<style scoped lang="sass">
-  .search-area
-    background: #f0faf9
+<style lang="scss" scoped>
+  @import "@/assets/custom-variables";
 
-  .button.action
-    white-space: normal
-    height: auto
-  .card-recipient-wrapper
-    width: 90%
-  .favorit-icon-wrapper
-    width: 10%
-  .modal-card-body
-    min-height: 120px
-  .loader-container
-    position: relative
-    height: 80px
-  .amount-currency-symbol
-    margin: auto
-    font-size: 1.25em
-    font-weight: bold
-    line-height: 1em
-    padding-bottom: calc(0.5em - 1px)
-    padding-left: calc(0.75em - 1px)
-    padding-right: calc(0.75em - 1px)
-    padding-top: calc(0.5em - 1px)
-  .w-100
-    width: 100%
+  .search-area {
+    background: #f0faf9;
+  }
+  .button.action {
+    white-space: normal;
+    height: auto;
+  }
+  .card-recipient-wrapper {
+    width: 90%;
+  }
+  .favorit-icon-wrapper {
+    width: 10%;
+  }
+  .modal-card-body {
+    min-height: 120px;
+  }
+  .loader-container {
+    position: relative;
+    height: 80px;
+  }
+  .amount-currency-symbol {
+    margin: auto;
+    font-size: 1.25em;
+    font-weight: bold;
+    line-height: 1em;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: calc(0.75em - 1px);
+    padding-right: calc(0.75em - 1px);
+    padding-top: calc(0.5em - 1px);
+  }
+  .w-100 {
+    width: 100%;
+  }
+  .custom-search-bar {
+    width: 89%;
+    margin: auto;
+  }
+
+  .custom-search-bar input {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 24px;
+    width: 100% !important;
+  }
+
+  .custom-pictogram-search svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .custom-pictogram-search path,
+  rect {
+    fill: $color-2 !important;
+    background: $color-2 !important;
+  }
+
+  .custom-button-pictogram {
+    background-color: inherit !important;
+    border: none;
+    cursor: pointer;
+  }
+  .custom-heavy-line-separator {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.05);
+  }
 </style>

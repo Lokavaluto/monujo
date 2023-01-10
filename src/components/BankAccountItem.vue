@@ -83,4 +83,9 @@
   .account-backend {
     color: $inner-card-text-color-backend;
   }
+  .custom-inner-card {
+    border-radius: 43px !important;
+    background-color: $inner-card-background-color;
+    border: 1px solid $inner-card-border-color;
+  }
 </style>

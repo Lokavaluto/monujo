@@ -111,5 +111,39 @@
   })
   export default class TheDashboardFooter extends Vue {}
 </script>
+<style lang="scss" scoped>
+  .action-footer {
+    background: white;
+    padding: 2rem 1rem 1.5rem 1rem;
+    width: 100%;
+    box-shadow: 0px 4px 12px 4px rgba(0, 0, 0, 0.25) !important;
 
-<style scoped lang="sass"></style>
+    @media screen and (min-width: 1024px) {
+      padding: 2rem 2rem 1.5rem 2rem;
+      border-radius: 16px;
+    }
+
+    .menu {
+      .column {
+        padding: 0;
+
+        .custom-button {
+          @media screen and (max-width: 480px) {
+            width: 98%;
+            padding-right: 0.4em;
+            padding-left: 0.4em;
+
+            .icon-text {
+              font-size: 0.75em;
+              line-height: 1.6rem;
+
+              .icon {
+                margin-top: 0.3em;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

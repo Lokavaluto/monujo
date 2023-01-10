@@ -323,7 +323,31 @@
   export default class CreateAccount extends Vue {}
 </script>
 <style lang="scss" scoped>
+  @import "@/assets/custom-variables";
   .auth-card {
     margin-top: 10px;
+  }
+  .is-wallet {
+    color: $btn-recharger-text-color !important;
+    border-color: $btn-recharger-border-color !important;
+    background: $color-2;
+    opacity: 0.7;
+  }
+  .is-wallet-active {
+    color: $btn-recharger-text-color !important;
+    border-color: $btn-recharger-border-color !important;
+    background: $color-2;
+    opacity: 1;
+  }
+  .wallet-tab {
+    background-color: $color-1;
+    color: #ffffff;
+  }
+  .wallet-tab:hover {
+    color: #ffffff;
+  }
+  .custom-card-wallet {
+    border-radius: 16px !important;
+    padding: 0.8em;
   }
 </style>

@@ -234,4 +234,65 @@
     background-color: var(--btn-payer-background-color, $color-2);
     z-index: 10;
   }
+  #login {
+    position: absolute;
+    display: table;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    .login-container {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 0 10px;
+      .card {
+        margin: 0 auto;
+        max-width: 380px;
+        padding: 20px;
+        text-align: center;
+        img {
+          max-width: 200px;
+        }
+        .field {
+          font-size: 2rem;
+        }
+        .login-buttons {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .login-buttons > div {
+          margin: 6px;
+        }
+        .forgot-password {
+          text-align: right;
+          margin-right: 2px;
+          margin-top: 10px;
+          button {
+            border: none;
+            background: none;
+            color: #777777;
+            cursor: pointer;
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          padding: 30px;
+        }
+
+        .create-account {
+          color: $color-2;
+          border-color: $color-2;
+          background: #ffffff;
+        }
+        .create-account:hover {
+          color: $color-2;
+          border-color: $color-2;
+          background: #ffffff;
+        }
+      }
+    }
+  }
 </style>
