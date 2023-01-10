@@ -42,7 +42,7 @@ Cypress.Commands.add("menu", () => {
 })
 
 Cypress.Commands.add("isLogged", () => {
-  cy.get(".navbar-link")
+  cy.get(".navbar-link:visible")
 })
 
 Cypress.Commands.add("loginErrorMessage", () => {

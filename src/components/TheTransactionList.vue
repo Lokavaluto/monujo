@@ -502,4 +502,12 @@
       }
     }
   }
+  .datepicker-export {
+    .xmx-datepicker-range {
+      width: auto !important;
+    }
+  }
+  div.xmx-datepicker-content {
+    user-select: none;
+  }
 </style>
