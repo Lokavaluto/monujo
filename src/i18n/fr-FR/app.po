@@ -8,6 +8,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/components/AboutModal.vue:75
+msgid ""
+"%{ appName } is designed by %{ organizationName } an association whose goal "
+"is to develop, implement, and support the deployment of evolving and open-"
+"source information systems for organizations promoting local economic "
+"development."
+msgstr ""
+"%{ appName } a été conçu par %{ organizationName }, une association "
+"développant des outils open-source pour les acteurs de l'économie local."
+
+#: src/components/AboutModal.vue:68
+msgid "%{ appName } version %{ appVersion }"
+msgstr "%{ appName } version %{ appVersion }"
+
 #: src/components/MoneyTransferModal.vue:385
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
@@ -27,6 +41,11 @@ msgstr[1] "%{ pinLength } chiffres"
 #: src/components/MoneyCreditModal.vue:88
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
+
+#: src/components/AboutModal.vue:7 src/components/TheNavBar.vue:120
+#: src/components/TheNavBar.vue:99
+msgid "About "
+msgstr "A propos de "
 
 #: src/components/TheNavBar.vue:97
 msgid "Account requests"
@@ -533,7 +552,7 @@ msgstr "Partager"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:123
+#: src/components/TheNavBar.vue:131
 msgid "Sign out"
 msgstr "Déconnexion"
 
