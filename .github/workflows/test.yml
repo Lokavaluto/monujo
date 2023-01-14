@@ -1,26 +1,43 @@
 name: "test"
+
+
 on:
   pull_request:
     types: [synchronize]
+
+
 permissions:
   contents: read
   issues: write
   pull-requests: write
+
+
 jobs:
-  cypress-tests-check:
+
+  cypress-e2e:
+    matrix:
+      resolution:
+        - 375x667    ## iphone-8
+        - 1024x768
     needs: [check-translation, check-prettierx]
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
     steps:
-      - name: Checkout
+      - name: test
+        run: |
+          
+          echo --viewportWidth ${{ matrix.resolution.replace('x', ' --viewportHeight') }} 
+          exit 1
+          
+      - name: 🚚 Get code
         uses: actions/checkout@v2
       - name: 🚚 Get node
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-      - name: install dependencies
+      - name: 🚚 Install dependencies
         run: |
           ## Need to unshallow to allow making the version number from
           ## git history.
@@ -28,8 +45,8 @@ jobs:
           npm install
       - name: 🔨 Config
         run: |
-          rm public/config.sample.json
-          export GITHUB_REF_NAME=dev3
+          rm "public/config.sample.json"
+          export GITHUB_REF_NAME="dev3"  ## Not ideal for test stability
           echo "{
             \"appName\": \"Monujo-CI-${GITHUB_REF_NAME}\",
             \"lokapiDb\": \"odoo\",
@@ -56,20 +73,27 @@ jobs:
       - name: run server
         run: npm run serve &
       - name: run cypress test
-        run: npx cypress run --project test
+        run: |
+          npx cypress run --project test \
+              --viewportWidth ${{ matrix.resolution.replace('x', ' --viewportHeight') }}
       - name: Prepare reports
         if: always()
         id: test_report
         run: |
           REPORTS_PATH='test/cypress/reports/mocha'
           npm i mochawesome-merge mochawesome-report-generator &&
-          npx mochawesome-merge "$REPORTS_PATH"/*.json -o "$REPORTS_PATH"/index.json &&
-          npx marge  --charts=true --showPassed=false --saveJson --reportFilename=report-merge  -o  "$REPORTS_PATH"  "$REPORTS_PATH"/index.json
+          npx mochawesome-merge "$REPORTS_PATH"/*.json \
+              -o "$REPORTS_PATH"/index.json &&
+          npx marge --charts=true --showPassed=false \
+              --saveJson --reportFilename=report-merge \
+              -o "$REPORTS_PATH" "$REPORTS_PATH"/index.json
       - name: Cypress report
         uses: dmitry/cypress-report-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pathname: test/cypress/reports/mocha/report-merge.json
+
+
   check-translation:
     runs-on: ubuntu-latest
     steps:
@@ -124,6 +148,8 @@ jobs:
           message: |
             ## :x: Translation report:
             ${{steps.translation.outputs.result}}
+
+
   check-prettierx:
     runs-on: ubuntu-latest
     steps:
