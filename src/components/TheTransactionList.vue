@@ -77,7 +77,11 @@
         </footer>
       </div>
     </div>
-    <div class="modal is-active" v-if="showExportModal">
+    <div
+      class="modal is-active"
+      v-if="showExportModal"
+      @click="datePickerShow = false"
+    >
       <div class="modal-background"></div>
       <div class="modal-card">
         <div class="transactions-loader">
@@ -118,24 +122,70 @@
               <div class="datepicker-export">
                 <date-picker
                   v-model:value="exportDate"
+                  :open="datePickerShow ? true : null"
                   range
                   prefix-class="xmx"
                   :editable="false"
                   @close="normalizeEndDate"
                   :placeholder="$gettext('All transactions')"
+                  @change="datePickerShow = selectedTimeSpanType ? true : false"
+                  @pick="selectedTimeSpanType = ''"
+                  :disabled-date="disabledDates"
                 >
                   <template #header="{ emit }">
                     <div>
-                      <div v-for="selector in selectors" class="is-grid-align">
-                        <span class="mr-5">{{ selector.label }}:</span>
-                        <span v-for="pos in Object.keys(selector.labels)"
-                          ><button
-                            class="mx-btn mx-btn-text"
-                            @click="makeTimeSpan(selector.timeSpan, -pos, emit)"
-                          >
-                            {{ selector.labels[pos] }}
-                          </button></span
+                      <div
+                        v-for="selector in selectorsOrder"
+                        :class="{ selected: selector == selectedTimeSpanType }"
+                        class="timespan"
+                      >
+                        <button
+                          class="xmx-btn xmx-btn-text"
+                          @click="
+                            () => {
+                              selectedTimeSpanOffset =
+                                selectedTimeSpanType != selector
+                                  ? -1
+                                  : selectedTimeSpanOffset - 1
+                              selectedTimeSpanType = selector
+                              emit(selectedTimeSpan)
+                            }
+                          "
                         >
+                          <i class="xmx-icon-left"></i>
+                        </button>
+                        <button
+                          class="xmx-btn xmx-btn-text"
+                          @click="
+                            () => {
+                              selectedTimeSpanType = selector
+                              selectedTimeSpanOffset = 0
+                              emit(selectedTimeSpan)
+                            }
+                          "
+                        >
+                          {{ selectorLabels[selector] }}
+                        </button>
+                        <button
+                          class="xmx-btn xmx-btn-text"
+                          @click="
+                            ;[selectedTimeSpanOffset++, emit(selectedTimeSpan)]
+                          "
+                          :class="{
+                            hide:
+                              selectedTimeSpanType != selector ||
+                              isSelectionCurrent,
+                          }"
+                        >
+                          <i class="xmx-icon-right"></i>
+                        </button>
+                        <button
+                          class="xmx-btn xmx-btn-text confirm"
+                          @click="datePickerShow = false"
+                          :class="{ hide: selectedTimeSpanType != selector }"
+                        >
+                          {{ $gettext("confirm") }}
+                        </button>
                       </div>
                     </div>
                   </template>
@@ -234,45 +284,37 @@
         showExportModal: false,
         exportDate: [null, null],
         shortcutExport: null,
-        selectors: [
-          {
-            label: this.$gettext("Day"),
-            labels: {
-              0: this.$pgettext("day", "Current"),
-              1: this.$pgettext("day", "Previous"),
-            },
-            timeSpan: "day",
-          },
-          {
-            label: this.$gettext("Week"),
-            labels: {
-              0: this.$pgettext("week", "Current"),
-              1: this.$pgettext("week", "Previous"),
-            },
-            timeSpan: "week",
-          },
-          {
-            label: this.$gettext("Month"),
-            labels: {
-              0: this.$pgettext("month", "Current"),
-              1: this.$pgettext("month", "Previous"),
-            },
-            timeSpan: "month",
-          },
-          {
-            label: this.$gettext("Year"),
-            labels: {
-              0: this.$pgettext("year", "Current"),
-              1: this.$pgettext("year", "Previous"),
-            },
-            timeSpan: "year",
-          },
-        ],
+        datePickerShow: false,
+        selectorLabels: {
+          day: this.$gettext("day"),
+          week: this.$gettext("week"),
+          month: this.$gettext("month"),
+          year: this.$gettext("year"),
+        },
+        selectorsOrder: ["day", "week", "month", "year"],
+        selectedTimeSpanType: "",
+        selectedTimeSpanOffset: 0,
       }
     },
     computed: {
       getPlatform(): string {
         return Capacitor.getPlatform()
+      },
+      isSelectionCurrent(): boolean {
+        return moment().isBetween(this.exportDate[0], this.exportDate[1])
+      },
+      selectedTimeSpan() {
+        const now = moment().toDate()
+        const timeSpanType = this.selectedTimeSpanType
+        const offset = this.selectedTimeSpanOffset
+        const [begin, end] = [
+          moment(now).startOf(timeSpanType),
+          moment(now).endOf(timeSpanType),
+        ]
+          .map((date) => date.subtract(-offset, timeSpanType))
+          .map((m) => m.toDate())
+
+        return [begin, now < end ? now : end]
       },
       ...mapModuleState("lokapi", [
         "transactionsLoading",
@@ -408,20 +450,50 @@
         }
         this.$msg.success(this.$gettext("Transaction list shared"))
       },
-      makeTimeSpan(timeSpan: any, pos: number, emit: any) {
-        emit(
-          [moment().startOf(timeSpan), moment().endOf(timeSpan)]
-            .map((date) => date.subtract(-pos, timeSpan))
-            .map((m) => m.toDate())
-        )
-      },
       normalizeEndDate() {
         this.exportDate = [
           moment(this.exportDate[0]).startOf("day").toDate(),
           moment(this.exportDate[1]).endOf("day").toDate(),
         ]
       },
+      disabledDates(date: Date) {
+        return date > moment().endOf("day").toDate()
+      },
     },
   })
   export default class TheTransactionList extends Vue {}
 </script>
+<style lang="scss">
+  @import "@/assets/custom-variables";
+
+  div.selected {
+    background-color: $color-1;
+  }
+
+  div.timespan {
+    padding: 0;
+    margin: 0;
+    border-radius: 2em;
+    width: 15em;
+    display: grid;
+    grid-template-columns: 2em 5em 2em 6em;
+
+    .hide {
+      visibility: hidden;
+    }
+
+    button.xmx-btn {
+      text-align: center;
+      border-radius: 2em;
+
+      &.confirm {
+        margin-left: 1em;
+        &,
+        &:hover {
+          background-color: $color-2;
+          color: $color-1;
+        }
+      }
+    }
+  }
+</style>
