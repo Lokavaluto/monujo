@@ -1,0 +1,50 @@
+name: "🖅 Comment PR check report"
+
+on:
+  workflow_run:
+    workflows: ["⚔ check"]
+    types:
+      - completed
+
+
+jobs:
+
+  comment-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇ Retrieve check reports
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: check-report
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow_conclusion: completed
+          path: .reports
+      ## XXXvlab: waiting for https://github.com/actions/download-artifact/issues/172
+      # - name: ⬇ Retrieve check reports
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: check-report
+      #     path: .reports
+      - name: ⚔ Aggregate reports
+        id: report
+        run: |
+          cd .reports
+          for report in */report; do
+              label="${report%%/*}"
+              echo "$label<<EOF"$'\n'
+              cat "$report"
+              echo
+              echo "EOF"
+          done >> $GITHUB_OUTPUT
+          echo "PR: '$(cat pr)'"
+          echo "pr=$(cat pr)" >> $GITHUB_OUTPUT
+
+      - name: 🖅 Send/Update report as PR comment
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Check Report
+          number: ${{ steps.report.outputs.pr }}
+          recreate: true
+          message: |
+            ${{ steps.report.outputs.translation }}
