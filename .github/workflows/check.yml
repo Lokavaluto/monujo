@@ -1,0 +1,107 @@
+name: "⚔ check"
+
+
+on:
+  ## Note that 'pull_request' workflows can't have permission to write
+  ## to PRs from forked repositry. So we use a separate workflow to
+  ## comment on the PR. Documentation for that:
+  ## https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+  pull_request:
+    types: [opened, synchronize]
+
+
+jobs:
+
+  get-pr-number:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR number
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          mkdir -p .reports
+          echo "$PR_NUMBER" > .reports/pr
+      - name: ⬆ Store PR number
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: check-report
+          path: .reports
+
+  check-translation:
+    runs-on: ubuntu-latest
+    env:
+      REPORT_PATH: .reports/translation
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🚚 Install dependencies
+        run: |
+          git fetch --unshallow --tags &&
+          npm install &&
+          sudo apt install gettext
+      - name: ⚔ Check translation file
+        id: translation
+        run: |
+          mkdir -p "$REPORT_PATH"
+          REPORT_FILE=$REPORT_PATH/report
+
+          npm run gettext:extract
+          if out=$(git diff --exit-code -- src/i18n/); then
+              echo '### ✔️ translation is up-to-date' > "$REPORT_FILE"
+              exit 0
+          fi
+          echo "=== raw diff output ==="
+          echo "$out"
+          echo "======================="
+          comment_diff=$(echo "$out" |
+              egrep -v '^(---|\+\+\+) ' |
+              egrep '^(\+|-)' |
+              egrep -v '^(\+|-)#: ') || true
+          if [ -z "$comment_diff" ]; then
+            comment_diff=$(git diff -- src/i18n/fr-FR/ |
+                               egrep -v '^(---|\+\+\+) ' |
+                               egrep '^(\+|-)' |
+                               egrep '^\+#: ' |
+                               cut -f 2 -d " " |
+                               cut -f 1 -d ":" |
+                               sort |
+                               uniq -c)
+            message='PO file needs a simple update (no fuzzy entries found). '
+            message+='Please run the command \`npm run gettext:extract\` '
+            message+='before pushing the code to ensure that all necessary '
+            message+='translations are included and the PO file is up-to-date.'
+          else
+            message='Found missing translations. Please run the command \`npm '
+            message+='run gettext:extract\` before pushing the code to ensure '
+            message+='that all necessary translations are included.'
+          fi
+
+          short_stat=$(git diff --shortstat -- src/i18n/)
+
+          cat <<EOF > "$REPORT_FILE"
+          ### :x: translation needs update
+
+          <p>
+
+          $message
+
+          </p>
+
+          <details>
+          <summary>$short_stat</summary>
+          <p>
+
+          \`\`\`diff
+          $comment_diff
+          \`\`\`
+
+          </p>
+          </details>
+          EOF
+          exit 1
+      - name: ⬆ Store translation report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: check-report
+          path: .reports
