@@ -161,3 +161,172 @@ jobs:
         with:
           name: check-report
           path: .reports
+
+
+  report-metrics:
+    needs: [check-translation, check-prettierx]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Check out code for ${{ github.base_ref }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
+      - name: 🚚 Install dependencies for ${{ github.base_ref }}
+        run: |
+          git fetch --unshallow --tags &&
+          npm install
+      - name: 🔍Gather data for ${{ github.base_ref }}
+        run: |
+          npm run build
+          mkdir -p .reports/{du,eslint}
+
+          report=".reports/du/${{ github.base_ref }}"
+          echo "Writing to '$report'."
+          (
+            cd dist &&
+            du -sbc js/*.js css/*.css \
+              > ../"$report"
+          ) || true
+          tail -n 1 "$report" |
+              cut -f 1 -d " " \
+              > "$report".total
+          ## remove the last line of the file
+          sed -i '$d' "$report"
+
+          report=".reports/eslint/${{ github.base_ref }}"
+          echo "Writing to '$report'."
+          npx eslint --format unix -- src/ \
+              > "$report" || true
+          tail -n 1 "$report" |
+              cut -f 1 -d " " \
+              > "$report".total
+          ## remove the 2 last lines of the file.
+          sed -i 'N;$!P;$!D;$d' "$report"
+      - name: 🚚 Check out code for ${{ github.head_ref }}
+        uses: actions/checkout@v3
+        with:
+          clean: false
+      - name: 🚚 Install dependencies for ${{ github.head_ref }}
+        run: |
+          git fetch --unshallow --tags &&
+          rm -rf node_modules &&
+          npm install
+      - name: 🔍Gather data for ${{ github.head_ref }}
+        run: |
+          rm -rf build
+
+          npm run build
+          report=".reports/du/${{ github.head_ref }}"
+          echo "Writing to '$report'."
+          (
+            cd dist &&
+            du -sbc js/*.js css/*.css \
+              > ../"$report"
+          ) || true
+          tail -n 1 "$report" |
+              cut -f 1 -d " " \
+              > "$report".total
+          ## remove the last line of the file
+          sed -i '$d' "$report"
+
+          report=".reports/eslint/${{ github.head_ref }}"
+          echo "Writing to '$report'."
+          npx eslint --format unix -- src/ \
+              > "$report" || true
+          tail -n 1 "$report" |
+              cut -f 1 -d " " \
+              > "$report".total
+          ## remove the 2 last lines of the file
+          sed -i 'N;$!P;$!D;$d' "$report"
+
+      - name: 📃 Report
+        id: metrics
+        run: |
+          cd .reports
+          mkdir -p reports
+
+          ##
+          ## du
+          ##
+
+          out=$(
+            cd du
+            diff -u ${{ github.base_ref }} \
+                 ${{ github.head_ref }} | \
+                 grep -E '^(\+|-)' | \
+                 grep -vE '^(\+\+\+|---)' ||
+                 true
+          )
+          if [ -z "$out" ]; then
+              cat <<EOF
+          <p>No package files changes detected (current size: $(
+              cat "du/${{ github.head_ref }}.total" |
+                  numfmt --to=iec --format %.3fB
+          ))</p>
+          EOF
+          else
+              cat <<EOF
+
+          <details>
+              <summary>Bundle size analysis</summary>
+          <p>
+
+          \`\`\`diff
+          $out
+          \`\`\`
+
+          </p>
+
+          </details>
+          EOF
+          fi > "reports/du"
+
+          ##
+          ## eslint
+          ##
+
+          out=$(
+            cd eslint
+            diff -u ${{ github.base_ref }} \
+                 ${{ github.head_ref }} | \
+                 grep -E '^(\+|-)' | \
+                 grep -vE '^(\+\+\+|---)' ||
+                 true
+          )
+          if [ -z "$out" ]; then
+              cat <<EOF
+          <p>No eslint changes detected ($(cat "eslint/${{ github.head_ref }}.total") issues reported)</p>
+          EOF
+          else
+              cat <<EOF
+
+          <details>
+              <summary>Eslint analysis</summary>
+          <p>
+
+          \`\`\`diff
+          $out
+          \`\`\`
+
+          </p>
+
+          </details>
+          EOF
+          fi > "reports/eslint"
+
+          ##
+          ## Final report
+          ##
+
+          cat <<EOF > reports/report
+          ### :page_with_curl: Metrics report
+
+          $(cat reports/{du,eslint})
+
+          EOF
+      - name: ⬆ Store report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: check-report
+          path: .reports
