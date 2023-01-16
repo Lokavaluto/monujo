@@ -1,0 +1,38 @@
+name: "🖅 Comment PR test report"
+
+on:
+  workflow_run:
+    workflows: ["⚔ test"]
+    types:
+      - completed
+
+
+jobs:
+  cypress-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇ Retrieve mocha reports
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: cypress-report
+          workflow_conclusion: completed
+          run_id: ${{ github.event.workflow_run.id }}
+          path: .reports
+      ## XXXvlab: waiting for https://github.com/actions/download-artifact/issues/172
+      # - name: ⬇ Retrieve mocha reports
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: mocha-report
+      #     path: .reports
+      - name: 📃 Get PR number
+        id: report
+        run: |
+          cd .reports
+          echo "pr=$(cat pr)"  >> $GITHUB_OUTPUT
+      - name: 🖅 Report to PR
+        uses: vaab/cypress-report-action@v2
+        with:
+          title: "### :evergreen_tree: test report"
+          pr: ${{ steps.report.outputs.pr }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pathname: .reports/report-merge.json

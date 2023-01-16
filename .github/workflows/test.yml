@@ -1,0 +1,139 @@
+name: "⚔ test"
+
+
+on:
+  ## Note that 'pull_request' workflows can't have permission to write
+  ## to PRs from forked repositry. So we use a separate workflow to
+  ## comment on the PR. Documentation for that:
+  ## https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+  pull_request:
+    types: [opened, synchronize]
+
+
+jobs:
+
+  get-pr-number:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR number
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          mkdir -p .reports
+          echo "$PR_NUMBER" > .reports/pr
+      - name: ⬆ Store PR number
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-report
+          path: .reports
+
+  cypress-e2e:
+    strategy:
+      matrix:
+        resolution:
+          - 375x667    ## iphone-8
+          - 1024x768
+    runs-on: ubuntu-latest
+    env:
+      REPORT_PATH: .reports/mocha
+    steps:
+      - name: 🚚 Get code
+        uses: actions/checkout@v2
+      - name: 🚚 Get node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: 🚚 Install dependencies
+        run: |
+          ## Need to unshallow to allow making the version number from
+          ## git history.
+          git fetch --unshallow --tags &&
+          npm install
+      - name: 🔨 Config
+        run: |
+          rm "public/config.sample.json"
+          export GITHUB_REF_NAME="dev3"  ## Not ideal for test stability
+          echo "{
+            \"appName\": \"Monujo-CI-${GITHUB_REF_NAME}\",
+            \"lokapiDb\": \"odoo\",
+            \"lokapiHost\": \"${GITHUB_REF_NAME}.lokavaluto.fr\",
+            \"mapUrl\": \"https://carte.${GITHUB_REF_NAME}.lokavaluto.fr\",
+            \"logoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"loginLogoUrl\": \"https://monujo.${GITHUB_REF_NAME}.lokavaluto.fr/img/logo.png\",
+            \"locales\": {
+              \"availableLanguages\": {
+                \"en-US\": {
+                  \"label\": \"English (US)\"
+                },
+                \"fr-FR\": {
+                  \"label\": \"Français (France)\",
+                  \"url\": \"https://docker.0k.io/downloads/monujo.fr-FR.json\"
+                }
+              },
+              \"appStringsLanguage\": \"en-US\",
+              \"defaultLanguage\": \"en-US\",
+              \"preferNavigatorLanguage\": true
+            }
+          }" > public/config.json
+          cat public/config.json
+      - name: ⚙ Serve Application
+        run: npm run serve &
+      - name: ⚔ Run Cypress tests
+        env:
+          M_RESOLUTION: ${{ matrix.resolution }}
+        run: |
+          npx cypress run --project tests \
+              --config defaultCommandTimeout=60000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
+      - name: ⚔ Collect mocha reports
+        if: always()
+        env:
+          M_RESOLUTION: ${{ matrix.resolution }}
+        run: |
+          mkdir -p "$REPORT_PATH/${M_RESOLUTION}"
+          mv tests/cypress/reports/mocha/*.json "$REPORT_PATH/${M_RESOLUTION}/"
+      - name: ⬆ Store mocha reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: mocha-report
+          path: .reports
+
+  cypress-report:
+    needs: cypress-e2e
+    if: always()
+    runs-on: ubuntu-latest
+    env:
+      MOCHA_REPORT_PATH: .reports/mocha
+      MERGE_REPORT_PATH: .reports/cypress-report
+    steps:
+      - name: 🚚 Get node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: 🚚 Install dependencies
+        run: |
+          npm i mochawesome-merge mochawesome-report-generator
+      - name: ⬇ Retrieve mocha reports
+        uses: actions/download-artifact@v3
+        with:
+          name: mocha-report
+          path: .reports
+      - name: 📃 Prepare reports
+        run: |
+          mkdir -p "$MERGE_REPORT_PATH"
+          echo "=== Merging ==="
+          ls -l "$MOCHA_REPORT_PATH"/*/*.json
+          echo "==============="
+          npx mochawesome-merge "$MOCHA_REPORT_PATH"/*/*.json \
+              -o "$MOCHA_REPORT_PATH"/index.json &&
+          npx marge --charts=true --showPassed=false \
+              --saveJson --reportFilename=report-merge \
+              -o "$MERGE_REPORT_PATH" "$MOCHA_REPORT_PATH"/index.json
+      - name: ⬆ Store cypress reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-report
+          path: .reports/cypress-report
+
