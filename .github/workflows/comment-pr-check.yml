@@ -49,3 +49,4 @@ jobs:
           message: |
             ${{ steps.report.outputs.translation }}
             ${{ steps.report.outputs.prettierx }}
+            ${{ steps.report.outputs.reports }}
