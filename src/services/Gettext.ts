@@ -71,7 +71,7 @@ export default async function mkGettext(
       let response: any
       try {
         response = await fetch(url)
-      } catch (err) {
+      } catch (err: any) {
         console.log(`Failed to load language file '${url}'.`)
         throw err
       }

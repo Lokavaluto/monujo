@@ -280,7 +280,7 @@
             this.form["accountPassword"],
             this.form["accountBackend"],
           ])
-        } catch (err) {
+        } catch (err: any) {
           console.error(
             "Something went wrong on createUserAccount request",
             err
@@ -302,7 +302,7 @@
             const [accountAuthService, userConfigInput] = this.userAuthPref
             accountAuthService.configId = userAccount.internalId
             await accountAuthService.setUserConfig(userConfigInput)
-          } catch (err) {
+          } catch (err: any) {
             console.error(
               "Something went wrong on createUserAccount request",
               err

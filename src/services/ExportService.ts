@@ -38,7 +38,7 @@ class ExportService {
       //     directory: Directory.Documents,
       //     encoding: Encoding.UTF8,
       //   })
-      // } catch (err) {
+      // } catch (err: any) {
       //   throw new Error("Unable to download file")
       // }
     }

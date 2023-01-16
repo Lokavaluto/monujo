@@ -24,7 +24,7 @@ export class PersistentConfigStore implements IConfigStore {
     if (storedString) {
       try {
         storedData = JSON.parse(storedString)
-      } catch (err) {
+      } catch (err: any) {
         console.error("Invalid configuration stored. Ignoring.")
       }
     }
@@ -98,7 +98,7 @@ export class PinAuthHandler extends AbstractAuthHandler {
       throw new Error("can't check user input on uninitialized input.")
     try {
       return decipher(this.userConfig.key, userInput)
-    } catch (err) {
+    } catch (err: any) {
       if (err.message === "unable to decrypt data") {
         return false
       }
