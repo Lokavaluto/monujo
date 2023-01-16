@@ -48,3 +48,4 @@ jobs:
           recreate: true
           message: |
             ${{ steps.report.outputs.translation }}
+            ${{ steps.report.outputs.prettierx }}
