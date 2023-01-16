@@ -105,3 +105,59 @@ jobs:
         with:
           name: check-report
           path: .reports
+
+
+  check-prettierx:
+    runs-on: ubuntu-latest
+    env:
+      REPORT_PATH: .reports/prettierx
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🚚 Install dependencies
+        run: |
+          git fetch --unshallow --tags &&
+          npm install
+      - name: ⚔ Check prettierx
+        id: linter
+        run: |
+
+          mkdir -p "$REPORT_PATH"
+          REPORT_FILE="$REPORT_PATH/report"
+
+          npx prettierx -w src/
+
+          if out=$(git diff --exit-code -- src/); then
+              echo '### ✔️ code style matches our guidelines' > "$REPORT_FILE"
+              exit 0
+          fi
+          echo "=== raw diff output ==="
+          echo "$out"
+          echo "======================="
+          short_stat=$(git diff --shortstat -- src)
+          cat <<EOF > "$REPORT_FILE"
+          ### :x: code style needs update
+
+          It seems your code wasn't properly formatted using our current rules.
+
+          Please run `npx prettierx -w src/` on your code before submitting the
+          PR. You can amend this current PR.
+
+          <details>
+              <summary>$short_stat</summary>
+          <p>
+
+          \`\`\`diff
+          $out
+          \`\`\`
+
+          </p>
+
+          </details>
+          EOF
+          exit 1
+      - name: ⬆ Store translation report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: check-report
+          path: .reports
