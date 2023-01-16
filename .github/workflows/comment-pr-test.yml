@@ -1,0 +1,82 @@
+name: "🖅 Comment PR test report"
+
+on:
+  workflow_run:
+    workflows: ["⚔ test"]
+    types:
+      - completed
+
+
+jobs:
+  cypress-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇ Retrieve mocha reports
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: cypress-report
+          workflow_conclusion: completed
+          run_id: ${{ github.event.workflow_run.id }}
+          path: .reports
+      ## XXXvlab: waiting for https://github.com/actions/download-artifact/issues/172
+      # - name: ⬇ Retrieve mocha reports
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: mocha-report
+      #     path: .reports
+      - name: 📃 Get PR number
+        id: report
+        run: |
+          cd .reports
+          echo "pr=$(cat pr)"  >> $GITHUB_OUTPUT
+      - name: 🖅 Report to PR
+        uses: vaab/cypress-report-action@v2
+        with:
+          title: "### :evergreen_tree: test report"
+          pr: ${{ steps.report.outputs.pr }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pathname: .reports/report-merge.json
+
+
+  # upload:
+  #   runs-on: ubuntu-latest
+  #   if: >
+  #     github.event.workflow_run.event == 'pull_request' &&
+  #     github.event.workflow_run.conclusion == 'success'
+  #   steps:
+  #     - name: 'Download artifact'
+  #       uses: actions/github-script@v3.1.0
+  #       with:
+  #         script: |
+  #           var artifacts = await github.actions.listWorkflowRunArtifacts({
+  #              owner: context.repo.owner,
+  #              repo: context.repo.repo,
+  #              run_id: ${{github.event.workflow_run.id }},
+  #           });
+  #           var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+  #             return artifact.name == "pr"
+  #           })[0];
+  #           var download = await github.actions.downloadArtifact({
+  #              owner: context.repo.owner,
+  #              repo: context.repo.repo,
+  #              artifact_id: matchArtifact.id,
+  #              archive_format: 'zip',
+  #           });
+  #           var fs = require('fs');
+  #           fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+  #     - run: unzip pr.zip
+
+  #     - name: 'Comment on PR'
+  #       uses: actions/github-script@v3
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         script: |
+  #           var fs = require('fs');
+  #           var issue_number = Number(fs.readFileSync('./NR'));
+  #           await github.issues.createComment({
+  #             owner: context.repo.owner,
+  #             repo: context.repo.repo,
+  #             issue_number: issue_number,
+  #             body: 'Everything is OK. Thank you for the PR!'
+  #           });
+
