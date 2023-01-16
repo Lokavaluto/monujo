@@ -93,7 +93,7 @@
         try {
           this.handler.accountAuthService.secret =
             await this.requestCredentials(customRequestCredentialsFn)
-        } catch (err) {
+        } catch (err: any) {
           if (err.message === "User canceled the dialog box") {
             return false
           }
