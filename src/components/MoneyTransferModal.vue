@@ -263,7 +263,7 @@
           recipients = await this.$lokapi.searchRecipients(
             this.recipientsSearchString
           )
-        } catch (err) {
+        } catch (err: any) {
           this.recipientsSearchError = true
           console.log("searchRecipients() Failed", err)
         }
@@ -301,7 +301,7 @@
             this.amount.toString(),
             this.message
           )
-        } catch (err) {
+        } catch (err: any) {
           if (err instanceof LokapiExc.InsufficientBalance) {
             this.errors.balance = this.$gettext(
               "Transaction was refused due to insufficient balance"
@@ -364,7 +364,7 @@
               if (result === "later") return
               try {
                 await this.selectedRecipient.toggleFavorite()
-              } catch (err) {
+              } catch (err: any) {
                 // XXXvlab: using ``.then`` makes it trigger outside of
                 // view js grasp.
                 this.$errorHandler(err)

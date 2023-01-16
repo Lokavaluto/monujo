@@ -135,7 +135,7 @@
         this.isWaitingForValidation = true
         try {
           await account.validateCreation()
-        } catch (err) {
+        } catch (err: any) {
           this.isWaitingForValidation = false
           if (err.message === "User canceled the dialog box") {
             // A warning message should have already been sent
