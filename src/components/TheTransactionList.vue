@@ -468,9 +468,10 @@
         this.$msg.success(this.$gettext("Transaction list shared"))
       },
       normalizeEndDate() {
+        let [begin, end] = this.exportDate
         this.exportDate = [
-          moment(this.exportDate[0]).startOf("day").toDate(),
-          moment(this.exportDate[1]).endOf("day").toDate(),
+          begin ? moment(begin).startOf("day").toDate() : null,
+          end ? moment(end).endOf("day").toDate() : null,
         ]
       },
       disabledDates(date: Date) {

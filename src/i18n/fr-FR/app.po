@@ -614,7 +614,7 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/services/ExportService.ts:68
+#: src/services/ExportService.ts:72
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
@@ -627,7 +627,7 @@ msgstr "La liste des transactions n'a pas pu être téléchargée"
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/services/ExportService.ts:67
+#: src/services/ExportService.ts:68
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 
