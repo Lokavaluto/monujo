@@ -313,12 +313,13 @@
         const now = moment().toDate()
         const timeSpanType = this.selectedTimeSpanType
         const offset = this.selectedTimeSpanOffset
+        const dateSelected = moment(now)
+          .subtract(-offset, timeSpanType)
+          .toDate()
         const [begin, end] = [
-          moment(now).startOf(timeSpanType),
-          moment(now).endOf(timeSpanType),
-        ]
-          .map((date) => date.subtract(-offset, timeSpanType))
-          .map((m) => m.toDate())
+          moment(dateSelected).startOf(timeSpanType),
+          moment(dateSelected).endOf(timeSpanType),
+        ].map((m) => m.toDate())
 
         return [begin, now < end ? now : end]
       },

@@ -54,7 +54,7 @@ msgid "All transactions"
 msgstr "Toutes les opérations"
 
 #: src/components/MoneyTransferModal.vue:156
-#: src/components/TheTransactionList.vue:397
+#: src/components/TheTransactionList.vue:398
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
@@ -69,7 +69,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/TheTransactionList.vue:369
+#: src/components/TheTransactionList.vue:370
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -194,7 +194,7 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TheTransactionList.vue:398
+#: src/components/TheTransactionList.vue:399
 msgid "Date"
 msgstr "Date"
 
@@ -202,7 +202,7 @@ msgstr "Date"
 msgid "day"
 msgstr "jour"
 
-#: src/components/TheTransactionList.vue:399
+#: src/components/TheTransactionList.vue:400
 msgid "Description"
 msgstr "Description"
 
@@ -549,11 +549,11 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheTransactionList.vue:395
+#: src/components/TheTransactionList.vue:396
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TheTransactionList.vue:396
+#: src/components/TheTransactionList.vue:397
 msgid "Target"
 msgstr "Destination"
 
@@ -618,12 +618,12 @@ msgstr "Opérations de crédit en attente de validation"
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TheTransactionList.vue:440
-#: src/components/TheTransactionList.vue:464
+#: src/components/TheTransactionList.vue:441
+#: src/components/TheTransactionList.vue:465
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TheTransactionList.vue:444
+#: src/components/TheTransactionList.vue:445
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
@@ -631,7 +631,7 @@ msgstr "Liste des transactions téléchargée"
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 
-#: src/components/TheTransactionList.vue:468
+#: src/components/TheTransactionList.vue:469
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
