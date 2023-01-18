@@ -84,7 +84,7 @@ jobs:
           M_RESOLUTION: ${{ matrix.resolution }}
         run: |
           npx cypress run --project tests \
-              --config defaultCommandTimeout=60000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
+              --config defaultCommandTimeout=10000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
       - name: ⚔ Collect mocha reports
         if: always()
         env:
