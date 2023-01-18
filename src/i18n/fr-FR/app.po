@@ -63,7 +63,7 @@ msgstr "Montant"
 msgid "Amount to send must be greater than 0"
 msgstr "Le montant à transférer doit être un nombre positif"
 
-#: src/views/admin/PendingCredits.vue:152
+#: src/views/admin/PendingCredits.vue:157
 msgid "An issue occured upon the approval of the credit request of %{ name }"
 msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
@@ -605,7 +605,7 @@ msgstr "Montant à créditer"
 msgid "Top up my account"
 msgstr "Créditer mon compte"
 
-#: src/views/admin/PendingCredits.vue:166
+#: src/views/admin/PendingCredits.vue:176
 msgid "Top up request from %{ name } of %{ amount } was validated."
 msgstr ""
 "La demande de crédit de %{ name } d'un montant de %{ amount } a été validée"

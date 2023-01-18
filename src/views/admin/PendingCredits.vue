@@ -125,6 +125,7 @@
         hasLoadingError: false,
         isWaitingForValidation: false,
         selectedItem: null,
+        validationRequestOngoing: [],
       }
     },
     mounted() {
@@ -138,12 +139,16 @@
     },
     methods: {
       async validateCreditRequest(request: any): Promise<void> {
+        if (this.validationRequestOngoing.includes(request)) {
+          console.log("Debounced `.validateCreditRequest()` call")
+          return
+        }
+        this.validationRequestOngoing.push(request)
         this.selectedItem = request
         try {
           this.isWaitingForValidation = true
           await request.validate()
         } catch (err: any) {
-          this.isWaitingForValidation = false
           if (err.message === "User canceled the dialog box") {
             // A warning message should have already been sent
             return
@@ -158,8 +163,13 @@
             )
           )
           throw err
+        } finally {
+          this.isWaitingForValidation = false
+          this.validationRequestOngoing.splice(
+            this.validationRequestOngoing.indexOf(request),
+            1
+          )
         }
-        this.isWaitingForValidation = false
         this.selectedItem = null
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$msg.success(
