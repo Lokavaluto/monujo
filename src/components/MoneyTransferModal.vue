@@ -229,6 +229,7 @@
         displayFavoritesOnly: false,
         recipientsLoading: false,
         recipientsSearchString: "",
+        transferOngoing: false,
         recipientsSearchError: false,
         selectedRecipient: null,
         ownSelectedAccount: null,
@@ -285,12 +286,21 @@
         this.setFocusSend()
       },
       async sendTransaction(): Promise<void> {
+        if (this.transferOngoing) {
+          console.log(
+            "Debounced `sendTransaction()` call as another transfer is ongoing..."
+          )
+          return
+        }
+        this.transferOngoing = true
+
         this.errors.amount = false
         this.errors.balance = false
         if (this.amount <= 0) {
           this.errors.amount = this.$gettext(
             "Amount to send must be greater than 0"
           )
+          this.transferOngoing = false
           return
         }
         // This to ensure we are left with 2 decimals only
@@ -335,6 +345,7 @@
           console.log("Payment failed:", err.message)
           throw err
         } finally {
+          this.transferOngoing = false
           this.$loading.hide()
           this.$store.commit("setRequestLoadingAfterCreds", false)
         }
