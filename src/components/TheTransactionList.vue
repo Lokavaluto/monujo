@@ -9,7 +9,13 @@
     >
       <TransactionListRecent />
     </div>
-    <div class="modal is-active" v-if="showModal">
+    <div
+      class="modal"
+      :class="[
+        getCurrentModal.component == this.$options.name ? 'is-active' : '',
+      ]"
+      @click="datePickerShow = false"
+    >
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -19,14 +25,13 @@
           <button
             class="delete"
             aria-label="close"
-            @click="
-              ;(showModal = false),
-                (showCreditRefreshNotification = false),
-                $store.commit('setModalState', false)
-            "
+            @click="closeTransactionListModal()"
           ></button>
         </header>
-        <section class="modal-card-body custom-card-transactions">
+        <section
+          v-if="getCurrentModal.step == 1"
+          class="modal-card-body custom-card-transactions"
+        >
           <div
             class="modal-container custom-modal-container"
             ref="transactionsContainer"
@@ -45,63 +50,10 @@
             </div>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot">
-          <div class="transactions-loader-container">
-            <loading
-              v-model:active="transactionsBatchLoading"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="30"
-              :height="30"
-            />
-          </div>
-          <div>
-            <button
-              class="
-                button
-                custom-button
-                is-payer
-                has-text-weight-medium
-                is-rounded
-                action
-              "
-              :title="$gettext('Export all transactions')"
-              @click=";(this.showModal = false), (this.showExportModal = true)"
-            >
-              <i class="ml-2 fas icon fa-file-export">
-                <fa-icon icon="file-export"
-              /></i>
-              <span>{{ $gettext("Export") }}</span>
-            </button>
-          </div>
-        </footer>
-      </div>
-    </div>
-    <div
-      class="modal is-active"
-      v-if="showExportModal"
-      @click="datePickerShow = false"
-    >
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <div class="transactions-loader">
-          <loading
-            v-model:active="isAllTransactionsLoading"
-            :can-cancel="false"
-            :is-full-page="false"
-          />
-        </div>
-        <header class="modal-card-head">
-          <p class="modal-card-title is-title-shrink">
-            <span class="ml-2">{{ $gettext("Export in CSV format") }}</span>
-          </p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click=";(showExportModal = false), (showModal = true)"
-          ></button>
-        </header>
-        <section class="modal-card-body custom-card-transactions">
+        <section
+          v-if="getCurrentModal.step == 2"
+          class="modal-card-body custom-card-transactions"
+        >
           <div
             class="modal-container custom-modal-container"
             ref="transactionsContainer"
@@ -200,42 +152,72 @@
             </div>
           </div>
         </section>
-        <footer
-          class="
-            modal-card-foot
-            custom-modal-card-foot
-            is-justify-content-flex-end
-          "
-        >
-          <span v-if="getPlatform === 'web'" class="mr-2"
-            ><button
-              class="button custom-button-modal has-text-weight-medium"
-              :title="$gettext('Export all transactions')"
-              @click="downloadCsvFile()"
-              :disabled="isAllTransactionsLoading"
-            >
-              <span class="fa-download">
-                <span class="icon">
-                  <fa-icon icon="fa-download" class="fa-lg" />
+        <footer class="modal-card-foot custom-modal-card-foot">
+          <div v-if="getCurrentModal.step == 1" class="is-flex is-max-width">
+            <div class="transactions-loader-container">
+              <loading
+                v-model:active="transactionsBatchLoading"
+                :can-cancel="false"
+                :is-full-page="false"
+                :width="30"
+                :height="30"
+              />
+            </div>
+            <div>
+              <button
+                class="
+                  button
+                  custom-button
+                  is-payer
+                  has-text-weight-medium
+                  is-rounded
+                  action
+                "
+                :title="$gettext('Export all transactions')"
+                @click="openTransactionExportModal()"
+              >
+                <i class="ml-2 fas icon fa-file-export">
+                  <fa-icon icon="file-export"
+                /></i>
+                <span>{{ $gettext("Export") }}</span>
+              </button>
+            </div>
+          </div>
+          <div
+            v-if="getCurrentModal.step == 2"
+            class="is-flex is-justify-content-flex-end is-max-width"
+          >
+            <div v-if="getPlatform === 'web'" class="mr-2">
+              <button
+                class="button custom-button-modal has-text-weight-medium"
+                :title="$gettext('Export all transactions')"
+                @click="downloadCsvFile()"
+                :disabled="isAllTransactionsLoading"
+              >
+                <span class="fa-download">
+                  <span class="icon">
+                    <fa-icon icon="fa-download" class="fa-lg" />
+                  </span>
+                  <span>{{ $gettext("Download") }}</span>
                 </span>
-                <span>{{ $gettext("Download") }}</span>
-              </span>
-            </button></span
-          ><span v-else class="ml-2"
-            ><button
-              class="button custom-button-modal has-text-weight-medium"
-              :title="$gettext('Send transactions')"
-              @click="shareCsvFile()"
-              :disabled="isAllTransactionsLoading"
-            >
-              <span class="fa-share">
-                <span class="icon">
-                  <fa-icon icon="fa-share" class="fa-lg" />
+              </button>
+            </div>
+            <div v-else class="ml-2">
+              <button
+                class="button custom-button-modal has-text-weight-medium"
+                :title="$gettext('Send transactions')"
+                @click="shareCsvFile()"
+                :disabled="isAllTransactionsLoading"
+              >
+                <span class="fa-share">
+                  <span class="icon">
+                    <fa-icon icon="fa-share" class="fa-lg" />
+                  </span>
+                  <span>{{ $gettext("Share") }}</span>
                 </span>
-                <span>{{ $gettext("Share") }}</span>
-              </span>
-            </button>
-          </span>
+              </button>
+            </div>
+          </div>
         </footer>
       </div>
     </div>
@@ -244,7 +226,7 @@
       class="has-text-centered mt-5"
     >
       <button
-        @click=";(showModal = true), $store.commit('setModalState', true)"
+        @click="openTransactionListModal()"
         class="button custom-button custom-inverted"
       >
         {{ $gettext("See more") }}
@@ -270,7 +252,6 @@
 
   import "vue-datepicker-next/index.css"
   import "@/assets/datepicker.scss"
-
   import { mapModuleState } from "@/utils/vuex"
 
   @Options({
@@ -329,7 +310,12 @@
         "thisWeektransactions",
         "userProfile",
       ]),
-      ...mapGetters(["numericFormat", "dateFormat"]),
+      ...mapGetters([
+        "numericFormat",
+        "dateFormat",
+        "getModalState",
+        "getCurrentModal",
+      ]),
     },
     watch: {
       showModal(newval: boolean, oldval: boolean) {
@@ -344,7 +330,7 @@
       },
     },
     methods: {
-      handleScroll(evt: any) {
+      handleScroll: function (evt: any) {
         if (
           evt.target.scrollTop ===
           evt.target.scrollHeight - evt.target.offsetHeight
@@ -442,6 +428,8 @@
           )
           throw e
         }
+        this.$modal.close(this.$options.name, 2)
+        this.showModal = false
         this.$msg.success(this.$gettext("Transaction list downloaded"))
       },
       async shareCsvFile() {
@@ -467,6 +455,9 @@
           throw e
         }
         this.$msg.success(this.$gettext("Transaction list shared"))
+        this.$modal.close(this.$options.name, 2)
+        this.$modal.close(this.$options.name, 1)
+        this.showModal = false
       },
       normalizeEndDate() {
         let [begin, end] = this.exportDate
@@ -477,6 +468,22 @@
       },
       disabledDates(date: Date) {
         return date > moment().endOf("day").toDate()
+      },
+      closeTransactionListModal() {
+        this.$modal.close(this.$options.name, 1)
+        this.showModal = false
+      },
+      closeTransactionExportModal() {
+        this.$modal.close(this.$options.name, 2)
+        this.showModal = false
+      },
+      openTransactionListModal() {
+        this.$modal.open(this.$options.name, 1)
+        this.showModal = true
+      },
+      openTransactionExportModal() {
+        this.$modal.open(this.$options.name, 2)
+        this.showModal = true
       },
     },
   })
@@ -522,5 +529,8 @@
   }
   div.xmx-datepicker-content {
     user-select: none;
+  }
+  .is-max-width {
+    width: 100%;
   }
 </style>

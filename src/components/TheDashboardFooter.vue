@@ -6,7 +6,8 @@
           <button
             :disabled="!hasActiveMoneyAccount"
             @click="
-              ;(showTransferModal = true), $store.commit('setModalState', true)
+              $store.commit('setModalState', true),
+                $modal.open('MoneyTransferModal', 1)
             "
             class="
               button
@@ -57,7 +58,8 @@
               action
             "
             @click="
-              ;(showCreditModal = true), $store.commit('setModalState', true)
+              $store.commit('setModalState', true),
+                $modal.open('MoneyCreditModal', 1)
             "
           >
             <span class="icon-text">
@@ -72,21 +74,18 @@
     </div>
 
     <money-transfer-modal
-      v-if="showTransferModal"
-      @close="
-        ;(showTransferModal = false), $store.commit('setModalState', false)
-      "
+      v-if="getCurrentModal?.component == 'MoneyTransferModal'"
     />
 
     <money-credit-modal
-      v-if="showCreditModal"
-      @close=";(showCreditModal = false), $store.commit('setModalState', false)"
+      v-if="getCurrentModal?.component == 'MoneyCreditModal'"
     />
   </div>
 </template>
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import { mapGetters } from "vuex"
 
   import MoneyTransferModal from "./MoneyTransferModal.vue"
   import MoneyCreditModal from "./MoneyCreditModal.vue"
@@ -97,16 +96,11 @@
       MoneyTransferModal,
       MoneyCreditModal,
     },
-    data() {
-      return {
-        showTransferModal: false,
-        showCreditModal: false,
-      }
-    },
     computed: {
       hasActiveMoneyAccount(): boolean {
         return this.$store.getters.activeVirtualAccounts.length > 0
       },
+      ...mapGetters(["getCurrentModal"]),
     },
   })
   export default class TheDashboardFooter extends Vue {}

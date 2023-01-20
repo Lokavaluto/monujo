@@ -1,5 +1,8 @@
 <template>
-  <div class="modal is-active">
+  <div
+    class="modal is-active"
+    v-if="getCurrentModal.component == this.$options.name"
+  >
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -9,12 +12,16 @@
         <button
           class="delete"
           aria-label="close"
-          @click="resetCredit(), $emit('close')"
+          @click="resetCredit(), $modal.close($options.name, 1)"
         ></button>
       </header>
       <section class="modal-card-body">
         <div
-          v-if="creditOrderUrl.length === 0 && !showCreditRefreshNotification"
+          v-if="
+            creditOrderUrl.length === 0 &&
+            !showCreditRefreshNotification &&
+            getCurrentModal.step == 1
+          "
           class="custom-montant-input"
         >
           <div v-if="creditableMoneyAccounts.length > 1">
@@ -194,7 +201,7 @@
       this.resetCredit()
     },
     computed: {
-      ...mapGetters(["creditableMoneyAccounts"]),
+      ...mapGetters(["creditableMoneyAccounts", "getCurrentModal"]),
     },
     methods: {
       resetCredit(): void {
@@ -248,7 +255,7 @@
       },
       closeAndRefresh(): void {
         this.showCreditRefreshNotification = false
-        this.$emit("close")
+        this.$modal.close(this.$options.name, 1)
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
         this.$store.dispatch("resetTransactions")

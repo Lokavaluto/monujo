@@ -1,7 +1,10 @@
 <template>
-  <div class="modal is-active">
+  <div
+    v-if="getCurrentModal.component == this.$options.name"
+    class="modal is-active"
+  >
     <div class="modal-background"></div>
-    <template v-if="step === 1">
+    <template v-if="getCurrentModal.step == 1">
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
@@ -10,7 +13,7 @@
           <button
             class="delete"
             aria-label="close"
-            @click="$emit('close')"
+            @click="$modal.close($options.name, 1)"
           ></button>
         </header>
         <div class="search-area">
@@ -109,11 +112,11 @@
       </div>
     </template>
 
-    <template v-if="step === 2 && selectedRecipient">
+    <template v-if="getCurrentModal?.step == 2 && selectedRecipient">
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
-            <a class="mr-3 is-flex" @click="step = 1">
+            <a class="mr-3 is-flex" @click="$modal.close($options.name, 2)">
               <span class="icon has-text-white">
                 <fa-icon icon="arrow-left" class="fa-lg" />
               </span>
@@ -125,7 +128,7 @@
           <button
             class="delete"
             aria-label="close"
-            @click="$emit('close')"
+            @click="$modal.close($options.name, 2)"
           ></button>
         </header>
         <section class="modal-card-body">
@@ -209,6 +212,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
+  import { mapGetters } from "vuex"
 
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
@@ -224,7 +228,6 @@
     },
     data() {
       return {
-        step: 1,
         recipients: [],
         displayFavoritesOnly: false,
         recipientsLoading: false,
@@ -253,6 +256,7 @@
           return currencyIds.indexOf(p.backendId) > -1
         })
       },
+      ...mapGetters(["getCurrentModal"]),
     },
     methods: {
       async searchRecipients(): Promise<void> {
@@ -280,7 +284,7 @@
           this.$store.getters.activeVirtualAccounts.find(
             (va: any) => va.currencyId === recipient.backendId
           )
-        this.step = 2
+        this.$modal.open(this.$options.name, 2)
         this.errors.balance = false
         this.errors.amount = false
         this.setFocusSend()
@@ -351,8 +355,8 @@
         }
         this.errors.balance = false
         this.errors.amount = false
-        this.$emit("close")
-
+        this.$modal.close(this.$options.name, 2)
+        this.$modal.close(this.$options.name, 1)
         this.$msg.success(
           this.$gettext("Payment issued to %{ name }", {
             name: this.selectedRecipient.name,
@@ -402,6 +406,24 @@
           this.$refs.amountSend.select()
         })
       },
+      // pushModal(step: number) {
+      //   this.$store.commit("setModalStack", {
+      //     type: 1,
+      //     component: this.$options.name,
+      //     step,
+      //   })
+      //   this.$store.commit("setModalState", true)
+      // },
+      // removeModal(step: number) {
+      //   this.$store.commit("setModalStack", {
+      //     type: -1,
+      //     component: this.$options.name,
+      //     step,
+      //   })
+      //   if (!this.getCurrentModal.step) {
+      //     this.$store.commit("setModalState", false)
+      //   }
+      // },
     },
   })
   export default class MoneyTransferModal extends Vue {}

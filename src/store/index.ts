@@ -31,12 +31,24 @@ export default async function mkStore(localesConfig: any, gettext: any) {
       dateFormatLanguage: false,
       datePickerLanguage: false,
       requestLoadingAfterCreds: false,
+      modalStack: [Object],
     },
     mutations: {
       setModalState(state: any, modalState: boolean) {
         state.isModalOpen = modalState
       },
 
+      setModalStack(
+        state: any,
+        modal: { type: number; component: string; step: number }
+      ) {
+        const { type, component, step } = modal
+        if (type == 1) {
+          state.modalStack.push({ component, step })
+        } else {
+          state.modalStack.splice(state.modalStack.length - 1, 1)
+        }
+      },
       setRequestLoadingAfterCreds(
         state: any,
         requestLoadingAfterCreds: boolean
@@ -81,6 +93,15 @@ export default async function mkStore(localesConfig: any, gettext: any) {
     },
     modules: {},
     getters: {
+      getModalState: (state) => {
+        return state.isModalOpen
+      },
+      getModalStack: (state) => {
+        return state.modalStack
+      },
+      getCurrentModal: (state) => {
+        return state.modalStack[state.modalStack.length - 1] || false
+      },
       numericFormat: PoorMansCachedGetter(
         (state: any) =>
           new Intl.NumberFormat(state.numericFormatLanguage, {

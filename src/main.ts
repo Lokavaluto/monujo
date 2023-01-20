@@ -34,6 +34,7 @@ import ToastService from "@/services/toastService"
 import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
 
+import ModalService from "./services/ModalService"
 // Components
 
 import AuthPrefDirect from "@/components/AuthPrefDirect.vue"
@@ -91,6 +92,8 @@ fetchConfig("config.json").then(async (config: any) => {
   const store = await mkStore(config?.locales || {}, gettext)
   const router = mkRouter(config.appName || defaultAppName, store)
 
+  //modal service
+  const modal = new ModalService(store)
   const { $gettext } = gettext
   const biometry = new Biometry(
     new PersistentConfigStore(lokApiService.persistentStore, "biometry"),
@@ -275,7 +278,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.globalProperties.$prefs = prefsService
   app.config.globalProperties.$export = new ExportService(gettext)
   app.config.globalProperties.$errorHandler = app.config.errorHandler
-
+  app.config.globalProperties.$modal = modal
   const unwatch = store.watch(
     (state, getters) => getters.isAuthenticated,
     () => {
