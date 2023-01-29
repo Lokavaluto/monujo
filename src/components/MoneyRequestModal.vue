@@ -35,7 +35,7 @@
             id="send-money-button"
             @click="$modal.next()"
           >
-            {{ $gettext("Generate QrCode") }}
+            {{ $gettext("Generate QR code") }}
           </button>
         </footer>
       </div>
