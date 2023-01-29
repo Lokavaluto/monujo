@@ -454,8 +454,8 @@ msgstr "Depuis"
 
 #: src/components/MoneyRequestModal.vue:27
 #: src/components/MoneyRequestModal.vue:33
-msgid "Generate QrCode"
-msgstr "Générer le QrCode"
+msgid "Generate QR code"
+msgstr "Générer le code QR"
 
 #: src/components/AuthPrefPin.vue:127
 msgid "Given PINs are different"
@@ -484,7 +484,7 @@ msgstr "E-mail invalide."
 
 #: src/components/MoneyTransferModal.vue:284
 msgid "Invalid QR code content format"
-msgstr "Format du QR code invalide"
+msgstr "Format du code QR invalide"
 
 #: src/main.ts:227
 msgid "Language settings"
@@ -695,7 +695,7 @@ msgstr ""
 
 #: src/components/MoneyRequestModal.vue:84 src/components/QrCodeModal.vue:35
 msgid "Please scan the QR code above to proceed"
-msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
+msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:275
 #: src/components/TheBankAccountList.vue:317 src/services/lokapiService.ts:266
@@ -714,6 +714,10 @@ msgstr "Préférences"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/main.ts:287
+msgid "QR code"
+msgstr "Code QR"
+
 #: src/components/MoneyRequestModal.vue:154
 msgid "QR code - Payment request to %{ name } of %{ amount } %{ currency }"
 msgstr ""
@@ -723,10 +727,6 @@ msgstr ""
 #: src/components/QrCodeModal.vue:72
 msgid "QR code wallet - %{name}"
 msgstr "Code QR portefeuille - %{ name }"
-
-#: src/main.ts:287
-msgid "Qrcode"
-msgstr "QrCode"
 
 #: src/components/ConfirmPaymentModal.vue:60
 #: src/components/ConfirmPaymentModal.vue:61
@@ -1015,7 +1015,7 @@ msgstr "pour en créer un"
 #: src/services/QrCodeService.ts:132
 msgid "To scan QR code, allow access to camera in the app settings."
 msgstr ""
-"Pour scanner un QR code, vous devez autoriser l'accès à la caméra dans la "
+"Pour scanner un code QR, vous devez autoriser l'accès à la caméra dans la "
 "configuration de l'application."
 
 #: src/components/TheDashboardFooter.vue:67
@@ -1100,7 +1100,7 @@ msgstr "Opérations"
 
 #: src/components/MoneyTransferModal.vue:296
 msgid "Unable to read QR code"
-msgstr "Impossible de lire le QR code."
+msgstr "Impossible de lire le code QR."
 
 #: src/components/TheBankAccountList.vue:109
 #: src/components/TheBankAccountList.vue:66
