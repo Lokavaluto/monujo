@@ -100,8 +100,25 @@ private_lane :send_github do |options|
   tag = lane_context[SharedValues::VERSION_NAME]
   changelog = File.read("../release/#{tag}/CHANGELOG").lines
   title = (changelog.shift).strip
+  repository_name = options[:github_repository] || ENV["GITHUB_REPOSITORY"]
+  if ! repository_name
+    UI.message "No `github_repository` nor \$GITHUB_REPOSITORY environment variable set."
+    UI.message "Trying to infer default release github repository:"
+    begin
+      origin_url = sh 'git config --get remote.origin.url'
+      UI.message "  Remote origin URL is: #{origin_url}"
+
+      if (match = origin_url.match(/github\.com[:\/]([a-zA-Z0-9-]+\/[a-zA-Z0-9-]+)(\.git)?$/))
+        repository_name = match[1]
+      end
+      UI.message "  Inferring repository name: #{repository_name}"
+    rescue
+      UI.message "  Can't read remote named 'origin' !"
+      UI.important "Can't infer default release repository. Will ask interactively."
+    end
+  end
   github_release(
-    repository_name: options[:github_repository] || ENV["GITHUB_REPOSITORY"],
+    repository_name: repository_name,
     name: title,
     tag_name: tag,
     description: changelog.join,
