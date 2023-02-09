@@ -40,7 +40,7 @@ end
 
 desc "Build release packages"
 private_lane :_build_apps do |options|
-  _setup_signing
+  _setup_signing options
 
   apps = options[:app]
   data = load_releases_data
