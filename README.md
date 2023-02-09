@@ -417,7 +417,17 @@ and should be buildable in all environment.
 
 ###### android
 
-Provided that you have the correct dependencies ready... it will
+You need to have your Android signing keys ready. The nice default
+setup is to create a directory 'keys/', having:
+
+- `keys/keystore` the binary keystore
+- `keys/keystore-passord` the password to the keystore
+
+You can change these paths, or even provide these information without
+using files, you'll get direction for this if you don't provide the
+previous files.
+
+Then, provided that you have the correct dependencies ready... it will
 produce:
 
 - APK files for direct installs on android mobile phones.
