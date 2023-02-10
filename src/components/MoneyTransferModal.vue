@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="getCurrentModal.component == this.$options.name"
     class="modal is-active"
+    v-if="getCurrentModal?.component == 'MoneyTransferModal'"
   >
     <div class="modal-background"></div>
     <template v-if="getCurrentModal.step == 1">
@@ -406,24 +406,6 @@
           this.$refs.amountSend.select()
         })
       },
-      // pushModal(step: number) {
-      //   this.$store.commit("setModalStack", {
-      //     type: 1,
-      //     component: this.$options.name,
-      //     step,
-      //   })
-      //   this.$store.commit("setModalState", true)
-      // },
-      // removeModal(step: number) {
-      //   this.$store.commit("setModalStack", {
-      //     type: -1,
-      //     component: this.$options.name,
-      //     step,
-      //   })
-      //   if (!this.getCurrentModal.step) {
-      //     this.$store.commit("setModalState", false)
-      //   }
-      // },
     },
   })
   export default class MoneyTransferModal extends Vue {}

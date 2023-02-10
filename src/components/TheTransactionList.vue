@@ -10,10 +10,8 @@
       <TransactionListRecent />
     </div>
     <div
-      class="modal"
-      :class="[
-        getCurrentModal.component == this.$options.name ? 'is-active' : '',
-      ]"
+      class="modal is-active"
+      v-if="getCurrentModal.component == $options.name"
       @click="datePickerShow = false"
     >
       <div class="modal-background"></div>
@@ -25,7 +23,7 @@
           <button
             class="delete"
             aria-label="close"
-            @click="closeTransactionListModal()"
+            @click="$modal.close(this.$options.name, 1), (showModal = false)"
           ></button>
         </header>
         <section
@@ -174,7 +172,7 @@
                   action
                 "
                 :title="$gettext('Export all transactions')"
-                @click="openTransactionExportModal()"
+                @click="$modal.open(this.$options.name, 2), (showModal = true)"
               >
                 <i class="ml-2 fas icon fa-file-export">
                   <fa-icon icon="file-export"
@@ -226,7 +224,7 @@
       class="has-text-centered mt-5"
     >
       <button
-        @click="openTransactionListModal()"
+        @click="$modal.open(this.$options.name, 1), (showModal = true)"
         class="button custom-button custom-inverted"
       >
         {{ $gettext("See more") }}
@@ -323,6 +321,7 @@
           this.$nextTick(() => {
             let div = this.$refs.transactionsContainer
             if (div.scrollTop === div.scrollHeight - div.offsetHeight) {
+              debugger
               this.$store.dispatch("fetchTransactionsBatch")
             }
           })
@@ -331,7 +330,8 @@
     },
     methods: {
       handleScroll: function (evt: any) {
-        if (
+        debugger
+	if (
           evt.target.scrollTop ===
           evt.target.scrollHeight - evt.target.offsetHeight
         ) {
@@ -468,22 +468,6 @@
       },
       disabledDates(date: Date) {
         return date > moment().endOf("day").toDate()
-      },
-      closeTransactionListModal() {
-        this.$modal.close(this.$options.name, 1)
-        this.showModal = false
-      },
-      closeTransactionExportModal() {
-        this.$modal.close(this.$options.name, 2)
-        this.showModal = false
-      },
-      openTransactionListModal() {
-        this.$modal.open(this.$options.name, 1)
-        this.showModal = true
-      },
-      openTransactionExportModal() {
-        this.$modal.open(this.$options.name, 2)
-        this.showModal = true
       },
     },
   })

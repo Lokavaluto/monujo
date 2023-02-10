@@ -55,7 +55,6 @@ require("@/assets/main.scss")
 require("@/assets/native.scss")
 
 // Code
-
 async function fetchConfig(path: string) {
   let response: Response
 
@@ -92,7 +91,7 @@ fetchConfig("config.json").then(async (config: any) => {
   const store = await mkStore(config?.locales || {}, gettext)
   const router = mkRouter(config.appName || defaultAppName, store)
 
-  //modal service
+  // modal service
   const modal = new ModalService(store)
   const { $gettext } = gettext
   const biometry = new Biometry(

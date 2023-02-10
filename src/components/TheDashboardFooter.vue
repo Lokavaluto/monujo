@@ -73,13 +73,9 @@
       </div>
     </div>
 
-    <money-transfer-modal
-      v-if="getCurrentModal?.component == 'MoneyTransferModal'"
-    />
+    <money-transfer-modal />
 
-    <money-credit-modal
-      v-if="getCurrentModal?.component == 'MoneyCreditModal'"
-    />
+    <money-credit-modal />
   </div>
 </template>
 

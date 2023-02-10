@@ -1,7 +1,7 @@
 <template>
   <div
     class="modal is-active"
-    v-if="getCurrentModal.component == this.$options.name"
+    v-if="getCurrentModal?.component == 'MoneyCreditModal'"
   >
     <div class="modal-background"></div>
     <div class="modal-card">
