@@ -353,3 +353,26 @@ input {
     opacity: 0.6;
   }
 }
+
+.modal-container {
+  width: 100%;
+  margin: 0px auto;
+  /* border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
+  /*  transition: all 0.3s ease; */
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.custom-card-transactions {
+  overflow-y: hidden !important;
+  max-height: calc(70vh - 60px) !important;
+}
+.custom-modal-container {
+  max-height: calc(70vh - 65px) !important;
+}

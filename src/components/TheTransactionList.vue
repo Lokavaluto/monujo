@@ -321,7 +321,6 @@
           this.$nextTick(() => {
             let div = this.$refs.transactionsContainer
             if (div.scrollTop === div.scrollHeight - div.offsetHeight) {
-              debugger
               this.$store.dispatch("fetchTransactionsBatch")
             }
           })
@@ -330,8 +329,7 @@
     },
     methods: {
       handleScroll: function (evt: any) {
-        debugger
-	if (
+        if (
           evt.target.scrollTop ===
           evt.target.scrollHeight - evt.target.offsetHeight
         ) {

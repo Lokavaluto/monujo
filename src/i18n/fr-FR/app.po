@@ -48,13 +48,13 @@ msgstr "Ajoutez un texte (optionnel)"
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
-#: src/components/TheTransactionList.vue:23
-#: src/components/TheTransactionList.vue:82
+#: src/components/TheTransactionList.vue:21
+#: src/components/TheTransactionList.vue:80
 msgid "All transactions"
 msgstr "Toutes les opérations"
 
 #: src/components/MoneyTransferModal.vue:159
-#: src/components/TheTransactionList.vue:384
+#: src/components/TheTransactionList.vue:382
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
@@ -69,7 +69,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/TheTransactionList.vue:356
+#: src/components/TheTransactionList.vue:354
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -169,11 +169,11 @@ msgstr "Fermer et rafraîchir"
 msgid "configure PIN code"
 msgstr "Configurer le code PIN"
 
-#: src/components/TheTransactionList.vue:107
-#: src/components/TheTransactionList.vue:110
-#: src/components/TheTransactionList.vue:115
-#: src/components/TheTransactionList.vue:127
-#: src/components/TheTransactionList.vue:141
+#: src/components/TheTransactionList.vue:105
+#: src/components/TheTransactionList.vue:108
+#: src/components/TheTransactionList.vue:113
+#: src/components/TheTransactionList.vue:125
+#: src/components/TheTransactionList.vue:139
 msgid "confirm"
 msgstr "valider"
 
@@ -194,15 +194,15 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TheTransactionList.vue:385
+#: src/components/TheTransactionList.vue:383
 msgid "Date"
 msgstr "Date"
 
-#: src/components/TheTransactionList.vue:276
+#: src/components/TheTransactionList.vue:274
 msgid "day"
 msgstr "jour"
 
-#: src/components/TheTransactionList.vue:386
+#: src/components/TheTransactionList.vue:384
 msgid "Description"
 msgstr "Description"
 
@@ -216,7 +216,7 @@ msgstr[1] "chiffres"
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
-#: src/components/TheTransactionList.vue:201
+#: src/components/TheTransactionList.vue:199
 msgid "Download"
 msgstr "Télécharger"
 
@@ -250,12 +250,12 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: src/components/TheTransactionList.vue:182
+#: src/components/TheTransactionList.vue:180
 msgid "Export"
 msgstr "Exporter"
 
-#: src/components/TheTransactionList.vue:176
-#: src/components/TheTransactionList.vue:193
+#: src/components/TheTransactionList.vue:174
+#: src/components/TheTransactionList.vue:191
 msgid "Export all transactions"
 msgstr "Exporter les opérations"
 
@@ -291,7 +291,7 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/main.ts:222
+#: src/main.ts:221
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -299,15 +299,15 @@ msgstr "Préférences de langue"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:104
+#: src/main.ts:103
 msgid "Log in"
 msgstr "Se connecter"
 
-#: src/main.ts:103
+#: src/main.ts:102
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:132
+#: src/main.ts:131
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -319,11 +319,11 @@ msgstr "Carte"
 msgid "Minimum credit amount: "
 msgstr "Montant minimum à créditer : "
 
-#: src/components/TheTransactionList.vue:278
+#: src/components/TheTransactionList.vue:276
 msgid "month"
 msgstr "mois"
 
-#: src/main.ts:130
+#: src/main.ts:129
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -447,7 +447,7 @@ msgstr ""
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:129
+#: src/main.ts:128
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -479,16 +479,16 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:193
+#: src/main.ts:192
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
-#: src/components/TheTransactionList.vue:226
-#: src/components/TheTransactionList.vue:229
+#: src/components/TheTransactionList.vue:224
+#: src/components/TheTransactionList.vue:227
 msgid "See more"
 msgstr "Voir tout"
 
-#: src/components/TheTransactionList.vue:72
+#: src/components/TheTransactionList.vue:70
 msgid "Select timespan:"
 msgstr "Sélectionnez un intervalle de temps :"
 
@@ -504,7 +504,7 @@ msgstr "Envoyer"
 msgid "Send money"
 msgstr "Envoyer de l'argent"
 
-#: src/components/TheTransactionList.vue:208
+#: src/components/TheTransactionList.vue:206
 msgid "Send transactions"
 msgstr "Envoyer les opérations"
 
@@ -521,7 +521,7 @@ msgstr ""
 "pas déroulée correctement... Veuillez ré-éssayer dans l'écran de préférences "
 "ou contacter votre administrateur"
 
-#: src/components/TheTransactionList.vue:216
+#: src/components/TheTransactionList.vue:214
 msgid "Share"
 msgstr "Partager"
 
@@ -545,11 +545,11 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheTransactionList.vue:382
+#: src/components/TheTransactionList.vue:380
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TheTransactionList.vue:383
+#: src/components/TheTransactionList.vue:381
 msgid "Target"
 msgstr "Destination"
 
@@ -614,12 +614,12 @@ msgstr "Opérations de crédit en attente de validation"
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TheTransactionList.vue:427
-#: src/components/TheTransactionList.vue:453
+#: src/components/TheTransactionList.vue:425
+#: src/components/TheTransactionList.vue:451
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TheTransactionList.vue:433
+#: src/components/TheTransactionList.vue:431
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
@@ -627,7 +627,7 @@ msgstr "Liste des transactions téléchargée"
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 
-#: src/components/TheTransactionList.vue:457
+#: src/components/TheTransactionList.vue:455
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
@@ -681,7 +681,7 @@ msgstr "Création de compte interrompue inopinément."
 msgid "Wallet to top up"
 msgstr "Compte à créditer"
 
-#: src/components/TheTransactionList.vue:277
+#: src/components/TheTransactionList.vue:275
 msgid "week"
 msgstr "semaine"
 
@@ -693,7 +693,7 @@ msgstr ""
 "Souhaitez-vous vous logger en utilisant les capacités biométriques de votre "
 "périphérique (empreinte digitale, reconnaissance faciale, ...)"
 
-#: src/components/TheTransactionList.vue:279
+#: src/components/TheTransactionList.vue:277
 msgid "year"
 msgstr "année"
 
