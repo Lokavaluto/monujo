@@ -1,0 +1,2 @@
+## Use MATCH_GIT_URL environment variable to override
+git_url("git@github.com:Lokavaluto/certificates.git")
