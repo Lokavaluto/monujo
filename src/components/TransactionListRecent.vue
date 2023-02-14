@@ -1,11 +1,11 @@
 <template>
   <loading
-    v-if="!thisWeektransactions.length"
+    v-if="!lastTransactions.length"
     v-model:active="transactionsLoading"
     :can-cancel="false"
     :is-full-page="false"
   />
-  <div v-if="!transactionsLoading || thisWeektransactions.length">
+  <div v-if="!transactionsLoading || lastTransactions.length">
     <span
       :class="{
         hide: !transactionsLoading,
@@ -36,7 +36,7 @@
       </p>
     </div>
     <p
-      v-else-if="thisWeektransactions?.length === 0"
+      v-else-if="lastTransactions?.length === 0"
       class="notification is-default"
     >
       {{ $gettext("No previous transactions in your history.") }}
@@ -44,7 +44,7 @@
     <div v-else>
       <h2 class="custom-card-title">{{ $gettext("Transactions") }}</h2>
       <TransactionItem
-        v-for="transaction in thisWeektransactions"
+        v-for="transaction in lastTransactions"
         :key="transaction"
         :transaction="transaction"
       />
@@ -87,7 +87,7 @@
     },
     computed: {
       ...mapModuleState("lokapi", [
-        "thisWeektransactions",
+        "lastTransactions",
         "transactionsLoading",
         "transactionsLoadingError",
       ]),
