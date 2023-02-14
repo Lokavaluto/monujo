@@ -1,7 +1,7 @@
 
 
 to_publish = Hash.new
-
+publish_metadata = Hash.new
 
 desc "Produce final bundled javascript and css"
 private_lane :build_web_pack do |options|
@@ -88,19 +88,35 @@ private_lane :_prepare_mobile_package do |options|
 end
 
 
-desc "Publish Github"
-private_lane :_publish_github do |options|
+desc "Build all assets needed for publication"
+private_lane :_prepublish do |options|
   build options
   gen_changelog
+  tag = lane_context[SharedValues::VERSION_NAME]
+  changelog = File.read("../release/#{tag}/CHANGELOG").lines
+
+  publish_metadata["tag"] = tag
+  publish_metadata["title"] = (changelog.shift).strip
+  publish_metadata["changelog"] = changelog.join
+end
+
+
+desc "Publish Github"
+private_lane :_publish_github do |options|
+  _prepublish options
   send_github options
 end
+
+desc "Publish Store"
+private_lane :_publish_store do |options|
+  _prepublish options
+  send_store options
+end
+
 
 
 desc "Send Github"
 private_lane :send_github do |options|
-  tag = lane_context[SharedValues::VERSION_NAME]
-  changelog = File.read("../release/#{tag}/CHANGELOG").lines
-  title = (changelog.shift).strip
   repository_name = options[:github_repository] || ENV["GITHUB_REPOSITORY"]
   if ! repository_name
     UI.message "No `github_repository` nor \$GITHUB_REPOSITORY environment variable set."
@@ -120,14 +136,14 @@ private_lane :send_github do |options|
   end
   github_release(
     repository_name: repository_name,
-    name: title,
-    tag_name: tag,
-    description: changelog.join,
+    name: publish_metadata["title"],
+    tag_name: publish_metadata["tag"],
+    description: publish_metadata["changelog"],
     commitish: "master",
     upload_assets: to_publish,
     overwrite_existing_assets: options[:overwrite_existing_assets],
     is_draft: options[:draft],
-    is_prerelease: tag.include?("-rc."),
+    is_prerelease: publish_metadata["tag"].include?("-rc."),
   )
 end
 
@@ -142,7 +158,11 @@ platform :android do
     _publish_github options
   end
 
-  private_lane :send_stores do |options|
+  lane :publish_store do |options|
+    _publish_store options
+  end
+
+  private_lane :send_store do |options|
     UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
   end
 
@@ -241,9 +261,14 @@ platform :ios do
     _publish_github options
   end
 
-  private_lane :send_stores do |options|
+  lane :publish_store do |options|
+    _send_store options
+  end
+
+  private_lane :send_store do |options|
     UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
   end
+
 
   private_lane :prepare_mobile_package do |options|
 
@@ -267,7 +292,6 @@ platform :ios do
     version_code = lane_context[SharedValues::VERSION_CODE]
 
     app_id = lane_context[SharedValues::APP_ID]
-
 
     file_name = "#{app}_#{version_name}_#{version_code}"
     bundle_file_name = "#{file_name}.ipa"
@@ -305,6 +329,7 @@ platform :ios do
 
 end
 
+
 platform :web do
 
   lane :build do |options|
@@ -320,7 +345,7 @@ platform :web do
     _publish_github options
   end
 
-  private_lane :send_stores do |options|
+  lane :send_store do |options|
     UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
   end
 
