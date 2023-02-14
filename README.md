@@ -434,6 +434,7 @@ commit is tagged with a valid tag identifier (following
 ```
 bundle exec fastlane web build      ## Build web deployment package
 bundle exec fastlane android build  ## Build android APK and AAB
+bundle exec fastlane ios build      ## Build ios IPA
 ```
 
 Will produce build outputs in `release/$TAG` directory.
@@ -548,13 +549,43 @@ Current infrastructure can drive the builds for:
 This is a simple html/js/css web server archive ready for deployment
 and should be buildable in all environment.
 
+###### iOS
+
+It is required to use a mac. We are using [fastlane code signing
+guidelines and tools](https://codesigning.guide/).
+
+You need your App Store Connect API keys ready. The nice default setup
+is to create a directory 'keys/ios', having `keys/ios/api_key.json`
+which contents need to follow the [fastlane
+docs](https://docs.fastlane.tools/app-store-connect-api/#using-fastlane-api-key-json-file).
+
+You can change these paths, or even provide these information without
+using files, you'll get direction for this if you don't provide the
+previous file.
+
+Then, it'll download certificates from our github private certificate
+repository (you'll need access to that set up). And will need to
+decrypt these with our certificate password (you'll need this also),
+it should ask for this password only the first time you need it and
+will try to keep it in your machine's key-chain (it might ask you to
+create a password for this).
+
+Finally, provided that you have the correct dependencies ready... it will
+produce the IPA file that needs to be shipped to the App Store to make
+a release. Please note that fastlane can do this for you also, please
+have a look at the release section.
+
+Note that you can provide a revision number for the released ios
+package by adding an argument to the command line as `rev:N` (that
+will be 0 by default).
+
 ###### android
 
 You need to have your Android signing keys ready. The nice default
-setup is to create a directory 'keys/', having:
+setup is to create a directory 'keys/android/', having:
 
-- `keys/keystore` the binary keystore
-- `keys/keystore-passord` the password to the keystore
+- `keys/android/keystore` the binary keystore
+- `keys/android/keystore-password` the password to the keystore
 
 You can change these paths, or even provide these information without
 using files, you'll get direction for this if you don't provide the
@@ -564,7 +595,7 @@ Then, provided that you have the correct dependencies ready... it will
 produce:
 
 - APK files for direct installs on android mobile phones.
-- AAB files to provide to the playstore for deployment on it.
+- AAB files to provide to the google playstore for deployment on it.
 
 Note that you can provide a revision number for the released android
 package by adding an argument to the command line as `rev:N`
@@ -572,9 +603,9 @@ package by adding an argument to the command line as `rev:N`
 
 ##### Applications
 
-Multiple variations of the application are automatically built for
-the `android` platform depending on the content of [this external
-resource](https://docker.0k.io/downloads/lokavaluto-releases.yml).
+Multiple variations of the application are automatically built for the
+`android` and `ios` platforms depending on the content of [this
+external resource](https://docker.0k.io/downloads/lokavaluto-releases.yml).
 
 You can limit your build to one or more of these by adding an
 `app:APP1,[APP2, ...]` argument to the command line. By default, if

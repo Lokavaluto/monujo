@@ -20,14 +20,17 @@ private_lane :_setup_signing do |options|
   case lane_context[SharedValues::PLATFORM_NAME]
   when :android
     ## Fail early if we don't have required info for signing
-    check_signing_secrets_are_available(
+    check_android_signing_secrets_are_available(
       keystore_base64: options[:keystore_base64],
       keystore_file: options[:keystore_file],
       keystore_password: options[:keystore_password],
       keystore_password_file: options[:keystore_password_file],
     )
   when :ios
-    UI.user_error!("not yet implemented")
+    check_ios_signing_secrets_are_available(
+      api_key: options[:api_key],
+      api_key_path: options[:api_key_path],
+    )
   when :web
     ## Nothing to do
     UI.important "No signing happening for web. Ignoring."
@@ -370,6 +373,91 @@ platform :android do
 
 end
 
+
+platform :ios do
+
+  lane :build do |options|
+    ## Lokavaluto's team id is hard-written here for now
+    team_id "25AZX5J5PX"
+
+    _build_apps options
+  end
+
+  lane :publish_github do |options|
+    _publish_github options
+  end
+
+  private_lane :send_stores do |options|
+    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+  end
+
+  private_lane :prepare_mobile_package do |options|
+
+    require 'xcodeproj'
+    project_root = "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/"
+    project_path = project_root + "App.xcodeproj"
+    project = Xcodeproj::Project.open(project_path)
+    project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['CODE_SIGN_STYLE'] = "Manual"
+        config.build_settings['CODE_SIGN_IDENTITY'] = "Apple Distribution"
+        config.build_settings['DEVELOPMENT_TEAM'] = ENV['FASTLANE_TEAM_ID']
+        config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = "match AppStore #{lane_context[SharedValues::APP_ID]}"
+      end
+    end
+    project.save
+
+    plist_path = project_root + "App/Info.plist"
+    set_info_plist_value(path: plist_path, key: "ITSAppUsesNonExemptEncryption", value: "false")
+
+    _prepare_mobile_package
+  end
+
+  private_lane :package do |options|
+
+    app = lane_context[SharedValues::APP_NAME]
+    version_name = lane_context[SharedValues::VERSION_NAME]
+    version_code = lane_context[SharedValues::VERSION_CODE]
+
+    app_id = lane_context[SharedValues::APP_ID]
+
+
+    file_name = "#{app}_#{version_name}_#{version_code}"
+    bundle_file_name = "#{file_name}.ipa"
+    result_dir="release/#{version_name}"
+    result_file_label="#{app} - #{version_name} (#{version_code})"
+    if File.exist? "../#{result_dir}/#{bundle_file_name}"
+      if ! options[:force]
+        UI.important "Release file of #{app} already exists in '#{result_dir}/#{bundle_file_name}'."
+        UI.message "  Ignoring build. If you want to overwrite it, provide 'force:true' as an argument."
+        to_publish["#{result_dir}/#{bundle_file_name}"] = "iOS App Store Package (IPA) - #{result_file_label}"
+        next
+      else
+        UI.important "Existing release file for #{app} #{result_dir}/#{bundle_file_name} will be overwritten."
+      end
+    end
+
+    _prepare_package
+    prepare_mobile_package
+
+    Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
+      UI.message sh('git diff ios', print_command_output: false)
+    end
+
+    match(type: "appstore", app_identifier: app_id, readonly: true)
+
+    build_app(
+      workspace: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/App.xcworkspace",
+    )
+
+    FileUtils.mkdir_p "../#{result_dir}"
+    FileUtils.mv(lane_context[SharedValues::IPA_OUTPUT_PATH],
+                 "../#{result_dir}/#{bundle_file_name}")
+    to_publish["#{result_dir}/#{bundle_file_name}"] = "iOS App Store Package (IPA) - #{result_file_label}"
+
+  end
+
+end
 
 platform :web do
 
