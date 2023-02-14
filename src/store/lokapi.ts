@@ -11,7 +11,7 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
       status: "",
       userProfile: null,
       transactions: [],
-      thisWeektransactions: [],
+      lastTransactions: [],
       bal: 0,
       curr: "",
       virtualAccountTree: [],
@@ -184,7 +184,7 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         state.apiToken = ""
         state.userProfile = null
         state.transactions = []
-        state.thisWeektransactions = []
+        state.lastTransactions = []
         state.curr = ""
         state.virtualAccountTree = []
         state.moneyAccounts = []
@@ -233,7 +233,7 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         }
 
         state.transactions = transactions
-        state.thisWeektransactions = trs
+        state.lastTransactions = trs
       },
       storeBackends(state: any, backends: any) {
         state.backends = backends

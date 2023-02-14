@@ -239,7 +239,7 @@
         </footer>
       </div>
     </div>
-    <div v-if="thisWeektransactions?.length" class="has-text-centered mt-5">
+    <div v-if="lastTransactions?.length" class="has-text-centered mt-5">
       <button
         @click=";(showModal = true), $store.commit('setModalState', true)"
         class="button custom-button custom-inverted"
@@ -323,7 +323,7 @@
       ...mapModuleState("lokapi", [
         "transactionsLoading",
         "transactionsBatchLoading",
-        "thisWeektransactions",
+        "lastTransactions",
         "userProfile",
       ]),
       ...mapGetters(["numericFormat", "dateFormat"]),
