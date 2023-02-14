@@ -27,7 +27,7 @@
       </p>
     </div>
     <p
-      v-else-if="thisWeektransactions?.length === 0"
+      v-else-if="lastTransactions?.length === 0"
       class="notification is-default"
     >
       {{ $gettext("No previous transactions in your history.") }}
@@ -35,7 +35,7 @@
     <div v-else>
       <h2 class="custom-card-title">{{ $gettext("Transactions") }}</h2>
       <TransactionItem
-        v-for="transaction in thisWeektransactions"
+        v-for="transaction in lastTransactions"
         :key="transaction"
         :amount="transaction.amount"
         :symbol="transaction.currency"
@@ -67,7 +67,7 @@
     },
     computed: {
       ...mapModuleState("lokapi", [
-        "thisWeektransactions",
+        "lastTransactions",
         "transactionsLoading",
         "transactionsLoadingError",
       ]),

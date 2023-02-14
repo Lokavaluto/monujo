@@ -240,7 +240,7 @@
       </div>
     </div>
     <div
-      v-if="!transactionsLoading && thisWeektransactions?.length"
+      v-if="!transactionsLoading && lastTransactions?.length"
       class="has-text-centered mt-5"
     >
       <button
@@ -326,7 +326,7 @@
       ...mapModuleState("lokapi", [
         "transactionsLoading",
         "transactionsBatchLoading",
-        "thisWeektransactions",
+        "lastTransactions",
         "userProfile",
       ]),
       ...mapGetters(["numericFormat", "dateFormat"]),
