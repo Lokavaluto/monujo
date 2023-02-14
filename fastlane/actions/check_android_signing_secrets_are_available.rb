@@ -8,7 +8,7 @@ module Fastlane
       ANDROID_KEY_ALIAS = :ANDROID_KEY_ALIAS
     end
 
-    class CheckSigningSecretsAreAvailableAction < Action
+    class CheckAndroidSigningSecretsAreAvailableAction < Action
       def self.run(params)
 
         ##
@@ -24,7 +24,7 @@ module Fastlane
           File.binwrite(keystore_file, keystore)
           UI.message "Found and using keystore in environment from base64"
         else
-          keystore_file = params[:keystore_file] || "keys/keystore"
+          keystore_file = params[:keystore_file] || "keys/android/keystore"
           if File.readable? keystore_file
             UI.success "Found and using keystore from file '#{keystore_file}'."
           else
@@ -40,7 +40,7 @@ module Fastlane
  - use 'keystore_file:FILE' to provide path to a binary keystore
 
 Note that, by default, a keystore file is looked up in:
-  keys/keystore
+  keys/android/keystore
 "
         end
         Actions.lane_context[SharedValues::ANDROID_KEYSTORE] = Pathname.new(keystore_file).realpath
@@ -55,7 +55,7 @@ Note that, by default, a keystore file is looked up in:
 
         if ! keystore_password
           keystore_password_file = params[:keystore_password_file] ||
-                                   "keys/keystore-password"
+                                   "keys/android/keystore-password"
           if File.readable? keystore_password_file
             keystore_password = File.open(keystore_password_file).read.chomp
             UI.success "Found and using keystore password from file '#{keystore_password_file}'."
@@ -72,7 +72,7 @@ Note that, by default, a keystore file is looked up in:
    the password
 
 Note that by default, a keystore password file is looked up in:
-  keys/keystore-password"
+  keys/android/keystore-password"
         end
         ENV["RELEASE_KEYSTORE_PASSWORD"] = keystore_password
 

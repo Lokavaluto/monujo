@@ -156,6 +156,11 @@ export default config;
 
                 File.write(strings_path, Ox.dump(strings))
               when :ios
+                other_action.update_info_plist(
+                  xcodeproj: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/App.xcodeproj",
+                  plist_path: "App/Info.plist",
+                  app_identifier: app_id,
+                  display_name: app_name)
               end
             end
           end
