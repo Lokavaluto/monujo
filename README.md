@@ -431,7 +431,7 @@ Then, provided that you have the correct dependencies ready... it will
 produce:
 
 - APK files for direct installs on android mobile phones.
-- AAB files to provide to the playstore for deployment on it.
+- AAB files to provide to the google playstore for deployment on it.
 
 Note that you can provide a revision number for the released android
 package by adding an argument to the command line as `android_rev:N`
