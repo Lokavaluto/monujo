@@ -27,7 +27,11 @@ private_lane :_setup_signing do |options|
       keystore_password_file: options[:keystore_password_file],
     )
   when :ios
-  ## Must do it per apps ?
+    ## Must do it per apps ?
+    if not ENV["APPLE_ID"]
+      UI.user_error! "You must setup the APPLE_ID environment variable."
+    end
+
     UI.important "Ignoring step in ios as it seems we need to setup this per app id."
   when :web
     ## Nothing to do
@@ -93,11 +97,16 @@ private_lane :_prepublish do |options|
   build options
   gen_changelog
   tag = lane_context[SharedValues::VERSION_NAME]
-  changelog = File.read("../release/#{tag}/CHANGELOG").lines
+  if File.exist? "../release/#{tag}/CHANGELOG"
+    changelog = File.read("../release/#{tag}/CHANGELOG").lines
+    publish_metadata["title"] = (changelog.shift).strip
+    publish_metadata["changelog"] = changelog.join
+  else
+    publish_metadata["title"] = tag
+    publish_metadata["changelog"] = ""
+  end
 
   publish_metadata["tag"] = tag
-  publish_metadata["title"] = (changelog.shift).strip
-  publish_metadata["changelog"] = changelog.join
 end
 
 
@@ -262,11 +271,32 @@ platform :ios do
   end
 
   lane :publish_store do |options|
-    _send_store options
+    _publish_store options
   end
 
   private_lane :send_store do |options|
-    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+    if not ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]
+      UI.user_error! "You must setup your FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD."
+    end
+    to_publish.each do |path, label|
+      app = "#{path}".split('/')[-1] \
+              .split('_')[0]
+      ## XXXvlab: duplicate transformation for iOS (see version_prepare)
+      load_app_data app: app
+      app_version = publish_metadata["tag"].gsub(/-rc\.[0-9]+$/, '')
+      build_number = "#{path}".split('/')[-1] \
+                       .split('_')[-1] \
+                       .split('.')[0]
+
+      upload_to_testflight(
+        changelog: publish_metadata["changelog"],
+        build_number: build_number,
+        app_version: app_version,
+        app_identifier: lane_context[SharedValues::APP_ID],
+        username: ENV["APPLE_ID"],
+        ipa: path,
+      )
+    end
   end
 
 

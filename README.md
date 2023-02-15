@@ -483,3 +483,22 @@ bundle exec fastlane android publish_github \
 `1.0.0-rc.8` with the added revision 1 in the android version code,
 only for application "monujo" and create/update the github release
 `1.0.0-rc.8` of the github repository "vaab/monujo".
+
+#### Publish to Apple Store
+
+The following will only work on a MacOSX system.
+
+```
+bundle exec fastlane ios publish_store
+```
+
+Will build packages in `release/$TAG` and create/send the release
+provided that you have the credentials for this.
+
+To setup your credentials, you'll be required to setup the
+`FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD` environment variable
+with the application specific password that you need to create
+(or ask) for you application in the apple store interface.
+
+You'll also need to setup the `APPLE_ID` environment variable to
+the login used to log in the apple store interface.

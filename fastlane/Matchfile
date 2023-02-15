@@ -1,4 +1,4 @@
 storage_mode("git")
 git_url("git@github.com:Lokavaluto/certificates.git")
 type("appstore")
-username("ios-dev@lokavaluto.fr")
+username(ENV["APPLE_ID"])
