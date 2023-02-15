@@ -1,5 +1,8 @@
 <template>
-  <div class="pb-3 pt-3">
+  <div
+    class="pb-3 pt-3"
+    :class="{ 'is-pending-transaction': transaction.pending }"
+  >
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">
         {{ dateFormat(transaction.date) }}
@@ -18,6 +21,9 @@
       >
         {{ numericFormat(parseFloat(transaction.amount)) }}
         {{ transaction.currency }}
+        <span v-if="transaction.pending" class="transaction-status">
+          ({{ $gettext("pending transaction") }})
+        </span>
       </h3>
       <h4 class="custom-card-destinataire">{{ transaction.related }}</h4>
       <h5 class="has-text-grey-light transaction-desc">
@@ -46,6 +52,7 @@
   export default class TransactionItem extends Vue {}
 </script>
 <style lang="scss" scoped>
+  @import "../assets/custom-variables.scss";
   h4.custom-card-destinataire {
     white-space: nowrap;
     overflow: hidden;
@@ -70,5 +77,14 @@
   .custom-line-separator {
     display: flex;
     height: 2px;
+  }
+  .is-pending-transaction {
+    opacity: 50%;
+  }
+  .transaction-status {
+    width: fit-content;
+    color: $inner-card-text-color-backend;
+    font-style: italic;
+    font-size: small;
   }
 </style>
