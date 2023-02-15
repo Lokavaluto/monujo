@@ -37,13 +37,7 @@
       <TransactionItem
         v-for="transaction in thisWeektransactions"
         :key="transaction"
-        :amount="transaction.amount"
-        :symbol="transaction.currency"
-        :desc="transaction.description"
-        :date="dateFormat(transaction.date)"
-        :unformatedDate="transaction.date"
-        :name="transaction.related"
-        picto="QR"
+        :transaction="transaction"
       />
     </div>
   </div>
@@ -71,7 +65,6 @@
         "transactionsLoading",
         "transactionsLoadingError",
       ]),
-      ...mapGetters(["dateFormat"]),
     },
 
     methods: {},

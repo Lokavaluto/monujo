@@ -3,13 +3,7 @@
     <TransactionItem
       v-for="transaction in transactions"
       :key="transaction"
-      :amount="transaction.amount"
-      :symbol="transaction.currency"
-      :desc="transaction.description"
-      :date="dateFormat(transaction.date)"
-      :unformatedDate="transaction.date"
-      :name="transaction.related"
-      picto="QR"
+      :transaction="transaction"
     />
   </div>
 </template>
@@ -26,7 +20,6 @@
     },
     computed: {
       ...mapModuleState("lokapi", ["transactions"]),
-      ...mapGetters(["dateFormat"]),
     },
     methods: {},
   })
