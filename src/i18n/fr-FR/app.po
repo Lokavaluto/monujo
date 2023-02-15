@@ -28,7 +28,7 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
-#: src/components/TheNavBar.vue:92
+#: src/components/TheNavBar.vue:100
 msgid "Account requests"
 msgstr "Demandes de comptes"
 
@@ -182,15 +182,15 @@ msgid "Connection successful"
 msgstr "Connection réussie"
 
 #: src/components/CreateAccount.vue:164 src/components/CreateAccount.vue:78
-#: src/components/TheNavBar.vue:75
+#: src/components/TheNavBar.vue:83
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
 
-#: src/components/TheNavBar.vue:99
+#: src/components/TheNavBar.vue:107
 msgid "Credit requests"
 msgstr "Demandes de crédit"
 
-#: src/components/TheNavBar.vue:55
+#: src/components/TheNavBar.vue:63
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -287,7 +287,7 @@ msgstr "Depuis"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:109 src/components/TheNavBar.vue:44
+#: src/components/TheNavBar.vue:116 src/components/TheNavBar.vue:44
 msgid "Help"
 msgstr "Aide"
 
@@ -455,7 +455,7 @@ msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 msgid "Pledged account"
 msgstr "Compte nantis"
 
-#: src/components/TheNavBar.vue:64
+#: src/components/TheNavBar.vue:72
 msgid "Profile"
 msgstr "Profil"
 
@@ -512,7 +512,7 @@ msgstr "Envoyer de l'argent"
 msgid "Send transactions"
 msgstr "Envoyer les opérations"
 
-#: src/components/TheNavBar.vue:67
+#: src/components/TheNavBar.vue:75
 msgid "Settings"
 msgstr "Préferences"
 
@@ -529,11 +529,11 @@ msgstr ""
 msgid "Share"
 msgstr "Partager"
 
-#: src/components/TheNavBar.vue:50 src/views/Login.vue:53
+#: src/components/TheNavBar.vue:58 src/views/Login.vue:53
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:118
+#: src/components/TheNavBar.vue:132
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -561,7 +561,7 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/TheNavBar.vue:112 src/components/TheNavBar.vue:47
+#: src/components/TheNavBar.vue:123 src/components/TheNavBar.vue:51
 msgid "Terms of Service"
 msgstr "CGU"
 
@@ -665,7 +665,8 @@ msgstr "Spécifier la langue"
 
 #: src/components/TheNavBar.vue:36 src/components/TheNavBar.vue:37
 #: src/components/TheNavBar.vue:54 src/components/TheNavBar.vue:59
-#: src/views/admin/PendingAccounts.vue:49 src/views/admin/PendingCredits.vue:49
+#: src/components/TheNavBar.vue:67 src/views/admin/PendingAccounts.vue:49
+#: src/views/admin/PendingCredits.vue:49
 msgid "User"
 msgstr "Utilisateur"
 

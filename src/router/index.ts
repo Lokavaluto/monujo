@@ -6,6 +6,8 @@ import CreateMyAccount from "../views/CreateMyAccount.vue"
 import PendingAccounts from "../views/admin/PendingAccounts.vue"
 import PendingCredits from "../views/admin/PendingCredits.vue"
 import Prefs from "../views/Prefs.vue"
+import Help from "../views/Help.vue"
+import TermsOfService from "../views/TermsOfService.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,6 +21,18 @@ const routes: Array<RouteRecordRaw> = [
     name: "Carto",
     meta: { title: "Carto" },
     component: Carto,
+  },
+  {
+    path: "/help",
+    name: "Help",
+    meta: { title: "Help" },
+    component: Help,
+  },
+  {
+    path: "/terms-of-service",
+    name: "Terms of service",
+    meta: { title: "Terms of service" },
+    component: TermsOfService,
   },
   {
     path: "/",
@@ -67,6 +81,8 @@ export function mkRouter(appName: string, store: any): any {
     if (
       to.name !== "Login" &&
       to.name !== "Carto" &&
+      to.name !== "Help" &&
+      to.name !== "Terms of service" &&
       !store.getters.isAuthenticated
     )
       next({ name: "Carto" })

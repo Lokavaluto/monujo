@@ -40,12 +40,20 @@
           {{ $gettext("Map") }}
         </router-link>
         <template v-if="!isLog">
-          <a v-if="helpUrl" :href="helpUrl" class="navbar-item">
+          <router-link
+            v-if="getHostName(helpUrl) !== getLocation()"
+            to="/help"
+            class="navbar-item"
+          >
             {{ $gettext("Help") }}
-          </a>
-          <a v-if="cguUrl" :href="cguUrl" class="navbar-item">
+          </router-link>
+          <router-link
+            v-if="getHostName(cguUrl) !== getLocation()"
+            to="/terms-of-service"
+            class="navbar-item"
+          >
             {{ $gettext("Terms of Service") }}
-          </a>
+          </router-link>
           <router-link to="/" class="navbar-item">
             {{ $gettext("Sign in") }}
           </router-link>
@@ -104,14 +112,20 @@
                 </router-link>
                 <hr class="dropdown-divider" />
               </template>
-
-              <a v-if="helpUrl" :href="helpUrl" class="navbar-item">
+              <router-link
+                v-if="getHostName(helpUrl) !== getLocation()"
+                to="/help"
+                class="navbar-item"
+              >
                 {{ $gettext("Help") }}
-              </a>
-              <a v-if="cguUrl" :href="cguUrl" class="navbar-item">
+              </router-link>
+              <router-link
+                v-if="getHostName(cguUrl) !== getLocation()"
+                to="/terms-of-service"
+                class="navbar-item"
+              >
                 {{ $gettext("Terms of Service") }}
-              </a>
-
+              </router-link>
               <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
 
               <a @click="logout" class="navbar-item">
@@ -141,6 +155,13 @@
         this.$store.dispatch("askLogOut")
         this.$router.push({ name: "Login" })
         this.$auth.flush()
+      },
+      getHostName(url: string): string {
+        const urlObject = new URL(url)
+        return urlObject.hostname
+      },
+      getLocation(): string {
+        return location.hostname
       },
     },
     computed: {
