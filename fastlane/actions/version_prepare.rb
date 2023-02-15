@@ -32,7 +32,7 @@ module Fastlane
 
         when :ios
           other_action.increment_version_number(
-            version_number: version_name,
+            version_number: version_name.gsub(/-rc\.[0-9]+$/, ''),
             xcodeproj: "#{root_path}/ios/App/App.xcodeproj"
           )
           other_action.increment_build_number(
