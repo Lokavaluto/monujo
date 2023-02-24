@@ -73,5 +73,7 @@
     "modal-btn-text-color": "#ffffff",
     "modal-btn-border-color": "$color-2"
   },
-  "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}"
+  "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}",
+  "accountsRefreshInterval": 15,
+  "transactionsRefreshInterval": 20
 }

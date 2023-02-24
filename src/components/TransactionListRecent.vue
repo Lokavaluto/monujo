@@ -1,10 +1,17 @@
 <template>
   <loading
+    v-if="!thisWeektransactions.length"
     v-model:active="transactionsLoading"
     :can-cancel="false"
     :is-full-page="false"
   />
-  <div v-if="!transactionsLoading">
+  <div v-if="!transactionsLoading || thisWeektransactions.length">
+    <span
+      v-if="transactionsLoading"
+      class="icon is-small is-default is-pulled-right is-rounded refresh"
+    >
+      <fa-icon :class="{ refreshing: transactionsLoading }" icon="sync" />
+    </span>
     <div
       class="notification is-danger is-light"
       v-if="transactionsLoadingError"
@@ -56,8 +63,14 @@
       TransactionItem,
       Loading,
     },
-    data() {
-      return {}
+    mounted() {
+      const transactionsRefreshInterval =
+        this.$config.transactionsRefreshInterval
+      if (!transactionsRefreshInterval || transactionsRefreshInterval == -1)
+        return
+      setInterval(() => {
+        this.$store.dispatch("resetTransactions")
+      }, Math.max(10000, transactionsRefreshInterval * 1000))
     },
     computed: {
       ...mapModuleState("lokapi", [

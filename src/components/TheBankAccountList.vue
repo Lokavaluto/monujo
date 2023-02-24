@@ -1,20 +1,22 @@
 <template>
   <div class="accounts card custom-card custom-card-padding">
     <loading
+      v-if="!activeVirtualAccounts.length"
       v-model:active="accountsLoading"
       :can-cancel="false"
       :is-full-page="false"
     />
 
-    <div class="active" v-if="!accountsLoading">
+    <div class="active" v-if="!accountsLoading || activeVirtualAccounts.length">
       <a
         @click="refreshBalanceAndTransactions"
         :title="$gettext('Refresh balance and transaction list')"
         class="button is-default is-pulled-right is-rounded refresh"
+        :class="{ 'active-refresh-button': accountsLoading }"
       >
-        <span>{{ $gettext("Refresh") }}</span>
+        <span v-if="!accountsLoading">{{ $gettext("Refresh") }}</span>
         <span class="icon is-small">
-          <fa-icon icon="sync" />
+          <fa-icon :class="{ refreshing: accountsLoading }" icon="sync" />
         </span>
       </a>
       <div class="notification is-danger is-light" v-if="accountsLoadingError">
@@ -99,6 +101,13 @@
       BankAccountItem,
       Loading,
     },
+    mounted() {
+      const accountsRefreshInterval = this.$config.accountsRefreshInterval
+      if (!accountsRefreshInterval || accountsRefreshInterval == -1) return
+      setInterval(() => {
+        this.$store.dispatch("fetchAccounts")
+      }, Math.max(10000, accountsRefreshInterval * 1000))
+    },
     computed: {
       totalAccountsLoaded(): number {
         return this.$store.state.lokapi.virtualAccountTree.length
@@ -121,5 +130,10 @@
   .refresh {
     margin-top: -9px;
     z-index: 1;
+  }
+  .active-refresh-button {
+    border-color: transparent;
+    pointer-events: none;
+    cursor: default;
   }
 </style>
