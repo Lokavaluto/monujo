@@ -28,7 +28,7 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
-#: src/components/TheNavBar.vue:92
+#: src/components/TheNavBar.vue:97
 msgid "Account requests"
 msgstr "Demandes de comptes"
 
@@ -182,11 +182,11 @@ msgid "Connection successful"
 msgstr "Connection réussie"
 
 #: src/components/CreateAccount.vue:164 src/components/CreateAccount.vue:78
-#: src/components/TheNavBar.vue:75
+#: src/components/TheNavBar.vue:80
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
 
-#: src/components/TheNavBar.vue:99
+#: src/components/TheNavBar.vue:104
 msgid "Credit requests"
 msgstr "Demandes de crédit"
 
@@ -287,7 +287,7 @@ msgstr "Depuis"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:109 src/components/TheNavBar.vue:44
+#: src/components/TheNavBar.vue:114 src/components/TheNavBar.vue:44
 msgid "Help"
 msgstr "Aide"
 
@@ -512,7 +512,7 @@ msgstr "Envoyer de l'argent"
 msgid "Send transactions"
 msgstr "Envoyer les opérations"
 
-#: src/components/TheNavBar.vue:67
+#: src/components/TheNavBar.vue:72
 msgid "Settings"
 msgstr "Préferences"
 
@@ -533,7 +533,7 @@ msgstr "Partager"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:118
+#: src/components/TheNavBar.vue:123
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -561,7 +561,7 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/TheNavBar.vue:112 src/components/TheNavBar.vue:47
+#: src/components/TheNavBar.vue:117 src/components/TheNavBar.vue:47
 msgid "Terms of Service"
 msgstr "CGU"
 

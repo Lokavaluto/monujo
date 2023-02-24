@@ -60,7 +60,12 @@
             </a>
 
             <div class="navbar-dropdown is-right">
-              <a :href="profilePageUrl" target="_blank" class="navbar-item">
+              <a
+                v-if="!$config?.hideProfile"
+                :href="profilePageUrl"
+                target="_blank"
+                class="navbar-item"
+              >
                 {{ $gettext("Profile") }}
               </a>
               <router-link

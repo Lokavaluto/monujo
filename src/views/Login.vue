@@ -41,7 +41,7 @@
               </span>
             </p>
           </div>
-          <div class="forgot-password mb-4">
+          <div v-if="!$config?.hideResetPassword" class="forgot-password mb-4">
             <button @click="openResetPasswordUrl()" type="button">
               {{ $gettext("Forgot password ?") }}
             </button>
@@ -54,7 +54,7 @@
                 </button>
               </p>
             </div>
-            <div>
+            <div v-if="!$config?.hideAccountCreate">
               <p class="control has-text-centered">
                 <button
                   @click="openSignupUrl()"
