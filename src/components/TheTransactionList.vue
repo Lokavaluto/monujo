@@ -239,10 +239,7 @@
         </footer>
       </div>
     </div>
-    <div
-      v-if="!transactionsLoading && thisWeektransactions?.length"
-      class="has-text-centered mt-5"
-    >
+    <div v-if="thisWeektransactions?.length" class="has-text-centered mt-5">
       <button
         @click=";(showModal = true), $store.commit('setModalState', true)"
         class="button custom-button custom-inverted"

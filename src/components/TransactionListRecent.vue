@@ -1,10 +1,19 @@
 <template>
   <loading
+    v-if="!thisWeektransactions.length"
     v-model:active="transactionsLoading"
     :can-cancel="false"
     :is-full-page="false"
   />
-  <div v-if="!transactionsLoading">
+  <div v-if="!transactionsLoading || thisWeektransactions.length">
+    <span
+      :class="{
+        hide: !transactionsLoading,
+      }"
+      class="icon is-small is-default is-pulled-right is-rounded refresh"
+    >
+      <fa-icon :class="{ refreshing: transactionsLoading }" icon="sync" />
+    </span>
     <div
       class="notification is-danger is-light"
       v-if="transactionsLoadingError"
@@ -49,14 +58,32 @@
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
   import { mapModuleState } from "@/utils/vuex"
+
+  let interval: any
+
   @Options({
     name: "TransactionListRecent",
     components: {
       TransactionItem,
       Loading,
     },
-    data() {
-      return {}
+    mounted() {
+      const transactionsRefreshInterval =
+        this.$config.transactionsRefreshInterval || 90
+
+      if (transactionsRefreshInterval != -1) {
+        if (interval) clearInterval(interval)
+
+        interval = setInterval(() => {
+          this.$store.dispatch("resetTransactions")
+        }, Math.max(10000, transactionsRefreshInterval * 1000))
+      }
+    },
+    unmounted() {
+      if (interval) {
+        clearInterval(interval)
+        interval = null
+      }
     },
     computed: {
       ...mapModuleState("lokapi", [
@@ -70,3 +97,11 @@
   })
   export default class TransactionListRecent extends Vue {}
 </script>
+<style lang="scss" scoped>
+  @import "../assets/custom-variables.scss";
+
+  span.icon {
+    color: $top-menu-link-color;
+    background-color: transparent;
+  }
+</style>

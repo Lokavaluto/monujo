@@ -1,20 +1,24 @@
 <template>
   <div class="accounts card custom-card custom-card-padding">
     <loading
+      v-if="!activeVirtualAccounts.length"
       v-model:active="accountsLoading"
       :can-cancel="false"
       :is-full-page="false"
     />
 
-    <div class="active" v-if="!accountsLoading">
+    <div class="active" v-if="!accountsLoading || activeVirtualAccounts.length">
       <a
         @click="refreshBalanceAndTransactions"
         :title="$gettext('Refresh balance and transaction list')"
         class="button is-default is-pulled-right is-rounded refresh"
+        :class="{ 'active-refresh-button': accountsLoading }"
       >
-        <span>{{ $gettext("Refresh") }}</span>
+        <span :class="{ hide: accountsLoading }">
+          {{ $gettext("Refresh") }}
+        </span>
         <span class="icon is-small">
-          <fa-icon icon="sync" />
+          <fa-icon :class="{ refreshing: accountsLoading }" icon="sync" />
         </span>
       </a>
       <div class="notification is-danger is-light" v-if="accountsLoadingError">
@@ -90,6 +94,9 @@
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/vue-loading.css"
   import { mapModuleState } from "@/utils/vuex"
+
+  let interval: any
+
   @Options({
     name: "TheBankAccountList",
     props: {
@@ -98,6 +105,23 @@
     components: {
       BankAccountItem,
       Loading,
+    },
+    mounted() {
+      const accountsRefreshInterval = this.$config.accountsRefreshInterval || 90
+
+      if (accountsRefreshInterval != -1) {
+        if (interval) clearInterval(interval)
+
+        interval = setInterval(() => {
+          this.$store.dispatch("fetchAccounts")
+        }, Math.max(10000, accountsRefreshInterval * 1000))
+      }
+    },
+    unmounted() {
+      if (interval) {
+        clearInterval(interval)
+        interval = null
+      }
     },
     computed: {
       totalAccountsLoaded(): number {
@@ -118,8 +142,19 @@
   export default class TheBankAccountList extends Vue {}
 </script>
 <style lang="scss" scoped>
+  @import "../assets/custom-variables.scss";
+
   .refresh {
     margin-top: -9px;
     z-index: 1;
+  }
+  .active-refresh-button {
+    border-color: transparent;
+    background-color: transparent;
+    pointer-events: none;
+    cursor: default;
+  }
+  .active-refresh-button .icon {
+    color: $top-menu-link-color;
   }
 </style>
