@@ -79,9 +79,6 @@
     display: flex;
     height: 2px;
   }
-  .hide {
-    visibility: hidden;
-  }
   .status .fa-check {
     color: $color-2;
   }
