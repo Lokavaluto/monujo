@@ -4,8 +4,15 @@
       <h5 class="custom-card-destinataire has-text-right">
         {{ dateFormat(transaction.date) }}
       </h5>
-      <h5 class="card-paiement-defaut-carte has-text-right mt-1">
+      <h5 class="status card-paiement-defaut-carte has-text-right mt-1">
         {{ relativeDateFormat(transaction.date) }}
+        <fa-icon
+          :class="{
+            hide: transaction.pending,
+          }"
+          icon="check"
+          class="fa-thin"
+        />
       </h5>
     </div>
     <div class="is-flex-direction-column">
@@ -46,6 +53,7 @@
   export default class TransactionItem extends Vue {}
 </script>
 <style lang="scss" scoped>
+  @import "../assets/custom-variables.scss";
   h4.custom-card-destinataire {
     white-space: nowrap;
     overflow: hidden;
@@ -70,5 +78,11 @@
   .custom-line-separator {
     display: flex;
     height: 2px;
+  }
+  .hide {
+    visibility: hidden;
+  }
+  .status .fa-check {
+    color: $color-2;
   }
 </style>
