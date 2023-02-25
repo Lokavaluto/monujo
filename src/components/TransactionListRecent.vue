@@ -37,20 +37,13 @@
       <TransactionItem
         v-for="transaction in thisWeektransactions"
         :key="transaction"
-        :amount="transaction.amount"
-        :symbol="transaction.currency"
-        :desc="transaction.description"
-        :date="dateFormat(transaction.date)"
-        :unformatedDate="transaction.date"
-        :name="transaction.related"
-        picto="QR"
+        :transaction="transaction"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import TransactionItem from "./TransactionItem.vue"
   import Loading from "vue-loading-overlay"
@@ -71,7 +64,6 @@
         "transactionsLoading",
         "transactionsLoadingError",
       ]),
-      ...mapGetters(["dateFormat"]),
     },
 
     methods: {},
