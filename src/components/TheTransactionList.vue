@@ -497,10 +497,6 @@
     display: grid;
     grid-template-columns: 2em 5em 2em 6em;
 
-    .hide {
-      visibility: hidden;
-    }
-
     button.xmx-btn {
       text-align: center;
       border-radius: 2em;
