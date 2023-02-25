@@ -56,7 +56,9 @@ jobs:
               \"appStringsLanguage\": \"en-US\",
               \"defaultLanguage\": \"en-US\",
               \"preferNavigatorLanguage\": true
-            }
+            },
+            \"accountsRefreshInterval\": 15,
+            \"transactionsRefreshInterval\": 20
           }" > dist/config.json
           cat dist/config.json
       - name: "📂 SFTP Sync files"

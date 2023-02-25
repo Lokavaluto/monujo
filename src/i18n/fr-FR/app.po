@@ -97,7 +97,7 @@ msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/components/TransactionListRecent.vue:14
+#: src/components/TransactionListRecent.vue:23
 msgid ""
 "An unexpected issue occurred while loading the last transactions. Sorry for "
 "the inconvenience."
@@ -121,7 +121,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste de "
 "demandes de crédits. Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheBankAccountList.vue:23
+#: src/components/TheBankAccountList.vue:27
 msgid "An unexpected issue occurred while loading your wallet information."
 msgstr ""
 "Une erreur inattendue est survenue pendant le chargement des portefeuilles. "
@@ -157,7 +157,7 @@ msgstr "Identification biométrique désactivée"
 msgid "Biometric login successfully set up"
 msgstr "Identification biométrique mise en place"
 
-#: src/components/TheBankAccountList.vue:46
+#: src/components/TheBankAccountList.vue:50
 msgid "click here"
 msgstr "cliquez ici"
 
@@ -343,7 +343,7 @@ msgstr "Non"
 msgid "No account pending for approval"
 msgstr "Aucun compte en attente de validation"
 
-#: src/components/TransactionListRecent.vue:30
+#: src/components/TransactionListRecent.vue:39
 msgid "No previous transactions in your history."
 msgstr "Aucune opération dans votre historique"
 
@@ -459,11 +459,11 @@ msgstr "Compte nantis"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/components/TheBankAccountList.vue:15
+#: src/components/TheBankAccountList.vue:18
 msgid "Refresh"
 msgstr "Rafraîchir"
 
-#: src/components/TheBankAccountList.vue:12
+#: src/components/TheBankAccountList.vue:13
 msgid "Refresh balance and transaction list"
 msgstr "Rafraîchir le solde et les transactions"
 
@@ -545,7 +545,7 @@ msgstr "Créer un compte"
 msgid "Simplified authentication for this device"
 msgstr "Authentification simplifiée sur ce périphérique"
 
-#: src/components/TheBankAccountList.vue:28
+#: src/components/TheBankAccountList.vue:32
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
@@ -589,7 +589,7 @@ msgstr ""
 "Pour compléter la demande de crédit, vous devez finaliser la transaction en "
 "vous rendant dans votre espace administratif personnel : "
 
-#: src/components/TheBankAccountList.vue:45
+#: src/components/TheBankAccountList.vue:49
 msgid "to create one."
 msgstr "pour en créer un."
 
@@ -639,7 +639,7 @@ msgstr "Liste des transactions partagée"
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
-#: src/components/TransactionListRecent.vue:36
+#: src/components/TransactionListRecent.vue:45
 msgid "Transactions"
 msgstr "Opérations"
 
@@ -712,8 +712,8 @@ msgstr ""
 "Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre "
 "administrateur."
 
-#: src/components/TheBankAccountList.vue:32
-#: src/components/TransactionListRecent.vue:22
+#: src/components/TheBankAccountList.vue:36
+#: src/components/TransactionListRecent.vue:31
 #: src/views/admin/PendingAccounts.vue:27 src/views/admin/PendingCredits.vue:27
 msgid ""
 "You can try to refresh the page, if the issue persists, you may want to "
@@ -726,11 +726,11 @@ msgstr ""
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
-#: src/components/TheBankAccountList.vue:41
+#: src/components/TheBankAccountList.vue:45
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
 
-#: src/components/TheBankAccountList.vue:52
+#: src/components/TheBankAccountList.vue:56
 msgid "your accounts"
 msgstr "vos comptes"
 
@@ -742,6 +742,6 @@ msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 msgid "Your password"
 msgstr "Votre mot de passe"
 
-#: src/components/TheBankAccountList.vue:70
+#: src/components/TheBankAccountList.vue:74
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
