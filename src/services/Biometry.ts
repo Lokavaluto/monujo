@@ -3,6 +3,7 @@ import { NativeBiometric, BiometryType } from "capacitor-native-biometric"
 export default class Biometry {
   realms: any = {}
   store: any
+  _isAvailable: boolean | undefined
   constructor(store: any, realms: any) {
     this.store = store
     this.realms = realms
@@ -13,6 +14,13 @@ export default class Biometry {
   }
 
   public async isAvailable(): Promise<boolean> {
+    if (typeof this._isAvailable === "undefined") {
+      this._isAvailable = await this.isAvailableCached()
+    }
+    return this._isAvailable
+  }
+
+  private async isAvailableCached(): Promise<boolean> {
     let result
     try {
       result = await NativeBiometric.isAvailable()
