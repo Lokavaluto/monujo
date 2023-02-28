@@ -117,6 +117,9 @@ private_lane :send_github do |options|
       UI.important "Can't infer default release repository. Will ask interactively."
     end
   end
+  if ! ENV["GITHUB_API_TOKEN"]
+    UI.user_error! "No \$GITHUB_API_TOKEN environment variable set."
+  end
   github_release(
     repository_name: repository_name,
     name: title,
