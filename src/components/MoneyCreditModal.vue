@@ -312,6 +312,8 @@
     .account
       border-radius: 43px
 
+  .selected
+    border-radius: 43px
   .button.action
     white-space: normal
     height: auto
