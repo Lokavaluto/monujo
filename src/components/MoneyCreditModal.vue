@@ -24,7 +24,9 @@
             <div
               v-for="account in creditableMoneyAccounts"
               :class="[
-                selectedCreditAccount === account ? 'selected' : 'unselected',
+                selectedCreditAccount?.id === account?.id
+                  ? 'selected'
+                  : 'unselected',
                 'account-selector mb-4',
               ]"
               @click="setSelectedCreditAccount(account), setFocus()"
