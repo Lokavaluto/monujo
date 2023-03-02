@@ -11,7 +11,7 @@
     "preinstall": "./autogen.sh"
   },
   "dependencies": {
-    "@0k.io/types-request": "^0.0.3",
+    "@0k.io/types-request": "^0.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
