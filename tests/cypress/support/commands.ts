@@ -12,11 +12,6 @@ Cypress.Commands.add("loginForm", () => {
   return cy.get("section#login form")
 })
 
-Cypress.Commands.add("account", () => {
-  cy.get(".accounts").should("be.visible")
-  cy.get(".accounts > .active > .button").should("be.visible")
-})
-
 Cypress.Commands.add("accountsPane", () => {
   return cy.get(".accounts")
 })
