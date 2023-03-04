@@ -92,7 +92,7 @@ jobs:
           M_RESOLUTION: ${{ matrix.resolution }}
         run: |
           mkdir -p "$REPORT_PATH/${M_RESOLUTION}"
-          mv tests/cypress/reports/mocha/*.json "$REPORT_PATH/${M_RESOLUTION}/"
+          mv .cypress/reports/*.json "$REPORT_PATH/${M_RESOLUTION}/"
       - name: ⬆ Store mocha reports
         uses: actions/upload-artifact@v3
         if: always()

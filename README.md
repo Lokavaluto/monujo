@@ -234,6 +234,9 @@ CYPRESS_BASE_URL=http://localhost:8080 npx cypress run
 npx cypress run --config baseUrl=http://localhost:8080
 ```
 
+Any test output (reports, screenshots and videos) will be created under
+the folder `.cypress/`.
+
 Note that it is also possible to run and to create new tests in GUI
 mode, the following command will open a browser window and run the
 tests:
@@ -242,9 +245,10 @@ tests:
 npx cypress open
 ```
 
-To add a new E2E test, create a new file in the `tests/cypress/e2e`
-folder and write your test cases, for more information on how to write
-E2E tests with Cypress, you can check out the [Cypress
+To add a new E2E test, create a new file in the
+`tests/e2e/<FILENAME>.cy.ts` folder and write your test cases, for
+more information on how to write E2E tests with Cypress, you can check
+out the [Cypress
 documentation](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-your-first-test)
 
 ### Translation

@@ -49,7 +49,5 @@ release/
 .gembundle
 
 # cypress
-tests/cypress/reports
-tests/cypress/screenshots
-tests/cypress/videos
+.cypress
 cypress.env.json
