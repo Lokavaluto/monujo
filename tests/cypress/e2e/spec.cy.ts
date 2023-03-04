@@ -21,6 +21,7 @@ describe("Login and logout process", () => {
     cy.isLogged()
     cy.loginForm().should("not.exist")
     cy.logout()
+    cy.loginForm().should("exist")
   })
 })
 
