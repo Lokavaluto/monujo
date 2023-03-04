@@ -51,6 +51,14 @@ Cypress.Commands.add("logout", () => {
     .then(($element) => {
       if ($element.length > 0) {
         $element.click()
+        cy.menu().within(() => {
+          // cypress can't hover. The dropdown can't be opened.
+          // we need to use the ``{ force: true }`` to click on
+          // invisible elements.
+          cy.get(".navbar-dropdown .navbar-item")
+            .get("#menu-signout")
+            .click({ force: true })
+        })
       } else {
         cy.get(".navbar-burger").click()
         cy.get(".navbar-dropdown > :last").click()

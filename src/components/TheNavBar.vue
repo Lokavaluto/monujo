@@ -119,7 +119,7 @@
 
               <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
 
-              <a @click="logout" class="navbar-item">
+              <a id="menu-signout" @click="logout" class="navbar-item">
                 {{ $gettext("Sign out") }}
               </a>
             </div>
