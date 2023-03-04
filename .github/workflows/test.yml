@@ -92,13 +92,13 @@ jobs:
           M_RESOLUTION: ${{ matrix.resolution }}
         run: |
           mkdir -p "$REPORT_PATH/${M_RESOLUTION}"
-          mv tests/cypress/reports/mocha/*.json "$REPORT_PATH/${M_RESOLUTION}/"
+          mv .cypress/reports/*.json "$REPORT_PATH/${M_RESOLUTION}/"
       - name: ⬆ Store mocha reports
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: mocha-report
-          path: .reports
+          path: .reports/mocha
 
   cypress-report:
     needs: cypress-e2e
@@ -119,7 +119,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: mocha-report
-          path: .reports
+          path: .reports/mocha
       - name: 📃 Prepare reports
         run: |
           mkdir -p "$MERGE_REPORT_PATH"

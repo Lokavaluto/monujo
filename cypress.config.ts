@@ -1,13 +1,15 @@
 import { defineConfig } from "cypress"
 
-const rootDir = "tests/cypress"
+const testDir = "tests/e2e"
+const outputDir = ".cypress"
 
 export default defineConfig({
   // Files/Folder
-  downloadsFolder: `${rootDir}/downloads`,
-  fixturesFolder: `${rootDir}/fixtures`,
-  screenshotsFolder: `${rootDir}/screenshots`,
-  videosFolder: `${rootDir}/videos`,
+  fixturesFolder: `${testDir}/fixtures`,
+
+  downloadsFolder: `${outputDir}/downloads`,
+  screenshotsFolder: `${outputDir}/screenshots`,
+  videosFolder: `${outputDir}/videos`,
 
   reporter: "node_modules/cypress-multi-reporters",
   env: {
@@ -16,7 +18,7 @@ export default defineConfig({
   reporterOptions: {
     reporterEnabled: "mochawesome",
     mochawesomeReporterOptions: {
-      reportDir: `${rootDir}/reports/mocha`,
+      reportDir: `${outputDir}/reports`,
       overwrite: false,
       html: false,
       json: true,
@@ -25,8 +27,8 @@ export default defineConfig({
   },
   e2e: {
     experimentalStudio: true,
-    supportFile: `${rootDir}/support/e2e.ts`,
-    specPattern: `${rootDir}/e2e/**/*.cy.ts`,
+    supportFile: `${testDir}/main.ts`,
+    specPattern: `${testDir}/**/*.cy.ts`,
   },
 
   // If no baseUrl specified, cypress will serve these files:
