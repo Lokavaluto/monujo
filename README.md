@@ -217,28 +217,35 @@ would do it for any mobile app.
 
 ### Tests
 
-Make sure that the application is running on `http://localhost:8080`
- before running the tests.  This will typically be done by running
- `npm run serve` on another process.
-
-To run in local existing tests:
+To run end-to-end tests on the content of the `dist/` code (it needs
+to have been created prior to running this, through `npm run build`):
 
 ```
-npx cypress run --project tests
+npx cypress run
 ```
 
-It is also possible to run and to create new tests in GUI mode, the
-following commande will open a browser window and run the tests:
+You may rather want to run the tests directly on the development
+server provided by `npm run serve`. You'll then need to provide a
+`baseUrl` configuration.
+
+```shell
+CYPRESS_BASE_URL=http://localhost:8080 npx cypress run
+## or
+npx cypress run --config baseUrl=http://localhost:8080
+```
+
+Note that it is also possible to run and to create new tests in GUI
+mode, the following command will open a browser window and run the
+tests:
 
 ```
-npx cypress open --project tests
+npx cypress open
 ```
 
-To add a new E2E test, create a new file in the ``tests/cypress/e2e``
+To add a new E2E test, create a new file in the `tests/cypress/e2e`
 folder and write your test cases, for more information on how to write
-E2E tests with Cypress, you can check out the Cypress documentation
-
-(https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-your-first-test)
+E2E tests with Cypress, you can check out the [Cypress
+documentation](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-your-first-test)
 
 ### Translation
 
