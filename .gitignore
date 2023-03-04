@@ -52,4 +52,4 @@ release/
 tests/cypress/reports
 tests/cypress/screenshots
 tests/cypress/videos
-
+cypress.env.json

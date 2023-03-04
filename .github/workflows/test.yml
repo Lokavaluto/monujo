@@ -77,13 +77,14 @@ jobs:
             }
           }" > public/config.json
           cat public/config.json
-      - name: ⚙ Serve Application
-        run: npm run serve &
+      - name: 🚚 Build
+        run: |
+          npm run build
       - name: ⚔ Run Cypress tests
         env:
           M_RESOLUTION: ${{ matrix.resolution }}
         run: |
-          npx cypress run --project tests \
+          npx cypress run \
               --config defaultCommandTimeout=10000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
       - name: ⚔ Collect mocha reports
         if: always()
