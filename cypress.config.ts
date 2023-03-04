@@ -12,9 +12,7 @@ export default defineConfig({
   videosFolder: `${outputDir}/videos`,
 
   reporter: "node_modules/cypress-multi-reporters",
-  env: {
-    rootUrl: "http://localhost:8080/#/",
-  },
+
   reporterOptions: {
     reporterEnabled: "mochawesome",
     mochawesomeReporterOptions: {
@@ -25,6 +23,7 @@ export default defineConfig({
       video: false,
     },
   },
+
   e2e: {
     experimentalStudio: true,
     supportFile: `${testDir}/main.ts`,
