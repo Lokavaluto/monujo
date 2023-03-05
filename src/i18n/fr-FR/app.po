@@ -28,7 +28,7 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
-#: src/components/TheNavBar.vue:97
+#: src/components/TheNavBar.vue:102
 msgid "Account requests"
 msgstr "Demandes de comptes"
 
@@ -97,7 +97,7 @@ msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/components/TransactionListRecent.vue:23
+#: src/components/TransactionListRecent.vue:26
 msgid ""
 "An unexpected issue occurred while loading the last transactions. Sorry for "
 "the inconvenience."
@@ -182,15 +182,15 @@ msgid "Connection successful"
 msgstr "Connection réussie"
 
 #: src/components/CreateAccount.vue:164 src/components/CreateAccount.vue:78
-#: src/components/TheNavBar.vue:80
+#: src/components/TheNavBar.vue:85
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
 
-#: src/components/TheNavBar.vue:104
+#: src/components/TheNavBar.vue:109
 msgid "Credit requests"
 msgstr "Demandes de crédit"
 
-#: src/components/TheNavBar.vue:55
+#: src/components/TheNavBar.vue:60
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -287,7 +287,7 @@ msgstr "Depuis"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:114 src/components/TheNavBar.vue:44
+#: src/components/TheNavBar.vue:119 src/components/TheNavBar.vue:49
 msgid "Help"
 msgstr "Aide"
 
@@ -343,7 +343,7 @@ msgstr "Non"
 msgid "No account pending for approval"
 msgstr "Aucun compte en attente de validation"
 
-#: src/components/TransactionListRecent.vue:39
+#: src/components/TransactionListRecent.vue:42
 msgid "No previous transactions in your history."
 msgstr "Aucune opération dans votre historique"
 
@@ -455,7 +455,7 @@ msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 msgid "Pledged account"
 msgstr "Compte nantis"
 
-#: src/components/TheNavBar.vue:64
+#: src/components/TheNavBar.vue:69
 msgid "Profile"
 msgstr "Profil"
 
@@ -511,7 +511,7 @@ msgstr "Envoyer de l'argent"
 msgid "Send transactions"
 msgstr "Envoyer les opérations"
 
-#: src/components/TheNavBar.vue:72
+#: src/components/TheNavBar.vue:77
 msgid "Settings"
 msgstr "Préferences"
 
@@ -528,11 +528,11 @@ msgstr ""
 msgid "Share"
 msgstr "Partager"
 
-#: src/components/TheNavBar.vue:50 src/views/Login.vue:53
+#: src/components/TheNavBar.vue:55 src/views/Login.vue:53
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:123
+#: src/components/TheNavBar.vue:128
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -560,7 +560,7 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/TheNavBar.vue:117 src/components/TheNavBar.vue:47
+#: src/components/TheNavBar.vue:122 src/components/TheNavBar.vue:52
 msgid "Terms of Service"
 msgstr "CGU"
 
@@ -638,7 +638,7 @@ msgstr "Liste des transactions partagée"
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
-#: src/components/TransactionListRecent.vue:45
+#: src/components/TransactionListRecent.vue:48
 msgid "Transactions"
 msgstr "Opérations"
 
@@ -664,7 +664,8 @@ msgstr "Spécifier la langue"
 
 #: src/components/TheNavBar.vue:36 src/components/TheNavBar.vue:37
 #: src/components/TheNavBar.vue:54 src/components/TheNavBar.vue:59
-#: src/views/admin/PendingAccounts.vue:49 src/views/admin/PendingCredits.vue:49
+#: src/components/TheNavBar.vue:64 src/views/admin/PendingAccounts.vue:49
+#: src/views/admin/PendingCredits.vue:49
 msgid "User"
 msgstr "Utilisateur"
 
@@ -712,7 +713,7 @@ msgstr ""
 "administrateur."
 
 #: src/components/TheBankAccountList.vue:36
-#: src/components/TransactionListRecent.vue:31
+#: src/components/TransactionListRecent.vue:34
 #: src/views/admin/PendingAccounts.vue:27 src/views/admin/PendingCredits.vue:27
 msgid ""
 "You can try to refresh the page, if the issue persists, you may want to "
