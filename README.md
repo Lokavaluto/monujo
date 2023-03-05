@@ -217,6 +217,36 @@ would do it for any mobile app.
 
 ### Tests
 
+#### End-to-End tests with cypress
+
+##### Setup
+
+For most tests, you might want to provide some important environment
+variables:
+
+In a local file `cypress.env.json`, you can add:
+```json
+{
+  "email":"me@email.com",
+  "password":"pass"
+}
+```
+
+These are the credentials that will be used to login in the end-to-end
+tests. You might want to double check your ``config.json`` and more
+specifically your ``lokapiHost`` value, as it is toward this odoo
+server that these credentials will be used.
+
+Note that you can also provide credentials also this way:
+
+```shell
+CYPRESS_EMAIL="me@email.com" CYPRESS_PASSWORD="pass" npx cypress run
+## or
+npx cypress run --env email="me@email.com",password="pass"
+```
+
+##### Running tests
+
 To run end-to-end tests on the content of the `dist/` code (it needs
 to have been created prior to running this, through `npm run build`):
 
@@ -250,6 +280,21 @@ To add a new E2E test, create a new file in the
 more information on how to write E2E tests with Cypress, you can check
 out the [Cypress
 documentation](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-your-first-test)
+
+#### Screenshots
+
+End-to-end tests from cypress can be used to generate screenshots intended
+to publication to stores. You can do that with the following call:
+
+```shell
+npx cypress run \
+    --config viewportWidth=375,viewportHeight=667,defaultCommandTimeout=20000 \
+    --env screenshot=true \
+    --spec tests/e2e/spec.cy.ts
+```
+
+This will run the tests and if everything went well, should produce the
+screenshots in the directory `.cypress/screenshots/spec.cy.ts/`.
 
 ### Translation
 

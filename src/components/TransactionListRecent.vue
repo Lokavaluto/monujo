@@ -5,7 +5,10 @@
     :can-cancel="false"
     :is-full-page="false"
   />
-  <div v-if="!transactionsLoading || lastTransactions.length">
+  <div
+    id="the-transaction-list"
+    v-if="!transactionsLoading || lastTransactions.length"
+  >
     <span
       :class="{
         hide: !transactionsLoading,

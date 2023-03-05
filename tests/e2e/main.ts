@@ -1,3 +1,4 @@
+import "cypress-iframe"
 import "./commands"
 
 Cypress.on("uncaught:exception", (err, runnable) => {
@@ -5,3 +6,5 @@ Cypress.on("uncaught:exception", (err, runnable) => {
   // failing the test
   return false
 })
+
+Cypress.Screenshot.defaults({ capture: "fullPage", overwrite: true })

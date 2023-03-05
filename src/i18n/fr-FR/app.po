@@ -97,7 +97,7 @@ msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/components/TransactionListRecent.vue:23
+#: src/components/TransactionListRecent.vue:26
 msgid ""
 "An unexpected issue occurred while loading the last transactions. Sorry for "
 "the inconvenience."
@@ -343,7 +343,7 @@ msgstr "Non"
 msgid "No account pending for approval"
 msgstr "Aucun compte en attente de validation"
 
-#: src/components/TransactionListRecent.vue:39
+#: src/components/TransactionListRecent.vue:42
 msgid "No previous transactions in your history."
 msgstr "Aucune opération dans votre historique"
 
@@ -638,7 +638,7 @@ msgstr "Liste des transactions partagée"
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
-#: src/components/TransactionListRecent.vue:45
+#: src/components/TransactionListRecent.vue:48
 msgid "Transactions"
 msgstr "Opérations"
 
@@ -712,7 +712,7 @@ msgstr ""
 "administrateur."
 
 #: src/components/TheBankAccountList.vue:36
-#: src/components/TransactionListRecent.vue:31
+#: src/components/TransactionListRecent.vue:34
 #: src/views/admin/PendingAccounts.vue:27 src/views/admin/PendingCredits.vue:27
 msgid ""
 "You can try to refresh the page, if the issue persists, you may want to "

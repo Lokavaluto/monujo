@@ -36,7 +36,7 @@
     >
       <div class="burger-menu-overlay" v-if="showNav"></div>
       <div class="navbar-end">
-        <router-link to="/carto" class="navbar-item" v-if="hasMapUrl">
+        <router-link id="menu-map" to="/carto" class="navbar-item" v-if="hasMapUrl">
           {{ $gettext("Map") }}
         </router-link>
         <template v-if="!isLog">
