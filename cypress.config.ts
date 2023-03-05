@@ -28,6 +28,7 @@ export default defineConfig({
     experimentalStudio: true,
     supportFile: `${testDir}/main.ts`,
     specPattern: `${testDir}/**/*.cy.ts`,
+    chromeWebSecurity: false,
   },
 
   // If no baseUrl specified, cypress will serve these files:
