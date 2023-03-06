@@ -108,6 +108,9 @@ export default config;
           if app_id != "com.lokavaluto.monujo"
 
             platform = Actions.lane_context[SharedValues::PLATFORM_NAME]
+            if not platform
+              next
+            end
 
             Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
 
