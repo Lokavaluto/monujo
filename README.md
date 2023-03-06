@@ -453,6 +453,83 @@ For instance:
 bundle exec fastlane android build tag:1.0.0-rc.9
 ```
 
+##### create screenshots for release on app stores
+
+These screenshots will showcase the most important part of the
+app. These are intended for publication along the releases in app
+stores to illustrate the app features.
+
+If you use the `screenshot` action `fastlane`, screenshots will be
+built. If you do so, you probably want to configure some important
+aspect of this tour through several options:
+
+- the real odoo screenshot server to connect to:
+  - command line argument `host`, or
+  - environment variable `SCREENSHOT_HOST`
+  - configuration file `.screenshot.json`, field `host`.
+  - if not specified, it will use the value provided in the
+    `config.json` as `lokapiHost`.
+- the database to connect to on the screenshot host:
+  - command line argument `db`, or
+  - environment variable `SCREENSHOT_DB`
+  - configuration file `.screenshot.json`, field `db`.
+  - if not specified, it will leave the value provided in the
+    `config.json` as `lokapiDb`.
+- the login/email to log into the given screenshot host:
+  - command line argument `login`, or
+  - environment variable `SCREENSHOT_LOGIN`, or
+  - configuration file `.screenshot.json`, field `login`.
+  - the file `cypress.env.json` in the key `email`
+  - if not specified, the command will fail with an explanatory
+    message.
+- the password to log into the given screenshot host:
+  - command line argument `password`, or
+  - environment variable `SCREENSHOT_PASSWORD`
+  - configuration file `.screenshot.json`, field `password`.
+  - the file `cypress.env.json` in the key `password`
+  - if not specified, the command will fail with an explanatory
+    message.
+- the language to shoot the screenshots in:
+  - command line argument `language`, comma separated if needed or
+  - environment variable `SCREENSHOT_LANGUAGE`, comma separated if needed or
+  - configuration file `.screenshot.json`, field `languages` as an array.
+  - if not specified, every key of declared languages in `config.json`
+    in `locales.availableLanguages` will be used to create
+    screenshots for all languages.
+- the resolution to shoot the screenshots in:
+  - command line argument `resolution`, comma separated if needed or
+  - environment variable `SCREENSHOT_RESOLUTION`, comma separated if needed or
+  - configuration file `.screenshot.json`, field `resolutions` as an array.
+  - if not specified, every key of declared languages in `config.json`
+    in `locales.availableLanguages` will be used to create
+    screenshots for all languages.
+
+For instance:
+
+```
+bundle exec fastlane screenshot \
+    tag:1.0.0-rc.11 app:agnel,pive \
+    host:demo.lokavaluto.fr \
+    db:odoo \
+    login:demo@example.com \
+    password:demo \
+    language:fr-FR,en-US \
+    resolutio:375x667,1080x810
+```
+
+Results will be outputted along the built files in
+`release/$TAG/$APP/$RESOLUTION/$LANG`. Notice that if the directory exists
+already, it won't try to build screenshots. You must provide a
+`force:true` option to force the deletion of the directory
+and replacement with a new one.
+
+The quickest way to build/complete all snapshots of the app would be
+to setup your `.screenshot.json` and then run:
+
+```
+bundle exec fastlane screenshot
+```
+
 ##### Build is happening in a temporary directory
 
 You don't need to clean your directory or care about the state of your
