@@ -62,6 +62,7 @@ ignore_regexps = [
     r'@cosmetic', r'!cosmetic',
     r'@refactor', r'!refactor',
     r'@wip', r'!wip',
+    r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[t|T]est:',
     r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[p|P]kg:',
     r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[d|D]ev:',
     r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[d|D]oc:',
