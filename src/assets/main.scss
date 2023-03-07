@@ -57,11 +57,11 @@ body {
     background: $btn-login-background-color !important;
   }
 
-  &.is-payer,
-  &.is-payer:hover {
-    color: $btn-payer-text-color !important;
-    border-color: $btn-payer-border-color !important;
-    background: $btn-payer-background-color !important;
+  &.is-pay,
+  &.is-pay:hover {
+    color: $btn-pay-text-color !important;
+    border-color: $btn-pay-border-color !important;
+    background: $btn-pay-background-color !important;
   }
 
   &.is-recevoir,

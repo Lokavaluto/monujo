@@ -60,7 +60,7 @@
               class="
                 button
                 custom-button
-                is-payer
+                is-pay
                 has-text-weight-medium
                 is-rounded
                 action

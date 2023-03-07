@@ -29,7 +29,7 @@ Cypress.Commands.add("transactions", () => {
 })
 
 Cypress.Commands.add("payButton", () => {
-  return cy.get(".is-payer")
+  return cy.get(".is-pay")
 })
 
 Cypress.Commands.add("requestButton", () => {
