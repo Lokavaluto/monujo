@@ -54,13 +54,10 @@ $btn-recevoir-background-color: var(
   $color-2
 ) !default;
 // "Recharger" button
-$btn-recharger-text-color: var(--btn-recharger-text-color, $color-2) !default;
-$btn-recharger-border-color: var(
-  --btn-recharger-border-color,
-  $color-2
-) !default;
-$btn-recharger-background-color: var(
-  --btn-recharger-background-color,
+$btn-top-up-text-color: var(--btn-top-up-text-color, $color-2) !default;
+$btn-top-up-border-color: var(--btn-top-up-border-color, $color-2) !default;
+$btn-top-up-background-color: var(
+  --btn-top-up-background-color,
   #ffffff
 ) !default;
 // "Login" button

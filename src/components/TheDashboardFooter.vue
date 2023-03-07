@@ -51,7 +51,7 @@
             class="
               button
               custom-button
-              is-recharger
+              is-top-up
               has-text-weight-medium
               is-rounded
               action
