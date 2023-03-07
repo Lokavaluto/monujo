@@ -23,7 +23,7 @@
         </div>
         <div v-if="useSimplifiedAuth" class="switch-centered">
           <button
-            class="button is-payer has-text-weight-medium is-rounded action"
+            class="button is-pay has-text-weight-medium is-rounded action"
             @click="unlock()"
             :disabled="!locked"
           >
