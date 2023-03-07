@@ -328,14 +328,14 @@
     margin-top: 10px;
   }
   .is-wallet {
-    color: $btn-recharger-text-color !important;
-    border-color: $btn-recharger-border-color !important;
+    color: $btn-top-up-text-color !important;
+    border-color: $btn-top-up-border-color !important;
     background: $color-2;
     opacity: 0.7;
   }
   .is-wallet-active {
-    color: $btn-recharger-text-color !important;
-    border-color: $btn-recharger-border-color !important;
+    color: $btn-top-up-text-color !important;
+    border-color: $btn-top-up-border-color !important;
     background: $color-2;
     opacity: 1;
   }

@@ -71,11 +71,11 @@ body {
     background: $btn-recevoir-background-color !important;
   }
 
-  &.is-recharger,
-  &.is-recharger:hover {
-    color: $btn-recharger-text-color !important;
-    border-color: $btn-recharger-border-color !important;
-    background: $btn-recharger-background-color !important;
+  &.is-top-up,
+  &.is-top-up:hover {
+    color: $btn-top-up-text-color !important;
+    border-color: $btn-top-up-border-color !important;
+    background: $btn-top-up-background-color !important;
   }
   &.custom-button-modal,
   &.custom-button-modal:hover {
