@@ -33,7 +33,7 @@ Cypress.Commands.add("payButton", () => {
 })
 
 Cypress.Commands.add("requestButton", () => {
-  return cy.get(".is-recevoir")
+  return cy.get(".is-request")
 })
 
 Cypress.Commands.add("topUpButton", () => {

@@ -64,11 +64,11 @@ body {
     background: $btn-pay-background-color !important;
   }
 
-  &.is-recevoir,
-  &.is-recevoir:hover {
-    color: $btn-recevoir-text-color !important;
-    border-color: $btn-recevoir-border-color !important;
-    background: $btn-recevoir-background-color !important;
+  &.is-request,
+  &.is-request:hover {
+    color: $btn-request-text-color !important;
+    border-color: $btn-request-border-color !important;
+    background: $btn-request-background-color !important;
   }
 
   &.is-top-up,
