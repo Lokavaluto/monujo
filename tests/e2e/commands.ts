@@ -37,7 +37,7 @@ Cypress.Commands.add("requestButton", () => {
 })
 
 Cypress.Commands.add("topUpButton", () => {
-  return cy.get(".is-recharger")
+  return cy.get(".is-top-up")
 })
 
 Cypress.Commands.add("menu", () => {
