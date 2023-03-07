@@ -44,10 +44,10 @@ $btn-pay-text-color: var(--btn-pay-text-color, #ffffff) !default;
 $btn-pay-border-color: var(--btn-pay-border-color, $color-2) !default;
 $btn-pay-background-color: var(--btn-pay-background-color, $color-2) !default;
 // "Recevoir" button
-$btn-recevoir-text-color: var(--btn-recevoir-text-color, #ffffff) !default;
-$btn-recevoir-border-color: var(--btn-recevoir-border-color, $color-2) !default;
-$btn-recevoir-background-color: var(
-  --btn-recevoir-background-color,
+$btn-request-text-color: var(--btn-request-text-color, #ffffff) !default;
+$btn-request-border-color: var(--btn-request-border-color, $color-2) !default;
+$btn-request-background-color: var(
+  --btn-request-background-color,
   $color-2
 ) !default;
 // "Recharger" button
