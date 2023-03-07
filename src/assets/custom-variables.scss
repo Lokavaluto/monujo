@@ -40,12 +40,9 @@ $top-menu-dropdown-divider-color: var(
 // Bottom menu buttons:
 //
 // "Payer" button
-$btn-payer-text-color: var(--btn-payer-text-color, #ffffff) !default;
-$btn-payer-border-color: var(--btn-payer-border-color, $color-2) !default;
-$btn-payer-background-color: var(
-  --btn-payer-background-color,
-  $color-2
-) !default;
+$btn-pay-text-color: var(--btn-pay-text-color, #ffffff) !default;
+$btn-pay-border-color: var(--btn-pay-border-color, $color-2) !default;
+$btn-pay-background-color: var(--btn-pay-background-color, $color-2) !default;
 // "Recevoir" button
 $btn-recevoir-text-color: var(--btn-recevoir-text-color, #ffffff) !default;
 $btn-recevoir-border-color: var(--btn-recevoir-border-color, $color-2) !default;

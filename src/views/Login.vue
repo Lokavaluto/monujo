@@ -231,7 +231,7 @@
 <style scoped lang="scss">
   @import "@/assets/custom-variables.scss";
   .control a.is-info {
-    background-color: var(--btn-payer-background-color, $color-2);
+    background-color: var(--btn-pay-background-color, $color-2);
     z-index: 10;
   }
   #login {
