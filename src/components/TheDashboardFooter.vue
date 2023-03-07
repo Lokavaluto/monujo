@@ -31,7 +31,7 @@
             class="
               button
               custom-button
-              is-recevoir
+              is-request
               has-text-weight-medium
               is-rounded
               action
