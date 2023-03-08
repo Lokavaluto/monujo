@@ -44,16 +44,9 @@
             </div>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot">
-          <div class="transactions-loader-container">
-            <loading
-              v-model:active="transactionsBatchLoading"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="30"
-              :height="30"
-            />
-          </div>
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-end"
+        >
           <div>
             <button
               class="
@@ -94,11 +87,7 @@
           ></button>
         </header>
         <section class="modal-card-body custom-card-transactions">
-          <div
-            class="modal-container custom-modal-container"
-            ref="transactionsContainer"
-            @scroll="handleScroll"
-          >
+          <div class="modal-container custom-modal-container">
             <div
               class="
                 custom-card
@@ -312,7 +301,6 @@
       },
       ...mapModuleState("lokapi", [
         "transactionsLoading",
-        "transactionsBatchLoading",
         "lastTransactions",
         "userProfile",
       ]),
