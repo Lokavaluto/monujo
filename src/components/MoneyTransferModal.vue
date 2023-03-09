@@ -125,7 +125,7 @@
               is-flex is-flex-direction-column is-justify-content-space-evenly
             "
           >
-            <div class="is-flex is-flex-direction-column custom-montant-input">
+            <div class="is-flex is-flex-direction-column custom-amount-input">
               <h2 class="frame3-sub-title mb-3">
                 {{ $gettext("From") }}
               </h2>
