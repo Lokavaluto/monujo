@@ -44,12 +44,14 @@ describe("General processes when logged in", () => {
     cy.payButton().should("be.visible")
     cy.requestButton().should("be.visible")
     cy.topUpButton().should("be.visible")
+    cy.refreshButton().should("be.visible")
     if (Cypress.env("screenshot")) cy.takeScreenshot("dashboard")
   })
 
   it("Send money process", () => {
     cy.payButton().should("be.visible")
     cy.payButton().click()
+    cy.modal().should("be.visible")
     cy.searchBar().within(() => {
       cy.searchInput().should("be.visible")
     })
@@ -57,16 +59,57 @@ describe("General processes when logged in", () => {
     if (Cypress.env("screenshot")) cy.takeScreenshot("recipients")
     cy.firstSearchedRecipient().click()
     if (Cypress.env("screenshot")) cy.takeScreenshot("pay")
+
+    // send empty or wrong amount
+    cy.sendMoneyButton().should("be.visible")
+    cy.sendMoneyButton().click()
+    cy.errorMessage().should("be.visible")
+    cy.amountSendInput().should("be.visible")
+    cy.amountSendInput().type("wrong amount")
+    cy.errorMessage().should("be.visible")
+
+    //close modal
+    cy.closeModal()
+    cy.modal().should("not.exist")
   })
 
   it("Top-up process", () => {
     cy.topUpButton().should("be.visible")
     cy.topUpButton().click()
     cy.topUpAccount().click()
+    cy.topUpNextButton().should("be.visible")
+    cy.topUpNextButton().should("be.disabled")
     if (Cypress.env("screenshot")) cy.takeScreenshot("top-up")
+
+    //top-up empty or invalid amount
+    cy.amountInput().should("be.visible")
+    cy.amountInput().type("test invalid amount")
+    cy.topUpNextButton().should("be.disabled")
+
+    //close top-up modal
+    cy.closeModal()
+    cy.modal().should("not.exist")
   })
 })
 
+describe("Preferences page", () => {
+  beforeEach(() => {
+    cy.visit("/")
+    cy.login(Cypress.env("email"), Cypress.env("password"))
+  })
+  it("show base interface", () => {
+    cy.openPreferencesPage()
+    cy.menu().should("be.visible")
+    cy.preferencesCard().should("be.visible")
+    cy.preferencesCard().within(() => {
+      cy.preferencesGroups().should("be.visible")
+      cy.simplifiedAuthPref().should("be.visible")
+      cy.simplifiedAuthPref().within(() => {
+        cy.getSwitch().click()
+      })
+    })
+  })
+})
 describe("Visit public interface", () => {
   beforeEach(() => {
     cy.visit("/")

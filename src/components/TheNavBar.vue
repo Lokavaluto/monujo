@@ -77,6 +77,7 @@
                 v-if="hasPreferences"
                 to="/preferences"
                 class="navbar-item"
+                id="menu-preferences"
               >
                 {{ $gettext("Settings") }}
               </router-link>

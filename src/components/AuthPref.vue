@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" id="simplified-auth">
     <div class="mb-5">
       <div class="mb-5 is-flex">
         <div class="is-flex">
