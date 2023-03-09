@@ -44,6 +44,10 @@ Cypress.Commands.add("menu", () => {
   return cy.get("#app > nav.navbar")
 })
 
+Cypress.Commands.add("refreshButton", () => {
+  return cy.get(".refresh")
+})
+
 Cypress.Commands.add("isLogged", () => {
   cy.get(".action-footer:visible")
 })
@@ -82,8 +86,24 @@ Cypress.Commands.add("firstSearchedRecipient", () => {
 Cypress.Commands.add("searchInput", () => {
   return cy.get("input")
 })
+Cypress.Commands.add("sendMoneyButton", () => {
+  return cy.get("#send-money-button")
+})
+Cypress.Commands.add("errorMessage", () => {
+  return cy.get(".notification.is-danger")
+})
+Cypress.Commands.add("amountSendInput", () => {
+  return cy.get("#send-amount-input")
+})
+
 Cypress.Commands.add("topUpAccount", () => {
   return cy.get("div.custom-amount-input").find("div.account-selector").first()
+})
+Cypress.Commands.add("topUpNextButton", () => {
+  return cy.get("#top-up-button")
+})
+Cypress.Commands.add("amountInput", () => {
+  return cy.get(".custom-amount-input").find(".input")
 })
 Cypress.Commands.add("loginButton", () => {
   return cy.get("p > .is-login")
@@ -110,7 +130,47 @@ Cypress.Commands.add("takeScreenshot", (title: string) => {
     },
   })
 })
-
+Cypress.Commands.add("openPreferencesPage", () => {
+  cy.isLogged()
+  cy.get(".navbar-link:visible")
+    .should((_) => {}) // Ignore assertion
+    .then(($element) => {
+      if ($element.length > 0) {
+        $element.click()
+        cy.menu().within(() => {
+          // cypress can't hover. The dropdown can't be opened.
+          // we need to use the ``{ force: true }`` to click on
+          // invisible elements.
+          cy.get(".navbar-dropdown .navbar-item")
+            .get("#menu-preferences")
+            .click({ force: true })
+        })
+      } else {
+        cy.get(".navbar-burger").click()
+        cy.get(".navbar-dropdown > #menu-preferences").click()
+      }
+    })
+})
+Cypress.Commands.add("preferencesCard", () => {
+  return cy.get(".custom-card-prefs")
+})
+Cypress.Commands.add("preferencesGroups", () => {
+  return cy.get(".prefs-group")
+})
+Cypress.Commands.add("simplifiedAuthPref", () => {
+  return cy.get("#simplified-auth")
+})
+Cypress.Commands.add("getSwitch", () => {
+  return cy.get(".switch > .slider")
+})
+Cypress.Commands.add("modal", () => {
+  return cy.get(".modal")
+})
+Cypress.Commands.add("closeModal", () => {
+  cy.modal().within(() => {
+    cy.get(".modal-card-head").find(".delete").click()
+  })
+})
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -130,12 +190,25 @@ declare global {
       transactions(): Chainable<JQuery<HTMLElement>>
       searchBar(): Chainable<JQuery<HTMLElement>>
       searchInput(): Chainable<JQuery<HTMLElement>>
+      sendMoneyButton(): Chainable<JQuery<HTMLElement>>
+      errorMessage(): Chainable<JQuery<HTMLElement>>
+      amountSendInput(): Chainable<JQuery<HTMLElement>>
       firstSearchedRecipient(): Chainable<JQuery<HTMLElement>>
       searchRecipient(recipient: string): Chainable<JQuery<HTMLElement>>
       topUpAccount(): Chainable<JQuery<HTMLElement>>
+      topUpNextButton(): Chainable<JQuery<HTMLElement>>
+      amountInput(): Chainable<JQuery<HTMLElement>>
       createAccountButton(): Chainable<JQuery<HTMLElement>>
       loginButton(): Chainable<JQuery<HTMLElement>>
       takeScreenshot(title: string): void
+      openPreferencesPage(): void
+      refreshButton(): Chainable<JQuery<HTMLElement>>
+      preferencesCard(): Chainable<JQuery<HTMLElement>>
+      preferencesGroups(): Chainable<JQuery<HTMLElement>>
+      simplifiedAuthPref(): Chainable<JQuery<HTMLElement>>
+      getSwitch(): Chainable<JQuery<HTMLElement>>
+      modal(): Chainable<JQuery<HTMLElement>>
+      closeModal(): void
     }
   }
 }

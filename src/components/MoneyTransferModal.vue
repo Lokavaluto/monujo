@@ -153,6 +153,7 @@
                   type="number"
                   min="0"
                   class="input is-custom"
+                  id="send-amount-input"
                   :placeholder="$gettext('e.g. 50')"
                   :class="{
                     'is-danger': errors.balance || errors.amount,
@@ -188,6 +189,7 @@
         >
           <button
             class="button custom-button-modal has-text-weight-medium"
+            id="send-money-button"
             @click="sendTransaction()"
           >
             {{ $gettext("Send") }}
