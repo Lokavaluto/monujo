@@ -15,7 +15,7 @@
       <section class="modal-card-body">
         <div
           v-if="creditOrderUrl.length === 0 && !showCreditRefreshNotification"
-          class="custom-montant-input"
+          class="custom-amount-input"
         >
           <div v-if="creditableMoneyAccounts.length > 1">
             <h2 class="frame3-sub-title mb-3">
@@ -46,7 +46,7 @@
             v-show="
               selectedCreditAccount || creditableMoneyAccounts.length === 1
             "
-            class="amount custom-montant-input"
+            class="amount custom-amount-input"
           >
             <h2 class="frame3-sub-title mt-3">
               {{ $gettext("Top up amount") }}

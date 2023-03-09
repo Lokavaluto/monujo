@@ -83,7 +83,7 @@ Cypress.Commands.add("searchInput", () => {
   return cy.get("input")
 })
 Cypress.Commands.add("topUpAccount", () => {
-  return cy.get("div.custom-montant-input").find("div.account-selector").first()
+  return cy.get("div.custom-amount-input").find("div.account-selector").first()
 })
 Cypress.Commands.add("loginButton", () => {
   return cy.get("p > .is-login")
