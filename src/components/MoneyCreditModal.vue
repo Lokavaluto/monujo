@@ -148,6 +148,7 @@
               has-text-weight-medium
               action
             "
+            id="top-up-button"
             @click="newLinkTab()"
             :disabled="isTopUpButtonDisabled"
           >
