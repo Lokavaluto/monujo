@@ -567,7 +567,7 @@ produce:
 - AAB files to provide to the playstore for deployment on it.
 
 Note that you can provide a revision number for the released android
-package by adding an argument to the command line as `android_rev:N`
+package by adding an argument to the command line as `rev:N`
 (that will be 0 by default).
 
 ##### Applications
@@ -609,7 +609,7 @@ For instance:
 ```
 bundle exec fastlane android publish_github \
     tag:1.0.0-rc.8 github_repository:vaab/monujo \
-    app:monujo android_rev:1
+    app:monujo rev:1
 ```
 
 .. will build android packages (APK and AAB) from source code of tag
