@@ -19,6 +19,7 @@ import {
   faShare,
   faFileExport,
   faFingerprint,
+  faCircleNotch,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -42,7 +43,8 @@ library.add(
   faDownload,
   faShare,
   faFileExport,
-  faFingerprint
+  faFingerprint,
+  faCircleNotch
 )
 
 export default FontAwesomeIcon

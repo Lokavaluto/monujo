@@ -36,8 +36,7 @@
     },
     watch: {
       $route(to, from) {
-        if (this.$modal.isActive.value)
-          this.$modal.close()
+        if (this.$modal.isActive.value) this.$modal.close()
       },
     },
     computed: {
