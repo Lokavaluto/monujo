@@ -53,6 +53,38 @@ Note that, by default, a keystore file is looked up in:
         Actions.lane_context.set_sensitive(SharedValues::APP_STORE_CONNECT_API_KEY, key)
         Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(**key) if params[:set_spaceship_token]
 
+
+        match_password = params[:match_password] || ENV["MATCH_PASSWORD"]
+
+        if match_password
+          UI.message "Found and using Match Password from environment"
+        else
+          match_password_path = params[:match_password_path] ||
+                                ENV["MATCH_PASSWORD_PATH"] || "keys/ios/match_password"
+
+          if File.readable? match_password_path
+            UI.success "Found and using Match Password from file '#{match_password_path}'."
+            match_password = File.open(match_password_path).read.chomp
+          else
+            UI.important "File '#{match_password_path}' not readable."
+            match_password = false
+          end
+        end
+
+        if ! match_password
+          UI.user_error! "Match password not found. Please provide either:
+ - a \$MATCH_PASSWORD environment variable with the password content
+ - or a \$MATCH_PASSWORD_PATH environment variable toward a file path
+   containing the match password.
+ - use 'match_password_path:FILE' to provide path to a file containing
+   the match password.
+
+Note that, by default, a match password file is looked up in:
+  keys/ios/match_password
+"
+        end
+
+        ENV["MATCH_PASSWORD"] = match_password
       end
 
       #####################################################
@@ -78,6 +110,18 @@ Note that, by default, a keystore file is looked up in:
             env_name: "FL_CHECK_IOS_SIGNING_SECRETS_ARE_AVAILABLE_API_KEY_PATH",
             description: "Path of JSON api key file",
             conflicting_options: [:api_key],
+            default_value: false),
+          FastlaneCore::ConfigItem.new(
+            key: :match_password,
+            env_name: "FL_CHECK_IOS_SIGNING_SECRETS_ARE_AVAILABLE_MATCH_PASSWORD",
+            description: "Match password",
+            conflicting_options: [:match_password],
+            default_value: false),
+          FastlaneCore::ConfigItem.new(
+            key: :match_password_path,
+            env_name: "FL_CHECK_IOS_SIGNING_SECRETS_ARE_AVAILABLE_MATCH_PASSWORD_PATH",
+            description: "Path of match password file",
+            conflicting_options: [:match_password],
             default_value: false),
           FastlaneCore::ConfigItem.new(
             key: :set_spaceship_token,
