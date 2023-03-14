@@ -554,10 +554,15 @@ and should be buildable in all environment.
 It is required to use a mac. We are using [fastlane code signing
 guidelines and tools](https://codesigning.guide/).
 
-You need your App Store Connect API keys ready. The nice default setup
-is to create a directory 'keys/ios', having `keys/ios/api_key.json`
-which contents need to follow the [fastlane
-docs](https://docs.fastlane.tools/app-store-connect-api/#using-fastlane-api-key-json-file).
+You need to have your Apple certificates and keys ready. The nice default
+setup is to create a directory 'keys/ios/', having:
+
+- `keys/ios/api_key.json`: Your App Store Connect API keys JSON file
+   as documented in [fastlane
+   docs](https://docs.fastlane.tools/app-store-connect-api/#using-fastlane-api-key-json-file).
+
+- `keys/ios/match_password` the match password that encrypts your
+  certificates
 
 You can change these paths, or even provide these information without
 using files, you'll get direction for this if you don't provide the
