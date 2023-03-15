@@ -83,8 +83,12 @@ jobs:
       - name: ⚔ Run Cypress tests
         env:
           M_RESOLUTION: ${{ matrix.resolution }}
-          CYPRESS_email: ${{ secrets.CYPRESS_EMAIL }}
-          CYPRESS_password: ${{ secrets.CYPRESS_PASSWORD }}
+          ## Unfortunately, neither secrets nor vars can hold these
+          ## information for jobs run by forked repository (aka
+          ## pull_requests). Let's note that this is not sensitive
+          ## information.
+          CYPRESS_email: vl_part1@0k.io
+          CYPRESS_password: dev
         run: |
           npx cypress run \
               --config defaultCommandTimeout=15000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
