@@ -410,6 +410,17 @@ platform :ios do
     plist_path = project_root + "App/Info.plist"
     set_info_plist_value(path: plist_path, key: "ITSAppUsesNonExemptEncryption", value: "false")
 
+    ##
+    ## Modify json to remove links for app store acceptation
+    ## (hopefully temporarily)
+    ##
+
+    config_path = "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/dist/config.json"
+    config = JSON.parse(File.read(config_path))
+    config['hideResetPassword'] = true
+    config['hideAccountCreate'] = true
+    File.write(config_path, JSON.pretty_generate(config))
+
     _prepare_mobile_package
   end
 
