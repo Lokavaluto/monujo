@@ -112,6 +112,7 @@ module Fastlane
               "pageLoadTimeout" => 30000,
               "viewportWidth" => width.to_i,
               "viewportHeight" => height.to_i,
+              "video" => false,
             }
 
             Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
