@@ -99,14 +99,17 @@ module Fastlane
             ##
             ## Launch cypress
             ##
-
+            if r.split("x").count == 2
+              r = r + "x1"
+            end
             UI.message "Launching cypress on #{app} for screenshots in #{current_language} in #{r}..."
+            width, height, scale = r.split("x")
             cypress_params = {
               "email" => login,
               "password" => password,
-              "screenshot" => true
+              "screenshot" => true,
+              "scaleFactor" => scale
             }
-            width, height = r.split("x")
             cypress_config = {
               "defaultCommandTimeout" => 30000,
               "pageLoadTimeout" => 30000,
@@ -118,7 +121,8 @@ module Fastlane
             Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
               sh ("npx cypress run --spec tests/e2e/spec.cy.ts " +
                   "--env #{Shellwords.escape(cypress_params.to_json)} " +
-                  "--config #{Shellwords.escape(cypress_config.to_json)}"
+                  "--config #{Shellwords.escape(cypress_config.to_json)} " +
+                  "--browser chrome"
                  )
             end
 
