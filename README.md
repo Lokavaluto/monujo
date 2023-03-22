@@ -296,6 +296,18 @@ npx cypress run \
 This will run the tests and if everything went well, should produce the
 screenshots in the directory `.cypress/screenshots/spec.cy.ts/`.
 
+To provide a scale factor, you must add an environment variable
+`scaleFactor` (which default is `1`), and force the browser to be
+`chrome`, for instance:
+
+```shell
+npx cypress run \
+    --config viewportWidth=375,viewportHeight=667,defaultCommandTimeout=20000 \
+    --env screenshot=true,scaleFactor=2 \
+    --spec tests/e2e/spec.cy.ts \
+    --browser chrome
+```
+
 ### Translation
 
 By default, the current files are set up to maintain a french
