@@ -224,7 +224,7 @@ would do it for any mobile app.
 For most tests, you might want to provide some important environment
 variables:
 
-In a local file `cypress.env.json`, you can add:
+In a local file `cypress.env.json` (in the root of the project), you can add:
 ```json
 {
   "email":"me@email.com",
@@ -524,7 +524,7 @@ bundle exec fastlane screenshot \
     login:demo@example.com \
     password:demo \
     language:fr-FR,en-US \
-    resolutio:375x667,1080x810
+    resolution:375x667,1080x810
 ```
 
 Results will be outputted along the built files in
