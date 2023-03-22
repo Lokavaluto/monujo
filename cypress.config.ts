@@ -34,13 +34,6 @@ export default defineConfig({
       on("before:browser:launch", (browser = {}, launchOptions) => {
         if (!config.env.screenshot) return launchOptions
 
-        if (config.viewportWidth <= 1280 && config.viewportHeight <= 720)
-          return launchOptions
-
-        console.log(
-          "Detected large screenshot width, applying workaround to cypress limits"
-        )
-
         // the browser width and height we want to get
         // our screenshots and videos will be of that resolution
         const width = config.viewportWidth
@@ -52,18 +45,34 @@ export default defineConfig({
           launchOptions.args.push(`--window-size=${width},${height}`)
 
           // force screen to be non-retina and just use our given resolution
-          launchOptions.args.push("--force-device-scale-factor=1")
+          launchOptions.args.push(
+            `--force-device-scale-factor=${config.env.scaleFactor || 1}`
+          )
         }
 
         if (browser.name === "electron" && browser.isHeadless) {
           // might not work on CI for some reason
           launchOptions.preferences.width = width
           launchOptions.preferences.height = height
+          if (config.env.scaleFactor !== 1) {
+            throw new Error(
+              `A scaleFactor of ${config.env.scaleFactor} is not supported ` +
+                `on ${browser.name}. Please consider using 'chrome' as ` +
+                `browser for making screenshots.`
+            )
+          }
         }
 
         if (browser.name === "firefox" && browser.isHeadless) {
           launchOptions.args.push(`--width=${width}`)
           launchOptions.args.push(`--height=${height}`)
+          if (config.env.scaleFactor !== 1) {
+            throw new Error(
+              `A scaleFactor of ${config.env.scaleFactor} is not supported ` +
+                `on ${browser.name}. Please consider using 'chrome' as ` +
+                `browser for making screenshots.`
+            )
+          }
         }
 
         return launchOptions
