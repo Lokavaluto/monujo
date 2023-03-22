@@ -78,7 +78,7 @@ module Fastlane
 
           resolution.each do |r|
 
-            result_dir="release/#{version_name}/screenshots/#{app}/#{r}/#{current_language}"
+            result_dir="release/#{version_name}/screenshots/#{app}/#{current_language}/#{r}"
 
             if File.exist? result_dir
               if ! params[:force]
