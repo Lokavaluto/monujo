@@ -536,7 +536,7 @@ bundle exec fastlane screenshot \
     login:demo@example.com \
     password:demo \
     language:fr-FR,en-US \
-    resolution:375x667,1080x810
+    resolution:375x667x3,1080x810
 ```
 
 Results will be outputted along the built files in
@@ -551,6 +551,10 @@ to setup your `.screenshot.json` and then run:
 ```
 bundle exec fastlane screenshot
 ```
+
+Note that screenshot resolution can specify a scaling factor as third
+number. For instance, `393x852x3` is a valid resolution with `3` as
+scaling factor.
 
 ##### Build is happening in a temporary directory
 
