@@ -631,7 +631,16 @@ For instance:
 bundle exec fastlane android build app:roue,pive
 ```
 
+### Publishing Release
+
+This is about the process of send the build artifacts (web `tar.bz2`,
+`IPA` files) to public platform (github release page, apple store) for
+distribution.
+
 #### Publish to github
+
+In this section, it'll be about publishing the build assets on the
+github release page.
 
 ```
 bundle exec fastlane web publish_github
@@ -666,3 +675,30 @@ only for application "monujo" and create/update the github release
 Note that you'll need to add `changelog:true` to force creation of
 changelog and use it to create the description of the release with the
 changelog.
+
+#### Publish to Apple Store
+
+The following will only work on a MacOSX system.
+
+```
+bundle exec fastlane ios publish_store
+```
+
+Will build packages in `release/$TAG` and create/send the release
+provided that you have the credentials for this. The result should
+be available in testflight.
+
+Please refer to the ios build section to provide any options that
+you'd like. If `IPA` was already built, it'll be used.
+
+For instance:
+
+```
+bundle exec fastlane ios publish_store \
+    tag:1.0.0-rc.11 \
+    app:monujo rev:1
+```
+
+.. will build iOS packages (IPA) from source code of tag `1.0.0-rc.11`
+with the added revision 1 in the iOS version code, only for the
+application "monujo" and send this release to testflight.
