@@ -28,6 +28,17 @@ module Fastlane
               end
             end
           end
+          if platform == :ios
+            dir = 'ios/App/App/Assets.xcassets/Splash.imageset'
+
+            ## Bug workaround? Cordova-res seems to produce splash screen images
+            ## in 2732x2732 which are rejected
+            sh "sips -z 1334 1334 #{dir}/splash-2732x2732.png --out #{dir}/splash-1334x1334.png"
+
+            Dir.glob("ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732*.png").each do |file|
+              File.delete(file)
+            end
+          end
 
         end
       end
