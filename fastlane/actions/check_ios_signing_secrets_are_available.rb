@@ -10,7 +10,7 @@ module Fastlane
 
         api_key = params[:api_key] || ENV["API_KEY"]
 
-        if api_key
+        if api_key and api_key != ""
           UI.message "Found and using App Store Connect Key in environment"
         else
           api_key_path = params[:api_key_path] ||
@@ -40,7 +40,11 @@ Note that, by default, a keystore file is looked up in:
 "
         end
 
-        key_json = JSON.parse api_key
+        begin
+          key_json = JSON.parse api_key
+        rescue
+          UI.user_error! "Invalid JSON as API key provided (JSON parsing failed)."
+        end
         key = {
           key_id: key_json["key_id"],
           issuer_id: key_json["issuer_id"],
