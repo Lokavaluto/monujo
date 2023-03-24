@@ -268,7 +268,6 @@ private_lane :send_github do |options|
     name: title,
     tag_name: tag,
     description: changelog.join,
-    commitish: "master",
     upload_assets: to_publish,
     overwrite_existing_assets: options[:overwrite_existing_assets],
     is_draft: options[:draft],

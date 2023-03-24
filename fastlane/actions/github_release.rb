@@ -26,7 +26,6 @@ module Fastlane
         }
         payload['name'] = params[:name] if params[:name]
         payload['body'] = params[:description] if params[:description]
-        payload['target_commitish'] = params[:commitish] if params[:commitish]
 
         json = self.get(repo_name, tag_name, server_url, api_token, api_bearer)
         if ! json
