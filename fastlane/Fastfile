@@ -474,6 +474,8 @@ platform :ios do
       UI.message sh('git diff ios', print_command_output: false)
     end
 
+    ## Create temporary keychain for CI
+    setup_ci if ENV['CI']
     match(type: "appstore", app_identifier: app_id, readonly: true)
 
     build_app(
