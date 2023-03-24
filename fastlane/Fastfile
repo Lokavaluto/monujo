@@ -261,6 +261,13 @@ private_lane :_publish_github do |options|
 end
 
 
+desc "Publish Store"
+private_lane :_publish_store do |options|
+  _prepublish options
+  send_store options
+end
+
+
 desc "Send Github"
 private_lane :_send_github do |options|
   repository_name = options[:github_repository] || ENV["GITHUB_REPOSITORY"]
@@ -306,7 +313,11 @@ platform :android do
     _publish_github options
   end
 
-  private_lane :send_stores do |options|
+  lane :publish_store do |options|
+    _publish_store options
+  end
+
+  private_lane :send_store do |options|
     UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
   end
 
@@ -406,8 +417,45 @@ platform :ios do
     _publish_github options
   end
 
-  private_lane :send_stores do |options|
-    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+  lane :publish_store do |options|
+    _publish_store options
+  end
+
+  private_lane :send_store do |options|
+    to_publish.each do |path, label|
+      app = "#{path}".split('/')[-1] \
+              .split('_')[0]
+
+      ## XXXvlab: duplicate transformation for iOS (see version_prepare)
+      load_app_data app: app
+      build_number = lane_context[SharedValues::VERSION_CODE].to_s
+
+      ## Fetch existing version
+
+      app = Spaceship::ConnectAPI::App.find(
+        lane_context[SharedValues::APP_ID]
+      )
+      builds = Spaceship::ConnectAPI.get_builds(
+        filter: { app: app.id },
+        sort: "-uploadedDate",
+        includes: "preReleaseVersion"
+      )
+      versions = builds.map { |build| build.version }
+
+      already_uploaded = versions.include?(build_number)
+      if already_uploaded
+        UI.user_error!(
+          "Current IPA with same build number (" +
+          lane_context[SharedValues::VERSION_CODE].to_s +
+          ") is already on testflight. You must build a new IPA with a " +
+          "new build number."
+        )
+      end
+      upload_to_testflight(
+        app_identifier: lane_context[SharedValues::APP_ID],
+        ipa: path,
+      )
+    end
   end
 
   private_lane :prepare_mobile_package do |options|
@@ -505,7 +553,7 @@ platform :web do
     _publish_github options
   end
 
-  private_lane :send_stores do |options|
+  lane :send_store do |options|
     UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
   end
 
