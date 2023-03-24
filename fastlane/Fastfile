@@ -1,7 +1,7 @@
 
 
 to_publish = Hash.new
-
+publish_metadata = Hash.new
 
 desc "Produce final bundled javascript and css"
 private_lane :build_web_pack do |options|
@@ -230,19 +230,39 @@ private_lane :_prepare_mobile_package do |options|
 end
 
 
+desc "Build all assets needed for publication"
+private_lane :_prepublish do |options|
+  build options
+  changelog options if options[:changelog]
+  publish_metadata["tag"] = lane_context[SharedValues::VERSION_NAME]
+end
+
+
+desc "Make changelog for current release"
+lane :changelog do |options|
+  version_name_from_tag tag: options[:tag] unless lane_context[SharedValues::VERSION_NAME]
+  gen_changelog
+  tag = lane_context[SharedValues::VERSION_NAME]
+  if File.exist? "../release/#{tag}/CHANGELOG"
+    changelog = File.read("../release/#{tag}/CHANGELOG").lines
+    publish_metadata["title"] = (changelog.shift).strip
+    publish_metadata["changelog"] = changelog.join
+  else
+    publish_metadata["title"] = tag
+    publish_metadata["changelog"] = false
+  end
+end
+
+
 desc "Publish Github"
 private_lane :_publish_github do |options|
-  build options
-  gen_changelog
-  send_github options
+  _prepublish options
+  _send_github options
 end
 
 
 desc "Send Github"
-private_lane :send_github do |options|
-  tag = lane_context[SharedValues::VERSION_NAME]
-  changelog = File.read("../release/#{tag}/CHANGELOG").lines
-  title = (changelog.shift).strip
+private_lane :_send_github do |options|
   repository_name = options[:github_repository] || ENV["GITHUB_REPOSITORY"]
   if ! repository_name
     UI.message "No `github_repository` nor \$GITHUB_REPOSITORY environment variable set."
@@ -265,13 +285,13 @@ private_lane :send_github do |options|
   end
   github_release(
     repository_name: repository_name,
-    name: title,
-    tag_name: tag,
-    description: changelog.join,
+    name: publish_metadata["title"],
+    tag_name: publish_metadata["tag"],
+    description: publish_metadata["changelog"],
     upload_assets: to_publish,
     overwrite_existing_assets: options[:overwrite_existing_assets],
     is_draft: options[:draft],
-    is_prerelease: tag.include?("-rc."),
+    is_prerelease: publish_metadata["tag"].include?("-rc."),
   )
 end
 
@@ -473,7 +493,6 @@ platform :web do
 
   lane :build do |options|
     version_name_from_tag tag: options[:tag]
-    gen_changelog
 
     lane_context[SharedValues::APP_NAME] = "monujo"
     ## Load the platform dependent packaging
