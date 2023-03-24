@@ -9,9 +9,9 @@ jobs:
   release-matrix:
     strategy:
       matrix:
-        platform: [web, android]
+        platform: [web, android, ios]
     name: Github Release ${{ matrix.platform }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
     steps:
       - name: 🚚 Get code
         uses: actions/checkout@v2
@@ -32,14 +32,26 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-      - name: 🚚 Create assets and github release
+      - name: 🚚 Generate Web and Changelog
+        if: matrix.platform == 'web'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE }}
-          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
         run: |
           git fetch --unshallow --tags &&
           npm -g install semver &&
           pip install gitchangelog pystache &&
+          bundle exec fastlane ${{ matrix.platform }} publish_github draft:true changelog:true
+      - name: 🚚 Create Github release
+        if: matrix.platform != 'web'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ## ios build
+          MATCH_PASSWORD: ${{ secrets.IOS_MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          API_KEY: ${{ secrets.IOS_API_KEY }}
+          ## android build
+          KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+        run: |
           bundle exec fastlane ${{ matrix.platform }} publish_github draft:true
-
