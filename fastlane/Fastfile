@@ -74,7 +74,10 @@ private_lane :_build_apps do |options|
     load_app_data app: app
 
     ## Load the platform dependent packaging
-    package options
+    ## To do so, specify `package:false`
+    if options[:package].nil? or options[:package]
+      package options
+    end
 
     if options[:screenshot]
       _prepare_package if not Actions.lane_context[SharedValues::SANDBOX_PATH]
