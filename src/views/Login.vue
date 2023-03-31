@@ -41,8 +41,14 @@
               </span>
             </p>
           </div>
-          <div v-if="!$config?.hideResetPassword" class="forgot-password mb-4">
-            <button @click="openResetPasswordUrl()" type="button">
+          <div
+            v-if="!$config?.hideResetPassword && canResetPassword"
+            class="forgot-password mb-4"
+          >
+            <button
+              @click="$router.push({ name: 'Reset password' })"
+              type="button"
+            >
               {{ $gettext("Forgot password ?") }}
             </button>
           </div>
@@ -91,9 +97,16 @@
         success: "",
         biometryEnabled: false, // User preference
         biometryAvailable: false, // Biometry available and credential saved
+        canResetPassword: false,
       }
     },
     async mounted() {
+      try {
+        this.canResetPassword = await this.$lokapi.canResetPassword()
+      } catch (err: any) {
+        throw err
+      }
+
       this.biometryEnabled =
         (await this.hasBiometricCredentialsEnabled()) || false
       if (
@@ -106,9 +119,6 @@
       this.email = this.$persistentStore.get("loginEmail")
     },
     methods: {
-      openResetPasswordUrl(): void {
-        window.open(this.$store.getters.getOdooUrl() + "/web/reset_password")
-      },
       openSignupUrl(): void {
         window.open(this.$store.getters.getOdooUrl() + "/web/signup")
       },
