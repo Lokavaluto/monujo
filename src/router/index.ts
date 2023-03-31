@@ -6,6 +6,7 @@ import CreateMyAccount from "../views/CreateMyAccount.vue"
 import PendingAccounts from "../views/admin/PendingAccounts.vue"
 import PendingCredits from "../views/admin/PendingCredits.vue"
 import Prefs from "../views/Prefs.vue"
+import ResetPassword from "../views/ResetPassword.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     meta: { title: "Connection" },
     component: Login,
+  },
+  {
+    path: "/reset-password",
+    name: "Reset password",
+    meta: { title: "Ré-initialiser mon mot de passe" },
+    component: ResetPassword,
   },
   {
     path: "/create-account",
@@ -67,6 +74,7 @@ export function mkRouter(appName: string, store: any): any {
     if (
       to.name !== "Login" &&
       to.name !== "Carto" &&
+      to.name !== "Reset password" &&
       !store.getters.isAuthenticated
     )
       next({ name: "Carto" })
