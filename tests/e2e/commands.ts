@@ -171,6 +171,41 @@ Cypress.Commands.add("closeModal", () => {
     cy.get(".modal-card-head").find(".delete").click()
   })
 })
+Cypress.Commands.add("isSignupVisible", () => {
+  cy.get(".create-account").then(($element) => {
+    return $element.length > 0
+  })
+})
+Cypress.Commands.add("clickSignupButton", () => {
+  if (cy.isSignupVisible()) {
+    cy.get(".create-account").click()
+  }
+})
+Cypress.Commands.add("getSignupForm", () => {
+  return cy.get("form")
+})
+Cypress.Commands.add("getConfirmPasswordInput", () => {
+  return cy.get("#confirm-password")
+})
+Cypress.Commands.add("getPasswordInput", () => {
+  return cy.get("#password")
+})
+Cypress.Commands.add("getLastNameInput", () => {
+  return cy.get("#last-name")
+})
+Cypress.Commands.add("getFirstNameInput", () => {
+  return cy.get("#first-name")
+})
+Cypress.Commands.add("getEmailInput", () => {
+  return cy.get("#email")
+})
+Cypress.Commands.add("getButtonSubmit", () => {
+  return cy.get("button[type='submit']")
+})
+Cypress.Commands.add("getSignupSubmitError", () => {
+  return cy.get(".has-text-danger")
+})
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -209,6 +244,16 @@ declare global {
       getSwitch(): Chainable<JQuery<HTMLElement>>
       modal(): Chainable<JQuery<HTMLElement>>
       closeModal(): void
+      isSignupVisible(): boolean
+      clickSignupButton(): void
+      getSignupForm(): Chainable<JQuery<HTMLElement>>
+      getEmailInput(): Chainable<JQuery<HTMLElement>>
+      getFirstNameInput(): Chainable<JQuery<HTMLElement>>
+      getLastNameInput(): Chainable<JQuery<HTMLElement>>
+      getPasswordInput(): Chainable<JQuery<HTMLElement>>
+      getConfirmPasswordInput(): Chainable<JQuery<HTMLElement>>
+      getButtonSubmit(): Chainable<JQuery<HTMLElement>>
+      getSignupSubmitError(): Chainable<JQuery<HTMLElement>>
     }
   }
 }

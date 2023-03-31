@@ -123,3 +123,26 @@ describe("Visit public interface", () => {
     if (Cypress.env("screenshot")) cy.takeScreenshot("map")
   })
 })
+
+describe("Signup process", () => {
+  beforeEach(() => {
+    cy.visit("/")
+    cy.clickSignupButton()
+  })
+  it("Signup page show form", () => {
+    cy.url().should("include", "signup")
+    cy.getSignupForm().should("be.visible")
+    cy.getButtonSubmit().should("be.visible")
+  })
+  it("Signup with already existing email", () => {
+    cy.getSignupForm().within(() => {
+      cy.getEmailInput().type("vl_part1@0k.io")
+      cy.getFirstNameInput().type("FirstName")
+      cy.getLastNameInput().type("LastName")
+      cy.getPasswordInput().type("dev")
+      cy.getConfirmPasswordInput().type("dev")
+      cy.getButtonSubmit().click()
+      cy.getSignupSubmitError().should("be.visible")
+    })
+  })
+})
