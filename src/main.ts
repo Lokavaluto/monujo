@@ -112,8 +112,8 @@ fetchConfig("config.json").then(async (config: any) => {
   )
 
   lokApiService.requestLogin = async () => {
-    const lastUrlSegment = window.location.href.split("/").pop()
-    if (lastUrlSegment !== "carto" && lastUrlSegment !== "") {
+    const lastUrlSegment = window.location.href.split("/").pop() || ""
+    if (!["carto", "", "reset-password"].includes(lastUrlSegment)) {
       console.log("Login requested !")
       await store.dispatch("askLogOut")
       router.push("/")
