@@ -12,7 +12,7 @@ import "./polyfill"
 import mkStore from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { prefsStoreFactory } from "./store/prefs"
-
+import PasswordUtilsFactory from "./utils/password"
 // Services
 
 import {
@@ -113,7 +113,7 @@ fetchConfig("config.json").then(async (config: any) => {
 
   lokApiService.requestLogin = async () => {
     const lastUrlSegment = window.location.href.split("/").pop() || ""
-    if (!["carto", "", "reset-password"].includes(lastUrlSegment)) {
+    if (!["carto", "", "reset-password", "signup"].includes(lastUrlSegment)) {
       console.log("Login requested !")
       await store.dispatch("askLogOut")
       router.push("/")
@@ -249,8 +249,11 @@ fetchConfig("config.json").then(async (config: any) => {
     }
     return creds
   }
-
-  store.registerModule("lokapi", lokapiStoreFactory(lokApiService, gettext))
+  const passwordUtils = PasswordUtilsFactory(gettext)
+  store.registerModule(
+    "lokapi",
+    lokapiStoreFactory(lokApiService, passwordUtils)
+  )
   store.registerModule("prefs", prefsStoreFactory(prefsService))
 
   const app = createApp(App)
@@ -281,7 +284,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.globalProperties.$errorHandler = app.config.errorHandler
   app.config.globalProperties.$appInfo = { appName, appVersion }
   app.config.globalProperties.$modal = modal
-
+  app.config.globalProperties.$passwordUtils = passwordUtils
   const unwatch = store.watch(
     (state, getters) => getters.isAuthenticated,
     () => {

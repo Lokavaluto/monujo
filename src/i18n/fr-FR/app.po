@@ -26,7 +26,7 @@ msgstr "%{ appName } version %{ appVersion }"
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
-#: src/store/lokapi.ts:331
+#: src/utils/password.ts:8
 msgid "%{ nbChar } character"
 msgid_plural "%{ nbChar } characters"
 msgstr[0] "%{ nbChar } caractère"
@@ -75,6 +75,10 @@ msgstr "Tous les destinataires"
 #: src/components/TheTransactionList.vue:45
 msgid "All transactions"
 msgstr "Toutes les opérations"
+
+#: src/views/Signup.vue:162
+msgid "Already have an account ?"
+msgstr "Avez-vous déjà créé un compte ?"
 
 #: src/components/MoneyTransferModal.vue:147
 #: src/components/TheTransactionList.vue:383
@@ -202,6 +206,10 @@ msgstr "Configurer le code PIN"
 msgid "confirm"
 msgstr "valider"
 
+#: src/views/Signup.vue:127
+msgid "Confirm password"
+msgstr "Confirmez votre mot de passe"
+
 #: src/views/Login.vue:153
 msgid "Connection successful"
 msgstr "Connection réussie"
@@ -263,6 +271,7 @@ msgid "Edits were successfully saved"
 msgstr "Modifications enregistrées"
 
 #: src/views/Login.vue:16 src/views/ResetPassword.vue:23
+#: src/views/Signup.vue:29
 msgid "Email"
 msgstr "Courriel"
 
@@ -291,6 +300,10 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 msgid "Finalize order from your account"
 msgstr "Compléter la transaction dans mon espace personnel"
 
+#: src/views/Signup.vue:49
+msgid "Firstname"
+msgstr "Prénom"
+
 #: src/components/AuthPref.vue:22
 msgid "for account %{ name }"
 msgstr "pour le compte %{ name }"
@@ -315,9 +328,17 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
+#: src/views/Signup.vue:233
+msgid "Invalid email."
+msgstr "E-mail invalide."
+
 #: src/main.ts:223
 msgid "Language settings"
 msgstr "Préférences de langue"
+
+#: src/views/Signup.vue:73
+msgid "Lastname"
+msgstr "Nom"
 
 #: src/components/MoneyTransferModal.vue:373
 msgid "Later"
@@ -406,7 +427,7 @@ msgid "Operation canceled"
 msgstr "Opération annulée"
 
 #: src/components/CreateAccount.vue:81 src/components/CreateAccount.vue:93
-#: src/views/Login.vue:37
+#: src/views/Login.vue:37 src/views/Signup.vue:100
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -415,23 +436,23 @@ msgstr "Mot de passe"
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: src/store/lokapi.ts:339
+#: src/utils/password.ts:16
 msgid "Password must be at least %{ msgSizePassword } long"
 msgstr "Le mot de passe doit faire au moins %{ msgSizePassword }"
 
-#: src/store/lokapi.ts:347
+#: src/utils/password.ts:31
 msgid "Password should use at least one digit"
 msgstr "Le mot de passe doit contenir au moins un nombre"
 
-#: src/store/lokapi.ts:343
+#: src/utils/password.ts:23
 msgid "Password should use at least one lowercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre minuscule"
 
-#: src/store/lokapi.ts:349
+#: src/utils/password.ts:33
 msgid "Password should use at least one symbol"
 msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 
-#: src/store/lokapi.ts:345
+#: src/utils/password.ts:27
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 
@@ -475,6 +496,14 @@ msgstr ""
 "Veuillez saisir l'adresse e-mail associée à votre compte ci-dessous. Nous "
 "vous enverrons un e-mail avec des instructions pour réinitialiser votre mot "
 "de passe."
+
+#: src/views/Signup.vue:12
+msgid ""
+"Please fill in all the required fields below and click on Signup to create "
+"your account."
+msgstr ""
+"Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
+"pour créer votre compte."
 
 #: src/components/CreateAccount.vue:65
 msgid ""
@@ -582,7 +611,7 @@ msgstr "Se connecter"
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: src/views/Login.vue:66
+#: src/views/Login.vue:66 src/views/Signup.vue:146
 msgid "Sign up"
 msgstr "Créer un compte"
 
@@ -617,6 +646,15 @@ msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 #: src/components/MoneyCreditModal.vue:209
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
+
+#: src/views/Signup.vue:264
+msgid "The password and the password confirmation must be equal."
+msgstr ""
+"Le mot de passe et la confirmation du mot de passe doivent être identiques."
+
+#: src/views/Signup.vue:229 src/views/Signup.vue:240 src/views/Signup.vue:247
+msgid "This fiels can not be empty."
+msgstr "Ce champs est obligatoire."
 
 #: src/components/CreateAccount.vue:54
 msgid ""
@@ -699,6 +737,7 @@ msgstr ""
 "identifiants"
 
 #: src/views/Login.vue:172 src/views/ResetPassword.vue:74
+#: src/views/Signup.vue:213
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -729,6 +768,10 @@ msgstr "Utilisateur"
 #: src/views/admin/PendingAccounts.vue:159
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
+
+#: src/views/Signup.vue:211
+msgid "User or email already exist."
+msgstr "Utilisateur ou e-mail existe déjà."
 
 #: src/components/CreateAccount.vue:297
 msgid "Wallet already created"
@@ -786,6 +829,10 @@ msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 #: src/components/TheBankAccountList.vue:45
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
+
+#: src/views/Signup.vue:224
+msgid "Your account has been created successfully."
+msgstr "Votre compte a été créé avec succès."
 
 #: src/components/TheBankAccountList.vue:56
 msgid "your accounts"

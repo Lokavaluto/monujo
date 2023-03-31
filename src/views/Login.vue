@@ -60,10 +60,10 @@
                 </button>
               </p>
             </div>
-            <div v-if="!$config?.hideAccountCreate">
+            <div v-if="!$config?.hideAccountCreate && canSignup">
               <p class="control has-text-centered">
                 <button
-                  @click="openSignupUrl()"
+                  @click="$router.push({ name: 'Signup' })"
                   type="button"
                   class="button create-account"
                 >
@@ -98,10 +98,14 @@
         biometryEnabled: false, // User preference
         biometryAvailable: false, // Biometry available and credential saved
         canResetPassword: false,
+        canSignup: false,
       }
     },
     async mounted() {
+      const savedLoginEmail = this.$persistentStore.get("loginEmail")
+      if (savedLoginEmail) this.email = savedLoginEmail
       this.canResetPassword = await this.$lokapi.canResetPassword()
+      this.canSignup = await this.$lokapi.canSignup()
       this.biometryEnabled =
         (await this.hasBiometricCredentialsEnabled()) || false
       if (
@@ -111,12 +115,8 @@
         this.biometryAvailable = true
         await this.requestBiometricAuthentication()
       }
-      this.email = this.$persistentStore.get("loginEmail")
     },
     methods: {
-      openSignupUrl(): void {
-        window.open(this.$store.getters.getOdooUrl() + "/web/signup")
-      },
       async hasBiometricCredentialsEnabled() {
         return (await this.$localSettings.load())?.biometryEnabled
       },
