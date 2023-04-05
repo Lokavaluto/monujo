@@ -227,7 +227,6 @@
         step: 1,
         recipients: [],
         displayFavoritesOnly: false,
-        recipientsLoading: false,
         recipientsSearchString: "",
         transferOngoing: false,
         recipientsSearchError: false,
@@ -239,6 +238,8 @@
           balance: false,
           amount: false,
         },
+        nonce: 0,
+        lastNonceReceived: 0,
       }
     },
     mounted() {
@@ -253,22 +254,32 @@
           return currencyIds.indexOf(p.backendId) > -1
         })
       },
+      recipientsLoading(): boolean {
+        return this.nonce !== this.lastNonceReceived
+      },
     },
     methods: {
       async searchRecipients(): Promise<void> {
+        let requestNonce = ++this.nonce
         this.recipients = []
         this.recipientsSearchError = false
-        var recipients
+        let recipients
+        let error = false
         try {
-          this.recipientsLoading = true
           recipients = await this.$lokapi.searchRecipients(
             this.recipientsSearchString
           )
         } catch (err: any) {
-          this.recipientsSearchError = true
-          console.log("searchRecipients() Failed", err)
+          error = err
         }
-        this.recipientsLoading = false
+        if (requestNonce < this.lastNonceReceived) {
+          return // obsolete request
+        }
+        if (error) {
+          this.recipientsSearchError = true
+          console.log("searchRecipients() Failed", error)
+        }
+        this.lastNonceReceived = requestNonce
         this.recipients = this.displayFavoritesOnly
           ? recipients.filter((r: any) => r.is_favorite === true)
           : recipients
