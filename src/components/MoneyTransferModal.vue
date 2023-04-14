@@ -277,7 +277,7 @@
         }
         if (error) {
           this.recipientsSearchError = true
-          console.log("searchRecipients() Failed", err)
+          console.log("searchRecipients() Failed", error)
         }
         this.lastNonceReceived = requestNonce
         this.recipients = this.displayFavoritesOnly

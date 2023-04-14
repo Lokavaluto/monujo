@@ -59,6 +59,14 @@
               {{ selectedCreditAccount?.minCreditAmount }}
               {{ selectedCreditAccount?.curr || "" }}
             </div>
+            <div
+              v-if="selectedCreditAccount?.maxCreditAmount"
+              class="ml-2 min-credit-amount"
+            >
+              {{ $gettext("Maximum credit amount: ") }}
+              {{ selectedCreditAccount?.maxCreditAmount }}
+              {{ selectedCreditAccount?.curr || "" }}
+            </div>
             <div class="is-flex">
               <input
                 v-model.number="amount"
@@ -80,6 +88,12 @@
                 v-if="errors.minCreditAmount"
               >
                 {{ errors.minCreditAmount }}
+              </div>
+              <div
+                class="notification is-danger is-light"
+                v-if="errors.maxCreditAmount"
+              >
+                {{ errors.maxCreditAmount }}
               </div>
             </div>
           </div>
@@ -187,6 +201,7 @@
         amount: 0,
         errors: {
           minCreditAmount: false,
+          maxCreditAmount: false,
         },
         isTopUpButtonDisabled: true,
       }
@@ -213,6 +228,7 @@
       setSelectedCreditAccount(account: any): void {
         this.errors = {
           minCreditAmount: false,
+          maxCreditAmount: false,
         }
         this.selectedCreditAccount = account
       },
@@ -270,6 +286,7 @@
           minCreditAmount: false,
         }
         const minCreditAmount = this.selectedCreditAccount.minCreditAmount
+        const maxCreditAmount = this.selectedCreditAccount.maxCreditAmount
         if (this.amount <= minCreditAmount) {
           if (this.amount > 0 && this.amount == minCreditAmount) {
             this.isTopUpButtonDisabled = false
@@ -284,6 +301,17 @@
                   : minCreditAmount + " " + this.selectedCreditAccount?.curr,
             }
           )
+        } else {
+          this.isTopUpButtonDisabled = false
+        }
+        if (maxCreditAmount !== 0 && this.amount > maxCreditAmount) {
+          this.errors.maxCreditAmount = this.$gettext(
+            "The maximum top up amount must be equal or less than %{ amount }",
+            {
+              amount: maxCreditAmount + " " + this.selectedCreditAccount?.curr,
+            }
+          )
+          this.isTopUpButtonDisabled = true
         } else {
           this.isTopUpButtonDisabled = false
         }
