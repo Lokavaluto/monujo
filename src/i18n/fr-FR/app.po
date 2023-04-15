@@ -639,6 +639,15 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
+#: src/components/TheBankAccountList.vue:78
+msgid ""
+"The accounts listed below have been subjected to a creation request. Once "
+"the creation request is approved, these accounts will become usable."
+msgstr ""
+"Les comptes listés ci-dessous ont fait l'objet d'une demande de création. "
+"Une fois la demande de création approuvée, ces comptes deviendront "
+"utilisables."
+
 #: src/components/MoneyCreditModal.vue:218
 msgid "The maximum top up amount must be equal or less than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"

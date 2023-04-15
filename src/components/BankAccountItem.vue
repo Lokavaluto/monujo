@@ -1,5 +1,5 @@
 <template>
-  <div class="account">
+  <div class="account" :class="{ active }">
     <div class="custom-inner-card card px-5 py-2 is-flex">
       <div class="is-size-5 is-flex-grow-1">
         <slot name="name">default name</slot>
@@ -87,5 +87,14 @@
     border-radius: 43px !important;
     background-color: $inner-card-background-color;
     border: 1px solid $inner-card-border-color;
+  }
+  .account {
+    &:not(.active) {
+      opacity: 0.6;
+      .custom-inner-card {
+        border: 2px #eee solid;
+        box-shadow: none;
+      }
+    }
   }
 </style>
