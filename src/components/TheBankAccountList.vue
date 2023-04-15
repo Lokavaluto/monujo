@@ -73,6 +73,15 @@
       <h2 class="custom-card-title">
         {{ $gettext("your pending accounts") }}
       </h2>
+      <div class="mb-4 ml-5 is-italic">
+        {{
+          $gettext(
+            "The accounts listed below have been subjected to " +
+              "a creation request. Once the creation request is" +
+              " approved, these accounts will become usable."
+          )
+        }}
+      </div>
       <BankAccountItem
         v-for="account in inactiveVirtualAccounts"
         :bal="account.bal"
