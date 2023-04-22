@@ -9,12 +9,16 @@
         <button
           class="delete"
           aria-label="close"
-          @click="resetCredit(), $emit('close')"
+          @click="resetCredit(), close()"
         ></button>
       </header>
       <section class="modal-card-body">
         <div
-          v-if="creditOrderUrl.length === 0 && !showCreditRefreshNotification"
+          v-if="
+            creditOrderUrl.length === 0 &&
+            !showCreditRefreshNotification &&
+            $modal.step.value == 1
+          "
           class="custom-montant-input"
         >
           <div v-if="creditableMoneyAccounts.length > 1">
@@ -249,12 +253,14 @@
         this.showCreditRefreshNotification = true
       },
       closeAndRefresh(): void {
-        this.showCreditRefreshNotification = false
-        this.$emit("close")
+        this.close()
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
         this.$store.dispatch("resetTransactions")
-        this.$store.commit("setModalState", false)
+      },
+      close(): void {
+        this.showCreditRefreshNotification = false
+        this.$modal.close()
       },
       setFocus() {
         this.$nextTick(() => {

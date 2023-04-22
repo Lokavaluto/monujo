@@ -1,17 +1,13 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background"></div>
-    <template v-if="step === 1">
+    <template v-if="$modal.step.value == 1">
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
             {{ $gettext("Send money") }} - 1/2
           </p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="$emit('close')"
-          ></button>
+          <button class="delete" aria-label="close" @click="close()"></button>
         </header>
         <div class="search-area">
           <div
@@ -108,12 +104,11 @@
         </footer>
       </div>
     </template>
-
-    <template v-if="step === 2 && selectedRecipient">
+    <template v-if="$modal.step.value == 2 && selectedRecipient">
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
-            <a class="mr-3 is-flex" @click="step = 1">
+            <a class="mr-3 is-flex" @click="$modal.back()">
               <span class="icon has-text-white">
                 <fa-icon icon="arrow-left" class="fa-lg" />
               </span>
@@ -122,11 +117,7 @@
           <p class="modal-card-title is-title-shrink">
             {{ $gettext("Send money") }} - 2/2
           </p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="$emit('close')"
-          ></button>
+          <button class="delete" aria-label="close" @click="close()"></button>
         </header>
         <section class="modal-card-body">
           <div
@@ -224,7 +215,6 @@
     },
     data() {
       return {
-        step: 1,
         recipients: [],
         displayFavoritesOnly: false,
         recipientsSearchString: "",
@@ -291,7 +281,7 @@
           this.$store.getters.activeVirtualAccounts.find(
             (va: any) => va.currencyId === recipient.backendId
           )
-        this.step = 2
+        this.$modal.next()
         this.errors.balance = false
         this.errors.amount = false
         this.setFocusSend()
@@ -362,8 +352,7 @@
         }
         this.errors.balance = false
         this.errors.amount = false
-        this.$emit("close")
-
+        this.close()
         this.$msg.success(
           this.$gettext("Payment issued to %{ name }", {
             name: this.selectedRecipient.name,
@@ -401,10 +390,13 @@
         }
         await this.$store.dispatch("fetchAccounts")
         await this.$store.dispatch("resetTransactions")
+      },
+      close() {
         this.searchName = ""
         this.recipients = []
         this.amount = 0
         this.activeClass = 0
+        this.$modal.close()
       },
       setFocusSend() {
         this.$nextTick(() => {

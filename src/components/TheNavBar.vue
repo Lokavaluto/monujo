@@ -121,12 +121,7 @@
               <a v-if="cguUrl" :href="cguUrl" class="navbar-item">
                 {{ $gettext("Terms of Service") }}
               </a>
-              <a
-                @click="
-                  ;(showAboutModal = true), $store.commit('setModalState', true)
-                "
-                class="navbar-item"
-              >
+              <a @click="$modal.open('AboutModal')" class="navbar-item">
                 {{
                   $gettext("About %{ appName }", {
                     appName: $appInfo.appName,
@@ -145,23 +140,19 @@
       </div>
     </div>
   </nav>
-  <AboutModal v-if="showAboutModal" @close="showAboutModal = false" />
 </template>
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
   import { mapGetters } from "vuex"
-  import AboutModal from "@/components/AboutModal.vue"
+
   @Options({
     name: "TheNavBar",
-    components: {
-      AboutModal,
-    },
+    components: {},
     data() {
       return {
         showNav: false,
-        showAboutModal: false,
       }
     },
     methods: {
@@ -169,11 +160,6 @@
         this.$store.dispatch("askLogOut")
         this.$router.push({ name: "Login" })
         this.$auth.flush()
-      },
-    },
-    watch: {
-      $route(to, from) {
-        this.showAboutModal = false
       },
     },
     computed: {
