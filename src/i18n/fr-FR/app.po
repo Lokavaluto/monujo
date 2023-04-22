@@ -8,6 +8,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/components/AboutModal.vue:69
+msgid ""
+"%{ appName } is designed by %{ organizationName } an association whose goal "
+"is to develop, implement, and support the deployment of evolving and open-"
+"source information systems for organizations promoting local economic "
+"development."
+msgstr "%{ appName } a été conçu par %{ organizationName }, une association développant des outils open-source pour les acteurs de l'économie locale."
+
+#: src/components/AboutModal.vue:60
+msgid "%{ appName } version %{ appVersion }"
+msgstr "%{ appName } version %{ appVersion }"
+
 #: src/components/MoneyTransferModal.vue:396
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
@@ -27,6 +39,11 @@ msgstr[1] "%{ pinLength } chiffres"
 #: src/components/MoneyCreditModal.vue:90
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
+
+#: src/components/AboutModal.vue:84 src/components/TheNavBar.vue:105
+#: src/components/TheNavBar.vue:126
+msgid "About %{ appName }"
+msgstr "À propos de %{ appName }"
 
 #: src/components/TheNavBar.vue:102
 msgid "Account requests"
@@ -295,7 +312,7 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/main.ts:219
+#: src/main.ts:220
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -303,15 +320,15 @@ msgstr "Préférences de langue"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:101
+#: src/main.ts:102
 msgid "Log in"
 msgstr "Se connecter"
 
-#: src/main.ts:100
+#: src/main.ts:101
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:129
+#: src/main.ts:130
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -327,7 +344,7 @@ msgstr "Montant minimum à créditer : "
 msgid "month"
 msgstr "mois"
 
-#: src/main.ts:127
+#: src/main.ts:128
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -451,7 +468,7 @@ msgstr ""
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:126
+#: src/main.ts:127
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -483,7 +500,7 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:190
+#: src/main.ts:191
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
@@ -532,7 +549,7 @@ msgstr "Partager"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:128
+#: src/components/TheNavBar.vue:140
 msgid "Sign out"
 msgstr "Déconnexion"
 
