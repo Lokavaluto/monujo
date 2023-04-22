@@ -5,9 +5,7 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
-            @click="
-              ;(showTransferModal = true), $store.commit('setModalState', true)
-            "
+            @click="$modal.open('MoneyTransferModal')"
             class="
               button
               custom-button
@@ -56,9 +54,7 @@
               is-rounded
               action
             "
-            @click="
-              ;(showCreditModal = true), $store.commit('setModalState', true)
-            "
+            @click="$modal.open('MoneyCreditModal')"
           >
             <span class="icon-text">
               <span class="icon">
@@ -70,39 +66,18 @@
         </div>
       </div>
     </div>
-
-    <money-transfer-modal
-      v-if="showTransferModal"
-      @close="
-        ;(showTransferModal = false), $store.commit('setModalState', false)
-      "
-    />
-
-    <money-credit-modal
-      v-if="showCreditModal"
-      @close=";(showCreditModal = false), $store.commit('setModalState', false)"
-    />
   </div>
 </template>
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
 
-  import MoneyTransferModal from "./MoneyTransferModal.vue"
-  import MoneyCreditModal from "./MoneyCreditModal.vue"
-
   @Options({
     name: "TheDashboardFooter",
-    components: {
-      MoneyTransferModal,
-      MoneyCreditModal,
+    data: () => {
+      modalName: ""
     },
-    data() {
-      return {
-        showTransferModal: false,
-        showCreditModal: false,
-      }
-    },
+    components: {},
     computed: {
       hasActiveMoneyAccount(): boolean {
         return this.$store.getters.activeVirtualAccounts.length > 0

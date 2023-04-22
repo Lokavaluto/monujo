@@ -9,7 +9,7 @@
     >
       <TransactionListRecent />
     </div>
-    <div class="modal is-active" v-if="showModal">
+    <div class="modal is-active" v-if="$modal.modal.value == $options.name">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -19,18 +19,17 @@
           <button
             class="delete"
             aria-label="close"
-            @click="
-              ;(showModal = false),
-                (showCreditRefreshNotification = false),
-                $store.commit('setModalState', false)
-            "
+            @click="$modal.back()"
           ></button>
         </header>
-        <section class="modal-card-body custom-card-transactions">
+        <section
+          v-if="$modal.step.value == 1"
+          class="modal-card-body custom-card-transactions"
+        >
           <div
             class="modal-container custom-modal-container"
             ref="transactionsContainer"
-            @scroll="handleScroll"
+            @scroll="fetchNextTransactions"
           >
             <div
               class="
@@ -66,7 +65,7 @@
                 action
               "
               :title="$gettext('Export all transactions')"
-              @click=";(this.showModal = false), (this.showExportModal = true)"
+              @click="$modal.next()"
             >
               <i class="ml-2 fas icon fa-file-export">
                 <fa-icon icon="file-export"
@@ -76,14 +75,7 @@
           </div>
         </footer>
       </div>
-    </div>
-    <div
-      class="modal is-active"
-      v-if="showExportModal"
-      @click="datePickerShow = false"
-    >
-      <div class="modal-background"></div>
-      <div class="modal-card">
+      <div class="modal-card" v-if="$modal.step.value == 2">
         <div class="transactions-loader">
           <loading
             v-model:active="isAllTransactionsLoading"
@@ -98,7 +90,7 @@
           <button
             class="delete"
             aria-label="close"
-            @click=";(showExportModal = false), (showModal = true)"
+            @click="$modal.back()"
           ></button>
         </header>
         <section class="modal-card-body custom-card-transactions">
@@ -241,7 +233,7 @@
     </div>
     <div v-if="lastTransactions?.length" class="has-text-centered mt-5">
       <button
-        @click=";(showModal = true), $store.commit('setModalState', true)"
+        @click="$modal.open(this.$options.name), fetchNextTransactions()"
         class="button custom-button custom-inverted"
       >
         {{ $gettext("See more") }}
@@ -281,10 +273,8 @@
 
     data() {
       return {
-        showModal: false,
         isAllTransactionsLoading: false,
         selectExportLoader: null,
-        showExportModal: false,
         exportDate: [null, null],
         shortcutExport: null,
         datePickerShow: false,
@@ -328,26 +318,14 @@
       ]),
       ...mapGetters(["numericFormat", "dateFormat"]),
     },
-    watch: {
-      showModal(newval: boolean, oldval: boolean) {
-        if (newval) {
-          this.$nextTick(() => {
-            let div = this.$refs.transactionsContainer
-            if (div.scrollTop === div.scrollHeight - div.offsetHeight) {
-              this.$store.dispatch("fetchTransactionsBatch")
-            }
-          })
-        }
-      },
-    },
     methods: {
-      handleScroll(evt: any) {
-        if (
-          evt.target.scrollTop ===
-          evt.target.scrollHeight - evt.target.offsetHeight
-        ) {
-          this.$store.dispatch("fetchTransactionsBatch")
-        }
+      fetchNextTransactions: function () {
+        this.$nextTick(() => {
+          let div = this.$refs.transactionsContainer
+          if (div.scrollTop === div.scrollHeight - div.offsetHeight) {
+            this.$store.dispatch("fetchTransactionsBatch")
+          }
+        })
       },
 
       async createCsvFile() {
@@ -439,6 +417,7 @@
           )
           throw e
         }
+        this.$modal.close()
         this.$msg.success(this.$gettext("Transaction list downloaded"))
       },
       async shareCsvFile() {
@@ -463,6 +442,7 @@
           )
           throw e
         }
+        this.$modal.close()
         this.$msg.success(this.$gettext("Transaction list shared"))
       },
       normalizeEndDate() {

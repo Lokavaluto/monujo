@@ -9,7 +9,7 @@
         <button
           class="delete"
           aria-label="close"
-          @click="$emit('close'), $store.commit('setModalState', false)"
+          @click="$modal.close()"
         ></button>
       </header>
 

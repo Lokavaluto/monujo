@@ -26,24 +26,18 @@ export default async function mkStore(localesConfig: any, gettext: any) {
   const store = createStore({
     state: {
       showCredit: false,
-      isModalOpen: false,
       numericFormatLanguage: false,
       dateFormatLanguage: false,
       datePickerLanguage: false,
       requestLoadingAfterCreds: false,
     },
     mutations: {
-      setModalState(state: any, modalState: boolean) {
-        state.isModalOpen = modalState
-      },
-
       setRequestLoadingAfterCreds(
         state: any,
         requestLoadingAfterCreds: boolean
       ) {
         state.requestLoadingAfterCreds = requestLoadingAfterCreds
       },
-
       setNumericFormatLanguage(state: any, numericFormatLanguage: string) {
         state.numericFormatLanguage = numericFormatLanguage
       },
