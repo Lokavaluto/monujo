@@ -80,7 +80,8 @@ fetchConfig("config.json").then(async (config: any) => {
     throw new Error("Please specify lokapiHost in 'config.json'")
   }
 
-  const defaultAppName = require("../package.json").name
+  const appName = config.appName || require("../package.json").name
+  const appVersion = require("../package.json").version
   const dialog = new Dialog()
   const lokApiService = new LokAPI(config.lokapiHost, config.lokapiDb)
   const localSettings = new PersistentConfigStore(
@@ -89,7 +90,7 @@ fetchConfig("config.json").then(async (config: any) => {
   )
   const gettext = await mkGettext(config?.locales || {}, localSettings || {})
   const store = await mkStore(config?.locales || {}, gettext)
-  const router = mkRouter(config.appName || defaultAppName, store)
+  const router = mkRouter(appName, store)
 
   const { $gettext } = gettext
   const biometry = new Biometry(
@@ -275,6 +276,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.globalProperties.$prefs = prefsService
   app.config.globalProperties.$export = new ExportService(gettext)
   app.config.globalProperties.$errorHandler = app.config.errorHandler
+  app.config.globalProperties.$appInfo = { appName, appVersion }
 
   const unwatch = store.watch(
     (state, getters) => getters.isAuthenticated,
