@@ -395,7 +395,7 @@
             sender,
             receiver,
             amount: this.numericFormat(e.amount),
-            date: this.dateFormat(e.date),
+            date: moment(e.date).format("YYYY-MM-DD HH:mm:ss"),
             description: e.description || "",
           }
 
