@@ -32,7 +32,7 @@
                 mb-2
               "
             >
-              <div class="mb-2">
+              <div class="mb-1">
                 <strong>{{ $gettext("Select timespan:") }}</strong>
               </div>
               <div class="datepicker-export">
@@ -114,6 +114,35 @@
                   </template>
                 </date-picker>
               </div>
+              <div class="mb-1 mt-3">
+                <strong>{{ $gettext("Select recipient:") }}</strong>
+              </div>
+              <div class="recipient-filter is-flex is-flex-direction-row">
+                <div class="recipient-filter-input">
+                  <model-list-select
+                    :list="
+                      recipientList.map((name, index) => ({ name, index }))
+                    "
+                    option-value="index"
+                    option-text="name"
+                    v-model="selectedRecipient"
+                    :placeholder="$gettext('All recipient')"
+                    @searchchange="onSearch"
+                  >
+                  </model-list-select>
+                </div>
+                <div>
+                  <button
+                    class="recipient-filter-reset"
+                    :class="{ disable: !selectedRecipient?.name }"
+                    @click="resetRecipientSearch"
+                  >
+                    <fa-icon v-if="selectedRecipient?.name" icon="fa-xmark">
+                    </fa-icon>
+                    <fa-icon v-else icon="fa-user"></fa-icon>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -193,17 +222,17 @@
               @click="shareCsvFile()"
               :disabled="isTransactionsLoading"
             >
-                <span v-if="isTransactionsLoading" class="icon">
-                  <fa-icon
-                    icon="fa-circle-notch"
-                    :class="{ refreshing: isTransactionsLoading }"
-                    class="fa-lg"
-                  />
-                </span>
-                <span v-else class="icon">
-                  <fa-icon icon="fa-share" class="fa-lg" />
-                </span>
-                <span>{{ $gettext("Share") }}</span>
+              <span v-if="isTransactionsLoading" class="icon">
+                <fa-icon
+                  icon="fa-circle-notch"
+                  :class="{ refreshing: isTransactionsLoading }"
+                  class="fa-lg"
+                />
+              </span>
+              <span v-else class="icon">
+                <fa-icon icon="fa-share" class="fa-lg" />
+              </span>
+              <span>{{ $gettext("Share") }}</span>
             </button>
           </span>
         </footer>
@@ -231,6 +260,7 @@
   import Loading from "vue-loading-overlay"
   import DatePicker from "vue-datepicker-next"
 
+  import { ModelListSelect } from "vue-search-select"
   import { Capacitor } from "@capacitor/core"
   import moment from "moment"
 
@@ -240,6 +270,7 @@
   // Assets
 
   import "vue-datepicker-next/index.css"
+  import "vue-search-select/dist/VueSearchSelect.css"
   import "@/assets/datepicker.scss"
 
   import { mapModuleState } from "@/utils/vuex"
@@ -251,6 +282,7 @@
       Loading,
       DatePicker,
       TransactionItem,
+      ModelListSelect,
     },
 
     data() {
@@ -270,7 +302,13 @@
         transactions: [],
         isTransactionsBatchLoading: false,
         isTransactionsLoading: false,
+        recipientList: [],
+        recipientsSearchString: "",
+        selectedRecipient: {},
       }
+    },
+    async mounted() {
+      this.recipientList = await this.searchRecipients("")
     },
     computed: {
       getPlatform(): string {
@@ -463,15 +501,45 @@
       },
       async *getTransactions() {
         const gen = this.$lokapi.getTransactions()
+
         const [dateBegin, dateEnd] = this.exportDate
+        const selectedRecipientName = this.selectedRecipient?.name
+
         for await (const t of gen) {
+          if (selectedRecipientName && selectedRecipientName !== t.related)
+            continue
           if (dateBegin && t.date < dateBegin) break
           if (dateEnd && t.date > dateEnd) continue
           yield t
         }
       },
+      async searchRecipients(recipientsSearchString: string): Promise<any[]> {
+        let recipients = null
+        try {
+          recipients = await this.$lokapi.searchRecipients(
+            recipientsSearchString
+          )
+        } catch (err: any) {
+          console.log("searchRecipients() Failed", err)
+          return []
+        }
+        return [...new Set(recipients.map((r: any) => r.name))]
+      },
+      async onSearch(recipientsSearchString: any) {
+        if (recipientsSearchString.length > 2)
+          this.recipientList = await this.searchRecipients(
+            recipientsSearchString
+          )
+      },
+      async resetRecipientSearch(event: any) {
+        this.selectedRecipient = {}
+        this.recipientList = await this.searchRecipients("")
+      },
     },
     watch: {
+      selectedRecipient: async function (newRecipient): Promise<void> {
+        this.resetTransactionsGen()
+      },
       exportDate: async function (newExportDate): Promise<void> {
         let [newBegin, newEnd] = newExportDate
         const [normBegin, normEnd] = [
@@ -531,5 +599,28 @@
   }
   .filter-area {
     background: #f0faf9;
+  }
+  .recipient-filter {
+    width: 59%;
+  }
+  .recipient-filter-reset {
+    position: relative;
+    right: 1.5em;
+    top: 0.7em;
+    opacity: 0.5;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    z-index: 99;
+  }
+  .recipient-filter-input {
+    width: 100%;
+  }
+  .ui.fluid.dropdown > .dropdown.icon {
+    display: none;
+  }
+  button.disable {
+    pointer-events: none;
   }
 </style>
