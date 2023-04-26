@@ -33,7 +33,7 @@
                 mb-2
               "
             >
-              <div class="mb-2">
+              <div class="mb-1">
                 <strong>{{ $gettext("Select timespan:") }}</strong>
               </div>
               <div class="datepicker-export">
@@ -122,6 +122,34 @@
                     </div>
                   </template>
                 </date-picker>
+              </div>
+              <div class="mb-1 mt-3">
+                <strong>{{ $gettext("Select recipient:") }}</strong>
+              </div>
+              <div class="recipien-filter is-flex is-flex-direction-row">
+                <div class="recipien-filter-input">
+                  <model-list-select
+                    :list="recipientList"
+                    option-value="index"
+                    option-text="name"
+                    v-model="selectedRecipient"
+                    :placeholder="$gettext('All recipient')"
+                    @searchchange="onSearch"
+                  >
+                  </model-list-select>
+                </div>
+                <div>
+                  <button
+                    class="recipien-filter-reset"
+                    @click="resetRecipientSearch"
+                    @mouseover="recipientIcon = 'fa-xmark'"
+                    @mouseleave="recipientIcon = 'fa-user'"
+                  >
+                    <fa-icon v-if="selectedRecipient?.name" icon="fa-xmark">
+                    </fa-icon>
+                    <fa-icon v-else icon="fa-user"></fa-icon>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -253,6 +281,7 @@
   import Loading from "vue-loading-overlay"
   import DatePicker from "vue-datepicker-next"
 
+  import { ModelListSelect } from "vue-search-select"
   import { Capacitor } from "@capacitor/core"
   import moment from "moment"
 
@@ -262,6 +291,7 @@
   // Assets
 
   import "vue-datepicker-next/index.css"
+  import "vue-search-select/dist/VueSearchSelect.css"
   import "@/assets/datepicker.scss"
 
   import { mapModuleState } from "@/utils/vuex"
@@ -272,6 +302,7 @@
       Loading,
       DatePicker,
       TransactionItem,
+      ModelListSelect,
     },
 
     data() {
@@ -295,7 +326,14 @@
         filteredTransactions: [],
         isTransactionsBatchLoading: false,
         isTransactionsDownloading: false,
+        recipientList: [],
+        recipientsSearchString: "",
+        selectedRecipient: {},
+        _selectedRecipient: {},
       }
+    },
+    async mounted() {
+      this.recipientList = await this.searchRecipients("")
     },
     computed: {
       getPlatform(): string {
@@ -325,6 +363,13 @@
       ]),
       ...mapGetters(["numericFormat", "dateFormat"]),
     },
+    watch: {
+      selectedRecipient(newval: any, oldval: any) {
+        if (newval) {
+          this.getNextFilteredTransactions()
+        }
+      },
+    },
     methods: {
       fetchNextTransactions: function () {
         this.$nextTick(async () => {
@@ -348,8 +393,10 @@
             next = await gen.next()
             if (next.done) break
             if (
-              (!dateBegin.isValid() && !dateBegin.isValid()) ||
-              moment(next.value.date).isBetween(dateBegin, dateEnd)
+              ((!dateBegin.isValid() && !dateBegin.isValid()) ||
+                moment(next.value.date).isBetween(dateBegin, dateEnd)) &&
+              (!this.selectedRecipient.name ||
+                this.selectedRecipient?.name === next.value.related)
             ) {
               transactions.push(<any>next.value)
             }
@@ -483,8 +530,10 @@
             next = await this.filteredTransactionsGen.next()
             if (next.done) break
             if (
-              (!dateBegin.isValid() && !dateEnd.isValid()) ||
-              moment(next.value.date).isBetween(dateBegin, dateEnd)
+              ((!dateBegin.isValid() && !dateEnd.isValid()) ||
+                moment(next.value.date).isBetween(dateBegin, dateEnd)) &&
+              (!this.selectedRecipient.name ||
+                this.selectedRecipient?.name === next.value.related)
             ) {
               transactionsIndex++
               transactions.push(<any>next.value)
@@ -511,12 +560,39 @@
         if (
           !this.filteredTransactionsGen ||
           this.dateFormat(_dateBegin) !== this.dateFormat(dateBegin) ||
-          this.dateFormat(_dateEnd) !== this.dateFormat(dateEnd)
+          this.dateFormat(_dateEnd) !== this.dateFormat(dateEnd) ||
+          this._selectedRecipient !== this.selectedRecipient
         ) {
           this.filteredTransactionsGen = this.$lokapi.getTransactions()
           this.filteredTransactions = []
           this._exportDate = [...this.exportDate]
+          this._selectedRecipient = this.selectedRecipient
         }
+      },
+      async searchRecipients(recipientsSearchString: string): Promise<any[]> {
+        let recipients = null
+        let recipientList: any[] = []
+        try {
+          recipients = await this.$lokapi.searchRecipients(
+            recipientsSearchString
+          )
+        } catch (err: any) {
+          console.log("searchRecipients() Failed", err)
+        }
+        recipients.map((recipient: any, index: number) => {
+          recipientList.push({ index: index, name: recipient.name })
+        })
+        return recipientList
+      },
+      async onSearch(recipientsSearchString: any) {
+        if (recipientsSearchString.length > 2)
+          this.recipientList = await this.searchRecipients(
+            recipientsSearchString
+          )
+      },
+      async resetRecipientSearch(event: any) {
+        this.selectedRecipient = {}
+        this.recipientList = await this.searchRecipients("")
       },
     },
   })
@@ -561,5 +637,25 @@
   }
   .filter-area {
     background: #f0faf9;
+  }
+  .recipien-filter {
+    width: 59%;
+  }
+  .recipien-filter-reset {
+    position: relative;
+    right: 1.5em;
+    top: 0.7em;
+    opacity: 0.5;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    z-index: 99;
+  }
+  .recipien-filter-input {
+    width: 100%;
+  }
+  .ui.fluid.dropdown > .dropdown.icon {
+    display: none;
   }
 </style>
