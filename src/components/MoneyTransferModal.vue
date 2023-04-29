@@ -475,8 +475,4 @@
     border: none;
     cursor: pointer;
   }
-  .custom-heavy-line-separator {
-    height: 8px;
-    background: rgba(0, 0, 0, 0.05);
-  }
 </style>

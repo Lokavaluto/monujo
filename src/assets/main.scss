@@ -197,9 +197,7 @@ body {
 .modal-card-head {
   background: $color-2;
 }
-.modal-container {
-  max-height: 70vh;
-}
+
 /*
  * The following styles are auto-applied to elements with
  * transition="modal" when their visibility is toggled
@@ -211,12 +209,6 @@ body {
 
 .modal-leave-active {
   opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 
 :not(.modal).is-active span {
@@ -284,27 +276,8 @@ body {
   }
 }
 
-.modal-container {
-  width: 100%;
-  margin: 0px auto;
-  /* border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
-  /*  transition: all 0.3s ease; */
-  overflow-y: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 .custom-card-transactions {
-  overflow-y: hidden !important;
   max-height: calc(70vh - 60px) !important;
-}
-.custom-modal-container {
-  max-height: calc(70vh - 65px) !important;
 }
 
 // Custom form elements
@@ -390,4 +363,8 @@ input {
 }
 .refreshing {
   animation: rotate 0.6s linear infinite;
+}
+.custom-heavy-line-separator {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.05);
 }

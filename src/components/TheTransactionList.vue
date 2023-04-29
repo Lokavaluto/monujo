@@ -22,79 +22,14 @@
             @click="$modal.back()"
           ></button>
         </header>
-        <section
-          v-if="$modal.step.value == 1"
-          class="modal-card-body custom-card-transactions"
-        >
-          <div
-            class="modal-container custom-modal-container"
-            ref="transactionsContainer"
-            @scroll="fetchNextTransactions"
-          >
+        <div class="filter-area">
+          <div class="ml-2 mt-2" ref="transactionsContainer">
             <div
               class="
-                custom-card
                 is-flex-direction-column
                 is-align-items-center
                 is-justify-content-space-between
-                mb-4
-              "
-            >
-              <TransactionListFull />
-            </div>
-          </div>
-        </section>
-        <footer
-          class="modal-card-foot custom-modal-card-foot is-justify-content-end"
-        >
-          <div>
-            <button
-              class="
-                button
-                custom-button
-                is-pay
-                has-text-weight-medium
-                is-rounded
-                action
-              "
-              :title="$gettext('Export all transactions')"
-              @click="$modal.next()"
-            >
-              <i class="ml-2 fas icon fa-file-export">
-                <fa-icon icon="file-export"
-              /></i>
-              <span>{{ $gettext("Export") }}</span>
-            </button>
-          </div>
-        </footer>
-      </div>
-      <div class="modal-card" v-if="$modal.step.value == 2">
-        <div class="transactions-loader">
-          <loading
-            v-model:active="isAllTransactionsLoading"
-            :can-cancel="false"
-            :is-full-page="false"
-          />
-        </div>
-        <header class="modal-card-head">
-          <p class="modal-card-title is-title-shrink">
-            <span class="ml-2">{{ $gettext("Export in CSV format") }}</span>
-          </p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="$modal.back()"
-          ></button>
-        </header>
-        <section class="modal-card-body custom-card-transactions">
-          <div class="modal-container custom-modal-container">
-            <div
-              class="
-                custom-card
-                is-flex-direction-column
-                is-align-items-center
-                is-justify-content-space-between
-                mb-4
+                mb-2
               "
             >
               <div class="mb-2">
@@ -107,7 +42,6 @@
                   range
                   prefix-class="xmx"
                   :editable="false"
-                  @close="normalizeEndDate"
                   :placeholder="$gettext('All transactions')"
                   @clear="
                     () => {
@@ -123,7 +57,9 @@
                     <div>
                       <div
                         v-for="selector in selectorsOrder"
-                        :class="{ selected: selector == selectedTimeSpanType }"
+                        :class="{
+                          selected: selector == selectedTimeSpanType,
+                        }"
                         class="timespan"
                       >
                         <button
@@ -180,49 +116,106 @@
               </div>
             </div>
           </div>
+          <div
+            class="
+              mt-3is-flex
+              is-justify-content-space-evenly is-align-items-center
+            "
+          ></div>
+          <div class="container is-fluid custom-heavy-line-separator"></div>
+        </div>
+        <section
+          class="modal-card-body custom-card-transactions"
+          ref="transactionsContainer"
+          @scroll="getNextFilteredTransactions"
+        >
+          <div
+            class="
+              custom-card
+              is-flex-direction-column
+              is-align-items-center
+              is-justify-content-space-between
+              mb-4
+            "
+          >
+            <TransactionItem
+              v-if="transactions.length > 0"
+              v-for="transaction in transactions"
+              :key="transaction"
+              :transaction="transaction"
+            />
+            <div
+              v-if="transactions.length == 0 && !isTransactionsBatchLoading"
+              class="is-flex is-align-items-center is-justify-content-center"
+            >
+              {{ $gettext("No transaction found") }}
+            </div>
+            <div
+              class="transactions-loader-container"
+              v-if="isTransactionsBatchLoading"
+            >
+              <loading
+                v-model:active="isTransactionsBatchLoading"
+                :can-cancel="false"
+                :is-full-page="false"
+                :width="30"
+                :height="30"
+              />
+            </div>
+          </div>
         </section>
         <footer
-          class="
-            modal-card-foot
-            custom-modal-card-foot
-            is-justify-content-flex-end
-          "
+          class="modal-card-foot custom-modal-card-foot is-justify-content-end"
         >
           <span v-if="getPlatform === 'web'" class="mr-2"
             ><button
               class="button custom-button-modal has-text-weight-medium"
-              :title="$gettext('Export all transactions')"
+              :title="$gettext('Download transactions')"
               @click="downloadCsvFile()"
-              :disabled="isAllTransactionsLoading"
+              :disabled="isTransactionsLoading"
             >
-              <span class="fa-download">
-                <span class="icon">
-                  <fa-icon icon="fa-download" class="fa-lg" />
-                </span>
-                <span>{{ $gettext("Download") }}</span>
+              <span v-if="isTransactionsLoading" class="icon">
+                <fa-icon
+                  icon="fa-circle-notch"
+                  :class="{ refreshing: isTransactionsLoading }"
+                  class="fa-lg"
+                />
               </span>
+              <span v-else class="icon">
+                <fa-icon icon="fa-download" class="fa-lg" />
+              </span>
+              <span>{{ $gettext("Download") }}</span>
             </button></span
           ><span v-else class="ml-2"
             ><button
               class="button custom-button-modal has-text-weight-medium"
-              :title="$gettext('Send transactions')"
+              :title="$gettext('Share transactions')"
               @click="shareCsvFile()"
-              :disabled="isAllTransactionsLoading"
+              :disabled="isTransactionsLoading"
             >
-              <span class="fa-share">
-                <span class="icon">
+                <span v-if="isTransactionsLoading" class="icon">
+                  <fa-icon
+                    icon="fa-circle-notch"
+                    :class="{ refreshing: isTransactionsLoading }"
+                    class="fa-lg"
+                  />
+                </span>
+                <span v-else class="icon">
                   <fa-icon icon="fa-share" class="fa-lg" />
                 </span>
                 <span>{{ $gettext("Share") }}</span>
-              </span>
             </button>
           </span>
         </footer>
       </div>
     </div>
-    <div v-if="lastTransactions?.length" class="has-text-centered mt-5">
+
+    <div
+      v-if="!transactionsLoading && lastTransactions?.length"
+      class="has-text-centered mt-5"
+    >
       <button
-        @click="$modal.open(this.$options.name), fetchNextTransactions()"
+        @click="$modal.open(this.$options.name), resetTransactionsGen()"
         class="button custom-button custom-inverted"
       >
         {{ $gettext("See more") }}
@@ -242,7 +235,7 @@
   import moment from "moment"
 
   import TransactionListRecent from "./TransactionListRecent.vue"
-  import TransactionListFull from "./TransactionListFull.vue"
+  import TransactionItem from "./TransactionItem.vue"
 
   // Assets
 
@@ -255,17 +248,15 @@
     name: "TheTransactionList",
     components: {
       TransactionListRecent,
-      TransactionListFull,
       Loading,
       DatePicker,
+      TransactionItem,
     },
 
     data() {
       return {
-        isAllTransactionsLoading: false,
         selectExportLoader: null,
-        exportDate: [null, null],
-        shortcutExport: null,
+        exportDate: ["", ""],
         datePickerShow: false,
         selectorLabels: {
           day: this.$gettext("day"),
@@ -276,6 +267,9 @@
         selectorsOrder: ["day", "week", "month", "year"],
         selectedTimeSpanType: "",
         selectedTimeSpanOffset: 0,
+        transactions: [],
+        isTransactionsBatchLoading: false,
+        isTransactionsLoading: false,
       }
     },
     computed: {
@@ -307,26 +301,15 @@
       ...mapGetters(["numericFormat", "dateFormat"]),
     },
     methods: {
-      fetchNextTransactions: function () {
-        this.$nextTick(() => {
-          let div = this.$refs.transactionsContainer
-          if (div.scrollTop === div.scrollHeight - div.offsetHeight) {
-            this.$store.dispatch("fetchTransactionsBatch")
-          }
-        })
-      },
-
       async createCsvFile() {
         const transactions = []
         const [dateBegin, dateEnd] = this.exportDate
 
-        this.isAllTransactionsLoading = true
+        this.isTransactionsLoading = true
+
         try {
-          for await (const transaction of this.$lokapi.getTransactions({
-            ...(dateBegin && { dateBegin }),
-            ...(dateEnd && { dateEnd }),
-          })) {
-            transactions.push(<any>transaction)
+          for await (const t of this.getTransactions()) {
+            transactions.push(t)
           }
         } catch (e) {
           this.$msg.error(
@@ -336,8 +319,9 @@
           )
           throw e
         } finally {
-          this.isAllTransactionsLoading = false
+          this.isTransactionsLoading = false
         }
+
         let exportFileName
         if (dateBegin && dateEnd) {
           let dateBeginStr = moment(dateBegin).format("YYYY-MM-DD")
@@ -433,15 +417,76 @@
         this.$modal.close()
         this.$msg.success(this.$gettext("Transaction list shared"))
       },
-      normalizeEndDate() {
-        let [begin, end] = this.exportDate
-        this.exportDate = [
-          begin ? moment(begin).startOf("day").toDate() : null,
-          end ? moment(end).endOf("day").toDate() : null,
-        ]
-      },
       disabledDates(date: Date) {
         return date > moment().endOf("day").toDate()
+      },
+      async getNextFilteredTransactions() {
+        if (!this.transactionGen) return
+
+        let div = this.$refs.transactionsContainer
+        while (div.scrollHeight - (div.scrollTop + div.offsetHeight) <= 500) {
+          let next
+          this.isTransactionsBatchLoading = true
+          let currentGen = this.transactionGen
+          try {
+            next = await this.transactionGen.next()
+          } catch (e) {
+            if (currentGen !== this.transactionGen) {
+              console.warn("Ignored exception from obsolete transaction", e)
+              break
+            }
+            this.isTransactionsBatchLoading = false
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected issue occured while downloading transaction list"
+              )
+            )
+            throw e
+          }
+          if (currentGen !== this.transactionGen) {
+            console.log("Canceled obsolete transaction request.")
+            break
+          }
+          this.isTransactionsBatchLoading = false
+          if (next.done) {
+            this.transactionGen = null
+            break
+          }
+
+          this.transactions.push(<any>next.value)
+        }
+      },
+      resetTransactionsGen() {
+        this.transactionGen = this.getTransactions()
+        this.transactions = []
+        this.$nextTick(() => this.getNextFilteredTransactions())
+      },
+      async *getTransactions() {
+        const gen = this.$lokapi.getTransactions()
+        const [dateBegin, dateEnd] = this.exportDate
+        for await (const t of gen) {
+          if (dateBegin && t.date < dateBegin) break
+          if (dateEnd && t.date > dateEnd) continue
+          yield t
+        }
+      },
+    },
+    watch: {
+      exportDate: async function (newExportDate): Promise<void> {
+        let [newBegin, newEnd] = newExportDate
+        const [normBegin, normEnd] = [
+          newBegin ? moment(newBegin).startOf("day").toDate() : null,
+          newEnd ? moment(newEnd).endOf("day").toDate() : null,
+        ]
+        if (
+          normBegin &&
+          normEnd &&
+          (+newBegin != +normBegin || +newEnd != +normEnd)
+        ) {
+          this.exportDate = [normBegin, normEnd]
+          return
+        }
+        this.resetTransactionsGen()
       },
     },
   })
@@ -483,5 +528,8 @@
   }
   div.xmx-datepicker-content {
     user-select: none;
+  }
+  .filter-area {
+    background: #f0faf9;
   }
 </style>
