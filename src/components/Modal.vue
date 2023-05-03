@@ -7,6 +7,7 @@
   import MoneyTransferModal from "./MoneyTransferModal.vue"
   import MoneyCreditModal from "./MoneyCreditModal.vue"
   import AboutModal from "./AboutModal.vue"
+  import TransactionListModal from "./TransactionListModal.vue"
 
   @Options({
     name: "Modal",
@@ -14,6 +15,7 @@
       MoneyTransferModal,
       MoneyCreditModal,
       AboutModal,
+      TransactionListModal,
     },
     data() {
       return {
