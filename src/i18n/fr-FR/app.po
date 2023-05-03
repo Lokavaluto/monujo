@@ -163,6 +163,14 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste des "
 "comptes. Veuillez nous excuser pour le désagrément."
 
+#: src/router/index.ts:62
+msgid "Approval of account creation"
+msgstr "Validation des comptes en attente de création"
+
+#: src/router/index.ts:68
+msgid "Approval of top-up requests"
+msgstr "Validation des demandes de crédit"
+
 #: src/views/admin/PendingAccounts.vue:52
 #: src/views/admin/PendingAccounts.vue:71 src/views/admin/PendingCredits.vue:55
 #: src/views/admin/PendingCredits.vue:76
@@ -215,7 +223,7 @@ msgid "Connection successful"
 msgstr "Connection réussie"
 
 #: src/components/CreateAccount.vue:164 src/components/CreateAccount.vue:78
-#: src/components/TheNavBar.vue:86
+#: src/components/TheNavBar.vue:86 src/router/index.ts:50
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
 
@@ -223,7 +231,7 @@ msgstr "Créer mon portefeuille"
 msgid "Credit requests"
 msgstr "Demandes de crédit"
 
-#: src/components/TheNavBar.vue:60
+#: src/components/TheNavBar.vue:60 src/router/index.ts:20
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -348,6 +356,10 @@ msgstr "Plus tard"
 msgid "Log in"
 msgstr "Se connecter"
 
+#: src/router/index.ts:32
+msgid "Login"
+msgstr "Connection"
+
 #: src/main.ts:104
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
@@ -356,7 +368,7 @@ msgstr "S'authentifier pour accéder à Monujo"
 msgid "Main account"
 msgstr "Compte principal"
 
-#: src/components/TheNavBar.vue:40
+#: src/components/TheNavBar.vue:40 src/router/index.ts:26
 msgid "Map"
 msgstr "Carte"
 
@@ -521,6 +533,10 @@ msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 msgid "Pledged account"
 msgstr "Compte nantis"
 
+#: src/router/index.ts:56
+msgid "Preferences"
+msgstr "Préferences"
+
 #: src/components/TheNavBar.vue:69
 msgid "Profile"
 msgstr "Profil"
@@ -544,6 +560,10 @@ msgstr "La requête a échoué, impossible de joindre le serveur distant."
 #: src/views/Login.vue:159
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
+
+#: src/router/index.ts:38
+msgid "Reset my password"
+msgstr "Ré-initialiser mon mot de passe"
 
 #: src/views/ResetPassword.vue:34
 msgid "Reset password"
@@ -613,6 +633,10 @@ msgstr "Déconnexion"
 
 #: src/views/Login.vue:66 src/views/Signup.vue:146
 msgid "Sign up"
+msgstr "Créer un compte"
+
+#: src/router/index.ts:44
+msgid "Sign-Up"
 msgstr "Créer un compte"
 
 #: src/components/AuthPref.vue:18

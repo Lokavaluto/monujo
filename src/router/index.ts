@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
+import { createRouter, createWebHashHistory } from "vue-router"
 import Dashboard from "../views/Dashboard.vue"
 import Carto from "../views/Carto.vue"
 import Login from "../views/Login.vue"
@@ -9,71 +9,70 @@ import Prefs from "../views/Prefs.vue"
 import ResetPassword from "../views/ResetPassword.vue"
 import Signup from "../views/Signup.vue"
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    meta: { title: "Tableau de bord" },
-    component: Dashboard,
-  },
-  {
-    path: "/carto",
-    name: "Carto",
-    meta: { title: "Carto" },
-    component: Carto,
-  },
-  {
-    path: "/",
-    name: "Login",
-    meta: { title: "Connection" },
-    component: Login,
-  },
-  {
-    path: "/reset-password",
-    name: "Reset password",
-    meta: { title: "Ré-initialiser mon mot de passe" },
-    component: ResetPassword,
-  },
-  {
-    path: "/signup",
-    name: "Signup",
-    meta: { title: "Créer mon compte" },
-    component: Signup,
-  },
-  {
-    path: "/create-account",
-    name: "Create my account",
-    meta: { title: "Créer mon portefeuille" },
-    component: CreateMyAccount,
-  },
-  {
-    path: "/preferences",
-    name: "Preferences",
-    meta: { title: "Préferences" },
-    component: Prefs,
-  },
-  {
-    path: "/admin/pending-accounts",
-    name: "Validate-account",
-    meta: { title: "Validation des comptes en attente de création" },
-    component: PendingAccounts,
-  },
-  {
-    path: "/admin/pending-credits",
-    name: "Pending Credits",
-    meta: { title: "Validation des demandes de crédit" },
-    component: PendingCredits,
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    component: Carto,
-  },
-]
-
-export function mkRouter(appName: string, store: any): any {
+export function mkRouter(appName: string, store: any, gettext: any): any {
+  const { $gettext } = gettext
   const router = createRouter({
     history: createWebHashHistory(),
-    routes,
+    routes: [
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        meta: { title: $gettext("Dashboard") },
+        component: Dashboard,
+      },
+      {
+        path: "/carto",
+        name: "Carto",
+        meta: { title: $gettext("Map") },
+        component: Carto,
+      },
+      {
+        path: "/",
+        name: "Login",
+        meta: { title: $gettext("Login") },
+        component: Login,
+      },
+      {
+        path: "/reset-password",
+        name: "Reset password",
+        meta: { title: $gettext("Reset my password") },
+        component: ResetPassword,
+      },
+      {
+        path: "/signup",
+        name: "Signup",
+        meta: { title: $gettext("Sign-Up") },
+        component: Signup,
+      },
+      {
+        path: "/create-account",
+        name: "Create my account",
+        meta: { title: $gettext("Create my wallet") },
+        component: CreateMyAccount,
+      },
+      {
+        path: "/preferences",
+        name: "Preferences",
+        meta: { title: $gettext("Preferences") },
+        component: Prefs,
+      },
+      {
+        path: "/admin/pending-accounts",
+        name: "Validate-account",
+        meta: { title: $gettext("Approval of account creation") },
+        component: PendingAccounts,
+      },
+      {
+        path: "/admin/pending-credits",
+        name: "Pending Credits",
+        meta: { title: $gettext("Approval of top-up requests") },
+        component: PendingCredits,
+      },
+      {
+        path: "/:pathMatch(.*)*",
+        component: Carto,
+      },
+    ],
   })
 
   // Authentication guard
