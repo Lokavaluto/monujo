@@ -91,7 +91,7 @@ fetchConfig("config.json").then(async (config: any) => {
   )
   const gettext = await mkGettext(config?.locales || {}, localSettings || {})
   const store = await mkStore(config?.locales || {}, gettext)
-  const router = mkRouter(appName, store)
+  const router = mkRouter(appName, store, gettext)
 
   // modal service
   const modal = UseModal()
