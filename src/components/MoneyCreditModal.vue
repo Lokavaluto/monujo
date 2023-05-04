@@ -71,19 +71,15 @@
                 min="0"
                 class="input is-custom"
                 :placeholder="$gettext('e.g. 50')"
-                :class="{ 'is-danger': errors.minCreditAmount }"
-                v-on:input="showAmountErrors()"
+                :class="{ 'is-danger': amountError }"
               />
               <span class="amount-currency-symbol pl-2">{{
                 this.selectedCreditAccount?.curr
               }}</span>
             </div>
             <div>
-              <div
-                class="notification is-danger is-light"
-                v-if="errors.minCreditAmount"
-              >
-                {{ errors.minCreditAmount }}
+              <div class="notification is-danger is-light" v-if="amountError">
+                {{ amountError }}
               </div>
             </div>
           </div>
@@ -150,7 +146,7 @@
             "
             id="top-up-button"
             @click="newLinkTab()"
-            :disabled="isTopUpButtonDisabled"
+            :disabled="amountError !== false"
           >
             {{ $gettext("Next") }}
           </button>
@@ -189,11 +185,7 @@
         creditOrderUrl: "",
         selectedCreditAccount: null,
         showCreditRefreshNotification: false,
-        amount: 0,
-        errors: {
-          minCreditAmount: false,
-        },
-        isTopUpButtonDisabled: true,
+        amount: "",
       }
     },
     mounted() {
@@ -201,12 +193,26 @@
       this.resetCredit()
     },
     computed: {
+      amountError() {
+        if (!this.selectedCreditAccount) return ""
+        if (this.amount === "") return ""
+        const minCreditAmount = this.selectedCreditAccount.minCreditAmount || 1
+        if (this.amount < minCreditAmount) {
+          return this.$gettext(
+            "The minimum top up amount must be equal or greater than %{ amount }",
+            {
+              amount: minCreditAmount + " " + this.selectedCreditAccount?.curr,
+            }
+          )
+        }
+        return false
+      },
       ...mapGetters(["creditableMoneyAccounts"]),
     },
     methods: {
       resetCredit(): void {
         this.creditOrderUrl = ""
-        this.amount = 0
+        this.amount = ""
         this.errors = {
           minCreditAmount: false,
         }
@@ -271,35 +277,6 @@
             this.$refs.amountcredit.select()
           }
         })
-      },
-      showAmountErrors() {
-        this.errors = {
-          minCreditAmount: false,
-        }
-        const minCreditAmount = this.selectedCreditAccount.minCreditAmount
-        if (this.amount <= minCreditAmount) {
-          if (this.amount > 0 && this.amount == minCreditAmount) {
-            this.isTopUpButtonDisabled = false
-            return
-          }
-          this.errors.minCreditAmount = this.$gettext(
-            "The minimum top up amount must be equal or greater than %{ amount }",
-            {
-              amount:
-                minCreditAmount === 0
-                  ? 1
-                  : minCreditAmount + " " + this.selectedCreditAccount?.curr,
-            }
-          )
-        } else {
-          this.isTopUpButtonDisabled = false
-        }
-        if (this.amount === "") {
-          this.errors = {
-            minCreditAmount: false,
-          }
-          this.isTopUpButtonDisabled = true
-        }
       },
     },
   })
