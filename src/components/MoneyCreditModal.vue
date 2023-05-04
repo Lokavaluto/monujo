@@ -63,6 +63,14 @@
               {{ selectedCreditAccount?.minCreditAmount }}
               {{ selectedCreditAccount?.curr || "" }}
             </div>
+            <div
+              v-if="selectedCreditAccount?.maxCreditAmount"
+              class="ml-2 min-credit-amount"
+            >
+              {{ $gettext("Maximum credit amount: ") }}
+              {{ selectedCreditAccount?.maxCreditAmount }}
+              {{ selectedCreditAccount?.curr || "" }}
+            </div>
             <div class="is-flex">
               <input
                 v-model.number="amount"
@@ -205,6 +213,15 @@
             }
           )
         }
+        const maxCreditAmount = this.selectedCreditAccount.maxCreditAmount || 0
+        if (maxCreditAmount && this.amount > maxCreditAmount) {
+          return this.$gettext(
+            "The maximum top up amount must be equal or less than %{ amount }",
+            {
+              amount: maxCreditAmount + " " + this.selectedCreditAccount?.curr,
+            }
+          )
+        }
         return false
       },
       ...mapGetters(["creditableMoneyAccounts"]),
@@ -224,6 +241,7 @@
       setSelectedCreditAccount(account: any): void {
         this.errors = {
           minCreditAmount: false,
+          maxCreditAmount: false,
         }
         this.selectedCreditAccount = account
       },
