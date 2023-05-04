@@ -38,7 +38,7 @@ msgid_plural "%{ pinLength } digits"
 msgstr[0] "%{ pinLength } chiffre"
 msgstr[1] "%{ pinLength } chiffres"
 
-#: src/components/MoneyCreditModal.vue:94
+#: src/components/MoneyCreditModal.vue:90
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
@@ -115,7 +115,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de l'utilisateur "
 "%{ name }"
 
-#: src/components/MoneyCreditModal.vue:242
+#: src/components/MoneyCreditModal.vue:248
 msgid "An unexpected issue occurred while attempting to top up your account"
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -185,7 +185,7 @@ msgstr "Identification biométrique mise en place"
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/MoneyCreditModal.vue:166
+#: src/components/MoneyCreditModal.vue:162
 msgid "Close and refresh"
 msgstr "Fermer et rafraîchir"
 
@@ -287,7 +287,7 @@ msgstr "Entrez votre mot de passe"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
-#: src/components/MoneyCreditModal.vue:159
+#: src/components/MoneyCreditModal.vue:155
 msgid "Finalize order from your account"
 msgstr "Compléter la transaction dans mon espace personnel"
 
@@ -351,7 +351,7 @@ msgstr "mois"
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
-#: src/components/MoneyCreditModal.vue:144
+#: src/components/MoneyCreditModal.vue:140
 msgid "Next"
 msgstr "Suivant"
 
@@ -379,7 +379,7 @@ msgstr "Aucune demande de crédit en attente de validation"
 msgid "No transaction found"
 msgstr "Aucune transaction à afficher"
 
-#: src/components/MoneyCreditModal.vue:120
+#: src/components/MoneyCreditModal.vue:116
 msgid ""
 "Once your transaction finalized in your personal account, you may close this "
 "windows to refresh your balance."
@@ -387,7 +387,7 @@ msgstr ""
 "Une fois votre opération complétée dans votre espace personnel, fermez cette "
 "fenêtre pour actualiser votre solde."
 
-#: src/components/MoneyCreditModal.vue:110
+#: src/components/MoneyCreditModal.vue:106
 msgid ""
 "Once your transaction finalized in your personal account, your top up "
 "request will by waiting for an administrator's approval. You may then close "
@@ -606,7 +606,7 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/MoneyCreditModal.vue:285
+#: src/components/MoneyCreditModal.vue:201
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
 
@@ -622,7 +622,7 @@ msgstr ""
 msgid "To"
 msgstr "Vers"
 
-#: src/components/MoneyCreditModal.vue:98
+#: src/components/MoneyCreditModal.vue:94
 msgid ""
 "To complete your top up request, you need to finalize the transaction by "
 "logging in your administrative account:"
