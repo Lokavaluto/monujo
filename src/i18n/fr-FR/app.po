@@ -415,23 +415,23 @@ msgstr "Mot de passe"
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: src/store/lokapi.ts:336
+#: src/store/lokapi.ts:339
 msgid "Password must be at least %{ msgSizePassword } long"
 msgstr "Le mot de passe doit faire au moins %{ msgSizePassword }"
 
-#: src/store/lokapi.ts:344
+#: src/store/lokapi.ts:347
 msgid "Password should use at least one digit"
 msgstr "Le mot de passe doit contenir au moins un nombre"
 
-#: src/store/lokapi.ts:340
+#: src/store/lokapi.ts:343
 msgid "Password should use at least one lowercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre minuscule"
 
-#: src/store/lokapi.ts:346
+#: src/store/lokapi.ts:349
 msgid "Password should use at least one symbol"
 msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 
-#: src/store/lokapi.ts:342
+#: src/store/lokapi.ts:345
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 

@@ -331,7 +331,10 @@ export function lokapiStoreFactory(lokApiService: any, gettext: any) {
         const msgSizePassword = $ngettext(
           "%{ nbChar } character",
           "%{ nbChar } characters",
-          parseInt(nbChar)
+          parseInt(nbChar),
+          {
+            nbChar,
+          }
         )
         return $gettext("Password must be at least %{ msgSizePassword } long", {
           msgSizePassword,
