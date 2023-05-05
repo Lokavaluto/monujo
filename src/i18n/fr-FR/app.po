@@ -177,7 +177,7 @@ msgstr "Validation des demandes de crédit"
 msgid "Approve"
 msgstr "Valider"
 
-#: src/views/Login.vue:198
+#: src/views/Login.vue:200
 msgid "Ask me later"
 msgstr "Plus tard"
 
@@ -189,7 +189,7 @@ msgstr "Authentification"
 msgid "Biometric login successfully disabled"
 msgstr "Identification biométrique désactivée"
 
-#: src/views/Login.vue:230
+#: src/views/Login.vue:232
 msgid "Biometric login successfully set up"
 msgstr "Identification biométrique mise en place"
 
@@ -218,7 +218,7 @@ msgstr "valider"
 msgid "Confirm password"
 msgstr "Confirmez votre mot de passe"
 
-#: src/views/Login.vue:153
+#: src/views/Login.vue:155
 msgid "Connection successful"
 msgstr "Connection réussie"
 
@@ -278,7 +278,7 @@ msgstr "Modifier"
 msgid "Edits were successfully saved"
 msgstr "Modifications enregistrées"
 
-#: src/views/Login.vue:16 src/views/ResetPassword.vue:23
+#: src/views/Login.vue:17 src/views/ResetPassword.vue:23
 #: src/views/Signup.vue:29
 msgid "Email"
 msgstr "Courriel"
@@ -287,7 +287,7 @@ msgstr "Courriel"
 msgid "Email sent"
 msgstr "Courriel envoyé"
 
-#: src/views/Login.vue:191
+#: src/views/Login.vue:193
 msgid "Enable biometric login"
 msgstr "Activer le login biométrique"
 
@@ -315,7 +315,7 @@ msgstr "Prénom"
 msgid "for account %{ name }"
 msgstr "pour le compte %{ name }"
 
-#: src/views/Login.vue:46 src/views/Login.vue:49
+#: src/views/Login.vue:48 src/views/Login.vue:51
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
@@ -331,7 +331,7 @@ msgstr "Les codes PINs entrés ne sont pas identiques"
 msgid "Help"
 msgstr "Aide"
 
-#: src/views/Login.vue:165
+#: src/views/Login.vue:167
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
@@ -396,7 +396,7 @@ msgstr "Nom, adresse email ou téléphone"
 msgid "Next"
 msgstr "Suivant"
 
-#: src/views/Login.vue:197
+#: src/views/Login.vue:199
 msgid "No"
 msgstr "Non"
 
@@ -443,7 +443,7 @@ msgid "Operation canceled"
 msgstr "Opération annulée"
 
 #: src/components/CreateAccount.vue:81 src/components/CreateAccount.vue:93
-#: src/views/Login.vue:37 src/views/Signup.vue:100
+#: src/views/Login.vue:39 src/views/Signup.vue:100
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -557,11 +557,11 @@ msgstr "Rafraîchir le solde et les transactions"
 msgid "Request"
 msgstr "Recevoir"
 
-#: src/views/Login.vue:169
+#: src/views/Login.vue:171
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/views/Login.vue:159
+#: src/views/Login.vue:161
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
 
@@ -626,7 +626,7 @@ msgstr "Partager"
 msgid "Share transactions"
 msgstr "Partager les opérations"
 
-#: src/components/TheNavBar.vue:55 src/views/Login.vue:59
+#: src/components/TheNavBar.vue:55 src/views/Login.vue:61
 msgid "Sign in"
 msgstr "Se connecter"
 
@@ -634,7 +634,7 @@ msgstr "Se connecter"
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: src/views/Login.vue:66 src/views/Signup.vue:146
+#: src/views/Login.vue:68 src/views/Signup.vue:146
 msgid "Sign up"
 msgstr "Créer un compte"
 
@@ -766,13 +766,13 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/views/Login.vue:223
+#: src/views/Login.vue:225
 msgid "Unexpected issue occurred while saving your credentials"
 msgstr ""
 "Une erreur inattendue est survenue pendant l'enregistrement de vos "
 "identifiants"
 
-#: src/views/Login.vue:172 src/views/ResetPassword.vue:74
+#: src/views/Login.vue:174 src/views/ResetPassword.vue:74
 #: src/views/Signup.vue:213
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
@@ -825,7 +825,7 @@ msgstr "Compte à créditer"
 msgid "week"
 msgstr "semaine"
 
-#: src/views/Login.vue:192
+#: src/views/Login.vue:194
 msgid ""
 "Would you like to use your device's biometric (fingerprint, face "
 "recognition, ...) capability to login ?"
@@ -837,7 +837,7 @@ msgstr ""
 msgid "year"
 msgstr "année"
 
-#: src/views/Login.vue:196
+#: src/views/Login.vue:198
 msgid "Yes"
 msgstr "Oui"
 

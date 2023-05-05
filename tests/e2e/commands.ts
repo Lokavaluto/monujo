@@ -2,8 +2,8 @@ export {}
 
 Cypress.Commands.add("login", (username: string, password: string) => {
   cy.loginForm().within(() => {
-    cy.get("input").first().type(username)
-    cy.get('input[type="password"]').type(password)
+    cy.get("input[name='login']").type(username)
+    cy.get("input[name='password']").type(password)
     cy.get("button[type='submit']").click()
   })
 })
@@ -224,7 +224,7 @@ declare global {
       transactionsPane(): Chainable<JQuery<HTMLElement>>
       transactions(): Chainable<JQuery<HTMLElement>>
       searchBar(): Chainable<JQuery<HTMLElement>>
-      searchInput(): Chainable<JQuery<HTMLElement>>
+      searchInput(): Chainable<JQuery<HTMLInputElement>>
       sendMoneyButton(): Chainable<JQuery<HTMLElement>>
       errorMessage(): Chainable<JQuery<HTMLElement>>
       amountSendInput(): Chainable<JQuery<HTMLElement>>
@@ -246,7 +246,7 @@ declare global {
       closeModal(): void
       isSignupVisible(): boolean
       clickSignupButton(): void
-      getSignupForm(): Chainable<JQuery<HTMLElement>>
+      getSignupForm(): Chainable<JQuery<HTMLFormElement>>
       getEmailInput(): Chainable<JQuery<HTMLElement>>
       getFirstNameInput(): Chainable<JQuery<HTMLElement>>
       getLastNameInput(): Chainable<JQuery<HTMLElement>>

@@ -60,7 +60,7 @@ export default async function mkStore(localesConfig: any, gettext: any) {
         // of the default language. It can still return "false"
         try {
           localeIdentifier = await gettext.loadTranslation(localeIdentifier)
-        } catch (err) {
+        } catch (err: any) {
           if (!(err instanceof gettext.FailedLanguageLoading)) {
             throw err
           }

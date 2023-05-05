@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress"
+import webpackPreprocessor from '@cypress/webpack-preprocessor'
 
 const testDir = "tests/e2e"
 const outputDir = ".cypress"
@@ -29,8 +30,40 @@ export default defineConfig({
     supportFile: `${testDir}/main.ts`,
     specPattern: `${testDir}/**/*.cy.ts`,
     chromeWebSecurity: false,
-    // XXXvlab: from https://www.cypress.io/blog/2021/03/01/generate-high-resolution-videos-and-screenshots/
     setupNodeEvents(on, config) {
+      // Solve bug about `sourceMap` typescript option conflict
+      // https://github.com/cypress-io/cypress/issues/26203
+      on("file:preprocessor", webpackPreprocessor({
+        webpackOptions: {
+          resolve: {
+            extensions: ['.js', '.json', '.ts'],
+          },
+          module: {
+            rules: [
+              {
+                test: /\.tsx?$/,
+                exclude: [/node_modules/],
+                use: [
+                  {
+                    loader: 'ts-loader',
+                    options: {
+                      compilerOptions: {
+                        //inlineSourceMap: true,
+                        inlineSources: true,
+                        downlevelIteration: true,
+                      },
+                      logLevel: 'error',
+                      silent: true,
+                      transpileOnly: true,
+                    },
+                  },
+                ],
+              }
+            ]
+          }
+        },
+      }))
+      // XXXvlab: from https://www.cypress.io/blog/2021/03/01/generate-high-resolution-videos-and-screenshots/
       on("before:browser:launch", (browser = {}, launchOptions) => {
         if (!config.env.screenshot) return launchOptions
 

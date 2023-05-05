@@ -208,7 +208,7 @@
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
   import Loading from "vue-loading-overlay"
-  import "vue-loading-overlay/dist/vue-loading.css"
+  import "vue-loading-overlay/dist/css/index.css"
   import RecipientItem from "@/components/RecipientItem.vue"
   import BankAccountItem from "@/components/BankAccountItem.vue"
 
