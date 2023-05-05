@@ -101,7 +101,7 @@
   import { mapGetters, mapState } from "vuex"
   import BankAccountItem from "./BankAccountItem.vue"
   import Loading from "vue-loading-overlay"
-  import "vue-loading-overlay/dist/vue-loading.css"
+  import "vue-loading-overlay/dist/css/index.css"
   import { mapModuleState } from "@/utils/vuex"
 
   let interval: any
