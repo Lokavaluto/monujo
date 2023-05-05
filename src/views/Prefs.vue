@@ -28,7 +28,7 @@
   import LangPrefs from "@/components/LangPrefs.vue"
   import BiometryPrefs from "@/components/BiometryPrefs.vue"
   import Loading from "vue-loading-overlay"
-  import "vue-loading-overlay/dist/vue-loading.css"
+  import "vue-loading-overlay/dist/css/index.css"
 
   @Options({
     name: "Prefs",

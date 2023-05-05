@@ -11,6 +11,7 @@
           <div class="field mb-5 has-addons">
             <p class="control has-icons-left is-expanded">
               <input
+                name="login"
                 v-model.trim="email"
                 class="input"
                 :placeholder="$gettext('Email')"
@@ -31,6 +32,7 @@
           <div class="field mb-2">
             <p class="control has-icons-left">
               <input
+                name="password"
                 v-model="password"
                 class="input"
                 type="password"

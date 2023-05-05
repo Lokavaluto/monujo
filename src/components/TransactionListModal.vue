@@ -258,7 +258,7 @@
       ModelListSelect,
     },
 
-    data() {
+    data(this: any) {
       return {
         selectExportLoader: null,
         exportDate: ["", ""],

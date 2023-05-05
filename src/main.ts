@@ -1,6 +1,6 @@
 import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
-import "vue-loading-overlay/dist/vue-loading.css"
+import "vue-loading-overlay/dist/css/index.css"
 
 import { UIError } from "./exception"
 import App from "./App.vue"
@@ -238,7 +238,7 @@ fetchConfig("config.json").then(async (config: any) => {
     userAccount: any
   ) {
     if (store.state.requestLoadingAfterCreds && state === "failedUnlock") {
-      app.config.globalProperties.$loading.hide()
+      ;(<any>app.config.globalProperties.$loading).hide()
     }
     const accountAuthService = await authService.getAccountAuth(
       userAccount.internalId
