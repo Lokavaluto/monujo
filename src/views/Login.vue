@@ -104,30 +104,30 @@
     async mounted() {
       const savedLoginEmail = this.$persistentStore.get("loginEmail")
       if (savedLoginEmail) this.email = savedLoginEmail
-      this.canResetPassword = await this.$lokapi.canResetPassword()
-      this.canSignup = await this.$lokapi.canSignup()
-      this.biometryEnabled =
-        (await this.hasBiometricCredentialsEnabled()) || false
-      if (
-        this.biometryEnabled &&
-        (await this.hasBiometricCredentialsAvailable())
-      ) {
-        this.biometryAvailable = true
-        await this.requestBiometricAuthentication()
-      }
+
+      this.getCanResetPassword()
+      this.getCanSignup()
+      ;(await this.getHasBiometricCredentialsEnabled()) &&
+        (await this.getHasBiometricCredentialsAvailable()) &&
+        (await this.requestBiometricAuthentication())
     },
     methods: {
-      async hasBiometricCredentialsEnabled() {
-        return (await this.$localSettings.load())?.biometryEnabled
+      async getCanResetPassword() {
+        this.canResetPassword = await this.$lokapi.canResetPassword()
       },
-      async hasBiometricCredentialsAvailable() {
-        return await this.$biometry.hasCredentialsAvailable("login")
+      async getCanSignup() {
+        this.canSignup = await this.$lokapi.canSignup()
       },
-      async hasBiometricCredentials() {
-        return (
-          (await this.hasBiometricCredentialsEnabled()) &&
-          (await this.hasBiometricCredentialsAvailable())
+      async getHasBiometricCredentialsEnabled() {
+        this.biometryEnabled =
+          (await this.$localSettings.load())?.biometryEnabled || false
+        return this.biometryEnabled
+      },
+      async getHasBiometricCredentialsAvailable() {
+        this.biometryAvailable = await this.$biometry.hasCredentialsAvailable(
+          "login"
         )
+        return this.biometryAvailable
       },
       async requestBiometricAuthentication(): Promise<void> {
         let credentials: any
