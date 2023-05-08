@@ -287,11 +287,6 @@ msgstr "Courriel"
 msgid "Email sent"
 msgstr "Courriel envoyé"
 
-#: src/components/MoneyTransferModal.vue:29
-#: src/components/MoneyTransferModal.vue:34
-msgid "email, phone"
-msgstr "adresse mail, téléphone"
-
 #: src/views/Login.vue:191
 msgid "Enable biometric login"
 msgstr "Activer le login biométrique"
@@ -387,6 +382,11 @@ msgstr "mois"
 #: src/main.ts:131
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
+
+#: src/components/MoneyTransferModal.vue:29
+#: src/components/MoneyTransferModal.vue:34
+msgid "Name, email address or phone number"
+msgstr "Nom, adresse email ou téléphone"
 
 #: src/components/MoneyCreditModal.vue:148
 msgid "Next"
