@@ -31,7 +31,7 @@
                 "
                 class="input"
                 type="text"
-                :placeholder="$gettext('email, phone')"
+                :placeholder="$gettext('Name, email address or phone number')"
               />
               <span class="icon is-small is-left">
                 <fa-icon icon="search" />
