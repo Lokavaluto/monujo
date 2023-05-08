@@ -85,7 +85,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { RestExc } from "@lokavaluto/lokapi-browser"
-  import { e as RequestExc } from "@0k.io/types-request"
+  import { e as RequestExc } from "@0k/types-request"
 
   @Options({
     name: "Login",
