@@ -233,9 +233,7 @@ body {
     border-right: none !important;
     text-align: right !important;
     outline: none !important;
-    color: $color-2;
-    text-shadow: 0px 0px 0px black;
-    -webkit-text-fill-color: transparent;
+    color: $input-amount-text-color;
     height: 31px !important;
     font-style: normal;
     font-weight: 500;
@@ -289,9 +287,7 @@ input {
     border-radius: 0;
     border-width: 0 0 1px 0;
     outline: none;
-    color: $color-2;
-    text-shadow: 0px 0px 0px black;
-    -webkit-text-fill-color: transparent;
+    color: $input-amount-text-color;
     -moz-appearance: textfield;
 
     font-size: 1.25rem;
