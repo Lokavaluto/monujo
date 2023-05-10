@@ -113,6 +113,8 @@ export default async function mkGettext(
     return l
   }
 
+  gettext.current = localesConfig.appStringsLanguage
+  gettext.muted = [localesConfig.appStringsLanguage]
 
   gettext.FailedLanguageLoading = FailedLanguageLoading
   return gettext
