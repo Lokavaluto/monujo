@@ -32,6 +32,7 @@
                 class="input"
                 type="text"
                 :placeholder="$gettext('Name, email address or phone number')"
+                ref="searchRecipient"
               />
               <span class="icon is-small is-left">
                 <fa-icon icon="search" />
@@ -108,7 +109,10 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
-            <a class="mr-3 is-flex" @click="$modal.back()">
+            <a
+              class="mr-3 is-flex"
+              @click="$modal.back(), setFocus('searchRecipient')"
+            >
               <span class="icon has-text-white">
                 <fa-icon icon="arrow-left" class="fa-lg" />
               </span>
@@ -235,6 +239,7 @@
       }
     },
     mounted() {
+      this.setFocus("searchRecipient")
       this.searchRecipients()
     },
     computed: {
@@ -286,7 +291,7 @@
         this.$modal.next()
         this.errors.balance = false
         this.errors.amount = false
-        this.setFocusSend()
+        this.setFocus("amountSend")
       },
       async sendTransaction(): Promise<void> {
         if (this.transferOngoing) {
@@ -400,11 +405,11 @@
         this.activeClass = 0
         this.$modal.close()
       },
-      setFocusSend() {
+      setFocus(refLabel: string) {
         this.$nextTick(() => {
-          this.$refs.amountSend.value = null
-          this.$refs.amountSend.focus()
-          this.$refs.amountSend.select()
+          const ref = this.$refs[refLabel]
+          ref.focus()
+          ref.select()
         })
       },
     },
