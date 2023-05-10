@@ -299,6 +299,10 @@ msgstr "Entrez votre mot de passe"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
+#: src/store/index.ts:68
+msgid "Failed to load language \"%{ lang }\""
+msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
+
 #: src/components/MoneyCreditModal.vue:163
 msgid "Finalize order from your account"
 msgstr "Compléter la transaction dans mon espace personnel"

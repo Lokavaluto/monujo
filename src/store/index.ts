@@ -6,6 +6,7 @@ import { createStore } from "vuex"
 import moment from "moment"
 
 import DatePicker from "../services/DatePicker"
+import { UIError } from "../exception"
 
 // XXXvlab: required to make vuex getters cached in vue 3 (as they
 // should be).  (cf: https://vuex.vuejs.org/guide/getters.html#getters
@@ -23,6 +24,7 @@ function PoorMansCachedGetter(getter: any, stateAttrName: string) {
 }
 
 export default async function mkStore(localesConfig: any, gettext: any) {
+  const { $gettext } = gettext
   const store = createStore({
     state: {
       showCredit: false,
@@ -56,7 +58,21 @@ export default async function mkStore(localesConfig: any, gettext: any) {
 
         // If localeIdentifier is null, gettext will resolve the name
         // of the default language. It can still return "false"
-        localeIdentifier = await gettext.loadTranslation(localeIdentifier)
+        try {
+          localeIdentifier = await gettext.loadTranslation(localeIdentifier)
+        } catch (err) {
+          if (!(err instanceof gettext.FailedLanguageLoading)) {
+            throw err
+          }
+          throw new UIError(
+            $gettext('Failed to load language "%{ lang }"', {
+              lang: err.lang.label,
+            }),
+            err
+          )
+          return
+        }
+
         const localeConfig = availableLanguages[localeIdentifier] || {}
         localeIdentifier = localeIdentifier || "en-US"
         commit(
@@ -100,6 +116,5 @@ export default async function mkStore(localesConfig: any, gettext: any) {
       }, "dateFormatLanguage"),
     },
   })
-  await store.dispatch("switchLocale")
   return store
 }
