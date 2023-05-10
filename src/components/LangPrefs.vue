@@ -76,9 +76,11 @@
       },
       async setCustomLanguage(l: string) {
         let settings = (await this.$localSettings.load()) || {}
-        settings.language = l
-        await this.$localSettings.save(settings)
-        await this.$store.dispatch("switchLocale", l)
+        if (settings.language != l) {
+          settings.language = l
+          await this.$localSettings.save(settings)
+          await this.$store.dispatch("switchLocale", l)
+        }
       },
     },
   })

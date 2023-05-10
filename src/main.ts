@@ -260,10 +260,18 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.errorHandler = function (err: any, vm, info) {
     if (err instanceof UIError) {
       ToastService.error(err.message)
-      throw err.origException
+      console.error("Handled error:", err.origException)
+      return
     }
     throw err
   }
+  window.addEventListener("unhandledrejection", function (event) {
+    if (app.config.errorHandler) {
+      event.preventDefault()
+      app.config.errorHandler(event.reason, null, event.type)
+    }
+    return false
+  })
 
   app.use(store)
   app.use(Loading)
@@ -294,5 +302,8 @@ fetchConfig("config.json").then(async (config: any) => {
     }
   )
 
+  // Don't await for the next one as it could fail and must
+  // be allowed to fail.
+  store.dispatch("switchLocale")
   store.dispatch("setupAfterLogin")
 })

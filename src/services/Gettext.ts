@@ -1,5 +1,14 @@
 import { createGettext } from "vue3-gettext"
 
+export class FailedLanguageLoading extends Error {
+  lang: { label: string; id: string }
+  constructor(message: any, lang: { label: string; id: string }) {
+    super(message)
+    this.name = "FailedLanguageLoading"
+    this.lang = lang
+  }
+}
+
 async function getDefaultLanguage(localesConfig: any, localesSettings: any) {
   const availableLanguages = localesConfig?.availableLanguages
 
@@ -67,22 +76,36 @@ export default async function mkGettext(
     if (!l) return
     if (l === this.current) return
     if (l !== localesConfig.appStringsLanguage && !this.translations[l]) {
-      const url = localesConfig.availableLanguages[l].url
+      const { label, url } = localesConfig.availableLanguages[l]
+
       let response: any
       try {
         response = await fetch(url)
       } catch (err: any) {
-        console.log(`Failed to load language file '${url}'.`)
-        throw err
+        console.error(`Failed to load language file '${url}'.`, err)
+        throw new FailedLanguageLoading(
+          `Request for language file failed (fetch '${url}').`,
+          { label, id: l }
+        )
+      }
+      if (response.status !== 200) {
+        throw new FailedLanguageLoading(
+          `HTTPError ${response.status} while loading language file on '${url}'`,
+          { label, id: l }
+        )
       }
       let translations
       try {
         translations = JSON.parse(await response.text())
       } catch (error) {
         console.error(
-          `File '${url}' was loaded, but doesn't contain valid json.`
+          `File '${url}' was loaded, but doesn't contain valid json.`,
+          error
         )
-        throw error
+        throw new FailedLanguageLoading(
+          `Failed to parse language file '${url}'.`,
+          { label, id: l }
+        )
       }
       this.translations = { ...this.translations, ...translations }
     }
@@ -90,7 +113,7 @@ export default async function mkGettext(
     return l
   }
 
-  gettext.loadTranslation()
 
+  gettext.FailedLanguageLoading = FailedLanguageLoading
   return gettext
 }
