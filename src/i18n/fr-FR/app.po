@@ -578,7 +578,6 @@ msgid "Security settings"
 msgstr "Préférences de sécurité"
 
 #: src/components/TheTransactionList.vue:14
-#: src/components/TheTransactionList.vue:17
 msgid "See more"
 msgstr "Voir tout"
 
