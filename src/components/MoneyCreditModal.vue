@@ -239,6 +239,7 @@
             : false
       },
       setSelectedCreditAccount(account: any): void {
+        this.amount = ""
         this.errors = {
           minCreditAmount: false,
           maxCreditAmount: false,
