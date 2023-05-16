@@ -575,7 +575,7 @@
     background: #f0faf9;
   }
   .recipient-filter {
-    width: 59%;
+    width: 16.2em;
   }
   .recipient-filter-reset {
     position: relative;
