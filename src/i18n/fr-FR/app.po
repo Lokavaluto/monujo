@@ -729,9 +729,9 @@ msgid "Top up my account"
 msgstr "Créditer mon compte"
 
 #: src/views/admin/PendingCredits.vue:176
-msgid "Top up request from %{ name } of %{ amount } was validated."
-msgstr ""
-"La demande de crédit de %{ name } d'un montant de %{ amount } a été validée"
+msgid ""
+"Top up request from %{ name } of %{ amount } %{ currency } was validated."
+msgstr "La demande de crédit de %{ name } d'un montant de %{ amount } %{ currency } a été validée"
 
 #: src/views/admin/PendingCredits.vue:43
 msgid "Top up requests await approval"

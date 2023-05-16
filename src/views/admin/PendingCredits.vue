@@ -174,10 +174,11 @@
         this.$store.dispatch("fetchPendingCreditRequests")
         this.$msg.success(
           this.$gettext(
-            "Top up request from %{ name } of %{ amount } was validated.",
+            "Top up request from %{ name } of %{ amount } %{ currency } was validated.",
             {
               name: request.related,
               amount: request.amount,
+              currency: request.currency,
             }
           )
         )
