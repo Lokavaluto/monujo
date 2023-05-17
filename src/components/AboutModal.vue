@@ -3,9 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title is-title-shrink">
-          {{ modalTitleText }}
-        </p>
+        <p class="modal-card-title is-title-shrink" v-html="modalTitleText"></p>
         <button
           class="delete"
           aria-label="close"
