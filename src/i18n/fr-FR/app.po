@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/components/AboutModal.vue:69
+#: src/components/AboutModal.vue:67
 msgid ""
 "%{ appName } is designed by %{ organizationName } an association whose goal "
 "is to develop, implement, and support the deployment of evolving and open-"
@@ -18,7 +18,7 @@ msgstr ""
 "%{ appName } a été conçu par %{ organizationName }, une association "
 "développant des outils open-source pour les acteurs de l'économie locale."
 
-#: src/components/AboutModal.vue:60
+#: src/components/AboutModal.vue:58
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
@@ -42,8 +42,8 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
-#: src/components/AboutModal.vue:84 src/components/TheNavBar.vue:103
-#: src/components/TheNavBar.vue:127
+#: src/components/AboutModal.vue:82 src/components/TheNavBar.vue:102
+#: src/components/TheNavBar.vue:129
 msgid "About %{ appName }"
 msgstr "À propos de %{ appName }"
 
@@ -630,7 +630,7 @@ msgstr "Partager les opérations"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:136
+#: src/components/TheNavBar.vue:139
 msgid "Sign out"
 msgstr "Déconnexion"
 

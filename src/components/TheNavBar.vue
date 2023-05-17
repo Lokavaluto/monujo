@@ -122,12 +122,15 @@
               <a v-if="cguUrl" :href="cguUrl" class="navbar-item">
                 {{ $gettext("Terms of Service") }}
               </a>
-              <a @click="$modal.open('AboutModal')" class="navbar-item">
-                {{
-                  $gettext("About %{ appName }", {
+              <a
+                @click="$modal.open('AboutModal')"
+                class="navbar-item"
+                v-html="
+                  $gettext('About %{ appName }', {
                     appName: $appInfo.appName,
                   })
-                }}
+                "
+              >
               </a>
 
               <hr v-if="helpUrl || cguUrl" class="dropdown-divider" />
