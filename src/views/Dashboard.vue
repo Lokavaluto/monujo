@@ -43,7 +43,7 @@
 <style lang="scss" scoped>
   .action-footer-container {
     position: fixed !important;
-    z-index: 2;
+    z-index: 20;
     bottom: 0 !important;
     width: 100%;
 
