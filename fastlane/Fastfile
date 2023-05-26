@@ -349,6 +349,50 @@ platform :ios do
     _publish_store options
   end
 
+  lane :store_screenshots do |options|
+
+    if options[:resolution]
+      UI.user_error!(
+        "You should not provide resolutions as they are inferred from " +
+        "the platform's store"
+      )
+    end
+
+    ## key is `deliver`'s identifier, value is matching resolution
+    devices_resolution = {
+      IPHONE_55: "414x736x3",
+      IPHONE_65: "414x896x3",
+      IPHONE_67: "430x932x3",
+      IPAD_PRO_129: "1024x1366x2",
+      IPAD_PRO_3GEN_129: "1024x1366x2"
+    }
+
+    devices = (
+      options[:device] || ENV["SCREENSHOT_DEVICE"] || ""
+    ).split(",").map { |k| k.to_sym }
+
+    if devices.length != 0
+      ## Filter out the devices_resolution Hash
+      devices_resolution = (
+        devices_resolution.entries
+          .filter { |k, v| devices.include? k }
+      ).to_h
+    end
+    UI.message "Target device for resolution: #{devices_resolution.keys.join(", ")}"
+
+    ## Filter
+    options[:resolution] = devices_resolution.values.uniq.join(",")
+    screenshot options
+
+    for app in _setup_targets options
+      load_app_data app: app
+
+      ios_screenshots(
+        devices_resolution: devices_resolution
+      )
+    end
+  end
+
   private_lane :send_store do |options|
     to_publish.each do |path, label|
       app = "#{path}".split('/')[-1] \
