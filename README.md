@@ -475,7 +475,7 @@ bundle exec fastlane changelog
 Will create a file `release/<TAG>/CHANGELOG` with the changes since
 last version.
 
-##### create screenshots for release on app stores
+##### create screenshots for release by specifying resolution
 
 These screenshots will showcase the most important part of the
 app. These are intended for publication along the releases in app
@@ -555,6 +555,45 @@ bundle exec fastlane screenshot
 Note that screenshot resolution can specify a scaling factor as third
 number. For instance, `393x852x3` is a valid resolution with `3` as
 scaling factor.
+
+##### create and publish screenshots for release by specifying device
+
+This is only supported on the Apple Store for now and requires a
+Apple host to support the final publication on Apple Store.
+
+All arguments of previous section applies. With the addition of:
+
+- the device name to target for the screenshots in:
+  - command line argument `device`, comma separated if needed of one or more
+    of the following `IPHONE_55`, `IPHONE_65`, `IPHONE_67`, `IPAD_PRO_129`,
+    `IPAD_PRO_3GEN_129`, ... or
+  - environment variable `SCREENSHOT_DEVICE`, comma separated if needed or
+  - configuration file `.screenshot.json`, field `resolutions` as an array.
+  - if not specified, the minimum required list of device needed to
+    make a valid release for the store will be chosen. (which is
+    currenty: `IPHONE_55`, `IPHONE_65`, `IPHONE_67`, `IPAD_PRO_129`,
+    `IPAD_PRO_3GEN_129`)
+
+For instance:
+
+```
+bundle exec fastlane ios publish_screenshots \
+    tag:1.0.0-rc.11 app:agnel,pive \
+    host:demo.lokavaluto.fr \
+    db:odoo \
+    login:demo@example.com \
+    password:demo \
+    language:fr-FR,en-US \
+    device:IPHONE_55,IPAD_PRO_129
+
+```
+
+Or if you have correctly setup files, and want to target all apps in
+all languages on all required devices for the current tag:
+
+```
+bundle exec fastlane ios publish_screenshots
+```
 
 ##### Build is happening in a temporary directory
 

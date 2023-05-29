@@ -393,6 +393,25 @@ platform :ios do
     end
   end
 
+  lane :publish_screenshots do |options|
+    _setup_signing
+    store_screenshots options
+
+    for app in _setup_targets options
+      load_app_data app: app
+
+      deliver(
+        app_identifier: lane_context[SharedValues::APP_ID],
+        screenshots_path: lane_context[SharedValues::STORE_SCREENSHOTS_PATH],
+        skip_binary_upload: true,
+        skip_metadata: true,
+        overwrite_screenshots: true,
+        run_precheck_before_submit: false,
+        force: true
+      )
+    end
+  end
+
   private_lane :send_store do |options|
     to_publish.each do |path, label|
       app = "#{path}".split('/')[-1] \
