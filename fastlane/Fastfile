@@ -3,6 +3,9 @@
 to_publish = Hash.new
 publish_metadata = Hash.new
 
+releases_data = nil
+
+
 desc "Produce final bundled javascript and css"
 private_lane :build_web_pack do |options|
   Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
@@ -11,6 +14,27 @@ private_lane :build_web_pack do |options|
     sh "npm run gettext:compile"
     sh "npm run build"
   end
+end
+
+
+desc "Parse options and define precise targets (app and version)"
+private_lane :_setup_targets do |options|
+  apps = options[:app]
+  releases_data = load_releases_data unless releases_data
+  if apps != "monujo"
+    apps = apps.split(",") if apps
+    apps = releases_data.keys unless apps
+  else
+    apps = ["monujo", ]
+  end
+
+  if not lane_context[SharedValues::VERSION_NAME]
+    version_name_from_tag tag: options[:tag]
+  end
+  if not lane_context[SharedValues::VERSION_CODE]
+    version_code_from_tag tag: options[:tag], rev: options[:rev]
+  end
+  apps
 end
 
 
@@ -45,19 +69,8 @@ desc "Build release packages"
 private_lane :_build_apps do |options|
   _setup_signing options
 
-  apps = options[:app]
-  data = load_releases_data
-  if apps != "monujo"
-    apps = apps.split(",") if apps
-    apps = data.keys unless apps
-  else
-    apps = ["monujo", ]
-  end
 
-  version_name_from_tag tag: options[:tag]
-  version_code_from_tag tag: options[:tag], rev: options[:rev]
-
-  for app in apps
+  for app in _setup_targets options
     load_app_data app: app
 
     ## Load the platform dependent packaging
@@ -104,19 +117,7 @@ lane :screenshot do |options|
 
   screenshot_config = lane_context[SharedValues::SCREENSHOT_CONFIG]
 
-  apps = options[:app]
-  data = load_releases_data
-  if apps != "monujo"
-    apps = apps.split(",") if apps
-    apps = data.keys unless apps
-  else
-    apps = ["monujo", ]
-  end
-
-  version_name_from_tag tag: options[:tag]
-  version_code_from_tag tag: options[:tag], rev: options[:rev]
-
-  for app in apps
+  for app in _setup_targets options
     load_app_data app: app
 
     _prepare_package
