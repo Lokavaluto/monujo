@@ -62,6 +62,30 @@ private_lane :_build_apps do |options|
 
     ## Load the platform dependent packaging
     package options
+
+    if options[:screenshot]
+      _prepare_package if not Actions.lane_context[SharedValues::SANDBOX_PATH]
+      check_screenshot_config(
+        host: options[:host],
+        db: options[:db],
+        login: options[:login],
+        password: options[:password],
+        resolution: options[:resolution],
+        language: options[:language],
+      )
+
+      screenshot_config = lane_context[SharedValues::SCREENSHOT_CONFIG]
+
+      take_screenshots(
+        host: screenshot_config[:host],
+        db: screenshot_config[:db],
+        login: screenshot_config[:login],
+        password: screenshot_config[:password],
+        resolution: screenshot_config[:resolution],
+        language: screenshot_config[:language],
+        force: options[:force],
+      )
+    end
   end
 
 end
