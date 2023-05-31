@@ -540,7 +540,7 @@ bundle exec fastlane screenshot \
 ```
 
 Results will be outputted along the built files in
-`release/$TAG/$APP/$LANG/$RESOLUTION`. Notice that if the directory exists
+`release/$TAG/screenshots/$APP/$LANG/$RESOLUTION`. Notice that if the directory exists
 already, it won't try to build screenshots. You must provide a
 `force:true` option to force the deletion of the directory
 and replacement with a new one.
