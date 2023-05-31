@@ -91,7 +91,6 @@ module Fastlane
         resolution = (params[:resolution] || ENV["SCREENSHOT_RESOLUTION"] || "").split(",")
         resolution = screenshot_config["resolutions"] if resolution.length == 0
         if ! resolution || resolution.length == 0
-          UI.user_error! "Please specify a screenshot resolution."
           UI.user_error!(
             "Please specify at least a screenshot resolution." +
             "  You need to set up a screenshot resolution using either:\n" +
