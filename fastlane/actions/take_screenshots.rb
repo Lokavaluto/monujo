@@ -5,6 +5,7 @@ require 'shellwords'
 module Fastlane
   module Actions
     module SharedValues
+      TAKE_SCREENSHOTS_REPORT = :TAKE_SCREENSHOTS_REPORT
     end
 
     class TakeScreenshotsAction < Action
@@ -12,6 +13,9 @@ module Fastlane
 
         app = Actions.lane_context[SharedValues::APP_NAME]
         version_name = Actions.lane_context[SharedValues::VERSION_NAME]
+        if not Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT]
+          Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT] = {}
+        end
 
         if File.exist? ".screenshot.json"
           screenshot_config = JSON.parse(File.read(".screenshot.json")) || Hash.new
@@ -80,6 +84,13 @@ module Fastlane
 
             result_dir="release/#{version_name}/screenshots/#{app}/#{current_language}/#{r}"
 
+            report_entry = {
+              version_name: version_name,
+              app: app,
+              language: current_language,
+              resolution: r,
+            }
+
             if File.exist? result_dir
               if ! params[:force]
                 UI.important("Screenshot of #{app} in " +
@@ -87,6 +98,10 @@ module Fastlane
                              "already exists.\n  Location: #{result_dir}.\n")
                 UI.message("  Ignoring build. If you want to overwrite it, " +
                            "provide 'force:true' as an argument.")
+                report_entry[:new] = false
+                Dir.glob("#{result_dir}/*.png").each do |screenshot|
+                  Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT][screenshot] = report_entry
+                end
                 next
               else
                 UI.important "Existing screenshot directory for #{app} #{result_dir} will be overwritten."
@@ -131,6 +146,11 @@ module Fastlane
               Dir.glob(Actions.lane_context[SharedValues::SANDBOX_PATH] +
                        "/.cypress/screenshots/spec.cy.ts/*.png"),
               result_dir)
+
+            report_entry[:new] = true
+            Dir.glob("#{result_dir}/*.png").each do |screenshot|
+              Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT][screenshot] = report_entry
+            end
           end
         end
       end
