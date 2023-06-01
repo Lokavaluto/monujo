@@ -63,7 +63,7 @@ module Fastlane
         language = params[:language] || ENV["SCREENSHOT_LANGUAGE"]
         if language
           language = language.split(",")
-          available_languages.each do |l|
+          language.each do |l|
             if not available_languages.include?(l)
               UI.important "Specified language #{l} is not an available language for #{app}\n" +
                             "  #{app} has only these language available: #{available_languages.join(", ")}"
