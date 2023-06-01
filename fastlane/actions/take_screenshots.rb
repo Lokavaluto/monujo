@@ -72,13 +72,20 @@ module Fastlane
         end
         File.write(config_path, JSON.pretty_generate(config))
 
-        available_languages.each do |current_language|
+        languages = available_languages.filter do |current_language|
           if language and not language.include? current_language
             UI.important "Skipping language #{current_language} as it was not selected for " +
                          "screenshot.\n" +
                          "  Selected resolutions: #{language.join(", ")}"
-            next
+            false
+          else
+            true
           end
+        end
+        if languages.length == 0
+          UI.user_error! "No language selected!"
+        end
+        languages.each do |current_language|
 
           resolution.each do |r|
 
