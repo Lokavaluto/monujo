@@ -451,44 +451,7 @@ bundle exec fastlane ios build      ## Build ios IPA
 
 Will produce build outputs in `release/$TAG` directory.
 
-
-##### create and publish all assets
-
-```
-bundle exec fastlane android publish_store  ## TBD
-bundle exec fastlane ios publish_store
-```
-
-- publish changelog, screenshots and application on platform's store
-  (Google play store for android, and Apple Store for ios)
-- the ios platform will require a Mac host.
-
-```
-bundle exec fastlane {web,android} publish_github
-```
-
-- publish changelog and application files on github release pages
-
-This is only supported on the Apple Store for now and requires a Apple
-host to support the final publication on Apple Store.
-
-Many arguments are supported from the inner lanes to drive
-the build of artifacts (screenshots, packages).
-
-For instance:
-
-```
-bundle exec fastlane ios publish_store \
-    tag:1.0.0-rc.11 app:agnel,pive \
-    host:demo.lokavaluto.fr \
-    db:odoo \
-    login:demo@example.com \
-    password:demo \
-    language:fr-FR,en-US \
-    device:IPHONE_55,IPAD_PRO_129
-```
-
-##### Specifying which version to build
+#### Specifying which version to build
 
 If the checkout of your current code is on a commit that has a TAG of the
 form `X.Y.Z` (optionally with `-rc.R` postfixed, as `1.0.0-rc.9` or
@@ -503,7 +466,7 @@ For instance:
 bundle exec fastlane android build tag:1.0.0-rc.9
 ```
 
-##### build changelog for current version
+#### build changelog for current version
 
 ```
 bundle exec fastlane changelog
@@ -512,7 +475,7 @@ bundle exec fastlane changelog
 Will create a file `release/<TAG>/CHANGELOG` with the changes since
 last version.
 
-##### create screenshots for release by specifying resolution
+#### create screenshots for release by specifying resolution
 
 These screenshots will showcase the most important part of the
 app. These are intended for publication along the releases in app
@@ -593,7 +556,7 @@ Note that screenshot resolution can specify a scaling factor as third
 number. For instance, `393x852x3` is a valid resolution with `3` as
 scaling factor.
 
-##### create and publish screenshots for release by specifying device
+#### create and publish screenshots for release by specifying device
 
 This is only supported on the Apple Store for now and requires a
 Apple host to support the final publication on Apple Store.
@@ -632,25 +595,25 @@ all languages on all required devices for the current tag:
 bundle exec fastlane ios publish_screenshots
 ```
 
-##### Build is happening in a temporary directory
+#### Build is happening in a temporary directory
 
 You don't need to clean your directory or care about the state of your
 current work dir: the source will be cloned in a temporary directory
 prior to any package building.
 
-##### Platforms supported
+#### Platforms supported
 
 This will be the first argument after your `bundle exec fastlane ...`
 command.
 
 Current infrastructure can drive the builds for:
 
-###### web
+##### web
 
 This is a simple html/js/css web server archive ready for deployment
 and should be buildable in all environment.
 
-###### iOS
+##### iOS
 
 It is required to use a mac. We are using [fastlane code signing
 guidelines and tools](https://codesigning.guide/).
@@ -685,7 +648,7 @@ Note that you can provide a revision number for the released ios
 package by adding an argument to the command line as `rev:N` (that
 will be 0 by default).
 
-###### android
+##### android
 
 You need to have your Android signing keys ready. The nice default
 setup is to create a directory 'keys/android/', having:
@@ -707,7 +670,7 @@ Note that you can provide a revision number for the released android
 package by adding an argument to the command line as `rev:N`
 (that will be 0 by default).
 
-##### Applications
+#### Applications
 
 Multiple variations of the application are automatically built for the
 `android` and `ios` platforms depending on the content of [this
@@ -728,6 +691,41 @@ bundle exec fastlane android build app:roue,pive
 This is about the process of send the build artifacts (web `tar.bz2`,
 `IPA` files) to public platform (github release page, apple store) for
 distribution.
+
+#### Publish to all available publishing hubs
+
+```
+bundle exec fastlane publish
+```
+
+This command will publish to all publishing hubs available for current
+platform artifacts. This means:
+
+- for **android** plaftform:
+  - build and publish `APK` files on github
+  - build and publish `AAB` files to Google Play Store.
+- for **ios** platform:
+  - build and publish `IPA` files to Apple Store.
+- for **web** platform:
+  - build and publish `tar.bz2` archive on github
+
+Note that if not specified, the revision number will be incremented
+per apps, per store to allow the package to be pushed.
+
+You can use all options from `publish_store` (see next section)
+
+For instance:
+
+```
+bundle exec fastlane android publish \
+    tag:1.0.0-rc.14 \
+    app:monujo,monujo-test \
+    rev:1
+```
+
+.. will build `APK` and `AAB`s, publish `APK` on github and push `AAB`
+to Google Play Store. It will build them for tag `1.0.0-rc.14`, and
+both apps `monujo` and `monujo-test` with the revision number 1.
 
 #### Publish to github
 

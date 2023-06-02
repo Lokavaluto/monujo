@@ -204,7 +204,7 @@ end
 
 desc "Publish Github"
 private_lane :_publish_github do |options|
-  _prepublish options
+  _prepublish options unless publish_metadata.entries.length != 0
   _send_github options
 end
 
@@ -212,7 +212,7 @@ end
 desc "Publish Store"
 private_lane :_publish_store do |options|
   _setup_store
-  _prepublish options
+  _prepublish options unless publish_metadata.entries.length != 0
   send_store options
 end
 
@@ -256,6 +256,11 @@ platform :android do
 
   lane :build do |options|
     _build_apps options
+  end
+
+  lane :publish do |options|
+    publish_store options
+    _publish_github options
   end
 
   lane :publish_github do |options|
@@ -365,6 +370,10 @@ platform :ios do
     team_id "25AZX5J5PX"
 
     _build_apps options
+  end
+
+  lane :publish do |options|
+    publish_store options
   end
 
   lane :publish_github do |options|
@@ -538,6 +547,10 @@ platform :ios do
 end
 
 platform :web do
+
+  lane :publish do |options|
+    _publish_github options
+  end
 
   lane :build do |options|
     version_name_from_tag tag: options[:tag]
