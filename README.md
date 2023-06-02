@@ -451,6 +451,43 @@ bundle exec fastlane ios build      ## Build ios IPA
 
 Will produce build outputs in `release/$TAG` directory.
 
+
+##### create and publish all assets
+
+```
+bundle exec fastlane android publish_store  ## TBD
+bundle exec fastlane ios publish_store
+```
+
+- publish changelog, screenshots and application on platform's store
+  (Google play store for android, and Apple Store for ios)
+- the ios platform will require a Mac host.
+
+```
+bundle exec fastlane {web,android} publish_github
+```
+
+- publish changelog and application files on github release pages
+
+This is only supported on the Apple Store for now and requires a Apple
+host to support the final publication on Apple Store.
+
+Many arguments are supported from the inner lanes to drive
+the build of artifacts (screenshots, packages).
+
+For instance:
+
+```
+bundle exec fastlane ios publish_store \
+    tag:1.0.0-rc.11 app:agnel,pive \
+    host:demo.lokavaluto.fr \
+    db:odoo \
+    login:demo@example.com \
+    password:demo \
+    language:fr-FR,en-US \
+    device:IPHONE_55,IPAD_PRO_129
+```
+
 ##### Specifying which version to build
 
 If the checkout of your current code is on a commit that has a TAG of the
