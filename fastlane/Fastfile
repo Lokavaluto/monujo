@@ -245,7 +245,6 @@ end
 desc "Build all assets needed for publication"
 private_lane :_prepublish do |options|
   from_publish_store = true
-  _setup_store options
   build options
   changelog options if options[:changelog]
   publish_metadata["tag"] = lane_context[SharedValues::VERSION_NAME]
@@ -277,7 +276,7 @@ end
 
 desc "Publish Store"
 private_lane :_publish_store do |options|
-  _setup_store
+  _setup_store options
   _prepublish options unless publish_metadata.entries.length != 0
   send_store options
 end
@@ -325,7 +324,7 @@ platform :android do
   end
 
   lane :publish do |options|
-    publish_store options
+    #publish_store options
     _publish_github options
   end
 

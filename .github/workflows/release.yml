@@ -54,4 +54,4 @@ jobs:
           KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE }}
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
         run: |
-          bundle exec fastlane ${{ matrix.platform }} publish_github draft:true
+          bundle exec fastlane ${{ matrix.platform }} publish app:monujo-test
