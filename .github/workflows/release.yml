@@ -41,7 +41,7 @@ jobs:
           npm -g install semver &&
           pip install gitchangelog pystache &&
           bundle exec fastlane ${{ matrix.platform }} publish_github draft:true changelog:true
-      - name: 🚚 Create Github release
+      - name: 🚚 Build and Publish Mobile releases on stores
         if: matrix.platform != 'web'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,9 +49,15 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.IOS_MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-          API_KEY: ${{ secrets.IOS_API_KEY }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.IOS_API_KEY }}
           ## android build
           KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE }}
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          PLAY_STORE_API_KEY: ${{ secrets.PLAY_STORE_API_KEY }}
+          ## screenshots
+          SCREENSHOT_HOST: ${{ secrets.SCREENSHOT_HOST }}
+          SCREENSHOT_DB: ${{ secrets.SCREENSHOT_DB }}
+          SCREENSHOT_LOGIN: ${{ secrets.SCREENSHOT_LOGIN }}
+          SCREENSHOT_PASSWORD: ${{ secrets.SCREENSHOT_PASSWORD }}
         run: |
-          bundle exec fastlane ${{ matrix.platform }} publish_github draft:true
+          bundle exec fastlane ${{ matrix.platform }} publish force_upload:true

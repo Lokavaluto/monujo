@@ -132,6 +132,7 @@ private_lane :_setup_signing do |options|
     check_ios_signing_secrets_are_available(
       api_key: options[:api_key],
       api_key_path: options[:api_key_path],
+      set_spaceship_token: true,
     )
   when :web
     ## Nothing to do
@@ -155,6 +156,7 @@ private_lane :_setup_store do |options|
     check_ios_store_secrets_are_available(
       api_key: options[:api_key],
       api_key_path: options[:api_key_path],
+      set_spaceship_token: true,
     )
   when :web
     ## Nothing to do
@@ -298,7 +300,6 @@ end
 desc "Build all assets needed for publication"
 private_lane :_prepublish do |options|
   from_publish_store = true
-  _setup_store options
   build options
   changelog options if options[:changelog]
   publish_metadata["tag"] = lane_context[SharedValues::VERSION_NAME]
@@ -330,7 +331,7 @@ end
 
 desc "Publish Store"
 private_lane :_publish_store do |options|
-  _setup_store
+  _setup_store options
   _prepublish options unless publish_metadata.entries.length != 0
   send_store options
 end
