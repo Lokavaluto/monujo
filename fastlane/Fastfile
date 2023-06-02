@@ -79,6 +79,11 @@ private_lane :_setup_store do |options|
   case lane_context[SharedValues::PLATFORM_NAME]
   when :android
     UI.user_error!("No store for platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+    ## Fail early if we don't have required info for store access
+    check_android_store_secrets_are_available(
+      api_key: options[:api_key],
+      api_key_path: options[:api_key_path],
+    )
   when :ios
     check_ios_store_secrets_are_available(
       api_key: options[:api_key],
