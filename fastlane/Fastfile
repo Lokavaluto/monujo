@@ -4,6 +4,9 @@ to_publish = Hash.new
 publish_metadata = Hash.new
 
 releases_data = nil
+from_publish_store = false
+
+
 
 ## key is `deliver`'s identifier, value is matching resolution
 devices_ios_resolution = {
@@ -40,11 +43,48 @@ private_lane :_setup_targets do |options|
   if not lane_context[SharedValues::VERSION_NAME]
     version_name_from_tag tag: options[:tag]
   end
-  if not lane_context[SharedValues::VERSION_CODE]
-    version_code_from_tag tag: options[:tag], rev: options[:rev]
-  end
   apps
 end
+
+
+lane :get_stored_build_numbers do |options|
+  case lane_context[SharedValues::PLATFORM_NAME]
+  when :android
+    require 'supply'
+    require 'supply/options'
+    require 'supply/reader'
+
+    Supply.config[:package_name] = lane_context[SharedValues::APP_ID]
+    begin
+      version_codes = Supply::Reader.new.track_version_codes || []
+    rescue => e
+      if e.message.include? 'Package not found'
+        version_codes = []
+      else
+        raise
+      end
+    end
+    versions = version_codes.compact.map(&:to_i)
+  when :ios
+    app = Spaceship::ConnectAPI::App.find(
+      lane_context[SharedValues::APP_ID]
+    )
+    builds = Spaceship::ConnectAPI.get_builds(
+      filter: { app: app.id },
+      sort: "-uploadedDate",
+      includes: "preReleaseVersion"
+    )
+    versions = builds.map { |build| build.version }
+  when :web
+    ## Nothing to do
+    UI.important "No revision support for web. Ignoring."
+  else
+    UI.user_error!("Unknown platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+  end
+  versions
+end
+
+
 
 
 desc "Check signing info are available and setup"
@@ -104,7 +144,7 @@ desc "Build release packages and/or screenshots"
 private_lane :_build_apps do |options|
 
   if options[:package].nil? or options[:package]
-      _setup_signing options
+    _setup_signing options
   end
 
   if options[:screenshot]
@@ -125,6 +165,34 @@ private_lane :_build_apps do |options|
     ## Load the platform dependent packaging
     ## To do so, specify `package:false`
     if options[:package].nil? or options[:package]
+
+      if not lane_context[SharedValues::VERSION_CODE]
+
+        if not options[:rev] and from_publish_store
+          vc = (version_code_from_tag tag: options[:tag], rev: 0).to_s
+          build_numbers = get_stored_build_numbers options
+          build_numbers = build_numbers.select {
+            |build_number| build_number.start_with?(vc[0..-3])
+          }
+          if build_numbers.length != 0
+            build_numbers = build_numbers.map {
+              |build_number| build_number.to_i
+            }
+            last_build_number = build_numbers.max
+            rev = last_build_number.to_s[-2..].to_i
+            if rev >= 98
+              UI.user_error! "All revision numbers were taken !"
+            end
+            rev = rev + 1
+          else
+            rev = 0
+          end
+          vc = version_code_from_tag tag: options[:tag], rev: rev
+          UI.important ("Inferred first unused rev on store: #{rev}, full build number: #{vc}")
+        else
+          version_code_from_tag tag: options[:tag], rev: options[:rev]
+        end
+      end
       package options
     end
 
@@ -176,6 +244,8 @@ end
 
 desc "Build all assets needed for publication"
 private_lane :_prepublish do |options|
+  from_publish_store = true
+  _setup_store options
   build options
   changelog options if options[:changelog]
   publish_metadata["tag"] = lane_context[SharedValues::VERSION_NAME]
@@ -273,7 +343,33 @@ platform :android do
   end
 
   private_lane :send_store do |options|
-    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+    require 'supply'
+    require 'supply/options'
+    require 'supply/reader'
+    to_publish.each do |path, label|
+      app = "#{path}".split('/')[-1] \
+              .split('_')[0]
+
+      ## XXXvlab: duplicate transformation for android (see version_prepare)
+      load_app_data app: app
+      build_number = lane_context[SharedValues::VERSION_CODE].to_s
+
+      ## Fetch existing version
+      build_numbers = get_stored_build_numbers options
+
+      already_uploaded = build_numbers.include?(build_number)
+      if already_uploaded
+        UI.user_error!(
+          "Current IPA with same build number (" +
+          lane_context[SharedValues::VERSION_CODE].to_s +
+          ") is already on store. You must build a new AAB with a " +
+          "new build number."
+        )
+      end
+      Supply.config[:aab] = path
+      Supply::Uploader.new.perform_upload
+    end
+
   end
 
   private_lane :prepare_mobile_package do |options|
