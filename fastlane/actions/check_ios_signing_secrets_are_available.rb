@@ -8,13 +8,13 @@ module Fastlane
     class CheckIosSigningSecretsAreAvailableAction < Action
       def self.run(params)
 
-        api_key = params[:api_key] || ENV["API_KEY"]
+        api_key = params[:api_key] || ENV["APP_STORE_CONNECT_API_KEY"]
 
         if api_key and api_key != ""
           UI.message "Found and using App Store Connect Key in environment"
         else
           api_key_path = params[:api_key_path] ||
-                    ENV["API_KEY_PATH"] || "keys/ios/api_key.json"
+                    ENV["APP_STORE_CONNECT_API_KEY_PATH"] || "keys/ios/api_key.json"
 
           if File.readable? api_key_path
             UI.success "Found and using App Store Connect Key from file '#{api_key_path}'."
@@ -27,10 +27,10 @@ module Fastlane
 
         if ! api_key
           UI.user_error! "Api Key not found. Please provide either:
- - a \$API_KEY environment variable with the JSON content
+ - a \$APP_STORE_CONNECT_API_KEY environment variable with the JSON content
    as described in:
    https://docs.fastlane.tools/app-store-connect-api/#using-fastlane-api-key-json-file
- - or a \$API_KEY_PATH environment variable toward the JSON file path
+ - or a \$APP_STORE_CONNECT_API_KEY_PATH environment variable toward the JSON file path
    with content as described in the previous section.
  - use 'api_key_path:FILE' to provide path to a JSON file with
    content as described in the first section.
