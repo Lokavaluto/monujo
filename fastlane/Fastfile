@@ -5,6 +5,15 @@ publish_metadata = Hash.new
 
 releases_data = nil
 
+## key is `deliver`'s identifier, value is matching resolution
+devices_ios_resolution = {
+  IPHONE_55: "414x736x3",
+  IPHONE_65: "414x896x3",
+  IPHONE_67: "430x932x3",
+  IPAD_PRO_129: "1024x1366x2",
+  IPAD_PRO_3GEN_129: "1024x1366x2"
+}
+
 
 desc "Produce final bundled javascript and css"
 private_lane :build_web_pack do |options|
@@ -64,11 +73,46 @@ private_lane :_setup_signing do |options|
 
 end
 
+desc "Check store access is available and setup"
+private_lane :_setup_store do |options|
 
-desc "Build release packages"
+  case lane_context[SharedValues::PLATFORM_NAME]
+  when :android
+    UI.user_error!("No store for platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+  when :ios
+    check_ios_store_secrets_are_available(
+      api_key: options[:api_key],
+      api_key_path: options[:api_key_path],
+    )
+  when :web
+    ## Nothing to do
+    UI.user_error!("No store for platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+  else
+    UI.user_error!("Unknown platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+  end
+
+end
+
+
+
+desc "Build release packages and/or screenshots"
 private_lane :_build_apps do |options|
-  _setup_signing options
 
+  if options[:package].nil? or options[:package]
+      _setup_signing options
+  end
+
+  if options[:screenshot]
+    check_screenshot_config(
+      host: options[:host],
+      db: options[:db],
+      login: options[:login],
+      password: options[:password],
+      resolution: options[:resolution],
+      language: options[:language],
+    )
+    screenshot_config = lane_context[SharedValues::SCREENSHOT_CONFIG]
+  end
 
   for app in _setup_targets options
     load_app_data app: app
@@ -81,15 +125,6 @@ private_lane :_build_apps do |options|
 
     if options[:screenshot]
       _prepare_package if not Actions.lane_context[SharedValues::SANDBOX_PATH]
-      check_screenshot_config(
-        host: options[:host],
-        db: options[:db],
-        login: options[:login],
-        password: options[:password],
-        resolution: options[:resolution],
-        language: options[:language],
-      )
-
       screenshot_config = lane_context[SharedValues::SCREENSHOT_CONFIG]
 
       take_screenshots(
@@ -108,33 +143,9 @@ end
 
 
 lane :screenshot do |options|
-
-  check_screenshot_config(
-    host: options[:host],
-    db: options[:db],
-    login: options[:login],
-    password: options[:password],
-    resolution: options[:resolution],
-    language: options[:language],
-  )
-
-  screenshot_config = lane_context[SharedValues::SCREENSHOT_CONFIG]
-
-  for app in _setup_targets options
-    load_app_data app: app
-
-    _prepare_package
-
-    take_screenshots(
-      host: screenshot_config[:host],
-      db: screenshot_config[:db],
-      login: screenshot_config[:login],
-      password: screenshot_config[:password],
-      resolution: screenshot_config[:resolution],
-      language: screenshot_config[:language],
-      force: options[:force],
-    )
-  end
+  options[:package] = false
+  options[:screenshot] = true
+  _build_apps options
 end
 
 
@@ -191,6 +202,7 @@ end
 
 desc "Publish Store"
 private_lane :_publish_store do |options|
+  _setup_store
   _prepublish options
   send_store options
 end
@@ -242,7 +254,12 @@ platform :android do
   end
 
   lane :publish_store do |options|
+    _store_resolutions options
     _publish_store options
+  end
+
+  private_lane :store_resolution do |options|
+    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
   end
 
   private_lane :send_store do |options|
@@ -346,11 +363,14 @@ platform :ios do
   end
 
   lane :publish_store do |options|
+    if options[:screenshot].nil? or options[:screenshot]
+      _store_resolutions options
+      options[:screenshot] = true
+    end
     _publish_store options
   end
 
-  lane :store_screenshots do |options|
-
+  private_lane :_store_resolutions do |options|
     if options[:resolution]
       UI.user_error!(
         "You should not provide resolutions as they are inferred from " +
@@ -358,61 +378,33 @@ platform :ios do
       )
     end
 
-    ## key is `deliver`'s identifier, value is matching resolution
-    devices_resolution = {
-      IPHONE_55: "414x736x3",
-      IPHONE_65: "414x896x3",
-      IPHONE_67: "430x932x3",
-      IPAD_PRO_129: "1024x1366x2",
-      IPAD_PRO_3GEN_129: "1024x1366x2"
-    }
-
     devices = (
       options[:device] || ENV["SCREENSHOT_DEVICE"] || ""
     ).split(",").map { |k| k.to_sym }
 
     if devices.length != 0
-      ## Filter out the devices_resolution Hash
-      devices_resolution = (
-        devices_resolution.entries
+      ## Filter out the devices_ios_resolution Hash
+      devices_ios_resolution = (
+        devices_ios_resolution.entries
           .filter { |k, v| devices.include? k }
       ).to_h
     end
-    UI.message "Target device for resolution: #{devices_resolution.keys.join(", ")}"
+    UI.message "Target device for resolution: #{devices_ios_resolution.keys.join(", ")}"
 
     ## Filter
-    options[:resolution] = devices_resolution.values.uniq.join(",")
-    screenshot options
-
-    for app in _setup_targets options
-      load_app_data app: app
-
-      ios_screenshots(
-        devices_resolution: devices_resolution
-      )
-    end
+    options[:resolution] = devices_ios_resolution.values.uniq.join(",")
   end
-
+  
   lane :publish_screenshots do |options|
-    _setup_signing
-    store_screenshots options
-
-    for app in _setup_targets options
-      load_app_data app: app
-
-      deliver(
-        app_identifier: lane_context[SharedValues::APP_ID],
-        screenshots_path: lane_context[SharedValues::STORE_SCREENSHOTS_PATH],
-        skip_binary_upload: true,
-        skip_metadata: true,
-        overwrite_screenshots: true,
-        run_precheck_before_submit: false,
-        force: true
-      )
-    end
+    ## Check if `deliver` has all required authentication stuff ready
+    _setup_store
+    _store_resolutions options
+    screenshot options
+    send_store options
   end
 
   private_lane :send_store do |options|
+    ## Publish package that have been built
     to_publish.each do |path, label|
       app = "#{path}".split('/')[-1] \
               .split('_')[0]
@@ -445,6 +437,15 @@ platform :ios do
       upload_to_testflight(
         app_identifier: lane_context[SharedValues::APP_ID],
         ipa: path,
+      )
+    end
+
+    ## Publish screenshots that have been taken
+    for app in _setup_targets options
+      load_app_data app: app
+
+      send_store_screenshots_appstore(
+        devices_ios_resolution: devices_ios_resolution
       )
     end
   end
