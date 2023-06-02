@@ -454,6 +454,18 @@ Will produce build outputs in `release/$TAG` directory.
 
 ##### create and publish all assets
 
+To publish on all stores and github, you can use the
+following command:
+
+```
+bundle exec fastlane {android,ios,web} publish
+```
+
+Depending on the platform, this will publish onto:
+- Google play store and github release page for `android` platform
+- Apple Store for `ios` platform
+- github release page for `web` platform
+
 ```
 bundle exec fastlane android publish_store  ## TBD
 bundle exec fastlane ios publish_store
