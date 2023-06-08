@@ -222,7 +222,6 @@
     data() {
       return {
         recipients: [],
-        displayFavoritesOnly: false,
         recipientsSearchString: "",
         transferOngoing: false,
         recipientsSearchError: false,
@@ -277,9 +276,7 @@
           console.log("searchRecipients() Failed", error)
         }
         this.lastNonceReceived = requestNonce
-        this.recipients = this.displayFavoritesOnly
-          ? recipients.filter((r: any) => r.is_favorite === true)
-          : recipients
+        this.recipients = recipients
       },
       async handleClickRecipient(recipient: any): Promise<void> {
         this.selectedRecipient = recipient
