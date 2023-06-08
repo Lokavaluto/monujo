@@ -25,7 +25,7 @@
                     ;(recipientsSearchString = e.target.value),
                       this.recipientsSearchString.length === 0 ||
                       this.recipientsSearchString.length >= 3
-                        ? this.searchRecipients()
+                        ? this.resetRecipientsGen()
                         : null
                   }
                 "
@@ -47,18 +47,13 @@
           ></div>
           <div class="container is-fluid custom-heavy-line-separator"></div>
         </div>
-        <section class="modal-card-body">
-          <div v-if="recipientsLoading" class="loader-container">
-            <loading
-              v-model:active="recipientsLoading"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="50"
-              :height="50"
-            />
-          </div>
+        <section
+          class="modal-card-body"
+          ref="recipientsContainer"
+          @scroll="getNextRecipients"
+        >
           <div
-            v-else-if="recipientsSearchError"
+            v-if="recipientsSearchError"
             class="notification is-light is-danger"
           >
             {{
@@ -67,6 +62,15 @@
                   "We apologise for the inconvenience."
               )
             }}
+          </div>
+          <div v-if="recipientsLoading" class="loader-container">
+            <loading
+              v-model:active="recipientsLoading"
+              :can-cancel="false"
+              :is-full-page="false"
+              :width="50"
+              :height="50"
+            />
           </div>
           <div v-else>
             <div
@@ -97,6 +101,18 @@
             >
               {{ $gettext("No recipient found") }}
             </div>
+          </div>
+          <div
+            v-if="!recipientsLoading && recipientsBatchLoading"
+            class="loader-container"
+          >
+            <loading
+              v-model:active="recipientsBatchLoading"
+              :can-cancel="false"
+              :is-full-page="false"
+              :width="30"
+              :height="30"
+            />
           </div>
         </section>
         <footer class="modal-card-foot is-justify-content-flex-end">
@@ -233,13 +249,14 @@
           balance: false,
           amount: false,
         },
-        nonce: 0,
-        lastNonceReceived: 0,
+        recipientsGen: null,
+        recipientsBatchLoading: false,
+        recipientsLoading: false,
       }
     },
     mounted() {
       this.setFocus("searchRecipient")
-      this.searchRecipients()
+      this.resetRecipientsGen()
     },
     computed: {
       ownCurrenciesRecipients(): Array<any> {
@@ -250,33 +267,54 @@
           return currencyIds.indexOf(p.backendId) > -1
         })
       },
-      recipientsLoading(): boolean {
-        return this.nonce !== this.lastNonceReceived
-      },
     },
     methods: {
-      async searchRecipients(): Promise<void> {
-        let requestNonce = ++this.nonce
-        this.recipients = []
+      resetRecipientsGen() {
         this.recipientsSearchError = false
-        let recipients
         let error = false
-        try {
-          recipients = await this.$lokapi.searchRecipients(
-            this.recipientsSearchString
-          )
-        } catch (err: any) {
-          error = err
+        this.recipients = []
+        this.recipientsLoading = true
+        this.recipientsGen = this.$lokapi.searchRecipients(
+          this.recipientsSearchString
+        )
+        this.$nextTick(() => this.getNextRecipients())
+      },
+      async getNextRecipients() {
+        if (!this.recipientsGen) return
+        let currentGen = this.recipientsGen
+        this.recipientsBatchLoading = true
+        let div = this.$refs.recipientsContainer
+        while (div.scrollHeight - (div.scrollTop + div.offsetHeight) <= 50) {
+          let next
+          try {
+            next = await this.recipientsGen.next()
+          } catch (e) {
+            if (currentGen !== this.recipientsGen) {
+              console.warn("Ignored exception from obsolete recipient", e)
+              break
+            }
+            this.recipientsBatchLoading = false
+            this.recipientsLoading = false
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected issue occured while downloading recipient list"
+              )
+            )
+            throw e
+          }
+          if (currentGen !== this.recipientsGen) {
+            console.log("Canceled obsolete recipient request.")
+            break
+          }
+          this.recipientsBatchLoading = false
+          if (next.done) {
+            this.recipientsGen = null
+            this.recipientsLoading = false
+            return
+          }
+          this.recipients.push(<any>next.value)
+          this.recipientsLoading = false
         }
-        if (requestNonce < this.lastNonceReceived) {
-          return // obsolete request
-        }
-        if (error) {
-          this.recipientsSearchError = true
-          console.log("searchRecipients() Failed", error)
-        }
-        this.lastNonceReceived = requestNonce
-        this.recipients = recipients
       },
       async handleClickRecipient(recipient: any): Promise<void> {
         this.selectedRecipient = recipient

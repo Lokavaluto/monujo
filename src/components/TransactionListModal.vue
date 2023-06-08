@@ -110,7 +110,7 @@
             <div class="recipient-filter is-flex is-flex-direction-row">
               <div class="recipient-filter-input">
                 <model-list-select
-                  :list="recipientList.map((name, index) => ({ name, index }))"
+                  :list="recipients.map((name, index) => ({ name, index }))"
                   option-value="index"
                   option-text="name"
                   v-model="selectedRecipient"
@@ -125,7 +125,12 @@
                   :class="{ disable: !selectedRecipient?.name }"
                   @click="resetRecipientSearch"
                 >
-                  <fa-icon v-if="selectedRecipient?.name" icon="fa-xmark">
+                  <fa-icon
+                    :class="{ refreshing: recipientsLoading }"
+                    v-if="recipientsLoading"
+                    icon="sync"
+                  ></fa-icon>
+                  <fa-icon v-else-if="selectedRecipient?.name" icon="fa-xmark">
                   </fa-icon>
                   <fa-icon v-else icon="fa-user"></fa-icon>
                 </button>
@@ -275,14 +280,22 @@
         transactions: [],
         isTransactionsBatchLoading: false,
         isTransactionsLoading: false,
-        recipientList: [],
+        recipients: [],
         recipientsSearchString: "",
         selectedRecipient: {},
+        recipientsContainer: null,
+        recipientsGen: null,
+        recipientsLoading: false,
       }
     },
     async mounted() {
+      this.recipientsContainer = this.$el.querySelector(".menu")
+      this.recipientsContainer.addEventListener(
+        "scroll",
+        await this.handleScrollRecipientsList
+      )
       this.resetTransactionsGen()
-      this.recipientList = await this.searchRecipients("")
+      this.resetRecipientsGen()
     },
     computed: {
       getPlatform(): string {
@@ -487,31 +500,82 @@
           yield t
         }
       },
-      async searchRecipients(recipientsSearchString: string): Promise<any[]> {
-        let recipients = null
-        try {
-          recipients = await this.$lokapi.searchRecipients(
-            recipientsSearchString
-          )
-        } catch (err: any) {
-          console.log("searchRecipients() Failed", err)
-          return []
+
+      resetRecipientsGen() {
+        this.recipients = []
+        this.recipientsGen = this.$lokapi.searchRecipients(
+          this.recipientsSearchString
+        )
+        this.$nextTick(() => this.getNextRecipients())
+      },
+
+      async handleScrollRecipientsList(event: any) {
+        this.getNextRecipients()
+      },
+
+      async getNextRecipients() {
+        if (this.recipientsGen == null) return
+        this.recipientsLoading = true
+        let currentGen = this.recipientsGen
+        while (
+          this.recipientsContainer.scrollHeight -
+            (this.recipientsContainer.scrollTop +
+              this.recipientsContainer.offsetHeight) <=
+          50
+        ) {
+          let next
+          try {
+            next = await this.recipientsGen.next()
+          } catch (e) {
+            if (currentGen !== this.recipientsGen) {
+              console.warn("Ignored exception from obsolete recipient", e)
+              return
+            }
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected issue occured while downloading recipient list"
+              )
+            )
+            this.recipientsLoading = false
+
+            throw e
+          }
+          if (currentGen !== this.recipientsGen) {
+            console.log("Canceled obsolete recipient request.")
+            return
+          }
+          if (next.done) {
+            this.recipientsGen = null
+            break
+          }
+          if (!this.recipients.includes(next.value.name)) {
+            this.recipients.push(next.value.name)
+          }
         }
-        return [...new Set(recipients.map((r: any) => r.name))]
+        this.recipientsLoading = false
       },
+
       async onSearch(recipientsSearchString: any) {
-        if (recipientsSearchString.length > 2)
-          this.recipientList = await this.searchRecipients(
-            recipientsSearchString
-          )
+        if (this.selectedRecipient?.name) return
+        if (
+          recipientsSearchString.length > 2 ||
+          recipientsSearchString.length === 0
+        ) {
+          this.recipientsSearchString = recipientsSearchString
+          this.resetRecipientsGen()
+        }
       },
+
       async resetRecipientSearch(event: any) {
         this.selectedRecipient = {}
-        this.recipientList = await this.searchRecipients("")
+        await this.getNextRecipients()
       },
     },
     watch: {
-      selectedRecipient: async function (newRecipient): Promise<void> {
+      selectedRecipient: async function (newRecipient, old): Promise<void> {
+        if (old?.name && !newRecipient?.name) {
+          this.onSearch("")
+        }
         this.resetTransactionsGen()
       },
       exportDate: async function (newExportDate): Promise<void> {
@@ -596,5 +660,20 @@
   }
   button.disable {
     pointer-events: none;
+  }
+  @media only screen and (min-height: 1024px) {
+    .ui.selection.dropdown .menu {
+      max-height: 20em !important;
+    }
+  }
+  @media only screen and (max-height: 1023px) and (min-height: 768px) {
+    .ui.selection.dropdown .menu {
+      max-height: 12em !important;
+    }
+  }
+  @media only screen and (max-height: 767px) {
+    .ui.selection.dropdown .menu {
+      max-height: 7em !important;
+    }
   }
 </style>
