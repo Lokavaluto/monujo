@@ -149,15 +149,11 @@ export class LokAPI extends LokAPIBrowserAbstract {
       .map((accountWithrequiresUnlock: any) => accountWithrequiresUnlock[0])
   }
 
-  public async searchRecipients(value: string): Promise<t.IRecipient[]> {
-    const uiRecipients = []
-    // Not using a ``.map`` because we expect ``super.searchRecipient``
-    // to return a generator anyway in the near future.
-    const recipients = await super.searchRecipients(value)
-    for (const recipient of recipients) {
-      uiRecipients.push(makeUIProxyRecipient(recipient))
+  public async *searchRecipients(value: string): AsyncGenerator<t.IRecipient> {
+    const recipients = super.searchRecipients(value)
+    for await (const recipient of recipients) {
+      yield makeUIProxyRecipient(recipient)
     }
-    return uiRecipients
   }
 
   // XXXvlab: this is less than ideal way to handle the cache
