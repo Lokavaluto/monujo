@@ -520,9 +520,9 @@
           this.recipientBatchLoader.elements[this.selectedRecipientIdx]?.name
 
         for await (const t of gen) {
+          if (dateBegin && t.date < dateBegin) break
           if (selectedRecipientName && selectedRecipientName !== t.related)
             continue
-          if (dateBegin && t.date < dateBegin) break
           if (dateEnd && t.date > dateEnd) continue
           yield t
         }
