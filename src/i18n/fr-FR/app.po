@@ -81,7 +81,7 @@ msgid "Already have an account ?"
 msgstr "Avez-vous déjà créé un compte ?"
 
 #: src/components/MoneyTransferModal.vue:167
-#: src/components/TransactionListModal.vue:396
+#: src/components/TransactionListModal.vue:392
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
@@ -103,8 +103,8 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "destinataires"
 
-#: src/components/TransactionListModal.vue:367
-#: src/components/TransactionListModal.vue:491
+#: src/components/TransactionListModal.vue:363
+#: src/components/TransactionListModal.vue:487
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -242,7 +242,7 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TransactionListModal.vue:397
+#: src/components/TransactionListModal.vue:393
 msgid "Date"
 msgstr "Date"
 
@@ -250,7 +250,7 @@ msgstr "Date"
 msgid "day"
 msgstr "jour"
 
-#: src/components/TransactionListModal.vue:398
+#: src/components/TransactionListModal.vue:394
 msgid "Description"
 msgstr "Description"
 
@@ -657,11 +657,11 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TransactionListModal.vue:394
+#: src/components/TransactionListModal.vue:390
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TransactionListModal.vue:395
+#: src/components/TransactionListModal.vue:391
 msgid "Target"
 msgstr "Destination"
 
@@ -750,12 +750,12 @@ msgstr "Opérations de crédit en attente de validation"
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TransactionListModal.vue:439
-#: src/components/TransactionListModal.vue:464
+#: src/components/TransactionListModal.vue:435
+#: src/components/TransactionListModal.vue:460
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TransactionListModal.vue:444
+#: src/components/TransactionListModal.vue:440
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
@@ -763,7 +763,7 @@ msgstr "Liste des transactions téléchargée"
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 
-#: src/components/TransactionListModal.vue:469
+#: src/components/TransactionListModal.vue:465
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
