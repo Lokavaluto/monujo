@@ -13,7 +13,7 @@
         ></button>
       </header>
       <div class="filter-area">
-        <div class="ml-2 mt-2" ref="transactionsContainer">
+        <div class="ml-2 mt-2">
           <div
             class="
               is-flex-direction-column
@@ -344,11 +344,7 @@
 
         return [begin, now < end ? now : end]
       },
-      ...mapModuleState("lokapi", [
-        "transactionsLoading",
-        "lastTransactions",
-        "userProfile",
-      ]),
+      ...mapModuleState("lokapi", ["userProfile"]),
       ...mapGetters(["numericFormat", "dateFormat"]),
     },
     methods: {
