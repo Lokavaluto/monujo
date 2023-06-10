@@ -157,7 +157,7 @@
       <section
         class="modal-card-body custom-card-transactions"
         ref="transactionsContainer"
-        @scroll="getNextFilteredTransactions"
+        @scroll="transactionBatchLoader.getNextElements"
       >
         <div
           class="
@@ -169,22 +169,25 @@
           "
         >
           <TransactionItem
-            v-for="transaction in transactions"
+            v-for="transaction in transactionBatchLoader.elements.value"
             :key="transaction"
             :transaction="transaction"
           />
           <div
-            v-if="transactions.length == 0 && !isTransactionsBatchLoading"
+            v-if="
+              transactionBatchLoader.elements.length == 0 &&
+              !transactionBatchLoader.isNewBatchLoading.value
+            "
             class="is-flex is-align-items-center is-justify-content-center"
           >
             {{ $gettext("No transaction found") }}
           </div>
           <div
             class="transactions-loader-container"
-            v-if="isTransactionsBatchLoading"
+            v-if="transactionBatchLoader.isNewBatchLoading.value"
           >
             <Loading
-              v-model:active="isTransactionsBatchLoading"
+              v-model:active="transactionBatchLoader.isNewBatchLoading.value"
               :can-cancel="false"
               :is-full-page="false"
               :width="30"
@@ -285,8 +288,6 @@
         selectorsOrder: ["day", "week", "month", "year"],
         selectedTimeSpanType: "",
         selectedTimeSpanOffset: 0,
-        transactions: [],
-        isTransactionsBatchLoading: false,
         isTransactionsLoading: false,
         selectedRecipientIdx: null,
         recipientBatchLoader: null,
@@ -308,6 +309,20 @@
           )
         },
       })
+      this.transactionBatchLoader = UseBatchLoading({
+        genFactory: this.getTransactions.bind(this),
+        needMorePredicate: () => {
+          const div = this.$refs.transactionsContainer
+          return div.scrollHeight - (div.scrollTop + div.offsetHeight) <= 500
+        },
+        onError: () => {
+          this.$msg.error(
+            this.$gettext(
+              "An unexpected issue occured while downloading transaction list"
+            )
+          )
+        },
+      })
     },
     async mounted() {
       const $recipients = this.$el.querySelector(".menu")
@@ -320,7 +335,7 @@
       )
       this.$recipients = $recipients
       this.recipientBatchLoader.newGen("")
-      this.resetTransactionsGen()
+      this.transactionBatchLoader.newGen("")
     },
     computed: {
       getPlatform(): string {
@@ -466,47 +481,6 @@
       disabledDates(date: Date) {
         return date > moment().endOf("day").toDate()
       },
-      async getNextFilteredTransactions() {
-        if (!this.transactionGen) return
-
-        let div = this.$refs.transactionsContainer
-        while (div.scrollHeight - (div.scrollTop + div.offsetHeight) <= 500) {
-          let next
-          this.isTransactionsBatchLoading = true
-          let currentGen = this.transactionGen
-          try {
-            next = await this.transactionGen.next()
-          } catch (e) {
-            if (currentGen !== this.transactionGen) {
-              console.warn("Ignored exception from obsolete transaction", e)
-              break
-            }
-            this.isTransactionsBatchLoading = false
-            this.$msg.error(
-              this.$gettext(
-                "An unexpected issue occured while downloading transaction list"
-              )
-            )
-            throw e
-          }
-          if (currentGen !== this.transactionGen) {
-            console.log("Canceled obsolete transaction request.")
-            break
-          }
-          this.isTransactionsBatchLoading = false
-          if (next.done) {
-            this.transactionGen = null
-            break
-          }
-
-          this.transactions.push(<any>next.value)
-        }
-      },
-      resetTransactionsGen() {
-        this.transactionGen = this.getTransactions()
-        this.transactions = []
-        this.$nextTick(() => this.getNextFilteredTransactions())
-      },
       async *getTransactions() {
         const gen = this.$lokapi.getTransactions()
 
@@ -537,16 +511,11 @@
           this.recipientBatchLoader.newGen(recipientsSearchString)
         }
       },
-
-      async resetRecipientSearch(event: any) {
-        this.selectedRecipientIdx = null
-        await this.getNextRecipients()
-      },
     },
     watch: {
       selectedRecipientIdx: async function (newIdx, oldIdx): Promise<void> {
         this.onRecipientSearch("")
-        this.resetTransactionsGen()
+        this.transactionBatchLoader.newGen()
       },
       exportDate: async function (newExportDate): Promise<void> {
         let [newBegin, newEnd] = newExportDate
@@ -562,7 +531,7 @@
           this.exportDate = [normBegin, normEnd]
           return
         }
-        this.resetTransactionsGen()
+        this.transactionBatchLoader.newGen()
       },
     },
   })
