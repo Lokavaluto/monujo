@@ -63,56 +63,46 @@
               )
             }}
           </div>
-          <div v-if="recipientsLoading" class="loader-container">
-            <loading
-              v-model:active="recipientsLoading"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="50"
-              :height="50"
-            />
-          </div>
-          <div v-else>
-            <div
-              v-if="ownCurrenciesRecipients.length !== 0"
-              class="
-                custom-card
-                is-flex-direction-column
-                is-align-items-center
-                is-justify-content-space-between
-              "
-            >
-              <template v-if="ownCurrenciesRecipients">
-                <div
-                  class="is-clickable py-2"
-                  v-for="(recipient, index) in ownCurrenciesRecipients"
-                >
-                  <RecipientItem
-                    :recipient="recipient"
-                    :key="index"
-                    @select="handleClickRecipient(recipient)"
-                  />
-                </div>
-              </template>
+          <div
+            v-else
+            class="
+              custom-card
+              is-flex-direction-column
+              is-align-items-center
+              is-justify-content-space-between
+            "
+          >
+            <template v-if="ownCurrenciesRecipients">
+              <div
+                class="is-clickable py-2"
+                v-for="(recipient, index) in ownCurrenciesRecipients"
+              >
+                <RecipientItem
+                  :recipient="recipient"
+                  :key="index"
+                  @select="handleClickRecipient(recipient)"
+                />
+              </div>
+            </template>
+            <div v-if="recipientsLoading" class="loader-container">
+              <loading
+                v-model:active="recipientsLoading"
+                :can-cancel="false"
+                :is-full-page="false"
+                :width="30"
+                :height="30"
+              />
             </div>
             <div
-              v-else
+              v-if="
+                !recipientsLoading &&
+                this.recipientsGen === null &&
+                ownCurrenciesRecipients.length === 0
+              "
               class="is-flex is-align-items-center is-justify-content-center"
             >
               {{ $gettext("No recipient found") }}
             </div>
-          </div>
-          <div
-            v-if="!recipientsLoading && recipientsBatchLoading"
-            class="loader-container"
-          >
-            <loading
-              v-model:active="recipientsBatchLoading"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="30"
-              :height="30"
-            />
           </div>
         </section>
         <footer class="modal-card-foot is-justify-content-flex-end">
@@ -250,7 +240,6 @@
           amount: false,
         },
         recipientsGen: null,
-        recipientsBatchLoading: false,
         recipientsLoading: false,
       }
     },
@@ -282,7 +271,6 @@
       async getNextRecipients() {
         if (!this.recipientsGen) return
         let currentGen = this.recipientsGen
-        this.recipientsBatchLoading = true
         let div = this.$refs.recipientsContainer
         while (div.scrollHeight - (div.scrollTop + div.offsetHeight) <= 50) {
           let next
@@ -293,7 +281,6 @@
               console.warn("Ignored exception from obsolete recipient", e)
               break
             }
-            this.recipientsBatchLoading = false
             this.recipientsLoading = false
             this.$msg.error(
               this.$gettext(
@@ -306,7 +293,6 @@
             console.log("Canceled obsolete recipient request.")
             break
           }
-          this.recipientsBatchLoading = false
           if (next.done) {
             this.recipientsGen = null
             this.recipientsLoading = false
