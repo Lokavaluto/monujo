@@ -111,16 +111,16 @@
               <div class="recipient-filter-input">
                 <model-list-select
                   :list="
-                    recipients.map((recipient, index) => ({
-                      name: recipient.name,
-                      index,
+                    recipientBatchLoader.elements.map((r, idx) => ({
+                      name: r.name,
+                      idx,
                     }))
                   "
-                  option-value="index"
+                  option-value="idx"
                   option-text="name"
                   v-model="selectedRecipientIdx"
                   :placeholder="$gettext('All recipient')"
-                  @searchchange="onSearch"
+                  @searchchange="onRecipientSearch"
                 >
                 </model-list-select>
               </div>
@@ -128,11 +128,11 @@
                 <button
                   class="recipient-filter-reset"
                   :class="{ disable: selectedRecipientIdx === null }"
-                  @click="resetRecipientSearch"
+                  @click="selectedRecipientIdx = null"
                 >
                   <fa-icon
-                    :class="{ refreshing: recipientsLoading }"
-                    v-if="recipientsLoading"
+                    class="refreshing"
+                    v-if="recipientBatchLoader.isNewBatchLoading"
                     icon="sync"
                   ></fa-icon>
                   <fa-icon
@@ -261,6 +261,7 @@
   import "@/assets/datepicker.scss"
 
   import { mapModuleState } from "@/utils/vuex"
+  import UseBatchLoading from "@/services/UseBatchLoading"
 
   @Options({
     name: "TransactionListModal",
@@ -288,22 +289,39 @@
         transactions: [],
         isTransactionsBatchLoading: false,
         isTransactionsLoading: false,
-        recipients: [],
-        recipientsSearchString: "",
         selectedRecipientIdx: null,
-        recipientsContainer: null,
-        recipientsGen: null,
-        recipientsLoading: false,
+        recipientBatchLoader: null,
       }
     },
+
+    created() {
+      this.recipientBatchLoader = UseBatchLoading({
+        genFactory: this.$lokapi.searchRecipients.bind(this.$lokapi),
+        needMorePredicate: () =>
+          this.$recipients.scrollHeight -
+            (this.$recipients.scrollTop + this.$recipients.offsetHeight) <=
+          50,
+        onError: () => {
+          this.$msg.error(
+            this.$gettext(
+              "An unexpected issue occured while downloading recipient list"
+            )
+          )
+        },
+      })
+    },
     async mounted() {
-      this.recipientsContainer = this.$el.querySelector(".menu")
-      this.recipientsContainer.addEventListener(
+      const $recipients = this.$el.querySelector(".menu")
+
+      $recipients.addEventListener(
         "scroll",
-        await this.handleScrollRecipientsList
+        this.recipientBatchLoader.getNextElements.bind(
+          this.recipientBatchLoader
+        )
       )
+      this.$recipients = $recipients
+      this.recipientBatchLoader.newGen("")
       this.resetTransactionsGen()
-      this.resetRecipientsGen()
     },
     computed: {
       getPlatform(): string {
@@ -499,7 +517,7 @@
 
         const [dateBegin, dateEnd] = this.exportDate
         const selectedRecipientName =
-          this.recipients[this.selectedRecipientIdx]?.name
+          this.recipientBatchLoader.elements[this.selectedRecipientIdx]?.name
 
         for await (const t of gen) {
           if (selectedRecipientName && selectedRecipientName !== t.related)
@@ -510,74 +528,18 @@
         }
       },
 
-      resetRecipientsGen() {
-        this.recipients = []
-        this.recipientsGen = this.$lokapi.searchRecipients(
-          this.recipientsSearchString
-        )
-        this.$nextTick(() => this.getNextRecipients())
-      },
-
-      async handleScrollRecipientsList(event: any) {
-        this.getNextRecipients()
-      },
-
-      async getNextRecipients() {
-        if (this.recipientsGen == null) return
-        this.recipientsLoading = true
-        let currentGen = this.recipientsGen
-        while (
-          this.recipientsContainer.scrollHeight -
-            (this.recipientsContainer.scrollTop +
-              this.recipientsContainer.offsetHeight) <=
-          50
+      async onRecipientSearch(recipientsSearchString: any) {
+        if (
+          this.selectedRecipientIdx !== null &&
+          recipientsSearchString === ""
         ) {
-          let next: any
-          try {
-            next = await this.recipientsGen.next()
-          } catch (e) {
-            if (currentGen !== this.recipientsGen) {
-              console.warn("Ignored exception from obsolete recipient", e)
-              return
-            }
-            this.$msg.error(
-              this.$gettext(
-                "An unexpected issue occured while downloading recipient list"
-              )
-            )
-            this.recipientsLoading = false
-
-            throw e
-          }
-          if (currentGen !== this.recipientsGen) {
-            console.log("Canceled obsolete recipient request.")
-            return
-          }
-          if (next.done) {
-            this.recipientsGen = null
-            break
-          }
-          if (
-            !this.recipients.find(
-              (recipient: any) => recipient.internalId === next.value.internalId
-            )
-          ) {
-            this.recipients.push(next.value)
-          }
-        }
-        this.recipientsLoading = false
-      },
-
-      async onSearch(recipientsSearchString: any) {
-        if (this.selectedRecipientIdx !== null) {
           return
         }
         if (
           recipientsSearchString.length > 2 ||
           recipientsSearchString.length === 0
         ) {
-          this.recipientsSearchString = recipientsSearchString
-          this.resetRecipientsGen()
+          this.recipientBatchLoader.newGen(recipientsSearchString)
         }
       },
 
@@ -588,9 +550,7 @@
     },
     watch: {
       selectedRecipientIdx: async function (newIdx, oldIdx): Promise<void> {
-        if (oldIdx !== null && newIdx === null) {
-          this.onSearch("")
-        }
+        this.onRecipientSearch("")
         this.resetTransactionsGen()
       },
       exportDate: async function (newExportDate): Promise<void> {
