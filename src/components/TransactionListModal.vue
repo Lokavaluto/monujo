@@ -169,7 +169,6 @@
           "
         >
           <TransactionItem
-            v-if="transactions.length > 0"
             v-for="transaction in transactions"
             :key="transaction"
             :transaction="transaction"
