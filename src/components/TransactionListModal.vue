@@ -110,10 +110,15 @@
             <div class="recipient-filter is-flex is-flex-direction-row">
               <div class="recipient-filter-input">
                 <model-list-select
-                  :list="recipients.map((name, index) => ({ name, index }))"
+                  :list="
+                    recipients.map((recipient, index) => ({
+                      name: recipient.name,
+                      index,
+                    }))
+                  "
                   option-value="index"
                   option-text="name"
-                  v-model="selectedRecipient"
+                  v-model="selectedRecipientIdx"
                   :placeholder="$gettext('All recipient')"
                   @searchchange="onSearch"
                 >
@@ -122,7 +127,7 @@
               <div>
                 <button
                   class="recipient-filter-reset"
-                  :class="{ disable: !selectedRecipient?.name }"
+                  :class="{ disable: selectedRecipientIdx === null }"
                   @click="resetRecipientSearch"
                 >
                   <fa-icon
@@ -130,7 +135,10 @@
                     v-if="recipientsLoading"
                     icon="sync"
                   ></fa-icon>
-                  <fa-icon v-else-if="selectedRecipient?.name" icon="fa-xmark">
+                  <fa-icon
+                    v-else-if="selectedRecipientIdx !== null"
+                    icon="fa-xmark"
+                  >
                   </fa-icon>
                   <fa-icon v-else icon="fa-user"></fa-icon>
                 </button>
@@ -282,7 +290,7 @@
         isTransactionsLoading: false,
         recipients: [],
         recipientsSearchString: "",
-        selectedRecipient: {},
+        selectedRecipientIdx: null,
         recipientsContainer: null,
         recipientsGen: null,
         recipientsLoading: false,
@@ -490,7 +498,8 @@
         const gen = this.$lokapi.getTransactions()
 
         const [dateBegin, dateEnd] = this.exportDate
-        const selectedRecipientName = this.selectedRecipient?.name
+        const selectedRecipientName =
+          this.recipients[this.selectedRecipientIdx]?.name
 
         for await (const t of gen) {
           if (selectedRecipientName && selectedRecipientName !== t.related)
@@ -523,7 +532,7 @@
               this.recipientsContainer.offsetHeight) <=
           50
         ) {
-          let next
+          let next: any
           try {
             next = await this.recipientsGen.next()
           } catch (e) {
@@ -548,15 +557,21 @@
             this.recipientsGen = null
             break
           }
-          if (!this.recipients.includes(next.value.name)) {
-            this.recipients.push(next.value.name)
+          if (
+            !this.recipients.find(
+              (recipient: any) => recipient.internalId === next.value.internalId
+            )
+          ) {
+            this.recipients.push(next.value)
           }
         }
         this.recipientsLoading = false
       },
 
       async onSearch(recipientsSearchString: any) {
-        if (this.selectedRecipient?.name) return
+        if (this.selectedRecipientIdx !== null) {
+          return
+        }
         if (
           recipientsSearchString.length > 2 ||
           recipientsSearchString.length === 0
@@ -567,13 +582,13 @@
       },
 
       async resetRecipientSearch(event: any) {
-        this.selectedRecipient = {}
+        this.selectedRecipientIdx = null
         await this.getNextRecipients()
       },
     },
     watch: {
-      selectedRecipient: async function (newRecipient, old): Promise<void> {
-        if (old?.name && !newRecipient?.name) {
+      selectedRecipientIdx: async function (newIdx, oldIdx): Promise<void> {
+        if (oldIdx !== null && newIdx === null) {
           this.onSearch("")
         }
         this.resetTransactionsGen()
