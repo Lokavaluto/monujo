@@ -25,7 +25,7 @@
                     ;(recipientsSearchString = e.target.value),
                       recipientsSearchString.length === 0 ||
                       recipientsSearchString.length >= 3
-                        ? this.resetRecipientsGen()
+                        ? recipientBatchLoader.newGen(recipientsSearchString)
                         : null
                   }
                 "
@@ -50,7 +50,7 @@
         <section
           class="modal-card-body"
           ref="recipientsContainer"
-          @scroll="getNextRecipients"
+          @scroll="recipientBatchLoader.getNextElements"
         >
           <div
             v-if="recipientsSearchError"
@@ -84,9 +84,12 @@
                 />
               </div>
             </template>
-            <div v-if="recipientsLoading" class="loader-container">
+            <div
+              v-if="recipientBatchLoader.isNewBatchLoading.value"
+              class="loader-container"
+            >
               <loading
-                v-model:active="recipientsLoading"
+                v-model:active="recipientBatchLoader.isNewBatchLoading.value"
                 :can-cancel="false"
                 :is-full-page="false"
                 :width="30"
@@ -95,8 +98,7 @@
             </div>
             <div
               v-if="
-                !recipientsLoading &&
-                recipientsGen === null &&
+                recipientBatchLoader.hasNoMoreElements.value &&
                 ownCurrenciesRecipients.length === 0
               "
               class="is-flex is-align-items-center is-justify-content-center"
@@ -218,6 +220,8 @@
   import RecipientItem from "@/components/RecipientItem.vue"
   import BankAccountItem from "@/components/BankAccountItem.vue"
 
+  import UseBatchLoading from "@/services/UseBatchLoading"
+
   @Options({
     name: "MoneyTransferModal",
     components: {
@@ -227,7 +231,6 @@
     },
     data() {
       return {
-        recipients: [],
         recipientsSearchString: "",
         transferOngoing: false,
         recipientsSearchError: false,
@@ -239,69 +242,40 @@
           balance: false,
           amount: false,
         },
-        recipientsGen: null,
-        recipientsLoading: false,
       }
+    },
+    created() {
+      this.recipientBatchLoader = UseBatchLoading({
+        genFactory: this.$lokapi.searchRecipients.bind(this.$lokapi),
+        needMorePredicate: () =>
+          this.$refs.recipientsContainer.scrollHeight -
+            (this.$refs.recipientsContainer.scrollTop +
+              this.$refs.recipientsContainer.offsetHeight) <=
+          50,
+        onError: () => {
+          this.$msg.error(
+            this.$gettext(
+              "An unexpected issue occured while downloading recipient list"
+            )
+          )
+        },
+      })
     },
     mounted() {
       this.setFocus("searchRecipient")
-      this.resetRecipientsGen()
+      this.recipientBatchLoader.newGen("")
     },
     computed: {
       ownCurrenciesRecipients(): Array<any> {
         let currencyIds = this.$store.getters.activeVirtualAccounts.map(
           (a: any) => a.currencyId
         )
-        return this.recipients.filter((p: any) => {
+        return this.recipientBatchLoader.elements.value.filter((p: any) => {
           return currencyIds.indexOf(p.backendId) > -1
         })
       },
     },
     methods: {
-      resetRecipientsGen() {
-        this.recipientsSearchError = false
-        let error = false
-        this.recipients = []
-        this.recipientsLoading = true
-        this.recipientsGen = this.$lokapi.searchRecipients(
-          this.recipientsSearchString
-        )
-        this.$nextTick(() => this.getNextRecipients())
-      },
-      async getNextRecipients() {
-        if (!this.recipientsGen) return
-        let currentGen = this.recipientsGen
-        let div = this.$refs.recipientsContainer
-        while (div.scrollHeight - (div.scrollTop + div.offsetHeight) <= 50) {
-          let next
-          try {
-            next = await this.recipientsGen.next()
-          } catch (e) {
-            if (currentGen !== this.recipientsGen) {
-              console.warn("Ignored exception from obsolete recipient", e)
-              break
-            }
-            this.recipientsLoading = false
-            this.$msg.error(
-              this.$gettext(
-                "An unexpected issue occured while downloading recipient list"
-              )
-            )
-            throw e
-          }
-          if (currentGen !== this.recipientsGen) {
-            console.log("Canceled obsolete recipient request.")
-            break
-          }
-          if (next.done) {
-            this.recipientsGen = null
-            this.recipientsLoading = false
-            return
-          }
-          this.recipients.push(<any>next.value)
-          this.recipientsLoading = false
-        }
-      },
       async handleClickRecipient(recipient: any): Promise<void> {
         this.selectedRecipient = recipient
         this.selectedRecipient.currencySymbol = await recipient.getSymbol()
@@ -421,7 +395,6 @@
       },
       close() {
         this.searchName = ""
-        this.recipients = []
         this.amount = 0
         this.activeClass = 0
         this.$modal.close()
