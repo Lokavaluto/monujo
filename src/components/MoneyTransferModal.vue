@@ -84,18 +84,15 @@
                 />
               </div>
             </template>
-            <div
+            <loading
               v-if="recipientBatchLoader.isNewBatchLoading.value"
+              v-model:active="recipientBatchLoader.isNewBatchLoading.value"
+              :can-cancel="false"
+              :is-full-page="false"
+              :width="30"
+              :height="30"
               class="loader-container"
-            >
-              <loading
-                v-model:active="recipientBatchLoader.isNewBatchLoading.value"
-                :can-cancel="false"
-                :is-full-page="false"
-                :width="30"
-                :height="30"
-              />
-            </div>
+            />
             <div
               v-if="
                 recipientBatchLoader.hasNoMoreElements.value &&
