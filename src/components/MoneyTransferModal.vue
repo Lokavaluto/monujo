@@ -23,8 +23,8 @@
                 @input="
                   (e) => {
                     ;(recipientsSearchString = e.target.value),
-                      this.recipientsSearchString.length === 0 ||
-                      this.recipientsSearchString.length >= 3
+                      recipientsSearchString.length === 0 ||
+                      recipientsSearchString.length >= 3
                         ? this.resetRecipientsGen()
                         : null
                   }
@@ -96,7 +96,7 @@
             <div
               v-if="
                 !recipientsLoading &&
-                this.recipientsGen === null &&
+                recipientsGen === null &&
                 ownCurrenciesRecipients.length === 0
               "
               class="is-flex is-align-items-center is-justify-content-center"
