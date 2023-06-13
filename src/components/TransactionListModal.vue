@@ -182,18 +182,15 @@
           >
             {{ $gettext("No transaction found") }}
           </div>
-          <div
-            class="transactions-loader-container"
+          <Loading
             v-if="transactionBatchLoader.isNewBatchLoading.value"
-          >
-            <Loading
-              v-model:active="transactionBatchLoader.isNewBatchLoading.value"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="30"
-              :height="30"
-            />
-          </div>
+            v-model:active="transactionBatchLoader.isNewBatchLoading.value"
+            class="loader-container"
+            :can-cancel="false"
+            :is-full-page="false"
+            :width="30"
+            :height="30"
+          />
         </div>
       </section>
       <footer
@@ -593,6 +590,10 @@
   }
   .recipient-filter-input {
     width: 100%;
+  }
+  .loader-container {
+    position: relative;
+    height: 80px;
   }
   .ui.fluid.dropdown > .dropdown.icon {
     display: none;
