@@ -56,16 +56,18 @@
           {{ $gettext("your accounts") }}
         </h2>
         <BankAccountItem
-          v-for="account in activeVirtualAccounts"
-          :bal="account.bal"
-          :curr="account.curr"
-          :backend="account.backend"
-          :type="account.type"
-          :active="account.active"
-          :subAccounts="account.subAccounts || []"
+          v-for="a in activeVirtualAccountsMiddleware"
+          :bal="a.bal"
+          :curr="a.curr"
+          :backend="a.backend"
+          :type="a.type"
+          :active="a.active"
+          :subAccounts="a.subAccounts || []"
           class="mb-5"
+          :class="{ selected: a._obj.internalId === account?._obj?.internalId }"
+          @accountSelected="$emit('accountSelected', a)"
         >
-          <template v-slot:name>{{ account.name() }}</template>
+          <template v-slot:name>{{ a.name() }}</template>
         </BankAccountItem>
       </div>
     </div>
@@ -110,6 +112,7 @@
     name: "TheBankAccountList",
     props: {
       loaded: Boolean,
+      account: Object,
     },
     components: {
       BankAccountItem,
@@ -135,6 +138,13 @@
     computed: {
       totalAccountsLoaded(): number {
         return this.$store.state.lokapi.virtualAccountTree.length
+      },
+      activeVirtualAccountsMiddleware(this: any) {
+        const accounts = this.activeVirtualAccounts
+        if (!this.account && accounts.length > 0) {
+          this.$emit("accountSelected", accounts[0])
+        }
+        return accounts
       },
       ...mapGetters(["activeVirtualAccounts", "inactiveVirtualAccounts"]),
 

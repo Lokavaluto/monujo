@@ -242,19 +242,29 @@
       }
     },
     created() {
+      const [opts] = this.$modal.args.value
+      let { account } = opts
+      if (account._obj?.getTransactions) {
+        account = account._obj
+      } else {
+        account = account._obj.parent
+      }
+      const backend = account.parent
+
       this.recipientBatchLoader = UseBatchLoading({
-        genFactory: this.$lokapi.searchRecipients.bind(this.$lokapi),
+        genFactory: backend.searchRecipients.bind(backend),
         needMorePredicate: () =>
           this.$refs.recipientsContainer.scrollHeight -
             (this.$refs.recipientsContainer.scrollTop +
               this.$refs.recipientsContainer.offsetHeight) <=
           50,
-        onError: () => {
+        onError: (e) => {
           this.$msg.error(
             this.$gettext(
               "An unexpected issue occured while downloading recipient list"
             )
           )
+          console.error(e)
         },
       })
     },

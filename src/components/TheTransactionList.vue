@@ -7,7 +7,10 @@
         is-justify-content-space-between
       "
     >
-      <TransactionListRecent :refreshToggle="refreshToggle" />
+      <TransactionListRecent
+        :refreshToggle="refreshToggle"
+        :account="account"
+      />
     </div>
   </div>
 </template>
@@ -21,14 +24,18 @@
 
   @Options({
     name: "TheTransactionList",
-    props: {
-      refreshToggle: Boolean,
-    },
     components: {
       TransactionListRecent,
     },
+    props: {
+      refreshToggle: Boolean,
+      account: Object,
+    },
     computed: {
       ...mapModuleState("lokapi", ["transactionsLoading", "lastTransactions"]),
+    },
+    mounted() {
+      console.log("TransactionList", this.account)
     },
   })
   export default class TheTransactionList extends Vue {}

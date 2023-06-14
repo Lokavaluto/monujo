@@ -4,8 +4,8 @@
       <div class="columns is-mobile menu">
         <div class="column has-text-centered mb-2">
           <button
-            :disabled="!hasActiveMoneyAccount"
-            @click="openModal('MoneyTransferModal')"
+            :disabled="!account"
+            @click="openModal('MoneyTransferModal', { account })"
             class="
               button
               custom-button
@@ -45,7 +45,7 @@
         </div>
         <div class="column has-text-centered mb-2">
           <button
-            :disabled="!hasActiveMoneyAccount"
+            :disabled="!account"
             class="
               button
               custom-button
@@ -54,7 +54,7 @@
               is-rounded
               action
             "
-            @click="openModal('MoneyCreditModal')"
+            @click="openModal('MoneyCreditModal', { account })"
           >
             <span class="icon-text">
               <span class="icon">
@@ -74,18 +74,12 @@
 
   @Options({
     name: "TheDashboardFooter",
-    data: () => {
-      modalName: ""
-    },
-    components: {},
-    computed: {
-      hasActiveMoneyAccount(): boolean {
-        return this.$store.getters.activeVirtualAccounts.length > 0
-      },
+    props: {
+      account: Object,
     },
     methods: {
-      async openModal(label: string) {
-        const refreshTransaction = await this.$modal.open(label)
+      async openModal(label: string, ...args: any[]) {
+        const refreshTransaction = await this.$modal.open(label, ...args)
         if (refreshTransaction) this.$emit("refreshTransaction")
       },
     },

@@ -301,18 +301,28 @@
     },
 
     created() {
+      const [opts] = this.$modal.args.value
+      let { account } = opts
+      if (account._obj?.getTransactions) {
+        account = account._obj
+      } else {
+        account = account._obj.parent
+      }
+      const backend = account.parent
+
       this.recipientBatchLoader = UseBatchLoading({
-        genFactory: this.$lokapi.searchRecipients.bind(this.$lokapi),
+        genFactory: backend.searchRecipients.bind(backend),
         needMorePredicate: () =>
           this.$recipients.scrollHeight -
             (this.$recipients.scrollTop + this.$recipients.offsetHeight) <=
           50,
-        onError: () => {
+        onError: (e) => {
           this.$msg.error(
             this.$gettext(
               "An unexpected issue occured while downloading recipient list"
             )
           )
+          throw e
         },
       })
       this.transactionBatchLoader = UseBatchLoading({
@@ -488,7 +498,15 @@
         return date > moment().endOf("day").toDate()
       },
       async *getTransactions() {
-        const gen = this.$lokapi.getTransactions()
+        const [opts] = this.$modal.args.value
+        const { account } = opts
+
+        let gen
+        if (account._obj?.getTransactions) {
+          gen = account._obj.getTransactions()
+        } else {
+          gen = account._obj.parent.getTransactions()
+        }
 
         const [dateBegin, dateEnd] = this.exportDate
         const selectedRecipientName =
