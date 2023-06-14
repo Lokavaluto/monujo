@@ -5,7 +5,7 @@
         <div class="column has-text-centered mb-2">
           <button
             :disabled="!hasActiveMoneyAccount"
-            @click="$modal.open('MoneyTransferModal')"
+            @click="openModal('MoneyTransferModal')"
             class="
               button
               custom-button
@@ -54,7 +54,7 @@
               is-rounded
               action
             "
-            @click="$modal.open('MoneyCreditModal')"
+            @click="openModal('MoneyCreditModal')"
           >
             <span class="icon-text">
               <span class="icon">
@@ -81,6 +81,12 @@
     computed: {
       hasActiveMoneyAccount(): boolean {
         return this.$store.getters.activeVirtualAccounts.length > 0
+      },
+    },
+    methods: {
+      async openModal(label: string) {
+        const refreshTransaction = await this.$modal.open(label)
+        if (refreshTransaction) this.$emit("refreshTransaction")
       },
     },
   })

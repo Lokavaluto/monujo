@@ -4,6 +4,7 @@ import { ref, computed, watch } from "vue"
 function UseModal(): any {
   const modalStack: any = ref([])
   let modalUI: any
+  let returnValue: any
 
   function register(fns: {
     open: (opts: any) => Promise<string>
@@ -20,7 +21,7 @@ function UseModal(): any {
     }
     if (!modalUI?.show)
       throw new Error("No callback registered to manage modal.")
-    await modalUI.show(label, step)
+    return await modalUI.show(label, step)
   }
 
   function next(): void {
@@ -34,8 +35,9 @@ function UseModal(): any {
     modalStack.value[stackSize.value - 1] = { label, step: step + 1 }
   }
 
-  function close(): void {
+  function close(data: any): void {
     const modalName = modal.value
+    returnValue = data
     if (!modalName) {
       throw new Error(
         "Unexpected call to useModal.close() with no modal in stack."
@@ -72,7 +74,7 @@ function UseModal(): any {
   watch(modal, async (newModal, oldModal) => {
     if (oldModal && modalUI.hide) {
       if (modalStack.value.every((x: any) => x.label != oldModal))
-        modalUI.hide(oldModal)
+        modalUI.hide(oldModal, returnValue)
     }
   })
 

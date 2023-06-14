@@ -105,6 +105,7 @@ msgstr ""
 
 #: src/components/TransactionListModal.vue:326
 #: src/components/TransactionListModal.vue:383
+#: src/components/TransactionListRecent.vue:121
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -592,7 +593,7 @@ msgstr "Enregistrer"
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
-#: src/components/TheTransactionList.vue:14
+#: src/components/TransactionListRecent.vue:53
 msgid "See more"
 msgstr "Voir tout"
 
@@ -775,7 +776,7 @@ msgstr "Liste des transactions partagée"
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
-#: src/components/TransactionListRecent.vue:48
+#: src/components/TransactionListRecent.vue:45
 msgid "Transactions"
 msgstr "Opérations"
 

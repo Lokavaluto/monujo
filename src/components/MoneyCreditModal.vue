@@ -279,14 +279,13 @@
         this.showCreditRefreshNotification = true
       },
       closeAndRefresh(): void {
-        this.close()
+        this.close(true)
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
-        this.$store.dispatch("resetTransactions")
       },
-      close(): void {
+      close(refreshTransactions: boolean): void {
         this.showCreditRefreshNotification = false
-        this.$modal.close()
+        this.$modal.close(refreshTransactions)
       },
       setFocus() {
         this.$nextTick(() => {

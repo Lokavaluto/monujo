@@ -30,8 +30,12 @@
               throw new Error(`Modal '${label}' already opened.`)
             this.callbacks[label] = { resolve, reject }
           }),
-        hide: (label: string) => {
-          this.callbacks[label].resolve()
+        hide: (label: string, data: any) => {
+          if (data instanceof Error) {
+            this.callbacks[label].reject(data)
+          } else {
+            this.callbacks[label].resolve(data)
+          }
           delete this.callbacks[label]
         },
       })
