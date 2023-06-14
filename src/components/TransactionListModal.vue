@@ -191,6 +191,15 @@
             :width="30"
             :height="30"
           />
+          <div
+            v-if="
+              transactionBatchLoader.hasNoMoreElements.value &&
+              transactionBatchLoader.elements.value.length === 0
+            "
+            class="is-flex is-align-items-center is-justify-content-center"
+          >
+            {{ $gettext("No transactions found") }}
+          </div>
         </div>
       </section>
       <footer
