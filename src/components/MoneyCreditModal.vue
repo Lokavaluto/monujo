@@ -200,6 +200,19 @@
       this.setFocus()
       this.resetCredit()
     },
+    created() {
+      const [opts] = this.$modal.args.value
+      const { account } = opts
+      let subAccounts
+      if (account._obj?.getAccounts) {
+        subAccounts = account.subAccounts
+      } else {
+        subAccounts = [account]
+      }
+      this.creditableMoneyAccounts = subAccounts.filter(
+        (a: any) => a.creditable
+      )
+    },
     computed: {
       amountError() {
         if (!this.selectedCreditAccount) return ""
@@ -224,7 +237,6 @@
         }
         return false
       },
-      ...mapGetters(["creditableMoneyAccounts"]),
     },
     methods: {
       resetCredit(): void {

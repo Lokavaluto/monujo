@@ -48,9 +48,13 @@
         :key="transaction"
         :transaction="transaction"
       />
-      <div class="has-text-centered mt-5">
+      <div v-if="transactions.length" class="has-text-centered mt-5">
         <button
-          @click="$modal.open('TransactionListModal')"
+          @click="
+            () => {
+              $modal.open('TransactionListModal', { account })
+            }
+          "
           class="button custom-button custom-inverted"
         >
           {{ $gettext("See more") }}
@@ -85,6 +89,7 @@
     name: "TransactionListRecent",
     props: {
       refreshToggle: Boolean, // change of this props requests a refresh
+      account: Object,
     },
     components: {
       TransactionItem,
@@ -144,7 +149,11 @@
         this.transactions = transactions
       },
       resetTransactionsGen() {
-        this.transactionGen = this.$lokapi.getTransactions()
+        if (this.account._obj?.getTransactions) {
+          this.transactionGen = this.account._obj.getTransactions()
+        } else {
+          this.transactionGen = this.account._obj.parent.getTransactions()
+        }
         this.$nextTick(() => this.getNextFilteredTransactions())
         this.setRefreshIfNeeded()
       },

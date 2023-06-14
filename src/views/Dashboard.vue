@@ -4,16 +4,28 @@
       <div class="container mt-5">
         <div class="columns is-tablet">
           <div class="column is-half">
-            <TheBankAccountList @refreshTransaction="refreshTransaction" />
+            <TheBankAccountList
+              @refreshTransaction="refreshTransaction"
+              @accountSelected="accountSelected"
+              :account="account"
+            />
           </div>
           <div class="column is-half">
-            <TheTransactionList :refreshToggle="refreshToggle" />
+            <TheTransactionList
+              v-if="account"
+              :refreshToggle="refreshToggle"
+              :account="account"
+              :key="account"
+            />
           </div>
         </div>
       </div>
       <div class="action-footer-container">
         <div class="container">
-          <TheDashboardFooter @refreshTransaction="refreshTransaction" />
+          <TheDashboardFooter
+            :account="account"
+            @refreshTransaction="refreshTransaction"
+          />
         </div>
       </div>
     </main>
@@ -35,6 +47,7 @@
     data() {
       return {
         refreshToggle: false,
+        account: null,
       }
     },
     components: {
@@ -46,6 +59,10 @@
       refreshTransaction() {
         // This change is propagated through props to children components
         this.refreshToggle = !this.refreshToggle
+      },
+      accountSelected(account: any) {
+        if (account?._obj?.internalId === this.account?._obj?.internalId) return
+        this.account = account
       },
     },
   })

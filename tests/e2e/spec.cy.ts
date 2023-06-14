@@ -49,6 +49,9 @@ describe("General processes when logged in", () => {
   })
 
   it("Send money process", () => {
+    cy.accountsPane().within(() => {
+      cy.contains(".account-backend", "cyclos").parents(".account").click()
+    })
     cy.payButton().should("be.visible")
     cy.payButton().click()
     cy.modal().should("be.visible")
@@ -74,11 +77,11 @@ describe("General processes when logged in", () => {
   })
 
   it("Top-up process", () => {
+    cy.accountsPane().within(() => {
+      cy.contains(".account-backend", "comchain").parents(".account").click()
+    })
     cy.topUpButton().should("be.visible")
     cy.topUpButton().click()
-    cy.topUpAccount().click()
-    cy.topUpNextButton().should("be.visible")
-    cy.topUpNextButton().should("be.disabled")
     if (Cypress.env("screenshot")) cy.takeScreenshot("top-up")
 
     // top-up empty or invalid amount

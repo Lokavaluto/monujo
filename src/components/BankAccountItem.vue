@@ -1,6 +1,9 @@
 <template>
   <div class="account" :class="{ active }">
-    <div class="custom-inner-card card px-5 py-2 is-flex">
+    <div
+      class="custom-inner-card card px-5 py-2 is-flex"
+      @click="$emit('accountSelected', account)"
+    >
       <div class="is-size-5 is-flex-grow-1">
         <slot name="name">default name</slot>
         <div v-if="isMultiCurrency && !isSub" class="account-backend is-size-6">
@@ -34,7 +37,8 @@
         :type="account.type"
         :active="account.active"
         :isSub="true"
-        class="mt-4"
+        class="mt-4 subaccount"
+        @accountSelected="$emit('accountSelected', account)"
       >
         <template v-slot:name>{{ account.name() }}</template>
       </BankAccountItem>
@@ -88,12 +92,22 @@
     background-color: $inner-card-background-color;
     border: 1px solid $inner-card-border-color;
   }
-  .account {
+  .account:not(.subaccount) {
     &:not(.active) {
       opacity: 0.6;
       .custom-inner-card {
         border: 2px #eee solid;
         box-shadow: none;
+      }
+    }
+
+    &.selected {
+      background-color: transparent;
+    }
+    &:not(.selected) {
+      .custom-inner-card {
+        opacity: 0.8;
+        border: 1px #eee solid;
       }
     }
   }
