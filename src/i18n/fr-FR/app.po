@@ -416,7 +416,7 @@ msgid "No previous transactions in your history."
 msgstr "Aucune opération dans votre historique"
 
 #: src/components/MoneyTransferModal.vue:97
-msgid "No recipient found"
+msgid "No recipients found"
 msgstr "Aucun destinataire de paiement à afficher"
 
 #: src/views/admin/PendingCredits.vue:36

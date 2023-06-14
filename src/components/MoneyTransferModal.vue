@@ -100,7 +100,7 @@
               "
               class="is-flex is-align-items-center is-justify-content-center"
             >
-              {{ $gettext("No recipient found") }}
+              {{ $gettext("No recipients found") }}
             </div>
           </div>
         </section>
