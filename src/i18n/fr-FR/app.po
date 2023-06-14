@@ -105,7 +105,7 @@ msgstr ""
 
 #: src/components/TransactionListModal.vue:326
 #: src/components/TransactionListModal.vue:383
-#: src/components/TransactionListRecent.vue:121
+#: src/components/TransactionListRecent.vue:131
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
