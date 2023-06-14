@@ -1,25 +1,25 @@
 <template>
   <loading
-    v-if="!lastTransactions.length"
-    v-model:active="transactionsLoading"
+    v-if="!transactions.length"
+    v-model:active="isTransactionsLoading"
     :can-cancel="false"
     :is-full-page="false"
   />
   <div
     id="the-transaction-list"
-    v-if="!transactionsLoading || lastTransactions.length"
+    v-if="!isTransactionsLoading || transactions.length"
   >
     <span
       :class="{
-        hide: !transactionsLoading,
+        hide: !isTransactionsLoading,
       }"
       class="icon is-small is-default is-pulled-right is-rounded refresh"
     >
-      <fa-icon :class="{ refreshing: transactionsLoading }" icon="sync" />
+      <fa-icon :class="{ refreshing: isTransactionsLoading }" icon="sync" />
     </span>
     <div
       class="notification is-danger is-light"
-      v-if="transactionsLoadingError"
+      v-if="isTransactionsLoadingError"
     >
       <p class="mb-4">
         {{
@@ -38,19 +38,24 @@
         }}
       </p>
     </div>
-    <p
-      v-else-if="lastTransactions?.length === 0"
-      class="notification is-default"
-    >
+    <p v-else-if="transactions?.length === 0" class="notification is-default">
       {{ $gettext("No previous transactions in your history.") }}
     </p>
     <div v-else>
       <h2 class="custom-card-title">{{ $gettext("Transactions") }}</h2>
       <TransactionItem
-        v-for="transaction in lastTransactions"
+        v-for="transaction in transactions"
         :key="transaction"
         :transaction="transaction"
       />
+      <div class="has-text-centered mt-5">
+        <button
+          @click="$modal.open('TransactionListModal')"
+          class="button custom-button custom-inverted"
+        >
+          {{ $gettext("See more") }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -66,9 +71,19 @@
 
   @Options({
     name: "TransactionListRecent",
+    props: {
+      refreshToggle: Boolean, // change of this props requests a refresh
+    },
     components: {
       TransactionItem,
       Loading,
+    },
+    data(this: any) {
+      return {
+        transactions: [],
+        isTransactionsBatchLoading: false,
+        isTransactionsLoading: false,
+      }
     },
     mounted() {
       const transactionsRefreshInterval =
@@ -78,9 +93,10 @@
         if (interval) clearInterval(interval)
 
         interval = setInterval(() => {
-          this.$store.dispatch("resetTransactions")
+          this.resetTransactionsGen()
         }, Math.max(10000, transactionsRefreshInterval * 1000))
       }
+      this.resetTransactionsGen()
     },
     unmounted() {
       if (interval) {
@@ -88,15 +104,45 @@
         interval = null
       }
     },
-    computed: {
-      ...mapModuleState("lokapi", [
-        "lastTransactions",
-        "transactionsLoading",
-        "transactionsLoadingError",
-      ]),
-    },
+    computed: {},
 
-    methods: {},
+    methods: {
+      async getNextFilteredTransactions() {
+        if (!this.transactionGen) return
+        this.isTransactionsLoading = true
+        let transactions = []
+        while (transactions.length < 5) {
+          let next
+          try {
+            next = await this.transactionGen.next()
+          } catch (e) {
+            this.isTransactionsLoading = false
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected issue occured while downloading transaction list"
+              )
+            )
+            throw e
+          }
+          if (next.done) {
+            this.transactionGen = null
+            break
+          }
+          transactions.push(<any>next.value)
+        }
+        this.isTransactionsLoading = false
+        this.transactions = transactions
+      },
+      resetTransactionsGen() {
+        this.transactionGen = this.$lokapi.getTransactions()
+        this.$nextTick(() => this.getNextFilteredTransactions())
+      },
+    },
+    watch: {
+      refreshToggle: function () {
+        this.resetTransactionsGen()
+      },
+    },
   })
   export default class TransactionListRecent extends Vue {}
 </script>

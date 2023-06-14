@@ -7,15 +7,7 @@
         is-justify-content-space-between
       "
     >
-      <TransactionListRecent />
-    </div>
-    <div v-if="lastTransactions?.length" class="has-text-centered mt-5">
-      <button
-        @click="$modal.open('TransactionListModal')"
-        class="button custom-button custom-inverted"
-      >
-        {{ $gettext("See more") }}
-      </button>
+      <TransactionListRecent :refreshToggle="refreshToggle" />
     </div>
   </div>
 </template>
@@ -29,6 +21,9 @@
 
   @Options({
     name: "TheTransactionList",
+    props: {
+      refreshToggle: Boolean,
+    },
     components: {
       TransactionListRecent,
     },

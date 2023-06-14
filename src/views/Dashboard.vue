@@ -4,16 +4,16 @@
       <div class="container mt-5">
         <div class="columns is-tablet">
           <div class="column is-half">
-            <TheBankAccountList />
+            <TheBankAccountList @refreshTransaction="refreshTransaction" />
           </div>
           <div class="column is-half">
-            <TheTransactionList />
+            <TheTransactionList :refreshToggle="refreshToggle" />
           </div>
         </div>
       </div>
       <div class="action-footer-container">
         <div class="container">
-          <TheDashboardFooter />
+          <TheDashboardFooter @refreshTransaction="refreshTransaction" />
         </div>
       </div>
     </main>
@@ -32,10 +32,21 @@
     props: {
       msg: String,
     },
+    data() {
+      return {
+        refreshToggle: false,
+      }
+    },
     components: {
       TheTransactionList,
       TheBankAccountList,
       TheDashboardFooter,
+    },
+    methods: {
+      refreshTransaction() {
+        // This change is propagated through props to children components
+        this.refreshToggle = !this.refreshToggle
+      },
     },
   })
   export default class Core extends Vue {}

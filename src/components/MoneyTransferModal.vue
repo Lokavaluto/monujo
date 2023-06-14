@@ -351,7 +351,7 @@
         }
         this.errors.balance = false
         this.errors.amount = false
-        this.close()
+        this.close(true)
         this.$msg.success(
           this.$gettext("Payment issued to %{ name }", {
             name: this.selectedRecipient.name,
@@ -388,13 +388,12 @@
             })
         }
         await this.$store.dispatch("fetchAccounts")
-        await this.$store.dispatch("resetTransactions")
       },
-      close() {
+      close(refreshTransactions: any = false) {
         this.searchName = ""
         this.amount = 0
         this.activeClass = 0
-        this.$modal.close()
+        this.$modal.close(refreshTransactions)
       },
       setFocus(refLabel: string) {
         this.$nextTick(() => {

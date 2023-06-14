@@ -144,7 +144,7 @@
       refreshBalanceAndTransactions() {
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
-        this.$store.dispatch("resetTransactions")
+        this.$emit("refreshTransaction")
       },
     },
   })

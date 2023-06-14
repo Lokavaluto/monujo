@@ -2,15 +2,10 @@
 import { RestExc } from "@lokavaluto/lokapi-browser"
 
 export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
-  const transactionsBatchLength = 10
-
-  let transactionsGen = lokApiService.getTransactions()
   return {
     state: {
       status: "",
       userProfile: null,
-      transactions: [],
-      lastTransactions: [],
       bal: 0,
       curr: "",
       virtualAccountTree: [],
@@ -26,9 +21,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
       pendingCreditRequests: [],
       accountsLoading: true,
       accountsLoadingError: false,
-      transactionsLoading: true,
-      transactionsLoadingError: false,
-      transactionsBatchLoading: false,
     },
     actions: {
       async login(
@@ -56,7 +48,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
           throw err
         }
         dispatch("fetchAccounts")
-        dispatch("resetTransactions")
         commit("auth_success")
         await dispatch("setBackends")
         dispatch("fetchUserAccountValidationRights")
@@ -74,40 +65,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
           commit("setAccountsLoadingError", true)
         }
         commit("setAccountsLoading", false)
-      },
-      async resetTransactions({ commit, dispatch, state }: any) {
-        commit("setTransactionsLoading", true)
-        commit("setTransactionsLoadingError", false)
-        let transactions: any = [],
-          transactionsIndex = 0
-        try {
-          transactionsGen = lokApiService.getTransactions()
-          let next = await transactionsGen.next()
-          while (!next.done && transactionsIndex < transactionsBatchLength) {
-            transactionsIndex++
-            transactions.push(<any>next.value)
-            next = await transactionsGen.next()
-          }
-        } catch (e: any) {
-          console.error("Error fetching transactions", e)
-          commit("setTransactionsLoadingError", true)
-        }
-        commit("setTransactions", transactions)
-        commit("setTransactionsLoading", false)
-      },
-      async fetchTransactionsBatch({ commit, dispatch, state }: any) {
-        let transactions =
-            state.transactions.length > 0 ? state.transactions.slice(0) : [],
-          transactionsIndex = 0
-        commit("setTransactionsBatchLoading", true)
-        let next = await transactionsGen.next()
-        while (!next.done && transactionsIndex < transactionsBatchLength) {
-          transactionsIndex++
-          transactions.push(<any>next.value)
-          next = await transactionsGen.next()
-        }
-        commit("setTransactionsBatchLoading", false)
-        commit("setTransactions", transactions)
       },
       async genPaymentLink({ commit }: any, amount: number) {
         await commit("genPaymentLink", amount)
@@ -137,7 +94,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         lokApiService.clearBackendCache()
         dispatch("setBackends")
         dispatch("fetchAccounts")
-        dispatch("fetchTransactionsBatch")
         return userAccount
       },
       async setBackends({ commit, state }: any) {
@@ -182,8 +138,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         state.status = ""
         state.apiToken = ""
         state.userProfile = null
-        state.transactions = []
-        state.lastTransactions = []
         state.curr = ""
         state.virtualAccountTree = []
         state.moneyAccounts = []
@@ -197,8 +151,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         state.pendingCreditRequests = []
         state.accountsLoading = false
         state.accountsLoadingError = false
-        state.transactionsLoading = false
-        state.transactionsLoadingError = false
       },
 
       setAccounts(state: any, { virtualAccountTree, allMoneyAccounts }: any) {
@@ -218,22 +170,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         state.accountsLoaded = true
       },
 
-      setTransactions(state: any, transactions: any[]) {
-        let maxTransactions = 5
-        const trs = []
-        const history = []
-        for (const el of transactions) {
-          trs.push(el)
-          history.push(el.related !== "Admin" ? el.related : null)
-          if (maxTransactions === 1) {
-            break
-          }
-          maxTransactions -= 1
-        }
-
-        state.transactions = transactions
-        state.lastTransactions = trs
-      },
       storeBackends(state: any, backends: any) {
         state.backends = backends
       },
@@ -257,15 +193,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
       },
       setAccountsLoadingError(state: any, hasError: boolean) {
         state.accountsLoadingError = hasError
-      },
-      setTransactionsLoading(state: any, loading: boolean) {
-        state.transactionsLoading = loading
-      },
-      setTransactionsLoadingError(state: any, hasError: boolean) {
-        state.transactionsLoadingError = hasError
-      },
-      setTransactionsBatchLoading(state: any, isLoading: boolean) {
-        state.transactionsBatchLoading = isLoading
       },
     },
     getters: {
