@@ -32,6 +32,7 @@ jobs:
       ## released file still offer dynamic configuration.
       - name: 🔨 Build
         run: |
+          npm run gettext:compile
           npm run build
       - name: 🔨 Config
         run: |
@@ -50,7 +51,7 @@ jobs:
                 },
                 \"fr-FR\": {
                   \"label\": \"Français (France)\",
-                  \"url\": \"https://docker.0k.io/downloads/monujo.fr-FR.json\"
+                  \"url\": \"i18n/fr-FR.json\"
                 }
               },
               \"appStringsLanguage\": \"en-US\",
