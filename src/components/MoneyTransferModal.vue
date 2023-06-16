@@ -352,8 +352,8 @@
               )
           )
 
-          console.log("Payment failed:", err.message)
-          throw err
+          console.error("Payment failed:", err)
+          return
         } finally {
           this.transferOngoing = false
           this.$loading.hide()
