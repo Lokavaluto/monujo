@@ -114,6 +114,18 @@ export default async function mkStore(localesConfig: any, gettext: any) {
           return moment(date).fromNow()
         }
       }, "dateFormatLanguage"),
+      dateTimeFormat: PoorMansCachedGetter(
+        (state: any) =>
+          new Intl.DateTimeFormat(state.dateFormatLanguage, {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }).format,
+        "dateFormatLanguage"
+      ),
     },
   })
   return store

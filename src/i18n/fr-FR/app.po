@@ -22,7 +22,7 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
-#: src/components/MoneyTransferModal.vue:394
+#: src/components/MoneyTransferModal.vue:398
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -55,7 +55,7 @@ msgstr "Demandes de comptes"
 msgid "Accounts waiting for approval"
 msgstr "Comptes en attente de validation"
 
-#: src/components/MoneyTransferModal.vue:379
+#: src/components/MoneyTransferModal.vue:383
 msgid "Add"
 msgstr "Ajouter"
 
@@ -63,7 +63,7 @@ msgstr "Ajouter"
 msgid "Add a memo (optional)"
 msgstr "Ajoutez un texte (optionnel)"
 
-#: src/components/MoneyTransferModal.vue:373
+#: src/components/MoneyTransferModal.vue:377
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -81,12 +81,12 @@ msgid "Already have an account ?"
 msgstr "Avez-vous déjà créé un compte ?"
 
 #: src/components/MoneyTransferModal.vue:156
-#: src/components/TransactionListModal.vue:422
+#: src/components/TransactionListModal.vue:428
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
 
-#: src/components/MoneyTransferModal.vue:310
+#: src/components/MoneyTransferModal.vue:312
 msgid "Amount to send must be greater than 0"
 msgstr "Le montant à transférer doit être un nombre positif"
 
@@ -96,22 +96,22 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/MoneyTransferModal.vue:263
-#: src/components/TransactionListModal.vue:321
+#: src/components/MoneyTransferModal.vue:265
+#: src/components/TransactionListModal.vue:327
 msgid "An unexpected issue occured while downloading recipient list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "destinataires"
 
-#: src/components/TransactionListModal.vue:336
-#: src/components/TransactionListModal.vue:393
-#: src/components/TransactionListRecent.vue:136
+#: src/components/TransactionListModal.vue:342
+#: src/components/TransactionListModal.vue:399
+#: src/components/TransactionListRecent.vue:142
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "transactions"
 
-#: src/components/MoneyTransferModal.vue:344
+#: src/components/MoneyTransferModal.vue:348
 msgid ""
 "An unexpected issue occurred during the money transfer. We are sorry for the "
 "inconvenience."
@@ -243,16 +243,16 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TransactionListModal.vue:423
+#: src/components/TransactionListModal.vue:429
 #: src/views/admin/PendingCredits.vue:55
 msgid "Date"
 msgstr "Date"
 
-#: src/components/TransactionListModal.vue:289
+#: src/components/TransactionListModal.vue:295
 msgid "day"
 msgstr "jour"
 
-#: src/components/TransactionListModal.vue:424
+#: src/components/TransactionListModal.vue:430
 msgid "Description"
 msgstr "Description"
 
@@ -262,15 +262,15 @@ msgid_plural "digits"
 msgstr[0] "chiffre"
 msgstr[1] "chiffres"
 
-#: src/components/MoneyTransferModal.vue:374
+#: src/components/MoneyTransferModal.vue:378
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
-#: src/components/TransactionListModal.vue:225
+#: src/components/TransactionListModal.vue:231
 msgid "Download"
 msgstr "Télécharger"
 
-#: src/components/TransactionListModal.vue:211
+#: src/components/TransactionListModal.vue:217
 msgid "Download transactions"
 msgstr "Télécharger les opérations"
 
@@ -328,6 +328,13 @@ msgstr "pour le compte %{ name }"
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
+#: src/components/ConfirmPaymentModal.vue:54
+#: src/components/ConfirmPaymentModal.vue:55
+#: src/components/ConfirmPaymentModal.vue:59
+#: src/components/ConfirmPaymentModal.vue:61
+msgid "from"
+msgstr "de la part de"
+
 #: src/components/MoneyTransferModal.vue:139
 msgid "From"
 msgstr "Depuis"
@@ -356,7 +363,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:380
+#: src/components/MoneyTransferModal.vue:384
 msgid "Later"
 msgstr "Plus tard"
 
@@ -388,7 +395,7 @@ msgstr "Montant maximum à créditer : "
 msgid "Minimum credit amount: "
 msgstr "Montant minimum à créditer : "
 
-#: src/components/TransactionListModal.vue:291
+#: src/components/TransactionListModal.vue:297
 msgid "month"
 msgstr "mois"
 
@@ -425,13 +432,19 @@ msgstr "Aucun destinataire de paiement à afficher"
 msgid "No top up request awaiting approval"
 msgstr "Aucune demande de crédit en attente de validation"
 
-#: src/components/TransactionListModal.vue:177
+#: src/components/TransactionListModal.vue:173
+#: src/components/TransactionListModal.vue:183
 msgid "No transaction found"
 msgstr "Aucune transaction à afficher"
 
-#: src/components/TransactionListModal.vue:195
+#: src/components/TransactionListModal.vue:201
 msgid "No transactions found"
 msgstr "Aucune transaction à afficher"
+
+#: src/components/ConfirmPaymentModal.vue:89
+#: src/components/ConfirmPaymentModal.vue:92
+msgid "Ok"
+msgstr "Ok"
 
 #: src/components/MoneyCreditModal.vue:124
 msgid ""
@@ -493,9 +506,13 @@ msgstr "Le mot de passe entré n'est pas identique"
 msgid "Pay"
 msgstr "Payer"
 
-#: src/components/MoneyTransferModal.vue:366
-msgid "Payment issued to %{ name }"
-msgstr "Paiement effectué à %{ name }"
+#: src/components/ConfirmPaymentModal.vue:10
+msgid "Payment confirmation"
+msgstr "Confirmation de paiement"
+
+#: src/components/ConfirmPaymentModal.vue:29
+msgid "Payment sent"
+msgstr "Paiement envoyé"
 
 #: src/components/AuthChallengePin.vue:10 src/components/AuthChallengePin.vue:4
 #: src/components/AuthPrefPin.vue:18
@@ -558,6 +575,12 @@ msgstr "Préferences"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/components/ConfirmPaymentModal.vue:44
+#: src/components/ConfirmPaymentModal.vue:45
+#: src/components/ConfirmPaymentModal.vue:49
+msgid "Received %{amount}"
+msgstr "%{amount} reçu"
+
 #: src/components/TheBankAccountList.vue:18
 msgid "Refresh"
 msgstr "Rafraîchir"
@@ -594,8 +617,9 @@ msgstr "Enregistrer"
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
-#: src/components/TransactionListRecent.vue:53
-#: src/components/TransactionListRecent.vue:57
+#: src/components/TransactionListRecent.vue:58
+#: src/components/TransactionListRecent.vue:59
+#: src/components/TransactionListRecent.vue:63
 msgid "See more"
 msgstr "Voir tout"
 
@@ -619,6 +643,12 @@ msgstr "Envoyer"
 msgid "Send money"
 msgstr "Envoyer de l'argent"
 
+#: src/components/ConfirmPaymentModal.vue:41
+#: src/components/ConfirmPaymentModal.vue:42
+#: src/components/ConfirmPaymentModal.vue:46
+msgid "Sent %{amount}"
+msgstr "%{amount} envoyé"
+
 #: src/components/TheNavBar.vue:77
 msgid "Settings"
 msgstr "Préferences"
@@ -632,11 +662,11 @@ msgstr ""
 "pas déroulée correctement... Veuillez ré-éssayer dans l'écran de préférences "
 "ou contacter votre administrateur"
 
-#: src/components/TransactionListModal.vue:244
+#: src/components/TransactionListModal.vue:250
 msgid "Share"
 msgstr "Partager"
 
-#: src/components/TransactionListModal.vue:230
+#: src/components/TransactionListModal.vue:236
 msgid "Share transactions"
 msgstr "Partager les opérations"
 
@@ -664,15 +694,15 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Sorry for the inconvenience."
 msgstr "Veuillez nous excuser pour le désagrément."
 
-#: src/components/TransactionListModal.vue:420
+#: src/components/TransactionListModal.vue:426
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TransactionListModal.vue:421
+#: src/components/TransactionListModal.vue:427
 msgid "Target"
 msgstr "Destination"
 
-#: src/components/MoneyTransferModal.vue:333
+#: src/components/MoneyTransferModal.vue:337
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
@@ -714,6 +744,13 @@ msgstr ""
 "Ce mot de passe est différent de votre mot de passe Monujo, il concerne "
 "uniquement votre portefeuille %{ backend }."
 
+#: src/components/ConfirmPaymentModal.vue:53
+#: src/components/ConfirmPaymentModal.vue:54
+#: src/components/ConfirmPaymentModal.vue:58
+#: src/components/ConfirmPaymentModal.vue:60
+msgid "to"
+msgstr "à"
+
 #: src/components/MoneyTransferModal.vue:152
 msgid "To"
 msgstr "Vers"
@@ -753,16 +790,20 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
+#: src/components/ConfirmPaymentModal.vue:9
+msgid "Transaction details"
+msgstr "Détails de l'opération"
+
 #: src/services/ExportService.ts:72
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TransactionListModal.vue:465
-#: src/components/TransactionListModal.vue:490
+#: src/components/TransactionListModal.vue:471
+#: src/components/TransactionListModal.vue:496
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TransactionListModal.vue:470
+#: src/components/TransactionListModal.vue:476
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
@@ -770,11 +811,19 @@ msgstr "Liste des transactions téléchargée"
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 
-#: src/components/TransactionListModal.vue:495
+#: src/components/TransactionListModal.vue:501
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
-#: src/components/MoneyTransferModal.vue:326
+#: src/components/ConfirmPaymentModal.vue:28
+msgid "Transaction processed"
+msgstr "Opération traitée"
+
+#: src/components/ConfirmPaymentModal.vue:27
+msgid "Transaction sent"
+msgstr "Opération envoyée"
+
+#: src/components/MoneyTransferModal.vue:330
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -837,7 +886,7 @@ msgstr "Création de compte interrompue inopinément."
 msgid "Wallet to top up"
 msgstr "Compte à créditer"
 
-#: src/components/TransactionListModal.vue:290
+#: src/components/TransactionListModal.vue:296
 msgid "week"
 msgstr "semaine"
 
@@ -849,7 +898,7 @@ msgstr ""
 "Souhaitez-vous vous logger en utilisant les capacités biométriques de votre "
 "périphérique (empreinte digitale, reconnaissance faciale, ...)"
 
-#: src/components/TransactionListModal.vue:292
+#: src/components/TransactionListModal.vue:298
 msgid "year"
 msgstr "année"
 
@@ -857,7 +906,7 @@ msgstr "année"
 msgid "Yes"
 msgstr "Oui"
 
-#: src/components/MoneyTransferModal.vue:349
+#: src/components/MoneyTransferModal.vue:353
 msgid ""
 "You can try again. If the issue persists, please contact your administrator."
 msgstr ""
@@ -874,7 +923,7 @@ msgstr ""
 "Vous pouvez essayer de recharger la page, ou contacter votre administrateur "
 "si l'erreur persiste."
 
-#: src/components/MoneyTransferModal.vue:335
+#: src/components/MoneyTransferModal.vue:339
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 

@@ -239,6 +239,7 @@
           balance: false,
           amount: false,
         },
+        account: null,
       }
     },
     created() {
@@ -249,6 +250,7 @@
       } else {
         account = account._obj.parent
       }
+      this.account = account
       const backend = account.parent
 
       this.recipientBatchLoader = UseBatchLoading({
@@ -315,9 +317,11 @@
         }
         // This to ensure we are left with 2 decimals only
         this.amount = parseFloat(this.amount).toFixed(2)
+        let dateBegin = Date.now()
+        let payment
         try {
           this.$store.commit("setRequestLoadingAfterCreds", true)
-          await this.selectedRecipient.transfer(
+          payment = await this.selectedRecipient.transfer(
             this.amount.toString(),
             this.message
           )
@@ -356,17 +360,17 @@
           return
         } finally {
           this.transferOngoing = false
-          this.$loading.hide()
           this.$store.commit("setRequestLoadingAfterCreds", false)
         }
+
+        this.$loading.hide()
         this.errors.balance = false
         this.errors.amount = false
         this.close(true)
-        this.$msg.success(
-          this.$gettext("Payment issued to %{ name }", {
-            name: this.selectedRecipient.name,
-          })
-        )
+        this.$modal.open("ConfirmPaymentModal", {
+          transaction: payment,
+          type: "paymentConfirmation",
+        })
         if (!this.selectedRecipient.is_favorite) {
           this.$dialog
             .show({
@@ -398,6 +402,13 @@
             })
         }
         await this.$store.dispatch("fetchAccounts")
+      },
+      wait(ms: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve()
+          }, ms)
+        })
       },
       close(refreshTransactions: any = false) {
         this.searchName = ""

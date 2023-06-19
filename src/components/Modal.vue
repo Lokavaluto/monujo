@@ -8,6 +8,7 @@
   import MoneyCreditModal from "./MoneyCreditModal.vue"
   import AboutModal from "./AboutModal.vue"
   import TransactionListModal from "./TransactionListModal.vue"
+  import ConfirmPaymentModal from "./ConfirmPaymentModal.vue"
 
   @Options({
     name: "Modal",
@@ -16,6 +17,7 @@
       MoneyCreditModal,
       AboutModal,
       TransactionListModal,
+      ConfirmPaymentModal,
     },
     data() {
       return {

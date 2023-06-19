@@ -47,6 +47,12 @@
         v-for="transaction in transactions"
         :key="transaction"
         :transaction="transaction"
+        @click="
+          $modal.open('ConfirmPaymentModal', {
+            transaction,
+            type: 'transactionDetail',
+          })
+        "
       />
       <div v-if="transactions.length" class="has-text-centered mt-5">
         <button

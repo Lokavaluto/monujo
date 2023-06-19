@@ -172,6 +172,12 @@
             v-for="transaction in transactionBatchLoader.elements.value"
             :key="transaction"
             :transaction="transaction"
+            @click="
+              $modal.open('ConfirmPaymentModal', {
+                transaction,
+                type: 'transactionDetail',
+              })
+            "
           />
           <div
             v-if="

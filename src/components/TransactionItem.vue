@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-3 pt-3">
+  <div class="pb-3 pt-3 shadow-bottom">
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">
         {{ dateFormat(transaction.date) }}
@@ -32,7 +32,6 @@
       </h5>
     </div>
   </div>
-  <span class="custom-line-separator has-background-white-ter mb-2 mt-1"></span>
 </template>
 
 <script lang="ts">
@@ -81,5 +80,8 @@
   }
   .status .fa-check {
     color: $color-2;
+  }
+  .shadow-bottom {
+    box-shadow: 0 3px 6px -6px black;
   }
 </style>
