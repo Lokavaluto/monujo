@@ -186,18 +186,6 @@
   @Options({
     name: "CreateAccount",
     components: { AuthPref },
-    async created() {
-      const accountAuth = await this.$auth.getAccountAuth("new")
-      this.handler = markRaw(accountAuth.authPrefHandler)
-    },
-    mounted() {
-      const unconfiguredBackends = this.getUnconfiguredBackends()
-      if (unconfiguredBackends.length === 0) {
-        this.$router.push("/")
-        return
-      }
-      this.form.accountBackend = unconfiguredBackends[0]
-    },
     data() {
       return {
         handler: false,
@@ -212,6 +200,18 @@
           },
         },
       }
+    },
+    async created() {
+      const accountAuth = await this.$auth.getAccountAuth("new")
+      this.handler = markRaw(accountAuth.authPrefHandler)
+    },
+    mounted() {
+      const unconfiguredBackends = this.getUnconfiguredBackends()
+      if (unconfiguredBackends.length === 0) {
+        this.$router.push("/")
+        return
+      }
+      this.form.accountBackend = unconfiguredBackends[0]
     },
     watch: {
       getUnconfiguredBackends(newval, oldval): void {
