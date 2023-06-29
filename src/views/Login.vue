@@ -62,10 +62,14 @@
                 </button>
               </p>
             </div>
-            <div v-if="!$config?.hideAccountCreate && canSignup">
+            <div
+              v-if="
+                !$config?.hideAccountCreate && ($config.signUpUrl || canSignup)
+              "
+            >
               <p class="control has-text-centered">
                 <button
-                  @click="$router.push({ name: 'Signup' })"
+                  @click="onClickSignUp()"
                   type="button"
                   class="button create-account"
                 >
@@ -108,12 +112,18 @@
       if (savedLoginEmail) this.email = savedLoginEmail
 
       this.getCanResetPassword()
-      if (!this.$config.hideAccountCreate) this.getCanSignup()
+      if (!this.$config.hideAccountCreate && !this.$config.signUpUrl)
+        this.getCanSignup()
       ;(await this.getHasBiometricCredentialsEnabled()) &&
         (await this.getHasBiometricCredentialsAvailable()) &&
         (await this.requestBiometricAuthentication())
     },
     methods: {
+      onClickSignUp() {
+        this.$config.signUpUrl
+          ? window.open(this.$config.signUpUrl)
+          : this.$router.push({ name: "Signup" })
+      },
       async getCanResetPassword() {
         this.canResetPassword = await this.$lokapi.canResetPassword()
       },
