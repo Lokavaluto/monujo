@@ -108,7 +108,7 @@
       if (savedLoginEmail) this.email = savedLoginEmail
 
       this.getCanResetPassword()
-      this.getCanSignup()
+      if (!this.$config.hideAccountCreate) this.getCanSignup()
       ;(await this.getHasBiometricCredentialsEnabled()) &&
         (await this.getHasBiometricCredentialsAvailable()) &&
         (await this.requestBiometricAuthentication())
