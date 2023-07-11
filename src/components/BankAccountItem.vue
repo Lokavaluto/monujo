@@ -25,6 +25,19 @@
         <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
           curr
         }}</span>
+        <span
+          :class="{
+            hide: !qrcode,
+          }"
+          class="button is-default is-pulled-right is-rounded refresh ml-2"
+        >
+          <span
+            class="icon is-small"
+            @click="$modal.open('QrCodeModal', { accountId: id })"
+          >
+            <fa-icon class="qrcode-icon" icon="qrcode" />
+          </span>
+        </span>
       </div>
     </div>
 
@@ -39,6 +52,8 @@
         :isSub="true"
         class="mt-4 subaccount"
         @accountSelected="$emit('accountSelected', account)"
+        :qrcode="false"
+        :id="id"
       >
         <template v-slot:name>{{ account.name() }}</template>
       </BankAccountItem>
@@ -50,6 +65,7 @@
   import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
+  import QrCodeModal from "./QrCodeModal.vue"
 
   @Options({
     name: "BankAccountItem",
@@ -62,6 +78,11 @@
       active: Boolean,
       subAccounts: Array,
       isSub: Boolean,
+      qrcode: Boolean,
+      id: Object,
+    },
+    components: {
+      QrCodeModal,
     },
     computed: {
       ...mapModuleState("lokapi", ["isMultiCurrency"]),

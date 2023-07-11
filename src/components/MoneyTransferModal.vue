@@ -17,27 +17,32 @@
               custom-search-bar
             "
           >
-            <p class="control has-icons-left custom-search-bar">
-              <input
-                v-model="recipientsSearchString"
-                @input="
-                  (e) => {
-                    ;(recipientsSearchString = e.target.value),
-                      recipientsSearchString.length === 0 ||
-                      recipientsSearchString.length >= 3
-                        ? recipientBatchLoader.newGen(recipientsSearchString)
-                        : null
-                  }
-                "
-                class="input"
-                type="text"
-                :placeholder="$gettext('Name, email address or phone number')"
-                ref="searchRecipient"
-              />
-              <span class="icon is-small is-left">
-                <fa-icon icon="search" />
-              </span>
-            </p>
+            <span class="search-bar-container">
+              <p class="control has-icons-left custom-search-bar">
+                <input
+                  v-model="recipientsSearchString"
+                  @input="
+                    (e) => {
+                      ;(recipientsSearchString = e.target.value),
+                        recipientsSearchString.length === 0 ||
+                        recipientsSearchString.length >= 3
+                          ? recipientBatchLoader.newGen(recipientsSearchString)
+                          : null
+                    }
+                  "
+                  class="input"
+                  type="text"
+                  :placeholder="$gettext('Name, email address or phone number')"
+                  ref="searchRecipient"
+                />
+                <span class="icon is-small is-left">
+                  <fa-icon icon="search" />
+                </span>
+              </p>
+            </span>
+            <span class="icon is-small" @click="startScan"
+              ><fa-icon class="qrcode-icon" icon="qrcode" />
+            </span>
           </div>
           <div
             class="
@@ -210,12 +215,16 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import { mapModuleState } from "@/utils/vuex"
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/css/index.css"
   import RecipientItem from "@/components/RecipientItem.vue"
   import BankAccountItem from "@/components/BankAccountItem.vue"
+  import { Capacitor } from "@capacitor/core"
+  import { App as CapacitorApp } from "@capacitor/app"
+  import { Camera, CameraResultType } from "@capacitor/camera"
 
   import UseBatchLoading from "@/services/UseBatchLoading"
 
@@ -239,7 +248,7 @@
           balance: false,
           amount: false,
         },
-        account: null,
+        platform: null,
       }
     },
     created() {
@@ -250,11 +259,12 @@
       } else {
         account = account._obj.parent
       }
-      this.account = account
-      const backend = account.parent
+      this.selectedBackend = account.parent
 
       this.recipientBatchLoader = UseBatchLoading({
-        genFactory: backend.searchRecipients.bind(backend),
+        genFactory: this.selectedBackend.searchRecipients.bind(
+          this.selectedBackend
+        ),
         needMorePredicate: () =>
           this.$refs.recipientsContainer.scrollHeight -
             (this.$refs.recipientsContainer.scrollTop +
@@ -271,10 +281,12 @@
       })
     },
     mounted() {
+      this.platform = Capacitor.getPlatform()
       this.setFocus("searchRecipient")
       this.recipientBatchLoader.newGen("")
     },
     computed: {
+      ...mapModuleState("lokapi", ["userProfile"]),
       ownCurrenciesRecipients(): Array<any> {
         let currencyIds = this.$store.getters.activeVirtualAccounts.map(
           (a: any) => a.currencyId
@@ -285,6 +297,55 @@
       },
     },
     methods: {
+      async startScan() {
+        const scanPermission = await this.$qrCode.isPermissionGranted()
+        if (!scanPermission) {
+          this.$qrCode.stopScan()
+          return
+        }
+        this.$loading.show()
+        await this.$qrCode.prepare()
+        this.$loading.hide()
+
+        let result
+        try {
+          result = await this.$qrCode.startScan()
+        } catch (err) {
+          console.log("Humm, is that an actual error or did I stop scan ?")
+          return
+        }
+        const { rp, rpb } = JSON.parse(result.content)
+        if (rp === this.userProfile.id) {
+          this.$msg.error(
+            this.$gettext("You can not transfer money to your own account")
+          )
+          this.$qrCode.stopScan()
+          return
+        }
+        if (!result.hasContent) {
+          this.$qrCode.stopScan()
+          this.$msg.error(this.$gettext("Unable to read qrcode"))
+          return
+        }
+        let recipient
+        try {
+          recipient = await this.selectedBackend.searchRecipientByUri({
+            rp,
+            rpb,
+          })
+        } catch (err) {
+          this.$msg.error(
+            this.$gettext("An error occured while searching recipient")
+          )
+          console.log(err)
+        }
+        this.$qrCode.stopScan()
+        if (!recipient) {
+          this.$msg.error(this.$gettext("Invalid QrCode!"))
+          return
+        }
+        await this.handleClickRecipient(recipient)
+      },
       async handleClickRecipient(recipient: any): Promise<void> {
         this.selectedRecipient = recipient
         this.selectedRecipient.currencySymbol = await recipient.getSymbol()
@@ -388,7 +449,7 @@
               if (result === "later") return
               try {
                 await this.selectedRecipient.toggleFavorite()
-              } catch (err: any) {
+              } catch (err) {
                 // XXXvlab: using ``.then`` makes it trigger outside of
                 // view js grasp.
                 this.$errorHandler(err)
@@ -464,10 +525,18 @@
     width: 100%;
   }
   .custom-search-bar {
-    width: 89%;
     margin: auto;
   }
-
+  .search-bar-container {
+    width: 75%;
+  }
+  .qrcode-icon {
+    font-size: 1.5em;
+    opacity: 0.8;
+    padding: 0.1em;
+    border: 0.2em solid #e8e8e8;
+    border-radius: 5px;
+  }
   .custom-search-bar input {
     background: #ffffff;
     border: 1px solid #e8e8e8;
