@@ -23,6 +23,8 @@
         await StatusBar.setStyle({ style: Style.Light })
       }
       CapacitorApp.addListener("backButton", ({ canGoBack }) => {
+        // XXXvlab: will need a back button service to insert these
+        if (this.$qrCode.isActive()) return
         if (this.$modal.isActive.value) {
           this.$modal.back()
           return

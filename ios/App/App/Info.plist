@@ -51,5 +51,7 @@
 	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To be able to scan barcodes</string>
 </dict>
 </plist>

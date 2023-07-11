@@ -33,7 +33,7 @@ import Biometry from "@/services/Biometry"
 import ToastService from "@/services/toastService"
 import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
-
+import QrCodeService from "@/services/QrCodeService"
 import UseModal from "./services/UseModal"
 // Components
 
@@ -289,6 +289,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.globalProperties.$auth = authService
   app.config.globalProperties.$prefs = prefsService
   app.config.globalProperties.$export = new ExportService(gettext)
+  app.config.globalProperties.$qrCode = new QrCodeService(gettext)
   app.config.globalProperties.$errorHandler = app.config.errorHandler
   app.config.globalProperties.$appInfo = { appName, appVersion }
   app.config.globalProperties.$modal = modal
