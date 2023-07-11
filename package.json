@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@0k/types-request": "^1.0.1",
+    "@lokavaluto/barcode-scanner": "^3.0.7",
+    "@capacitor/camera": "^4.1.5",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
@@ -69,6 +71,7 @@
     "mochawesome": "^7.1.3",
     "prettierx": "0k/prettierx#main",
     "process": "^0.11.10",
+    "qrcode.vue": "^3.4.0",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.2",
     "semver": "^7.5.0",

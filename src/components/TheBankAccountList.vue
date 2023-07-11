@@ -66,6 +66,8 @@
           class="mb-5"
           :class="{ selected: a._obj.internalId === account?._obj?.internalId }"
           @accountSelected="$emit('accountSelected', a)"
+          :qrcode="true"
+          :id="a.id"
         >
           <template v-slot:name>{{ a.name() }}</template>
         </BankAccountItem>
