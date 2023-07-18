@@ -1,5 +1,6 @@
 import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
+import { Capacitor } from "@capacitor/core"
 import "vue-loading-overlay/dist/css/index.css"
 
 import { UIError } from "./exception"
@@ -294,6 +295,7 @@ fetchConfig("config.json").then(async (config: any) => {
   app.config.globalProperties.$appInfo = { appName, appVersion }
   app.config.globalProperties.$modal = modal
   app.config.globalProperties.$passwordUtils = passwordUtils
+  app.config.globalProperties.$platform = Capacitor.getPlatform()
   const unwatch = store.watch(
     (state, getters) => getters.isAuthenticated,
     () => {

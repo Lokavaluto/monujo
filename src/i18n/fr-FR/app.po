@@ -209,7 +209,7 @@ msgstr "Identification biométrique mise en place"
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/QrCodeModal.vue:40
+#: src/components/QrCodeModal.vue:49
 msgid "Close"
 msgstr "Fermer"
 
@@ -367,7 +367,7 @@ msgstr "E-mail invalide."
 msgid "Invalid QR code content format"
 msgstr "Format du QR code invalide"
 
-#: src/main.ts:223
+#: src/main.ts:224
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -379,7 +379,7 @@ msgstr "Nom"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:105
+#: src/main.ts:106
 msgid "Log in"
 msgstr "Se connecter"
 
@@ -387,11 +387,11 @@ msgstr "Se connecter"
 msgid "Login"
 msgstr "Connection"
 
-#: src/main.ts:104
+#: src/main.ts:105
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:133
+#: src/main.ts:134
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -411,7 +411,7 @@ msgstr "Montant minimum à créditer : "
 msgid "month"
 msgstr "mois"
 
-#: src/main.ts:131
+#: src/main.ts:132
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -575,7 +575,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/QrCodeModal.vue:26
+#: src/components/QrCodeModal.vue:35
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
@@ -583,7 +583,7 @@ msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:130
+#: src/main.ts:131
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -633,7 +633,7 @@ msgstr "Ré-initialiser le mot de passe"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:194
+#: src/main.ts:195
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
