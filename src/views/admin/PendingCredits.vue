@@ -51,6 +51,9 @@
                       <th class="row-amount-header">
                         {{ $gettext("Amount") }}
                       </th>
+                      <th class="row-amount-header">
+                        {{ $gettext("Date") }}
+                      </th>
                       <th class="row-validate-header has-text-right">
                         {{ $gettext("Approve") }}
                       </th>
@@ -70,6 +73,14 @@
                       <td>
                         {{ numericFormat(parseFloat(request.amount)) }}
                         {{ request.currency }}
+                      </td>
+                      <td>
+                        <h5 class="date">
+                          {{ dateFormat(request.date) }}
+                        </h5>
+                        <h5 class="status relative-date mt-1">
+                          {{ relativeDateFormat(request.date) }}
+                        </h5>
                       </td>
                       <td class="has-text-right">
                         <a
@@ -135,7 +146,7 @@
       pendingCreditRequests(): Array<any> {
         return this.$store.state.lokapi.pendingCreditRequests
       },
-      ...mapGetters(["numericFormat"]),
+      ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
     },
     methods: {
       async validateCreditRequest(request: any): Promise<void> {
@@ -211,4 +222,9 @@
    text-overflow: ellipsis
   table
    table-layout: fixed
+  .relative-date
+    color: rgba(53, 53, 53, 0.64)
+  .date
+    font-size: 1.2rem
+    line-height: 1.5rem
 </style>
