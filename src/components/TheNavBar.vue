@@ -260,4 +260,48 @@
       }
     }
   }
+
+  /** 
+   * We have to cover the gogocarto website's navbar with our own navbar.
+   * The match needs to be perfect as icons are placed on the top of 
+   * gogocarto´s navbar.
+   *
+   * Here is what we observed in gogocarto css rules:
+   *
+   *                     701px          900px
+   * ------------------------------------[----------
+   * html font-size: 14px  .    14px     .    14.5px
+   *                       .             .
+   * ----------------------[--------------------------
+   * bar: height:     3rem .     3.5rem  .     3.5rem
+   *                       .             . 
+   * ======================[=============[============
+   * real bar size:  42px         49px        50.75px
+   *                  
+   */
+
+  .navbar {
+    @media only screen and (max-width: 700px) {
+      min-height: 42px;
+      > .navbar-brand {
+        min-height: 42px;
+        max-height: 42px;
+        > img {
+          max-height: 42px;
+        }
+      }
+    }
+    @media only screen and (min-width: 701px) and (max-width: 899px) {
+      min-height: 49px;
+      > .navbar-brand > .img {
+        max-height: 49px;
+      }
+    }
+    @media only screen and (min-width: 900px) {
+      min-height: 50.75px;
+      > .navbar-brand > .img {
+        max-height: 50.75px;
+      }
+    }
+  }
 </style>

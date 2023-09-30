@@ -22,7 +22,7 @@ body {
   overflow-y: hidden;
 }
 #app {
-  min-height: 100vh;
+  min-height: calc(100vh - env(safe-area-inset-top, 0));
   background-color: $color-1;
   padding-top: 40px;
   padding-bottom: 80px;

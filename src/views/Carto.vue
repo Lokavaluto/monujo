@@ -1,5 +1,6 @@
 <template>
   <iframe
+    id="iframe"
     v-if="mapUrl"
     width="100%"
     height="100%"

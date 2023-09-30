@@ -1,9 +1,13 @@
-body,
-.navbar,
-.c-toast-container {
-  padding-top: env(safe-area-inset-top, 0);
-}
-
-.modal-card {
-  top: calc(env(safe-area-inset-top, 0) + 60px);
+@media screen and (max-width: 430px) and (max-height: 1000px) and ((-webkit-device-pixel-ratio: 3) or (-webkit-device-pixel-ratio: 2)) {
+  body,
+  .navbar,
+  #iframe,
+  .c-toast-container {
+    padding-top: env(safe-area-inset-top, 0);
+    padding-right: env(safe-area-inset-right, 0);
+    padding-left: env(safe-area-inset-left, 0);
+  }
+  .modal-card {
+    top: calc(env(safe-area-inset-top, 0) + 60px);
+  }
 }
