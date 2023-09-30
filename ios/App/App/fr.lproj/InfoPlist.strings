@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  App
+
+  Created by Patrick Lecocq on 30/09/2023.
+  
+*/
+NSCameraUsageDescription = "Pour numériser un QR code, authorisez l'accès à l'appareil photo";
+NSFaceIDUsageDescription = "Pour une identification plus facile et rapide";

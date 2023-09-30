@@ -15,14 +15,17 @@
   import { Capacitor } from "@capacitor/core"
   import { StatusBar, Style } from "@capacitor/status-bar"
   import { App as CapacitorApp } from "@capacitor/app"
+  import ScanQrCode from "@/components/ScanQrCode.vue"
 
   @Options({
-    components: { TheNavBar, AuthChallenge, Dialog, Modal },
+    components: { TheNavBar, AuthChallenge, Dialog, Modal, ScanQrCode },
     async mounted() {
       if (Capacitor.getPlatform() === "ios") {
         await StatusBar.setStyle({ style: Style.Light })
       }
       CapacitorApp.addListener("backButton", ({ canGoBack }) => {
+        // XXXvlab: will need a back button service to insert these
+        if (this.$qrCode.isActive()) return
         if (this.$modal.isActive.value) {
           this.$modal.back()
           return
