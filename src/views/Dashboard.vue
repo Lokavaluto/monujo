@@ -79,4 +79,20 @@
       bottom: 20px !important;
     }
   }
+  :deep(div.card div.section-card > p) {
+    margin-left: 1em;
+    margin-bottom: 0.5em;
+    font-style: italic;
+    color: #888;
+  }
+  :deep(div.card div.section-card > h2) {
+    border-bottom: 1px solid black;
+    padding-bottom: 0.2em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    color: #666;
+  }
+  :deep(main > div > div > div > div.card div.section-card) {
+    margin-bottom: 2em;
+  }
 </style>

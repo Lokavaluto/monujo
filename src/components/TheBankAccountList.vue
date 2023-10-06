@@ -51,7 +51,7 @@
         }}</router-link>
         {{ $gettext("to create one.") }}
       </p>
-      <div v-else-if="activeVirtualAccounts.length !== 0">
+      <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
         <h2 class="custom-card-title">
           {{ $gettext("your accounts") }}
         </h2>
@@ -73,11 +73,14 @@
         </BankAccountItem>
       </div>
     </div>
-    <div class="inactive" v-if="inactiveVirtualAccounts.length > 0">
+    <div
+      class="inactive section-card"
+      v-if="inactiveVirtualAccounts.length > 0"
+    >
       <h2 class="custom-card-title">
         {{ $gettext("your pending accounts") }}
       </h2>
-      <div class="mb-4 ml-5 is-italic">
+      <p>
         {{
           $gettext(
             "The accounts listed below have been subjected to " +
@@ -85,7 +88,7 @@
               " approved, these accounts will become usable."
           )
         }}
-      </div>
+      </p>
       <BankAccountItem
         v-for="account in inactiveVirtualAccounts"
         :bal="account.bal"
@@ -166,7 +169,7 @@
   @import "../assets/custom-variables.scss";
 
   .refresh {
-    margin-top: -9px;
+    margin-top: -1.5em;
     z-index: 1;
   }
   .active-refresh-button {

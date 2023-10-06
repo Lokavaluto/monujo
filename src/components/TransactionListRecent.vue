@@ -6,17 +6,11 @@
     :is-full-page="false"
   />
   <div
+    class="section-card"
     id="the-transaction-list"
     v-if="!isTransactionsLoading || transactions.length"
   >
-    <span
-      :class="{
-        hide: !isTransactionsLoading,
-      }"
-      class="icon is-small is-default is-pulled-right is-rounded refresh"
-    >
-      <fa-icon :class="{ refreshing: isTransactionsLoading }" icon="sync" />
-    </span>
+    <h2 class="custom-card-title">{{ $gettext("Transactions") }}</h2>
     <div
       class="notification is-danger is-light"
       v-if="isTransactionsLoadingError"
@@ -42,7 +36,6 @@
       {{ $gettext("No previous transactions in your history.") }}
     </p>
     <div v-else>
-      <h2 class="custom-card-title">{{ $gettext("Transactions") }}</h2>
       <TransactionItem
         v-for="transaction in transactions"
         :key="transaction"
@@ -167,6 +160,9 @@
     watch: {
       refreshToggle: function () {
         this.resetTransactionsGen()
+      },
+      isTransactionsLoading(newVal: boolean) {
+        this.$emit("triggerTransactionRefresh", newVal)
       },
     },
   })

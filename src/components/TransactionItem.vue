@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-3 pt-3 shadow-bottom">
+  <div class="pb-3 pt-3 shadow-bottom cursor-pointer">
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">
         {{ dateFormat(transaction.date) }}
@@ -8,7 +8,7 @@
         {{ relativeDateFormat(transaction.date) }}
         <fa-icon
           :class="{
-            hide: transaction.pending,
+            hide: transaction?.pending === True,
           }"
           icon="check"
           class="fa-thin"
@@ -18,7 +18,7 @@
     <div class="is-flex-direction-column">
       <h3
         :class="[
-          transaction.amount.charAt(0) == '-'
+          transaction.amount.toString().charAt(0) == '-'
             ? 'custom-card-destinataire has-text-danger'
             : 'custom-card-destinataire has-text-success',
         ]"
@@ -26,7 +26,10 @@
         {{ numericFormat(parseFloat(transaction.amount)) }}
         {{ transaction.currency }}
       </h3>
-      <h4 class="custom-card-destinataire">{{ transaction.related }}</h4>
+
+      <h4 class="custom-card-destinataire">
+        {{ transaction.related }}
+      </h4>
       <h5 class="has-text-grey-light transaction-desc">
         {{ transaction.description }}
       </h5>
@@ -54,6 +57,7 @@
 <style lang="scss" scoped>
   @import "../assets/custom-variables.scss";
   h4.custom-card-destinataire {
+    min-height: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -83,5 +87,8 @@
   }
   .shadow-bottom {
     box-shadow: 0 3px 6px -6px black;
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
 </style>
