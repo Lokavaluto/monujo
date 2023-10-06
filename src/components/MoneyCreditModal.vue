@@ -180,6 +180,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapGetters } from "vuex"
+  import { UIError } from "../exception"
 
   import BankAccountItem from "./BankAccountItem.vue"
 
@@ -193,6 +194,7 @@
         creditOrderUrl: "",
         selectedCreditAccount: null,
         showCreditRefreshNotification: false,
+        willRequireTransactionRefresh: false,
         amount: "",
       }
     },
@@ -273,16 +275,19 @@
             this.amount
           )
           this.creditOrderUrl = url.order_url
-        } catch (error) {
-          console.log("Payment failed:", error)
-          this.$msg.error(
+        } catch (err) {
+          throw new UIError(
             this.$gettext(
               "An unexpected issue occurred while attempting to top up your account"
-            )
+            ),
+            err
           )
         } finally {
           this.$loading.hide()
         }
+        this.$lokapi.flushBackendCaches()
+        this.$store.dispatch("fetchAccounts")
+        this.willRequireTransactionRefresh = true
       },
       navigateToCreditOrder(): void {
         window.open(this.creditOrderUrl, "_blank")
@@ -291,13 +296,14 @@
         this.showCreditRefreshNotification = true
       },
       closeAndRefresh(): void {
-        this.close(true)
+        this.willRequireTransactionRefresh = true
+        this.close()
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
       },
-      close(refreshTransactions: boolean): void {
+      close(): void {
         this.showCreditRefreshNotification = false
-        this.$modal.close(refreshTransactions)
+        this.$modal.close(this.willRequireTransactionRefresh)
       },
       setFocus() {
         this.$nextTick(() => {
