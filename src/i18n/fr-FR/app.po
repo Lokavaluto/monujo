@@ -381,7 +381,7 @@ msgstr "E-mail invalide."
 msgid "Invalid QR code content format"
 msgstr "Format du QR code invalide"
 
-#: src/main.ts:224
+#: src/main.ts:226
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -393,7 +393,7 @@ msgstr "Nom"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:106
+#: src/main.ts:108
 msgid "Log in"
 msgstr "Se connecter"
 
@@ -401,11 +401,11 @@ msgstr "Se connecter"
 msgid "Login"
 msgstr "Connection"
 
-#: src/main.ts:105
+#: src/main.ts:107
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:134
+#: src/main.ts:136
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -425,7 +425,7 @@ msgstr "Montant minimum à créditer : "
 msgid "month"
 msgstr "mois"
 
-#: src/main.ts:132
+#: src/main.ts:134
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -599,7 +599,7 @@ msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:131
+#: src/main.ts:133
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -658,7 +658,7 @@ msgstr "Ré-initialiser le mot de passe"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:195
+#: src/main.ts:197
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
