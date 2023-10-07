@@ -526,7 +526,7 @@ msgstr "Confirmation de paiement"
 msgid "Payment sent"
 msgstr "Paiement envoyé"
 
-#: src/services/QrCodeService.ts:125
+#: src/services/QrCodeService.ts:127
 msgid "Permission denied to the camera"
 msgstr "Permission d'accès à la caméra refusé"
 
@@ -787,7 +787,7 @@ msgstr ""
 msgid "to create one."
 msgstr "pour en créer un."
 
-#: src/services/QrCodeService.ts:129
+#: src/services/QrCodeService.ts:130
 msgid "To scan QR code, allow access to camera in the app settings."
 msgstr ""
 "Pour scanner un QR code, vous devez autoriser l'accès à la caméra dans la "
@@ -862,7 +862,7 @@ msgid "Unable to read QR code"
 msgstr "Impossible de lire le QR code."
 
 # Erreur inattendue
-#: src/services/QrCodeService.ts:92
+#: src/services/QrCodeService.ts:93
 msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 

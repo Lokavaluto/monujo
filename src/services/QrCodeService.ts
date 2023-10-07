@@ -1,21 +1,22 @@
-import { Capacitor } from "@capacitor/core"
-import { createApp } from "vue"
-import { Camera, CameraResultType } from "@capacitor/camera"
-import { BarcodeScanner as BarCodeScanner } from "@lokavaluto/barcode-scanner"
+import { Camera } from "@capacitor/camera"
 import { App as CapacitorApp } from "@capacitor/app"
-import { PluginListenerHandle } from "@capacitor/core"
-import { UIError } from "../exception"
-
-import ScanQrCode from "@/components/ScanQrCode.vue"
+import { Capacitor, PluginListenerHandle } from "@capacitor/core"
 import { StatusBar } from "@capacitor/status-bar"
+import { createApp } from "vue"
+
+import { BarcodeScanner as BarCodeScanner } from "@lokavaluto/barcode-scanner"
+
+import { UIError } from "../exception"
+import ScanQrCode from "@/components/ScanQrCode.vue"
 
 class QrCodeService {
   gettext: any
+  listener: PluginListenerHandle | null = null
 
   constructor(gettext: any) {
     this.gettext = gettext
   }
-  listener: PluginListenerHandle | null = null
+
   private async startScan(): Promise<any> {
     const app = document.getElementById("app")
     if (!app) {
@@ -27,7 +28,6 @@ class QrCodeService {
         if (!canGoBack) {
           console.warn("Ignoring unexpected canGoBack false value")
         }
-
         this.stopScan()
       }
     )
@@ -70,6 +70,7 @@ class QrCodeService {
   public async prepare() {
     await BarCodeScanner.prepare()
   }
+
   public isActive() {
     return this.listener !== null
   }
