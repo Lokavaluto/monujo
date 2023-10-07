@@ -14,6 +14,7 @@ import mkStore from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { prefsStoreFactory } from "./store/prefs"
 import PasswordUtilsFactory from "./utils/password"
+
 // Services
 
 import {
@@ -36,6 +37,7 @@ import { LokAPI } from "./services/lokapiService"
 import mkGettext from "./services/Gettext"
 import QrCodeService from "@/services/QrCodeService"
 import UseModal from "./services/UseModal"
+
 // Components
 
 import AuthPrefDirect from "@/components/AuthPrefDirect.vue"
