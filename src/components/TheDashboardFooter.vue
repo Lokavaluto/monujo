@@ -54,7 +54,7 @@
               is-rounded
               action
             "
-            @click="openModal('MoneyCreditModal', { account })"
+            @click="topUpModalOpen()"
           >
             <span class="icon-text">
               <span class="icon">
@@ -71,6 +71,7 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import { UIError } from "../exception"
 
   @Options({
     name: "TheDashboardFooter",
@@ -81,6 +82,34 @@
       async openModal(label: string, ...args: any[]) {
         const refreshTransaction = await this.$modal.open(label, ...args)
         if (refreshTransaction) this.$emit("refreshTransaction")
+      },
+      async topUpModalOpen() {
+        this.$nextTick(async function (this: any) {
+          let pendingTopUp = null
+          try {
+            pendingTopUp = await this.account._obj.getPendingTopUp()
+          } catch (err) {
+            throw new UIError(
+              this.$gettext(
+                "unexpected server error occured while fetching pending topup list"
+              ),
+              err
+            )
+          }
+          pendingTopUp = pendingTopUp.filter((topup: any) => !topup.paid)
+
+          if (pendingTopUp?.length === 0) {
+            this.openModal("MoneyCreditModal", {
+              account: this.account,
+            })
+          } else {
+            this.openModal("ConfirmPaymentModal", {
+              transaction: pendingTopUp[0],
+              type: "topup",
+              source: "askTopUp",
+            })
+          }
+        })
       },
     },
   })
