@@ -21,6 +21,16 @@
 
       <section class="modal-card-body">
         <div class="body-content is-size-4">
+          <p
+            v-if="$modal.args?.value[0]?.source == 'askTopUp'"
+            class="mt-2 mb-5 is-size-5 notification is-danger is-light"
+          >
+            {{
+              $gettext(
+                "You already have a pending top-up. Please either pay or cancel it before proceeding"
+              )
+            }}
+          </p>
           <p class="custom-card-title has-text-weight-bold">
             {{
               {
