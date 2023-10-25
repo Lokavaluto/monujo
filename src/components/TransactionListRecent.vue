@@ -136,7 +136,11 @@
                 "An unexpected issue occured while downloading transaction list"
               )
             )
-            throw e
+            console.log(
+              "Exception when requesting next elements in transaction list:",
+              e
+            )
+            break
           }
           if (next.done) {
             this.transactionGen = null
