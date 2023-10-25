@@ -13,6 +13,7 @@
           <div class="column is-half">
             <TheTransactionList
               v-if="account"
+              @refreshTransaction="refreshTransaction"
               :refreshToggle="refreshToggle"
               :account="account"
               :key="account"

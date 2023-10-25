@@ -425,7 +425,8 @@
         this.$loading.hide()
         this.errors.balance = false
         this.errors.amount = false
-        this.close(true)
+        this.$modal.args.value[0].refreshTransaction()
+        this.close()
         this.$modal.open("ConfirmPaymentModal", {
           transaction: payment,
           type: "paymentConfirmation",
@@ -469,11 +470,11 @@
           }, ms)
         })
       },
-      close(refreshTransactions: any = false) {
+      close() {
         this.searchName = ""
         this.amount = 0
         this.activeClass = 0
-        this.$modal.close(refreshTransactions)
+        this.$modal.close()
       },
       setFocus(refLabel: string) {
         this.$nextTick(() => {
