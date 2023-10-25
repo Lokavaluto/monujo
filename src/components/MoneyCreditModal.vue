@@ -9,43 +9,14 @@
         <button
           class="delete"
           aria-label="close"
-          @click="resetCredit(), close()"
+          @click="resetCredit(), $modal.close()"
         ></button>
       </header>
       <section class="modal-card-body">
         <div
-          v-if="
-            creditOrderUrl.length === 0 &&
-            !showCreditRefreshNotification &&
-            $modal.step.value == 1
-          "
+          v-if="creditOrderUrl.length === 0 && $modal.step.value == 1"
           class="custom-amount-input"
         >
-          <div v-if="creditableMoneyAccounts.length > 1">
-            <h2 class="frame3-sub-title mb-3">
-              {{ $gettext("Wallet to top up") }}
-            </h2>
-            <div
-              v-for="account in creditableMoneyAccounts"
-              :class="[
-                selectedCreditAccount?.id === account?.id
-                  ? 'selected'
-                  : 'unselected',
-                'account-selector mb-4',
-              ]"
-              @click="setSelectedCreditAccount(account), setFocus()"
-            >
-              <BankAccountItem
-                :bal="account.bal"
-                :curr="account.curr"
-                :backend="account.backend"
-                :type="account.type"
-                :active="account.active"
-              >
-                <template v-slot:name>{{ account.name() }}</template>
-              </BankAccountItem>
-            </div>
-          </div>
           <div
             v-show="
               selectedCreditAccount || creditableMoneyAccounts.length === 1
@@ -92,43 +63,6 @@
             </div>
           </div>
         </div>
-        <template v-if="creditOrderUrl.length > 1">
-          <div class="notification is-info">
-            <p class="mb-3">
-              {{ $gettext("A purchase order for the top up was created.") }}
-            </p>
-            <p class="mb-3">
-              {{
-                $gettext(
-                  "To complete your top up request, you need to finalize the " +
-                    "transaction by logging in your administrative account:"
-                )
-              }}
-            </p>
-          </div>
-        </template>
-        <template v-if="showCreditRefreshNotification">
-          <div class="notification is-info">
-            <p class="mb-3" v-if="selectedCreditAccount.backend === 'comchain'">
-              {{
-                $gettext(
-                  "Once your transaction finalized in your personal account, " +
-                    "your top up request will by waiting for an administrator's " +
-                    "approval. You may then close this windows to refresh your " +
-                    "balance."
-                )
-              }}
-            </p>
-            <p class="mb-3" v-if="selectedCreditAccount.backend === 'cyclos'">
-              {{
-                $gettext(
-                  "Once your transaction finalized in your personal account, " +
-                    "you may close this windows to refresh your balance."
-                )
-              }}
-            </p>
-          </div>
-        </template>
       </section>
       <footer
         class="
@@ -140,8 +74,7 @@
         <template
           v-if="
             creditOrderUrl.length === 0 &&
-            (selectedCreditAccount || creditableMoneyAccounts.length === 1) &&
-            !showCreditRefreshNotification
+            (selectedCreditAccount || creditableMoneyAccounts.length === 1)
           "
         >
           <button
@@ -158,20 +91,6 @@
           >
             {{ $gettext("Next") }}
           </button>
-        </template>
-        <template v-if="creditOrderUrl.length > 1">
-          <a
-            class="button custom-button-modal has-text-weight-medium action"
-            @click="navigateToCreditOrder"
-            >{{ $gettext("Finalize order from your account") }}</a
-          >
-        </template>
-        <template v-if="showCreditRefreshNotification">
-          <a
-            class="button custom-button-modal has-text-weight-medium"
-            @click="closeAndRefresh"
-            >{{ $gettext("Close and refresh") }}</a
-          >
         </template>
       </footer>
     </div>
@@ -193,8 +112,6 @@
       return {
         creditOrderUrl: "",
         selectedCreditAccount: null,
-        showCreditRefreshNotification: false,
-        willRequireTransactionRefresh: false,
         amount: "",
       }
     },
@@ -252,17 +169,12 @@
             ? this.creditableMoneyAccounts[0]
             : false
       },
-      setSelectedCreditAccount(account: any): void {
-        this.amount = ""
-        this.errors = {
-          minCreditAmount: false,
-          maxCreditAmount: false,
-        }
-        this.selectedCreditAccount = account
-      },
       async newLinkTab() {
         // This to ensure we are left with 2 decimals only
         this.amount = this.amount.toFixed(2)
+        const { refreshTransaction, account } = this.$modal.args.value[0]
+
+        let url: any = null
         try {
           if (!this.selectedCreditAccount) {
             if (this.creditableMoneyAccounts.length > 1) {
@@ -271,39 +183,55 @@
             this.selectedCreditAccount = this.creditableMoneyAccounts[0]
           }
           this.$loading.show()
-          let url = await this.selectedCreditAccount._obj.getCreditUrl(
-            this.amount
-          )
+          url = await this.selectedCreditAccount._obj.getCreditUrl(this.amount)
           this.creditOrderUrl = url.order_url
         } catch (err) {
+          this.$loading.hide()
           throw new UIError(
             this.$gettext(
               "An unexpected issue occurred while attempting to top up your account"
             ),
             err
           )
-        } finally {
-          this.$loading.hide()
         }
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
-        this.willRequireTransactionRefresh = true
-      },
-      navigateToCreditOrder(): void {
-        window.open(this.creditOrderUrl, "_blank")
-        this.creditOrderUrl = ""
-        this.amount = 0
-        this.showCreditRefreshNotification = true
-      },
-      closeAndRefresh(): void {
-        this.willRequireTransactionRefresh = true
-        this.close()
-        this.$lokapi.flushBackendCaches()
-        this.$store.dispatch("fetchAccounts")
-      },
-      close(): void {
-        this.showCreditRefreshNotification = false
-        this.$modal.close(this.willRequireTransactionRefresh)
+        this.$loading.hide()
+
+        let pendingTopUp
+        try {
+          pendingTopUp = await account._obj.getPendingTopUp()
+        } catch (err) {
+          throw new UIError(
+            this.$gettext(
+              "An unexpected server error occured while fetching pending topup list"
+            ),
+            err
+          )
+        }
+        pendingTopUp = pendingTopUp.filter(
+          (topup: any) => topup.jsonData.odoo.order_url === url.order_url
+        )
+
+        if (pendingTopUp?.length === 0) {
+          this.$msg.error(
+            this.$gettext(
+              "An unexpected value was returned in the pending topup list"
+            )
+          )
+          return
+        }
+        this.$msg.success(
+          this.$gettext("Top-up request has been successfully created")
+        )
+        refreshTransaction()
+        this.$modal.close()
+        await this.$modal.open("ConfirmPaymentModal", {
+          account,
+          transaction: pendingTopUp[0],
+          type: "topup",
+          refreshTransaction,
+        })
       },
       setFocus() {
         this.$nextTick(() => {

@@ -87,7 +87,7 @@
         } catch (err) {
           throw new UIError(
             this.$gettext(
-              "unexpected server error occured while fetching pending topup list"
+              "An unexpected server error occured while fetching pending topup list"
             ),
             err
           )
@@ -96,13 +96,15 @@
         }
       },
       async openModal(transactionObject: any) {
-        const result = await this.$modal.open("ConfirmPaymentModal", {
+        await this.$modal.open("ConfirmPaymentModal", {
           transaction: transactionObject,
           type: "topup",
+          account: this.account,
+          refreshTransaction: this.refreshTransaction,
         })
-        if (result === "refreshTopUpList") {
-          this.fetchTopUpList()
-        }
+      },
+      refreshTransaction() {
+        this.$emit("refreshTransaction")
       },
     },
     watch: {

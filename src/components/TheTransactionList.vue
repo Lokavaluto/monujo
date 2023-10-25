@@ -12,6 +12,7 @@
       :account="account"
       :refreshToggle="refreshToggle"
       @triggerTransactionRefresh="trigger"
+      @refreshTransaction="$emit('refreshTransaction')"
     />
     <TransactionListRecent
       :account="account"
