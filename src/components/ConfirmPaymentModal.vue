@@ -15,7 +15,7 @@
         <button
           class="delete"
           aria-label="close"
-          @click="closeAndRefresh()"
+          @click="$modal.close()"
         ></button>
       </header>
 
@@ -27,7 +27,7 @@
           >
             {{
               $gettext(
-                "You already have a pending top-up. Please either pay or cancel it before proceeding"
+                "You already have a pending top-up. Please either pay or withdraw it before proceeding"
               )
             }}
           </p>
@@ -98,7 +98,7 @@
                     "This top-up request is waiting for an administrator of your local currency to validate it"
                   )
                 : $gettext(
-                    "This top-up request is waiting for you to pay it or cancel it"
+                    "This top-up request is waiting for you to pay it or withdraw it"
                   )
             }}
           </h2>
@@ -141,14 +141,13 @@
         >
           <button
             class="button custom-button-modal has-text-weight-medium"
-            :title="$gettext('Cancel')"
+            id="delete"
             @click="cancelTopUpRequest"
           >
-            <span>{{ $gettext("Cancel") }}</span>
+            <span>{{ $gettext("Withdraw") }}</span>
           </button>
           <button
             class="button custom-button-modal has-text-weight-medium"
-            :title="$gettext('Pay')"
             @click="payTopUpRequest"
           >
             <span>{{ $gettext("Pay") }}</span>
@@ -156,8 +155,7 @@
         </div>
         <button
           class="button custom-button-modal has-text-weight-medium"
-          :title="$gettext('Ok')"
-          @click="closeAndRefresh()"
+          @click="$modal.close()"
         >
           <span>{{ $gettext("Ok") }}</span>
         </button>
@@ -182,35 +180,118 @@
       },
     },
     methods: {
-      payTopUpRequest(): void {
+      async payTopUpRequest(): Promise<void> {
         // XXXvlab: we would need to launch regular checks
         // here to acknowledge the payment
         window.open(
           this.$modal.args?.value[0].transaction.jsonData.odoo.order_url,
           "_blank"
         )
+        if (this.promiseWaitPayment) {
+          console.log("Already waiting for payment")
+          return
+        }
+        let paymentStatus = null
+        let orderId =
+          this.$modal.args?.value[0].transaction.jsonData.odoo.order_id
+        try {
+          this.promiseWaitPayment = this.waitPayment(orderId)
+          paymentStatus = await this.promiseWaitPayment
+        } catch (err) {
+          if (err === false) {
+            // The current modal was closed while waiting
+            return
+          }
+          throw new UIError(
+            this.$gettext(
+              "An unexpected server error occurred while fetching pending topup list"
+            ),
+            err
+          )
+        }
+        let modalName = this.$modal.modal.value
+        if (modalName !== "ConfirmPaymentModal") {
+          // The modal was likely closed while waiting
+          return
+        }
+        let myCurrentOrderId =
+          this.$modal.args?.value[0].transaction.jsonData.odoo.order_id
+        if (myCurrentOrderId !== orderId) {
+          // The modal was likely closed while waiting
+          return
+        }
+        this.closeAndRefresh()
+        this.$msg.success(
+          this.$gettext("The Top-up request has been successfully payed")
+        )
+      },
+      async waitPayment(orderId: number) {
+        return await new Promise((resolve, reject) => {
+          const interval = setInterval(async () => {
+            let pendingTopUp = null
+            let modalArgs = this.$modal.args?.value
+            let modalName = this.$modal.modal.value
+            if (modalName !== "ConfirmPaymentModal") {
+              // The modal was likely closed while waiting
+              clearInterval(interval)
+              reject(false)
+              return
+            }
+            let myCurrentOrderId =
+              this.$modal.args?.value[0].transaction.jsonData.odoo.order_id
+            if (myCurrentOrderId !== orderId) {
+              // The modal was likely closed while waiting
+              clearInterval(interval)
+              reject(false)
+              return
+            }
+            try {
+              pendingTopUp = await modalArgs[0].account._obj.getPendingTopUp()
+            } catch (err) {
+              console.error(
+                "getPendingTopUp exception while waiting for paid status",
+                err
+              )
+              clearInterval(interval)
+              reject(err)
+              return
+            }
+            const result = pendingTopUp.filter(
+              (topup: any) =>
+                topup.paid === false && topup.jsonData.odoo.order_id === orderId
+            )
+            if (!result?.length) {
+              clearInterval(interval)
+              resolve(true)
+            }
+          }, 5000)
+        })
       },
       async cancelTopUpRequest(): Promise<void> {
         this.$loading.show()
         try {
           await this.$modal.args?.value[0].transaction.cancel()
         } catch (err) {
+          this.$loading.hide()
           throw new UIError(
             this.$gettext(
-              "An error occured while deleting transaction, please try again or contact an administrator"
+              "An error occurred while withdrawing top-up request, please try again or contact an administrator"
             ),
             err
           )
-        } finally {
-          this.$loading.hide()
-          this.closeAndRefresh()
         }
+        await this.closeAndRefresh()
+        this.$loading.hide()
+        this.$msg.success(
+          this.$gettext("The top-up request has been successfully withdrawn")
+        )
       },
       // XXXvlab: the refresh is unnecessary in most case, and
       // should occur only when needed.
-      closeAndRefresh(): void {
-        this.$modal.close("refreshTopUpList")
-        this.$lokapi.flushBackendCaches()
+      async closeAndRefresh(): Promise<void> {
+        await this.$lokapi.flushBackendCaches()
+        await this.$store.dispatch("fetchAccounts")
+        this.$modal.close(true)
       },
     },
   })
@@ -234,5 +315,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  #delete {
+    background-color: #cc0f35;
   }
 </style>
