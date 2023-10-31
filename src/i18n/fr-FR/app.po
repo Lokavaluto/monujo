@@ -42,8 +42,8 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
-#: src/components/AboutModal.vue:82 src/components/TheNavBar.vue:102
-#: src/components/TheNavBar.vue:129
+#: src/components/AboutModal.vue:82 src/components/TheNavBar.vue:108
+#: src/components/TheNavBar.vue:140
 msgid "About %{ appName }"
 msgstr "À propos de %{ appName }"
 
@@ -66,6 +66,10 @@ msgstr "Ajoutez un texte (optionnel)"
 #: src/components/MoneyTransferModal.vue:436
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
+
+#: src/components/TheNavBar.vue:117
+msgid "Admin Comchain"
+msgstr "Administrateur Comchain"
 
 #: src/components/TransactionListModal.vue:117
 #: src/components/TransactionListModal.vue:122
@@ -365,7 +369,7 @@ msgstr "Depuis"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:120 src/components/TheNavBar.vue:49
+#: src/components/TheNavBar.vue:131 src/components/TheNavBar.vue:49
 msgid "Help"
 msgstr "Aide"
 
@@ -720,7 +724,7 @@ msgstr "Partager les opérations"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:139
+#: src/components/TheNavBar.vue:150
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -752,7 +756,7 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/TheNavBar.vue:123 src/components/TheNavBar.vue:52
+#: src/components/TheNavBar.vue:134 src/components/TheNavBar.vue:52
 msgid "Terms of Service"
 msgstr "CGU"
 
