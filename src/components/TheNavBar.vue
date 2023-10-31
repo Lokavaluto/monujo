@@ -113,6 +113,17 @@
                 >
                   {{ $gettext("Credit requests") }}
                 </router-link>
+                <a
+                  v-if="
+                    hasCreditRequestValidationRights &&
+                    hasUserAccountValidationRights
+                  "
+                  href="https://wallet.cchosting.org/bureau/#exchange"
+                  target="_blank"
+                  class="navbar-item"
+                >
+                  {{ $gettext("Admin Comchain") }}
+                </a>
                 <hr class="dropdown-divider" />
               </template>
 
