@@ -42,8 +42,8 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "A purchase order for the top up was created."
 msgstr "Un bon de commande pour votre rechargement a été créé."
 
-#: src/components/AboutModal.vue:82 src/components/TheNavBar.vue:102
-#: src/components/TheNavBar.vue:129
+#: src/components/AboutModal.vue:82 src/components/TheNavBar.vue:108
+#: src/components/TheNavBar.vue:140
 msgid "About %{ appName }"
 msgstr "À propos de %{ appName }"
 
@@ -66,6 +66,10 @@ msgstr "Ajoutez un texte (optionnel)"
 #: src/components/MoneyTransferModal.vue:436
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
+
+#: src/components/TheNavBar.vue:117
+msgid "Admin Comchain"
+msgstr "Administrateur Comchain"
 
 #: src/components/TransactionListModal.vue:122
 msgid "All recipient"
@@ -364,7 +368,7 @@ msgstr "Depuis"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:120 src/components/TheNavBar.vue:49
+#: src/components/TheNavBar.vue:131 src/components/TheNavBar.vue:49
 msgid "Help"
 msgstr "Aide"
 
@@ -380,7 +384,7 @@ msgstr "E-mail invalide."
 msgid "Invalid QR code content format"
 msgstr "Format du QR code invalide"
 
-#: src/main.ts:224
+#: src/main.ts:226
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -392,7 +396,7 @@ msgstr "Nom"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:106
+#: src/main.ts:108
 msgid "Log in"
 msgstr "Se connecter"
 
@@ -400,11 +404,11 @@ msgstr "Se connecter"
 msgid "Login"
 msgstr "Connection"
 
-#: src/main.ts:105
+#: src/main.ts:107
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:134
+#: src/main.ts:136
 msgid "Main account"
 msgstr "Compte principal"
 
@@ -424,7 +428,7 @@ msgstr "Montant minimum à créditer : "
 msgid "month"
 msgstr "mois"
 
-#: src/main.ts:132
+#: src/main.ts:134
 msgid "Mutual credit"
 msgstr "Crédit mutuel"
 
@@ -598,7 +602,7 @@ msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/main.ts:131
+#: src/main.ts:133
 msgid "Pledged account"
 msgstr "Compte nantis"
 
@@ -656,7 +660,7 @@ msgstr "Ré-initialiser le mot de passe"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:195
+#: src/main.ts:197
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
@@ -718,7 +722,7 @@ msgstr "Partager les opérations"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:139
+#: src/components/TheNavBar.vue:150
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -750,7 +754,7 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/TheNavBar.vue:123 src/components/TheNavBar.vue:52
+#: src/components/TheNavBar.vue:134 src/components/TheNavBar.vue:52
 msgid "Terms of Service"
 msgstr "CGU"
 
@@ -948,7 +952,9 @@ msgstr ""
 
 #: src/components/PendingTopUp.vue:89
 msgid "unexpected server error occured while fetching pending topup list"
-msgstr "Il y a eu un problème lors de la tentative de téléchargement de la liste des demandes de rechargement"
+msgstr ""
+"Il y a eu un problème lors de la tentative de téléchargement de la liste des "
+"demandes de rechargement"
 
 #: src/views/ResetPassword.vue:70
 msgid ""
