@@ -43,15 +43,22 @@
               </span>
             </p>
           </div>
-          <div
-            v-if="!$config?.hideResetPassword && canResetPassword"
-            class="forgot-password mb-4"
-          >
+          <div class="links-container mb-2">
             <button
+              v-if="!$config?.hideResetPassword && canResetPassword"
               @click="$router.push({ name: 'Reset password' })"
               type="button"
             >
               {{ $gettext("Forgot password ?") }}
+            </button>
+            <button
+              v-if="
+                !$config?.hideAccountCreate && ($config.signUpUrl || canSignup)
+              "
+              @click="onClickSignUp()"
+              type="button"
+            >
+              {{ $gettext("Not a member yet ?") }}
             </button>
           </div>
           <div class="login-buttons">
@@ -62,22 +69,8 @@
                 </button>
               </p>
             </div>
-            <div
-              v-if="
-                !$config?.hideAccountCreate && ($config.signUpUrl || canSignup)
-              "
-            >
-              <p class="control has-text-centered">
-                <button
-                  @click="onClickSignUp()"
-                  type="button"
-                  class="button create-account"
-                >
-                  {{ $gettext("Sign up") }}
-                </button>
-              </p>
-            </div>
           </div>
+
           <p class="has-text-danger has-text-centered" v-if="fail">
             {{ fail }}
           </p>
@@ -283,10 +276,12 @@
         .login-buttons > div {
           margin: 6px;
         }
-        .forgot-password {
-          text-align: right;
-          margin-right: 2px;
-          margin-top: 10px;
+        .links-container {
+          margin-top: 1em;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+
           button {
             border: none;
             background: none;
