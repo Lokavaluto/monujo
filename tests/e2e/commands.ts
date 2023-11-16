@@ -108,9 +108,13 @@ Cypress.Commands.add("amountInput", () => {
 Cypress.Commands.add("loginButton", () => {
   return cy.get("p > .is-login")
 })
-Cypress.Commands.add("createAccountButton", () => {
-  return cy.get("p > .create-account")
+Cypress.Commands.add("createAccountLink", () => {
+  return cy.get(".links-container").find("button").eq(1).should("be.visible")
 })
+Cypress.Commands.add("resetPasswordLink", () => {
+  return cy.get(".links-container").find("button").eq(0).should("be.visible")
+})
+
 Cypress.Commands.add("searchRecipient", (recipient: string) => {
   cy.searchInput().type(recipient)
   cy.firstSearchedRecipient().should("be.visible")
@@ -172,13 +176,16 @@ Cypress.Commands.add("closeModal", () => {
   })
 })
 Cypress.Commands.add("isSignupVisible", () => {
-  cy.get(".create-account").then(($element) => {
-    return $element.length > 0
-  })
+  cy.get(".links-container")
+    .find("button")
+    .eq(1)
+    .then(($element) => {
+      return $element.length > 0
+    })
 })
 Cypress.Commands.add("clickSignupButton", () => {
   if (cy.isSignupVisible()) {
-    cy.get(".create-account").click()
+    cy.get(".links-container").find("button").eq(1).click()
   }
 })
 Cypress.Commands.add("getSignupForm", () => {
@@ -233,7 +240,8 @@ declare global {
       topUpAccount(): Chainable<JQuery<HTMLElement>>
       topUpNextButton(): Chainable<JQuery<HTMLElement>>
       amountInput(): Chainable<JQuery<HTMLElement>>
-      createAccountButton(): Chainable<JQuery<HTMLElement>>
+      createAccountLink(): Chainable<JQuery<HTMLElement>>
+      resetPasswordLink(): Chainable<JQuery<HTMLElement>>
       loginButton(): Chainable<JQuery<HTMLElement>>
       takeScreenshot(title: string): void
       openPreferencesPage(): void
