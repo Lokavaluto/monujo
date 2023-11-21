@@ -71,16 +71,23 @@ export default defineConfig({
         // our screenshots and videos will be of that resolution
         const width = config.viewportWidth
         const height = config.viewportHeight
+        const scaleFactor = config.env.scaleFactor || 1
 
-        console.log("setting the browser window size to %d x %d", width, height)
+        console.log("setting the browser window size to %d x %d x %d", width, height, scaleFactor)
 
         if (browser.name === "chrome" && browser.isHeadless) {
-          launchOptions.args.push(`--window-size=${width},${height}`)
-
-          // force screen to be non-retina and just use our given resolution
-          launchOptions.args.push(
-            `--force-device-scale-factor=${config.env.scaleFactor || 1}`
+          launchOptions.args = launchOptions.args.filter(
+            (arg) => !arg.startsWith("--window-size=") &&
+              !arg.startsWith("--force-device-scale-factor=") &&
+              !arg.startsWith("--headless=")
           )
+          // --headless=new is quirky and does not respect height
+          // see: https://github.com/cypress-io/cypress/issues/27260
+
+          launchOptions.args.push("--headless=old")
+          launchOptions.args.push(`--window-size=${width},${height}`)
+          // force screen to be non-retina and just use our given resolution
+          launchOptions.args.push(`--force-device-scale-factor=${scaleFactor}`)
         }
 
         if (browser.name === "electron" && browser.isHeadless) {
