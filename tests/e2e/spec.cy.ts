@@ -7,7 +7,8 @@ describe("Login and logout process", () => {
     cy.loginForm().should("be.visible")
     cy.menu().should("be.visible")
     cy.loginButton().should("be.visible")
-    cy.createAccountButton().should("be.visible")
+    cy.createAccountLink().should("be.visible")
+    cy.resetPasswordLink().should("be.visible")
     if (Cypress.env("screenshot")) cy.takeScreenshot("login")
   })
 

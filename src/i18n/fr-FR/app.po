@@ -475,8 +475,8 @@ msgstr "Aucune transaction à afficher"
 msgid "Not a member yet ?"
 msgstr "Pas encore adhérent ?"
 
-#: src/components/ConfirmPaymentModal.vue:149
-#: src/components/ConfirmPaymentModal.vue:152
+#: src/components/ConfirmPaymentModal.vue:159
+#: src/components/ConfirmPaymentModal.vue:162
 msgid "Ok"
 msgstr "Ok"
 
