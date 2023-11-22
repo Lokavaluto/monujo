@@ -420,9 +420,9 @@
         } finally {
           this.transferOngoing = false
           this.$store.commit("setRequestLoadingAfterCreds", false)
+          this.$loading.hide()
         }
 
-        this.$loading.hide()
         this.errors.balance = false
         this.errors.amount = false
         this.$modal.args.value[0].refreshTransaction()
