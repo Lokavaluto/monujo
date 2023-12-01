@@ -214,11 +214,10 @@
               "Unexpected issue when attempting to connect to remote server."
             )
           }
-
-          throw e
-        } finally {
           this.$loading.hide()
+          return
         }
+        this.$loading.hide()
         this.$router.push({ name: "Login" })
         this.$msg.success(
           this.$gettext("Your account has been created successfully.")

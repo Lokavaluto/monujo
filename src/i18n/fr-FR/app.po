@@ -99,7 +99,9 @@ msgstr "Il y a eu un problème lors de la recherche du destinataire"
 msgid ""
 "An error occurred while withdrawing top-up request, please try again or "
 "contact an administrator"
-msgstr "Une erreur s'est produite lors du retrait de la demande de rechargement, veuillez ré-éssayer ou contacter votre administrateur"
+msgstr ""
+"Une erreur s'est produite lors du retrait de la demande de rechargement, "
+"veuillez ré-éssayer ou contacter votre administrateur"
 
 #: src/views/admin/PendingCredits.vue:168
 msgid "An issue occured upon the approval of the credit request of %{ name }"
@@ -377,7 +379,7 @@ msgstr "Aide"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/views/Signup.vue:233
+#: src/views/Signup.vue:232
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
@@ -775,7 +777,7 @@ msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
 
-#: src/views/Signup.vue:264
+#: src/views/Signup.vue:263
 msgid "The password and the password confirmation must be equal."
 msgstr ""
 "Le mot de passe et la confirmation du mot de passe doivent être identiques."
@@ -788,7 +790,7 @@ msgstr "Votre demande de rechargement a été traitée avec succès"
 msgid "The top-up request has been successfully withdrawn"
 msgstr "Votre demande de rechargement a été retirée avec succès"
 
-#: src/views/Signup.vue:229 src/views/Signup.vue:240 src/views/Signup.vue:247
+#: src/views/Signup.vue:228 src/views/Signup.vue:239 src/views/Signup.vue:246
 msgid "This fiels can not be empty."
 msgstr "Ce champs est obligatoire."
 
@@ -1045,7 +1047,7 @@ msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
 
-#: src/views/Signup.vue:224
+#: src/views/Signup.vue:223
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 
