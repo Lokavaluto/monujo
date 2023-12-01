@@ -51,6 +51,10 @@ msgstr "Demandes de comptes"
 msgid "Accounts waiting for approval"
 msgstr "Comptes en attente de validation"
 
+#: src/views/admin/PendingAccounts.vue:52
+msgid "Action"
+msgstr "Action"
+
 #: src/components/MoneyTransferModal.vue:444
 msgid "Add"
 msgstr "Ajouter"
@@ -140,7 +144,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le transfert d'argent. Veuillez "
 "nous excuser pour la gêne occasionnée."
 
-#: src/views/admin/PendingAccounts.vue:147
+#: src/views/admin/PendingAccounts.vue:164
 msgid ""
 "An unexpected issue occurred while approving the wallet account creation of "
 "user %{ name }"
@@ -153,6 +157,12 @@ msgid "An unexpected issue occurred while attempting to top up your account"
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
+
+#: src/views/admin/PendingAccounts.vue:199
+msgid ""
+"An unexpected issue occurred while discarding the wallet account creation of "
+"user %{ name }"
+msgstr "Il y a eu un problème lors de l'annulation de la demande d'activation de portefeuille pour l'utilisateur %{ name }"
 
 #: src/components/TransactionListRecent.vue:20
 msgid ""
@@ -192,6 +202,10 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste des "
 "comptes. Veuillez nous excuser pour le désagrément."
 
+#: src/views/admin/PendingAccounts.vue:178
+msgid "An unexpected issue occurred while updating the pending accounts list"
+msgstr "Il y a eu un problème lors du rafraichissement de la liste des demandes de validation de portefeuilles"
+
 #: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:89
 #: src/components/TheDashboardFooter.vue:102
 msgid "An unexpected server error occured while fetching pending topup list"
@@ -219,8 +233,7 @@ msgstr "Validation des comptes en attente de création"
 msgid "Approval of top-up requests"
 msgstr "Validation des demandes de crédit"
 
-#: src/views/admin/PendingAccounts.vue:52
-#: src/views/admin/PendingAccounts.vue:71 src/views/admin/PendingCredits.vue:58
+#: src/views/admin/PendingAccounts.vue:88 src/views/admin/PendingCredits.vue:58
 #: src/views/admin/PendingCredits.vue:87
 msgid "Approve"
 msgstr "Valider"
@@ -309,6 +322,10 @@ msgid "digit"
 msgid_plural "digits"
 msgstr[0] "chiffre"
 msgstr[1] "chiffres"
+
+#: src/views/admin/PendingAccounts.vue:71
+msgid "Discard"
+msgstr "Annuler"
 
 #: src/components/MoneyTransferModal.vue:439
 msgid "Do you want to add %{ name } to your favorite list ?"
@@ -995,9 +1012,13 @@ msgstr "Spécifier la langue"
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/views/admin/PendingAccounts.vue:160
+#: src/views/admin/PendingAccounts.vue:185
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
+
+#: src/views/admin/PendingAccounts.vue:212
+msgid "User %{ name }'s account creation was discarded"
+msgstr "La demande d'activation de portefeuille de l'utilisateur %{ name } a été annulée"
 
 #: src/views/Signup.vue:211
 msgid "User or email already exist."

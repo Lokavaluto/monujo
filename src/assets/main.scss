@@ -116,14 +116,14 @@ body {
 }
 
 .custom-button {
-  color: $color-2 !important;
-  border-color: $color-2 !important;
+  color: $color-2;
+  border-color: $color-2;
   font-style: normal;
   font-weight: normal;
   // font-size: 20px !important;
   line-height: 23px !important;
   border-radius: 47px !important;
-  background-color: inherit !important;
+  background-color: inherit;
 
   @media screen and (min-width: 1024px) {
     padding-right: 2.2em !important;
@@ -168,12 +168,12 @@ body {
 .custom-button {
   text-transform: uppercase !important;
   text-transform: uppercase !important;
-  background-color: inherit !important;
-  color: $color-2 !important;
-  border-color: $color-2 !important;
+  background-color: inherit;
+  color: $color-2;
+  border-color: $color-2;
   &.custom-inverted {
-    background: $color-2 !important;
-    color: #ffffff !important;
+    background: $color-2;
+    color: #ffffff;
   }
 }
 .modal-card-title {
