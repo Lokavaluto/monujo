@@ -99,7 +99,9 @@ msgstr "Il y a eu un problème lors de la recherche du destinataire"
 msgid ""
 "An error occurred while withdrawing top-up request, please try again or "
 "contact an administrator"
-msgstr "Une erreur s'est produite lors du retrait de la demande de rechargement, veuillez ré-éssayer ou contacter votre administrateur"
+msgstr ""
+"Une erreur s'est produite lors du retrait de la demande de rechargement, "
+"veuillez ré-éssayer ou contacter votre administrateur"
 
 #: src/views/admin/PendingCredits.vue:168
 msgid "An issue occured upon the approval of the credit request of %{ name }"
@@ -260,10 +262,16 @@ msgstr "Confirmez votre mot de passe"
 msgid "Connection successful"
 msgstr "Connection réussie"
 
-#: src/components/CreateAccount.vue:164 src/components/CreateAccount.vue:78
+#: src/components/CreateAccount.vue:149 src/components/CreateAccount.vue:63
 #: src/components/TheNavBar.vue:86 src/router/index.ts:50
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
+
+#: src/components/CreateAccount.vue:43
+msgid ""
+"Create the password for your wallet. (It is different from your user account "
+"password and is only related to your wallet)"
+msgstr "Créez le mot de passe de votre portefeuille . (Il est différent de celui de votre compte utilisateur et ne concerne que votre portefeuille)"
 
 #: src/components/TheNavBar.vue:110
 msgid "Credit requests"
@@ -485,13 +493,13 @@ msgstr "Ok"
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
-#: src/components/CreateAccount.vue:81 src/components/CreateAccount.vue:93
+#: src/components/CreateAccount.vue:66 src/components/CreateAccount.vue:78
 #: src/views/Login.vue:39 src/views/Signup.vue:100
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/components/CreateAccount.vue:116 src/components/CreateAccount.vue:124
-#: src/components/CreateAccount.vue:130
+#: src/components/CreateAccount.vue:101 src/components/CreateAccount.vue:109
+#: src/components/CreateAccount.vue:115
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
@@ -515,7 +523,7 @@ msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 
-#: src/components/CreateAccount.vue:265
+#: src/components/CreateAccount.vue:250
 msgid "Passwords do not match"
 msgstr "Le mot de passe entré n'est pas identique"
 
@@ -549,13 +557,6 @@ msgstr "Confirmation code PIN"
 msgid "PIN code must contain %{ pinLength }"
 msgstr "le code PIN doit contenir %{ pinLength}"
 
-#: src/components/CreateAccount.vue:43
-msgid ""
-"Please enter a password (and confirm it) for your new wallet %{ backend }."
-msgstr ""
-"Veuillez renseigner un mot de passe (et le confirmer) pour votre nouveau "
-"compte %{ backend }."
-
 #: src/views/ResetPassword.vue:12
 msgid ""
 "Please enter the email address associated with your account below. We'll "
@@ -573,7 +574,7 @@ msgstr ""
 "Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
 "pour créer votre compte."
 
-#: src/components/CreateAccount.vue:65
+#: src/components/CreateAccount.vue:50
 msgid ""
 "Please note that this password can not be retrieved, so be sure to keep it "
 "in a safe and reachable place."
@@ -585,7 +586,7 @@ msgstr ""
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
-#: src/components/CreateAccount.vue:292
+#: src/components/CreateAccount.vue:277
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -689,7 +690,7 @@ msgstr "%{amount} envoyé"
 msgid "Settings"
 msgstr "Préferences"
 
-#: src/components/CreateAccount.vue:311
+#: src/components/CreateAccount.vue:296
 msgid ""
 "Settings for simplified authentication were not saved correctly... Please "
 "try again in the \"Settings\" page or contact your administrator"
@@ -791,14 +792,6 @@ msgstr "Votre demande de rechargement a été retirée avec succès"
 #: src/views/Signup.vue:229 src/views/Signup.vue:240 src/views/Signup.vue:247
 msgid "This fiels can not be empty."
 msgstr "Ce champs est obligatoire."
-
-#: src/components/CreateAccount.vue:54
-msgid ""
-"This password is different from your login password, it protects your wallet "
-"%{ backend }."
-msgstr ""
-"Ce mot de passe est différent de votre mot de passe Monujo, il concerne "
-"uniquement votre portefeuille %{ backend }."
 
 #: src/components/ConfirmPaymentModal.vue:77
 #: src/components/ConfirmPaymentModal.vue:78
@@ -976,11 +969,11 @@ msgstr "Le compte de l'utilisateur %{ name } a été validé"
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
-#: src/components/CreateAccount.vue:297
+#: src/components/CreateAccount.vue:282
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
 
-#: src/components/CreateAccount.vue:290
+#: src/components/CreateAccount.vue:275
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
