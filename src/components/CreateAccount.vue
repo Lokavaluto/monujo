@@ -41,22 +41,9 @@
               <p class="mb-3">
                 {{
                   $gettext(
-                    "Please enter a password (and confirm it) " +
-                      "for your new wallet %{ backend }.",
-                    {
-                      backend: form.accountBackend,
-                    }
-                  )
-                }}
-              </p>
-              <p class="mb-3">
-                {{
-                  $gettext(
-                    "This password is different from your login password, " +
-                      "it protects your wallet %{ backend }.",
-                    {
-                      backend: form.accountBackend,
-                    }
+                    "Choose the password for your wallet. It is different " +
+                      "from your user account password and is only related to " +
+                      "your wallet."
                   )
                 }}
               </p>
@@ -280,7 +267,7 @@
             this.form["accountPassword"],
             this.form["accountBackend"],
           ])
-        } catch (err: any) {
+        } catch (err) {
           console.error(
             "Something went wrong on createUserAccount request",
             err
@@ -302,7 +289,7 @@
             const [accountAuthService, userConfigInput] = this.userAuthPref
             accountAuthService.configId = userAccount.internalId
             await accountAuthService.setUserConfig(userConfigInput)
-          } catch (err: any) {
+          } catch (err) {
             console.error(
               "Something went wrong on createUserAccount request",
               err
