@@ -49,7 +49,7 @@
                         {{ $gettext("User") }}
                       </th>
                       <th class="has-text-right row-validate-header">
-                        {{ $gettext("Approve") }}
+                        {{ $gettext("Action") }}
                       </th>
                     </tr>
                   </thead>
@@ -67,6 +67,23 @@
                         }}
                       </td>
                       <td class="has-text-right">
+                        <a
+                          class="
+                            button
+                            is-primary
+                            custom-button custom-inverted
+                            is-small is-pulled-right
+                            ml-2
+                            mb-1
+                          "
+                          id="discard"
+                          v-on:click="discardUserAccount(account)"
+                          v-if="
+                            selectedItem !== account || !isWaitingForValidation
+                          "
+                        >
+                          {{ $gettext("Discard") }}
+                        </a>
                         <a
                           class="
                             button
@@ -137,8 +154,45 @@
           await account.validateCreation()
         } catch (err: any) {
           this.isWaitingForValidation = false
-          if (err.message === "User canceled the dialog box") {
-            // A warning message should have already been sent
+          if ((err as Error).message === "User canceled the dialog box") {
+            return
+          }
+
+          this.$msg.error(
+            this.$gettext(
+              "An unexpected issue occurred while approving " +
+                "the wallet account creation of user %{ name }",
+              {
+                name: account.name,
+              }
+            )
+          )
+          console.error(err)
+        }
+        this.isWaitingForValidation = false
+        try {
+          await this.updatePendingAccount()
+        } catch (err) {
+          this.$gettext(
+            "An unexpected issue occurred while updating the pending accounts list"
+          )
+          console.error("Failed to update the pending accounts list", err)
+        }
+
+        this.$msg.success(
+          this.$gettext("User %{ name }'s account creation was approved", {
+            name: account.name,
+          })
+        )
+      },
+      async discardUserAccount(account: any): Promise<void> {
+        this.selectedItem = account
+        this.isWaitingForValidation = true
+        try {
+          await account.discardCreateRequest()
+        } catch (err) {
+          this.isWaitingForValidation = false
+          if ((err as Error).message === "User canceled the dialog box") {
             return
           }
 
@@ -156,7 +210,7 @@
         this.isWaitingForValidation = false
         await this.updatePendingAccount()
         this.$msg.success(
-          this.$gettext("User %{ name }'s account creation was approved", {
+          this.$gettext("User %{ name }'s account creation was discarded", {
             name: account.name,
           })
         )
@@ -186,4 +240,7 @@
    text-overflow: ellipsis
   table
    table-layout: fixed
+  body #discard
+    background-color: #cc0f35
+    border-color: #cc0f35
 </style>
