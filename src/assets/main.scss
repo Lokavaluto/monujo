@@ -367,3 +367,9 @@ input {
 .vl-overlay {
   z-index: 15;
 }
+.title-card {
+  min-height: 1.55em;
+}
+div.card div.section-card > h2 {
+  border-bottom: 0.05em;
+}
