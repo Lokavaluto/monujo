@@ -6,7 +6,7 @@
     :is-full-page="false"
   />
   <div class="section-card" v-if="pendingUnpaidTopUpList.length">
-    <h2 class="custom-card-title">
+    <h2 class="custom-card-title title-card">
       {{ $gettext("Unpaid top-up requests") }}
     </h2>
     <p class="top-up-info">

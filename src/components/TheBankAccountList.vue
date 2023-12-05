@@ -52,7 +52,7 @@
         {{ $gettext("to create one.") }}
       </p>
       <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
-        <h2 class="custom-card-title">
+        <h2 class="custom-card-title title-card">
           {{ $gettext("your accounts") }}
         </h2>
         <BankAccountItem
@@ -169,7 +169,7 @@
   @import "../assets/custom-variables.scss";
 
   .refresh {
-    margin-top: -1.5em;
+    margin-top: -1.2em;
     z-index: 1;
   }
   .active-refresh-button {
