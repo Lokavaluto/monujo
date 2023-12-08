@@ -53,7 +53,7 @@ jobs:
       - name: 🔨 Config
         run: |
           rm "public/config.sample.json"
-          export GITHUB_REF_NAME="dev3"  ## Not ideal for test stability
+          export GITHUB_REF_NAME="test"  ## Not ideal for test stability
           echo "{
             \"appName\": \"Monujo-CI-${GITHUB_REF_NAME}\",
             \"lokapiDb\": \"odoo\",
