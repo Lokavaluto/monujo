@@ -6,6 +6,7 @@ module Fastlane
   module Actions
     module SharedValues
       TAKE_SCREENSHOTS_REPORT = :TAKE_SCREENSHOTS_REPORT
+      TAKE_SCREENSHOTS_NEED_RUN = :TAKE_SCREENSHOTS_NEED_RUN
     end
 
     class TakeScreenshotsAction < Action
@@ -13,6 +14,9 @@ module Fastlane
 
         app = Actions.lane_context[SharedValues::APP_NAME]
         version_name = Actions.lane_context[SharedValues::VERSION_NAME]
+
+        Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_NEED_RUN] = false
+
         if not Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT]
           Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT] = {}
         end
@@ -53,11 +57,24 @@ module Fastlane
         ## Modify json to connect to screenshot host
         ##
 
-        config_path = "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/dist/config.json"
+        ## In dry run mode, the built was probably not done yet, so we
+        ## can't access the ``dist/`` directory. We want to read the
+        ## ``config.json`` file in ``public/`` directory to get the
+        ## available languages.
+
+        target_directory = params[:dry_run] ? "public" : "dist"
+
+        config_path = "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/#{target_directory}/config.json"
         config = JSON.parse(File.read(config_path))
-        config['lokapiHost'] = host if host
-        config['lokapiDb'] = db if db
-        config['locales']['preferNavigatorLanguage'] = false
+
+        ## In dry run mode, we don't want to modify the dist ``config.json`` file
+        ## as this mode is meant to be called before the build of the package.
+        if not params[:dry_run]
+          config['lokapiHost'] = host if host
+          config['lokapiDb'] = db if db
+          config['locales']['preferNavigatorLanguage'] = false
+          File.write(config_path, JSON.pretty_generate(config))
+        end
 
         available_languages = config['locales']['availableLanguages'].keys
         language = params[:language] || ENV["SCREENSHOT_LANGUAGE"]
@@ -70,7 +87,6 @@ module Fastlane
             end
           end
         end
-        File.write(config_path, JSON.pretty_generate(config))
 
         languages = available_languages.filter do |current_language|
           if language and not language.include? current_language
@@ -115,15 +131,23 @@ module Fastlane
                 #FileUtils.rm_rf(result_dir)
               end
             end
+
+            if params[:dry_run]
+              Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_NEED_RUN] = true
+              return
+            end
+
             config['locales']['defaultLanguage'] = current_language
             File.write(config_path, JSON.pretty_generate(config))
 
             ##
             ## Launch cypress
             ##
+
             if r.split("x").count == 2
               r = r + "x1"
             end
+
             UI.message "Launching cypress on #{app} for screenshots in #{current_language} in #{r}..."
             width, height, scale = r.split("x")
             cypress_params = {
@@ -205,6 +229,12 @@ module Fastlane
           FastlaneCore::ConfigItem.new(
             key: :force,
             env_name: "FL_SCREENSHOT_FORCE",
+            type: Boolean,
+            default_value: false
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :dry_run,
+            env_name: "FL_SCREENSHOT_DRY_RUN",
             type: Boolean,
             default_value: false
           ),

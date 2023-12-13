@@ -31,6 +31,7 @@ private_lane :build_web_pack do |options|
     FileUtils.mkdir_p("public/i18n")
     sh "npm run gettext:compile"
     sh "npm run build"
+    sh "touch .built-web-pack"
   end
 end
 
@@ -224,8 +225,32 @@ private_lane :_build_apps do |options|
     end
 
     if options[:screenshot]
-      _prepare_package if not Actions.lane_context[SharedValues::SANDBOX_PATH]
+      if not Actions.lane_context[SharedValues::SANDBOX_PATH]
+          sandbox
+          customize_app_with_resource unless lane_context[SharedValues::PLATFORM_NAME] == :web
+      end
       screenshot_config = lane_context[SharedValues::SCREENSHOT_CONFIG]
+
+      ## run take_screenshots in dry run mode to check if everything is ok
+      take_screenshots(
+        host: screenshot_config[:host],
+        db: screenshot_config[:db],
+        login: screenshot_config[:login],
+        password: screenshot_config[:password],
+        resolution: screenshot_config[:resolution],
+        language: screenshot_config[:language],
+        force: options[:force],
+        dry_run: true,
+      )
+      if not Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_NEED_RUN]
+        UI.message "No screenshot to take for #{app}. Skipping."
+        next
+      end
+
+      ## If not already built, build web pack
+      if not File.exist? "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/.built-web-pack"
+        build_web_pack
+      end
 
       take_screenshots(
         host: screenshot_config[:host],
