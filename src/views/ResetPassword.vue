@@ -82,7 +82,7 @@
           this.$loading.hide()
         }
         this.success = this.$gettext("Email sent")
-        this.$router.push({ name: "dashboard" })
+        this.$router.push({ name: "Login" })
       },
     },
   })
