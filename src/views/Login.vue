@@ -153,7 +153,7 @@
         try {
           this.$loading.show()
           await this.$store.dispatch("login", {
-            login: this.email,
+            login: this.email.toLowerCase(),
             password: this.password,
           })
           this.success = this.$gettext("Connection successful")

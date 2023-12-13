@@ -64,8 +64,9 @@
     methods: {
       async submit(): Promise<void> {
         this.$loading.show()
+
         try {
-          await this.$lokapi.resetPassword(this.email)
+          await this.$lokapi.resetPassword(this.email.toLowerCase())
         } catch (e) {
           if (e instanceof RestExc.InvalidUserOrEmail)
             this.fail = this.$gettext(
