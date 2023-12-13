@@ -4,6 +4,9 @@ to_publish = Hash.new
 publish_metadata = Hash.new
 
 releases_data = nil
+from_publish_store = false
+
+
 
 ## key is `deliver`'s identifier, value is matching resolution
 devices_ios_resolution = {
@@ -46,11 +49,70 @@ private_lane :_setup_targets do |options|
   if not lane_context[SharedValues::VERSION_NAME]
     version_name_from_tag tag: options[:tag]
   end
-  if not lane_context[SharedValues::VERSION_CODE]
-    version_code_from_tag tag: options[:tag], rev: options[:rev]
-  end
   apps
 end
+
+
+lane :get_stored_build_numbers do |options|
+  case lane_context[SharedValues::PLATFORM_NAME]
+  when :android
+    require 'supply'
+    require 'supply/options'
+    require 'supply/reader'
+
+    ## If called only through build we didn't setup the store
+    ## connection.
+    if not Supply.config
+      _setup_store options
+    end
+    Supply.config[:package_name] = lane_context[SharedValues::APP_ID]
+    begin
+      old_track = Supply.config[:track]
+      tracks = ["internal", "alpha", "beta", "production"]
+	  version_codes = []
+	  tracks.each do |track|
+        Supply.config[:track] = track
+		UI.message "Track #{track}"
+		begin
+          vc = Supply::Reader.new.track_version_codes || []
+		rescue
+		  UI.message " .. no version codes for track #{track}"
+		else
+		  UI.message " .. version codes: #{vc}"
+          ## remove nils and add the rest
+          version_codes += vc
+		end
+	  end
+      Supply.config[:track] = old_track
+    rescue => e
+      if e.message.include? 'Package not found'
+        version_codes = []
+      else
+        raise
+      end
+    end
+    versions = version_codes.compact
+  when :ios
+    app = Spaceship::ConnectAPI::App.find(
+      lane_context[SharedValues::APP_ID]
+    )
+    builds = Spaceship::ConnectAPI.get_builds(
+      filter: { app: app.id },
+      sort: "-uploadedDate",
+      includes: "preReleaseVersion"
+    )
+    versions = builds.map { |build| build.version }
+  when :web
+    ## Nothing to do
+    UI.important "No revision support for web. Ignoring."
+  else
+    UI.user_error!("Unknown platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+  end
+  UI.message "Store version codes used: #{versions}"
+  versions
+end
+
+
 
 
 desc "Check signing info are available and setup"
@@ -108,7 +170,7 @@ desc "Build release packages and/or screenshots"
 private_lane :_build_apps do |options|
 
   if options[:package].nil? or options[:package]
-      _setup_signing options
+    _setup_signing options
   end
 
   if options[:screenshot]
@@ -125,10 +187,39 @@ private_lane :_build_apps do |options|
 
   for app in _setup_targets options
     load_app_data app: app
+    Actions.lane_context[SharedValues::VERSION_CODE] = nil
 
     ## Load the platform dependent packaging
     ## To do so, specify `package:false`
     if options[:package].nil? or options[:package]
+
+      if not lane_context[SharedValues::VERSION_CODE]
+
+        if not options[:rev] and from_publish_store
+          vc = (version_code_from_tag tag: options[:tag], rev: 0).to_s
+          build_numbers = get_stored_build_numbers options
+          build_numbers = build_numbers.select {
+            |build_number| build_number.start_with?(vc[0..-3])
+          }
+          if build_numbers.length != 0
+            build_numbers = build_numbers.map {
+              |build_number| build_number.to_i
+            }
+            last_build_number = build_numbers.max
+            rev = last_build_number.to_s[-2..].to_i
+            if rev >= 98
+              UI.user_error! "All revision numbers were taken !"
+            end
+            rev = rev + 1
+          else
+            rev = 0
+          end
+          vc = version_code_from_tag tag: options[:tag], rev: rev
+          UI.important ("Inferred first unused rev on store: #{rev}, full build number: #{vc}")
+        else
+          version_code_from_tag tag: options[:tag], rev: options[:rev]
+        end
+      end
       package options
     end
 
@@ -180,6 +271,8 @@ end
 
 desc "Build all assets needed for publication"
 private_lane :_prepublish do |options|
+  from_publish_store = true
+  _setup_store options
   build options
   changelog options if options[:changelog]
   publish_metadata["tag"] = lane_context[SharedValues::VERSION_NAME]

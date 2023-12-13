@@ -779,6 +779,9 @@ Will build packages in `release/$TAG` and create/send the release
 provided that you have the credentials for this. The result should
 be available in testflight.
 
+Note that if not specified, the revision number will be incremented to
+allow the package to be pushed.
+
 Please refer to the ios build section to provide any options that
 you'd like. If `IPA` was already built, it'll be used.
 
@@ -803,6 +806,9 @@ bundle exec fastlane android publish_store
 Will build packages in `release/$TAG` and create/send the release
 provided that you have the credentials for this. The result should
 be available in the internal track on our Google Developer Console.
+
+Note that if not specified, the revision number will be incremented to
+allow the package to be pushed.
 
 Please refer to the android build section to provide any options that
 you'd like. If `AAB` was already built, it'll take the existing file
