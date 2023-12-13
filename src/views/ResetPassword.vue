@@ -19,6 +19,7 @@
             <p class="control has-icons-left is-expanded">
               <input
                 v-model.trim="email"
+                autocapitalize="none"
                 class="input"
                 :placeholder="$gettext('Email')"
               />

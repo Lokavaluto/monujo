@@ -13,6 +13,7 @@
               <input
                 name="login"
                 v-model.trim="email"
+                autocapitalize="none"
                 class="input"
                 :placeholder="$gettext('Email')"
               />
