@@ -217,7 +217,7 @@ msgstr "Validation des demandes de crédit"
 msgid "Approve"
 msgstr "Valider"
 
-#: src/views/Login.vue:204
+#: src/views/Login.vue:205
 msgid "Ask me later"
 msgstr "Plus tard"
 
@@ -229,7 +229,7 @@ msgstr "Authentification"
 msgid "Biometric login successfully disabled"
 msgstr "Identification biométrique désactivée"
 
-#: src/views/Login.vue:236
+#: src/views/Login.vue:237
 msgid "Biometric login successfully set up"
 msgstr "Identification biométrique mise en place"
 
@@ -258,7 +258,7 @@ msgstr "valider"
 msgid "Confirm password"
 msgstr "Confirmez votre mot de passe"
 
-#: src/views/Login.vue:159
+#: src/views/Login.vue:160
 msgid "Connection successful"
 msgstr "Connection réussie"
 
@@ -324,11 +324,11 @@ msgstr "Modifications enregistrées"
 msgid "Email"
 msgstr "Courriel"
 
-#: src/views/ResetPassword.vue:82
+#: src/views/ResetPassword.vue:84
 msgid "Email sent"
 msgstr "Courriel envoyé"
 
-#: src/views/Login.vue:197
+#: src/views/Login.vue:198
 msgid "Enable biometric login"
 msgstr "Activer le login biométrique"
 
@@ -375,7 +375,7 @@ msgstr "Les codes PINs entrés ne sont pas identiques"
 msgid "Help"
 msgstr "Aide"
 
-#: src/views/Login.vue:171
+#: src/views/Login.vue:172
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
@@ -445,7 +445,7 @@ msgstr "Nom, adresse email ou téléphone"
 msgid "Next"
 msgstr "Suivant"
 
-#: src/views/Login.vue:203
+#: src/views/Login.vue:204
 msgid "No"
 msgstr "Non"
 
@@ -623,11 +623,11 @@ msgstr "Rafraîchir le solde et les transactions"
 msgid "Request"
 msgstr "Recevoir"
 
-#: src/views/Login.vue:175
+#: src/views/Login.vue:176
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/views/Login.vue:165
+#: src/views/Login.vue:166
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
 
@@ -931,20 +931,20 @@ msgstr "Impossible de lire le QR code."
 msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
-#: src/views/Login.vue:229
+#: src/views/Login.vue:230
 msgid "Unexpected issue occurred while saving your credentials"
 msgstr ""
 "Une erreur inattendue est survenue pendant l'enregistrement de vos "
 "identifiants"
 
-#: src/views/Login.vue:178 src/views/ResetPassword.vue:75
+#: src/views/Login.vue:179 src/views/ResetPassword.vue:77
 #: src/views/Signup.vue:213
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/views/ResetPassword.vue:71
+#: src/views/ResetPassword.vue:73
 msgid ""
 "Unknown user or email. Please make sure to provide a valid username or email."
 msgstr ""
@@ -994,7 +994,7 @@ msgstr "semaine"
 msgid "Withdraw"
 msgstr "Retirer"
 
-#: src/views/Login.vue:198
+#: src/views/Login.vue:199
 msgid ""
 "Would you like to use your device's biometric (fingerprint, face "
 "recognition, ...) capability to login ?"
@@ -1006,7 +1006,7 @@ msgstr ""
 msgid "year"
 msgstr "année"
 
-#: src/views/Login.vue:202
+#: src/views/Login.vue:203
 msgid "Yes"
 msgstr "Oui"
 

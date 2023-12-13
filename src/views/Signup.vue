@@ -201,7 +201,7 @@
         this.$loading.show()
         try {
           await this.$lokapi.signup(
-            this.email,
+            this.email.toLowerCase(),
             this.lastName,
             this.firstName,
             this.password

@@ -64,6 +64,8 @@
     methods: {
       async submit(): Promise<void> {
         this.$loading.show()
+        this.email = this.email.toLowerCase()
+
         try {
           await this.$lokapi.resetPassword(this.email)
         } catch (e) {

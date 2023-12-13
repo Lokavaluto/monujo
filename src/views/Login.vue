@@ -150,6 +150,7 @@
         }
       },
       async submit(): Promise<void> {
+        this.email = this.email.toLowerCase()
         try {
           this.$loading.show()
           await this.$store.dispatch("login", {
