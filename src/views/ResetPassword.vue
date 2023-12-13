@@ -69,15 +69,17 @@
         try {
           await this.$lokapi.resetPassword(this.email)
         } catch (e) {
-          if (e instanceof RestExc.InvalidUserOrEmail)
+          if (e instanceof RestExc.InvalidUserOrEmail) {
             this.fail = this.$gettext(
               "Unknown user or email. Please make sure to provide a valid username or email."
             )
-          else
-            this.fail = this.$gettext(
-              "Unexpected issue when attempting to connect to remote server."
-            )
-          throw e
+            return
+          }
+          this.fail = this.$gettext(
+            "Unexpected issue when attempting to connect to remote server."
+          )
+          console.log(e)
+          return
         } finally {
           this.$loading.hide()
         }

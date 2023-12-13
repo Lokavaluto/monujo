@@ -324,7 +324,7 @@ msgstr "Modifications enregistrées"
 msgid "Email"
 msgstr "Courriel"
 
-#: src/views/ResetPassword.vue:84
+#: src/views/ResetPassword.vue:86
 msgid "Email sent"
 msgstr "Courriel envoyé"
 
@@ -937,7 +937,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant l'enregistrement de vos "
 "identifiants"
 
-#: src/views/Login.vue:179 src/views/ResetPassword.vue:77
+#: src/views/Login.vue:179 src/views/ResetPassword.vue:78
 #: src/views/Signup.vue:213
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
