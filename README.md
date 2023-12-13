@@ -689,8 +689,9 @@ bundle exec fastlane android build app:roue,pive
 ### Publishing Release
 
 This is about the process of send the build artifacts (web `tar.bz2`,
-`IPA` files) to public platform (github release page, apple store) for
-distribution.
+`IPA` files for apple store, `AAB` files for google play store) to
+public platform (github release page, apple store, google play store)
+for distribution.
 
 #### Publish to all available publishing hubs
 
@@ -792,3 +793,31 @@ bundle exec fastlane ios publish_store \
 .. will build iOS packages (IPA) from source code of tag `1.0.0-rc.11`
 with the added revision 1 in the iOS version code, only for the
 application "monujo" and send this release to testflight.
+
+#### Publish to Google Play Store
+
+```
+bundle exec fastlane android publish_store
+```
+
+Will build packages in `release/$TAG` and create/send the release
+provided that you have the credentials for this. The result should
+be available in the internal track on our Google Developer Console.
+
+Please refer to the android build section to provide any options that
+you'd like. If `AAB` was already built, it'll take the existing file
+and send it directly to the store.
+
+For instance:
+
+```
+bundle exec fastlane android publish_store \
+    tag:1.0.0-rc.11 \
+    app:monujo rev:1
+```
+
+.. will build android packages (AAB) from source code of tag
+`1.0.0-rc.11` with the added revision 1 in the android version code,
+only for the application "monujo" and send this release to Google Play
+store in the internal test track, in draft mode.
+
