@@ -558,21 +558,24 @@ scaling factor.
 
 #### create and publish screenshots for release by specifying device
 
-This is only supported on the Apple Store for now and requires a
-Apple host to support the final publication on Apple Store.
+This is supported on both the Google Play Store and the Apple Store.
+
+For the push to be supported on ios platform, it requires a Apple host
+to run the script.
 
 All arguments of previous section applies. With the addition of:
 
 - the device name to target for the screenshots in:
-  - command line argument `device`, comma separated if needed of one or more
-    of the following `IPHONE_55`, `IPHONE_65`, `IPHONE_67`, `IPAD_PRO_129`,
-    `IPAD_PRO_3GEN_129`, ... or
+  - command line argument `device`, comma separated if needed of one
+    or more of the following for ios platform: `IPHONE_55`,
+    `IPHONE_65`, `IPHONE_67`, `IPAD_PRO_129`, `IPAD_PRO_3GEN_129`, of
+    for android platform: `phone`, `sevenInch`, `tenInch`... or
   - environment variable `SCREENSHOT_DEVICE`, comma separated if needed or
-  - configuration file `.screenshot.json`, field `resolutions` as an array.
   - if not specified, the minimum required list of device needed to
     make a valid release for the store will be chosen. (which is
     currenty: `IPHONE_55`, `IPHONE_65`, `IPHONE_67`, `IPAD_PRO_129`,
-    `IPAD_PRO_3GEN_129`)
+    `IPAD_PRO_3GEN_129` for ios, and `phone`, `sevenInch`, `tenInch`
+    for android)
 
 For instance:
 

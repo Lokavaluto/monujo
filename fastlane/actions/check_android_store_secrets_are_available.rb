@@ -40,7 +40,9 @@ Note that, by default, a JSON API key file is looked up in:
         end
 
         Supply.config = {
-          json_key_data: api_key
+          json_key_data: api_key,
+          release_status: Supply::ReleaseStatus::DRAFT,
+          track: Supply::Tracks::INTERNAL,
         }
       end
 

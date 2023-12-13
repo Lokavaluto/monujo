@@ -189,6 +189,7 @@ private_lane :_build_apps do |options|
   for app in _setup_targets options
     load_app_data app: app
     Actions.lane_context[SharedValues::VERSION_CODE] = nil
+    Actions.lane_context[SharedValues::SANDBOX_PATH] = nil
 
     ## Load the platform dependent packaging
     ## To do so, specify `package:false`
@@ -386,18 +387,60 @@ platform :android do
   end
 
   lane :publish_store do |options|
-    _store_resolutions options
+    if options[:screenshot].nil? or options[:screenshot]
+      _store_resolutions options
+      options[:screenshot] = true
+    end
     _publish_store options
   end
 
-  private_lane :store_resolution do |options|
-    UI.user_error! "send_store not yet implemented for #{lane_context[SharedValues::PLATFORM_NAME]}!"
+  lane :publish_screenshots do |options|
+    _setup_store
+    _store_resolutions options
+    screenshot options
+    send_store options
+  end
+
+  private_lane :_store_resolutions do |options|
+    if options[:resolution]
+      UI.user_error!(
+        "You should not provide resolutions as they are inferred from " +
+        "the platform's store"
+      )
+    end
+
+    devices = (
+      options[:device] || ENV["SCREENSHOT_DEVICE"] || ""
+    ).split(",").map { |k| k.to_sym }
+
+    if devices.length != 0
+      ## Remove devices from devices_android_resolution keys
+      unknown_devices = devices - devices_android_resolution.keys
+      if unknown_devices.length != 0
+        UI.user_error!(
+          "Provided device identifiers are unknown: #{unknown_devices.join(", ")}\n" +
+          "  Please on android platform, use one of the following device identifier:\n" +
+          "    #{devices_android_resolution.keys.join(", ")}"
+        )
+      end
+      ## Filter out the devices_android_resolution Hash
+      devices_android_resolution = (
+        devices_android_resolution.entries
+          .filter { |k, v| devices.include? k }
+      ).to_h
+    end
+    UI.message "Target device for resolution: #{devices_android_resolution.keys.join(", ")}"
+
+    ## Filter
+    options[:resolution] = devices_android_resolution.values.uniq.join(",")
   end
 
   private_lane :send_store do |options|
     require 'supply'
     require 'supply/options'
     require 'supply/reader'
+    require 'digest'
+
     to_publish.each do |path, label|
       ## accept only "*.aab" paths
       next unless path.end_with? ".aab"
@@ -424,6 +467,69 @@ platform :android do
       Supply::Uploader.new.perform_upload
     end
 
+    ## Publish screenshots that have been taken
+    for app in _setup_targets options
+      load_app_data app: app
+      Supply.config[:package_name] = lane_context[SharedValues::APP_ID]
+
+
+      screenshots = Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT] || {}
+
+      ## keep only screenshots for current app
+      screenshots = screenshots.select { |screenshot, metadata|
+        metadata[:app] == app
+      }
+
+      # if there is at least one screenshot
+      if screenshots.length > 0
+        UI.message "Uploading screenshots to Google Play"
+      else
+        UI.message "No screenshots to upload to Google Play"
+        next
+      end
+
+      existing_images = {}
+      client = Supply::Client.make_from_config
+      client.begin_edit(package_name: Supply.config[:package_name])
+        ## collect image_types
+        image_type_languages = screenshots.entries.map { |screenshot, metadata|
+          ["#{devices_android_resolution.key(metadata[:resolution])}Screenshots", metadata[:language]]
+        }.uniq
+
+        image_type_languages.each do |image_type, language|
+          if options[:force_upload]
+            UI.important("Clearing all screenshots of #{app} for #{image_type} in #{language}.")
+            client.clear_screenshots(image_type: image_type, language: language)
+            existing_images[[image_type, language]] = []
+          else
+            UI.message("Checking #{image_type} #{language} checksums on google store...")
+            ## fetch existing image urls
+            existing_images[[image_type, language]] = client.fetch_images(image_type: image_type, language: language)
+          end
+        end
+
+      screenshots.entries.each do |screenshot, metadata|
+        image_type = "#{devices_android_resolution.key(metadata[:resolution])}Screenshots"
+        image_path = "../#{screenshot}"
+
+        sha256 = Digest::SHA256.file(image_path).hexdigest
+        if existing_images[[image_type, metadata[:language]]].map(&:sha256).include?(sha256)
+          UI.important("  Skip upload of #{app} screenshot #{image_path} as remote sha256 matches.")
+          UI.message("    use force_upload:true to force deletion of previous screenshots.")
+          next
+        end
+
+        UI.message "  Add upload of #{screenshot}"
+        client.upload_image(
+          ## append current working directory to the screenshot path
+          image_path: image_path,
+          image_type: image_type,
+          language: metadata[:language],
+        )
+      end
+      client.commit_current_edit!
+      UI.success("Successfully finished the #{screenshots.length} #{app}'s screenshots upload to Google Play")
+    end
   end
 
   private_lane :prepare_mobile_package do |options|
