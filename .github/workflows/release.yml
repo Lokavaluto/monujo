@@ -59,9 +59,9 @@ jobs:
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           PLAY_STORE_API_KEY: ${{ secrets.PLAY_STORE_API_KEY }}
           ## screenshots
-          SCREENSHOT_HOST: ${{ secrets.SCREENSHOT_HOST }}
-          SCREENSHOT_DB: ${{ secrets.SCREENSHOT_DB }}
-          SCREENSHOT_LOGIN: ${{ secrets.SCREENSHOT_LOGIN }}
+          SCREENSHOT_HOST: ${{ vars.SCREENSHOT_HOST }}
+          SCREENSHOT_DB: ${{ vars.SCREENSHOT_DB }}
+          SCREENSHOT_LOGIN: ${{ vars.SCREENSHOT_LOGIN }}
           SCREENSHOT_PASSWORD: ${{ secrets.SCREENSHOT_PASSWORD }}
         run: |
           bundle exec fastlane ${{ matrix.platform }} publish force_upload:true

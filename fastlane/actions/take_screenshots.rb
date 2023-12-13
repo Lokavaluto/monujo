@@ -41,6 +41,10 @@ module Fastlane
         if ! login
           UI.user_error! "Please specify a screenshot login to given screenshot host."
         end
+        UI.message "Screenshot target for #{app} #{version_name}:"
+        UI.message "  - host: #{host}"
+        UI.message "  - db: #{db}"
+        UI.message "  - login: #{login}"
 
         password = params[:password] || ENV["SCREENSHOT_PASSWORD"]
         if ! password
@@ -91,8 +95,8 @@ module Fastlane
         languages = available_languages.filter do |current_language|
           if language and not language.include? current_language
             UI.important "Skipping language #{current_language} as it was not selected for " +
-                         "screenshot.\n" +
-                         "  Selected resolutions: #{language.join(", ")}"
+                         "screenshot."
+            UI.important "  Selected resolutions: #{language.join(", ")}"
             false
           else
             true
@@ -157,12 +161,13 @@ module Fastlane
               "scaleFactor" => scale
             }
             cypress_config = {
-              "defaultCommandTimeout" => 30000,
-              "pageLoadTimeout" => 30000,
+              "defaultCommandTimeout" => 120000,
+              "pageLoadTimeout" => 120000,
               "viewportWidth" => width.to_i,
               "viewportHeight" => height.to_i,
               "video" => false,
             }
+            UI.important "Current #{config_path}:\n#{File.read(config_path)}"
 
             Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
               sh ("npx cypress run --spec tests/e2e/spec.cy.ts " +

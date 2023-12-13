@@ -94,6 +94,7 @@ lane :get_stored_build_numbers do |options|
     end
     versions = version_codes.compact
   when :ios
+    FastlaneCore::Globals.verbose = true
     app = Spaceship::ConnectAPI::App.find(
       lane_context[SharedValues::APP_ID]
     )
