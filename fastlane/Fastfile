@@ -456,12 +456,13 @@ platform :android do
       build_number = lane_context[SharedValues::VERSION_CODE].to_s
 
       if (get_stored_build_numbers options).include?(build_number)
-        UI.user_error!(
+        UI.important(
           "Current AAB with same build number (" +
           lane_context[SharedValues::VERSION_CODE].to_s +
           ") is already on store. You must build a new AAB with a " +
-          "new build number."
+          "new build number. Skipping."
         )
+        next
       end
       Supply.config[:aab] = "../#{path}"
       Supply::Uploader.new.perform_upload
@@ -692,12 +693,13 @@ platform :ios do
       build_number = lane_context[SharedValues::VERSION_CODE].to_s
 
       if (get_stored_build_numbers options).include?(build_number)
-        UI.user_error!(
+        UI.important(
           "Current IPA with same build number (" +
           lane_context[SharedValues::VERSION_CODE].to_s +
           ") is already on testflight. You must build a new IPA with a " +
-          "new build number."
+          "new build number. Skipping."
         )
+        next
       end
       upload_to_testflight(
         app_identifier: lane_context[SharedValues::APP_ID],
