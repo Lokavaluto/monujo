@@ -360,12 +360,14 @@ private_lane :_send_github do |options|
   if ! ENV["GITHUB_API_TOKEN"] and ! ENV["GITHUB_TOKEN"]
     UI.user_error! "No \$GITHUB_API_TOKEN, nor \$GITHUB_TOKEN environment variable set."
   end
+  ## filter map to contain only `*.apk` and `*.tar.bz2` files
+  apks = to_publish.select { |path, label| path.end_with? ".apk" or path.end_with? ".tar.bz2" }
   github_release(
     repository_name: repository_name,
     name: publish_metadata["title"],
     tag_name: publish_metadata["tag"],
     description: publish_metadata["changelog"],
-    upload_assets: to_publish,
+    upload_assets: apks,
     overwrite_existing_assets: options[:overwrite_existing_assets],
     is_draft: options[:draft],
     is_prerelease: publish_metadata["tag"].include?("-rc."),
