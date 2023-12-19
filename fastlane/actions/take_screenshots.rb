@@ -1,5 +1,31 @@
 require 'json'
 require 'shellwords'
+require 'mini_magick'
+
+
+def png2jpg(png_path, quality: 100)
+  jpg_path = png_path.sub(File.extname(png_path), '.jpg')
+
+  image = MiniMagick::Image.open(png_path)
+  image.format 'jpg'
+  image.write(jpg_path) { self.quality = quality }
+
+  if File.exist?(jpg_path)
+    File.delete(png_path)
+  else
+    raise "Failed to create JPG file"
+  end
+
+  return jpg_path
+end
+
+def resize_big_pngs_in_path(path)
+  Dir.glob("#{path}/*.{png}").each do |screenshot|
+    if File.extname(screenshot) == ".png" and File.size(screenshot) > 5 * 1024 * 1024
+      png2jpg(screenshot)
+    end
+  end
+end
 
 
 module Fastlane
@@ -126,7 +152,9 @@ module Fastlane
                 UI.message("  Ignoring build. If you want to overwrite it, " +
                            "provide 'force:true' as an argument.")
                 report_entry[:new] = false
-                Dir.glob("#{result_dir}/*.png").each do |screenshot|
+
+                resize_big_pngs_in_path result_dir
+                Dir.glob("#{result_dir}/*.{png,jpg}").each do |screenshot|
                   Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT][screenshot] = report_entry
                 end
                 next
@@ -184,7 +212,9 @@ module Fastlane
               result_dir)
 
             report_entry[:new] = true
-            Dir.glob("#{result_dir}/*.png").each do |screenshot|
+
+            resize_big_pngs_in_path result_dir
+            Dir.glob("#{result_dir}/*.{png,jpg}").each do |screenshot|
               Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT][screenshot] = report_entry
             end
           end

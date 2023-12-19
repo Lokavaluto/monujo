@@ -279,6 +279,7 @@ PLATFORMS
 DEPENDENCIES
   cocoapods (~> 1.10)
   fastlane
+  mini_magick
   ox (~> 2.14)
 
 BUNDLED WITH
