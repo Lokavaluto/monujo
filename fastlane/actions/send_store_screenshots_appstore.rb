@@ -15,10 +15,23 @@ module Fastlane
         tmpdir ||= Dir.mktmpdir
         dst_path = "#{tmpdir}/#{version_name}/#{app_name}/ios"
 
+        screenshots = Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT] || {}
+
+        ## keep only screenshots for current app
+        screenshots = screenshots.select { |screenshot, metadata|
+          metadata[:app] == app_name
+        }
+
+        # if there is at least one screenshot
+        if screenshots.length > 0
+          UI.message "Uploading screenshots to Apple Store"
+        else
+          UI.message "No screenshots to upload to Apple Store"
+          return
+        end
+
         UI.message "Temporary list screenshots for App Store Connect in #{dst_path}"
         devices_ios_resolution.each do |device, resolution|
-          screenshots = Actions.lane_context[SharedValues::TAKE_SCREENSHOTS_REPORT] || {}
-
           screenshots.entries.each do |screenshot, metadata|
             next if metadata[:resolution] != resolution
             symlink_path = File.join(dst_path, metadata[:language])
