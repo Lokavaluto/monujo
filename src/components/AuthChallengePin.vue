@@ -3,34 +3,32 @@
     <div class="field">
       <label class="label">{{ $gettext("PIN code") }}</label>
       <div class="control has-icons-left has-icons-right">
-        <input
-          class="input"
-          type="password"
-          v-on:keypress="onlyNumbers"
-          :placeholder="$gettext('PIN code')"
+        <PasswordField
+          :onlyNumbers="onlyNumbers"
+          :placeholder= "$gettext('PIN code')"
           pattern="[0-9]{4}"
           inputmode="numeric"
-          maxlength="4"
-          v-model="pin"
+          maxLength='4'
+          :password="pin"
+          @update:password="(x) => pin = x"
           @input="isPinValid"
           ref="creds"
-          autocomplete="new-password"
-        />
-        <span class="icon is-small is-left">
-          <fa-icon icon="key" />
-        </span>
+          />
       </div>
     </div>
-    <div v-if="this.errors.pinSize" class="help is-danger">
-      {{ this.errors.pinSize }}
-    </div>
+  <div v-if="this.errors.pinSize" class="help is-danger">
+    {{ this.errors.pinSize }}
+  </div>
   </div>
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-
+  import PasswordField from "@/components/PasswordField.vue"
   @Options({
     name: "AuthChallengePin",
+    components: {
+      PasswordField,
+    },
     props: {
       handler: Object,
     },
@@ -44,7 +42,7 @@
       }
     },
     mounted() {
-      this.setFocus()
+      this.$refs.creds.focus()
     },
     methods: {
       onlyNumbers($event: any) {
@@ -78,14 +76,6 @@
           return true
         }
         return false
-      },
-      setFocus() {
-        this.$nextTick(() => {
-          if (this.$refs.creds) {
-            this.$refs.creds.focus()
-            this.$refs.creds.select()
-          }
-        })
       },
     },
   })

@@ -11,21 +11,17 @@
     <template v-if="editMode">
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input
-            class="input"
-            type="password"
-            v-on:keypress="onlyNumbers"
+          <PasswordField
+            :password="pin"
+            @update:password="(x) => pin = x"
             :placeholder="$gettext('PIN code')"
             pattern="[0-9]{4}"
             inputmode="numeric"
-            maxlength="4"
-            v-model="pin"
-            @input="showConfirmPin"
+            maxLength="4"
             ref="pin"
-          />
-          <span class="icon is-small is-left">
-            <fa-icon icon="key" />
-          </span>
+            :onlyNumbers="onlyNumbers"
+            @input="showConfirmPin()"
+            />
         </div>
       </div>
       <div class="field" v-if="showConfPin">
@@ -41,6 +37,7 @@
             maxlength="4"
             v-model="pinConf"
             @input="isPinValid"
+            ref="confirmPin"
           />
           <span class="icon is-small is-left">
             <fa-icon icon="key" />
@@ -73,10 +70,13 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-
+  import PasswordField from "@/components/PasswordField.vue"
   @Options({
     displayName: "Code Pin",
     name: "AuthPrefPin",
+    components: {
+      PasswordField,
+    },
     props: {
       handler: Object,
     },
@@ -110,7 +110,13 @@
         }
       },
       showConfirmPin() {
-        if (this.pin.length == this.pinLength) this.showConfPin = true
+        if (this.pin.length == this.pinLength) {
+          this.$nextTick(() => {
+            this.$refs.confirmPin.focus()
+            this.$refs.confirmPin.select()
+          })
+          this.showConfPin = true
+        }
       },
       isPinValid() {
         if (this.pinConf.length !== this.pinLength) {
@@ -152,7 +158,6 @@
         this.$nextTick(() => {
           if (this.$refs.pin) {
             this.$refs.pin.focus()
-            this.$refs.pin.select()
           }
         })
       },

@@ -23,6 +23,8 @@ import {
   faUser,
   faXmark,
   faQrcode,
+  faEye,
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -50,7 +52,9 @@ library.add(
   faCircleNotch,
   faUser,
   faXmark,
-  faQrcode
+  faQrcode,
+  faEye,
+  faEyeSlash
 )
 
 export default FontAwesomeIcon

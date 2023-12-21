@@ -31,16 +31,10 @@
           </div>
           <div class="field mb-2">
             <p class="control has-icons-left">
-              <input
-                name="password"
-                v-model="password"
-                class="input"
-                type="password"
-                :placeholder="$gettext('Password')"
-              />
-              <span class="icon is-small is-left">
-                <fa-icon icon="lock" />
-              </span>
+              <PasswordField
+                :password="password"
+                @update:password="(x) => password = x"
+                />
             </p>
           </div>
           <div class="links-container mb-2">
@@ -86,8 +80,12 @@
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { e as RequestExc } from "@0k/types-request"
 
+  import PasswordField from "@/components/PasswordField.vue"
   @Options({
     name: "Login",
+    components: {
+      PasswordField,
+    },
     data() {
       return {
         email: "",

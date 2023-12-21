@@ -2,18 +2,13 @@
   <div class="field">
     <label class="label">{{ $gettext("Enter your password") }}</label>
     <div class="control has-icons-left has-icons-right mb-3">
-      <input
-        class="input"
-        type="password"
+      <PasswordField
+        :password="password"
+        @update:password="(x) => password = x"
         :placeholder="$gettext('Your password')"
-        v-model="password"
-        @input="isPasswordValid"
         ref="creds"
-        @keyup.enter="submitPassword"
+        @keyup.enter="submitPassword()"
       />
-      <span class="icon is-small is-left">
-        <fa-icon icon="key" />
-      </span>
     </div>
     <button class="button is-primary" @click="submitPassword()">
       {{ $gettext("Send") }}
@@ -22,9 +17,13 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import PasswordField from "@/components/PasswordField.vue"
 
   @Options({
     name: "AuthChallengeDirect",
+    components: {
+      PasswordField,
+    },
     props: {
       handler: Object,
       state: String,
@@ -35,19 +34,11 @@
       }
     },
     mounted() {
-      this.setFocus()
+      this.$refs.creds.focus()
     },
     methods: {
       submitPassword() {
         this.$emit("submitInput", this.password)
-      },
-      setFocus() {
-        this.$nextTick(() => {
-          if (this.$refs.creds) {
-            this.$refs.creds.focus()
-            this.$refs.creds.select()
-          }
-        })
       },
     },
   })
