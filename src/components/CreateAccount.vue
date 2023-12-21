@@ -67,8 +67,9 @@
               <div class="field">
                 <label class="label">{{ $gettext("Password") }}</label>
                 <div class="control has-icons-left has-icons-right">
-                  <input
-                    class="input"
+                  <PasswordField
+                    :password="form.accountPassword"
+                    @update:password="(x) => (form.accountPassword = x)"
                     autocomplete="new-password"
                     v-bind:class="{
                       'is-danger': hasError('accountPassword'),
@@ -76,20 +77,13 @@
                         !hasError('accountPassword') &&
                         form.accountPassword.length > 1,
                     }"
-                    type="password"
-                    :placeholder="$gettext('Password')"
-                    v-model="form.accountPassword"
                     :disabled="useSimplifiedAuth"
+                    :icon-right="
+                      hasError('accountPassword')
+                        ? 'triangle-exclamation'
+                        : null
+                    "
                   />
-                  <span class="icon is-small is-left">
-                    <fa-icon icon="key" />
-                  </span>
-                  <span
-                    v-if="hasError('accountPassword')"
-                    class="icon is-small is-right"
-                  >
-                    <fa-icon icon="triangle-exclamation" />
-                  </span>
                 </div>
                 <p v-if="hasError('accountPassword')" class="help is-danger">
                   <template v-for="err in form.errors.accountPassword">
@@ -169,10 +163,11 @@
   import { Options, Vue } from "vue-class-component"
   import { LokAPIExc } from "@/services/lokapiService"
   import AuthPref from "@/components/AuthPref.vue"
+  import PasswordField from "@/components/PasswordField.vue"
   import { mapGetters } from "vuex"
   @Options({
     name: "CreateAccount",
-    components: { AuthPref },
+    components: { AuthPref, PasswordField },
     data() {
       return {
         handler: false,

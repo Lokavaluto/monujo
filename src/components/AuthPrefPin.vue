@@ -11,21 +11,17 @@
     <template v-if="editMode">
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input
-            class="input"
-            type="password"
+          <PasswordField
+            :password="pin"
+            @update:password="(x) => (pin = x)"
             v-on:keypress="onlyNumbers"
             :placeholder="$gettext('PIN code')"
             pattern="[0-9]{4}"
             inputmode="numeric"
             maxlength="4"
-            v-model="pin"
             @input="showConfirmPin"
             ref="pin"
           />
-          <span class="icon is-small is-left">
-            <fa-icon icon="key" />
-          </span>
         </div>
       </div>
       <div class="field" v-if="showConfPin">
@@ -73,10 +69,13 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-
+  import PasswordField from "@/components/PasswordField.vue"
   @Options({
     displayName: "Code Pin",
     name: "AuthPrefPin",
+    components: {
+      PasswordField,
+    },
     props: {
       handler: Object,
     },
@@ -152,7 +151,6 @@
         this.$nextTick(() => {
           if (this.$refs.pin) {
             this.$refs.pin.focus()
-            this.$refs.pin.select()
           }
         })
       },

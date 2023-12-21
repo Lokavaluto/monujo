@@ -87,22 +87,17 @@
             </div>
             <div class="field mb-2">
               <p class="control has-icons-left">
-                <input
-                  v-model="password"
-                  class="input"
+                <PasswordField
+                  :password="password"
+                  @update:password="(x) => (password = x)"
                   v-bind:class="{
                     'is-danger': errors?.passwordStrength,
                     'is-success':
                       !errors?.passwordStrength && password.length > 0,
                   }"
                   id="password"
-                  type="password"
-                  :placeholder="$gettext('Password')"
                   @input="checkPasswordStrength(), checkConfirmPassword()"
                 />
-                <span class="icon is-small is-left">
-                  <fa-icon icon="lock" />
-                </span>
               </p>
               <p
                 v-if="errors?.passwordStrength && password !== ''"
@@ -173,8 +168,13 @@
   import { Options, Vue } from "vue-class-component"
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import PasswordUtilsFactory from "@/utils/password"
+  import PasswordField from "@/components/PasswordField.vue"
+
   @Options({
     name: "Signup",
+    components: {
+      PasswordField,
+    },
     data() {
       return {
         email: "",
