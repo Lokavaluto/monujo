@@ -215,10 +215,12 @@
             )
           }
 
-          throw e
+          console.error("Exception received upon `.signup(..)`:", e)
+          return
         } finally {
           this.$loading.hide()
         }
+        this.$loading.hide()
         this.$router.push({ name: "Login" })
         this.$msg.success(
           this.$gettext("Your account has been created successfully.")
