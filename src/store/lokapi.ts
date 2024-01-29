@@ -217,6 +217,11 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
           return unconfiguredBackends.length > 0
         }
       },
+      getBackends: (state: any) => {
+        return function (): any {
+          return state.backends
+        }
+      },
       getUnconfiguredBackends: (state: any) => {
         return function (): object {
           return Object.entries(state.backends)
