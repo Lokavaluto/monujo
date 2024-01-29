@@ -747,7 +747,7 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/TheBankAccountList.vue:85
+#: src/components/TheBankAccountList.vue:103
 msgid ""
 "The accounts listed below have been subjected to a creation request. Once "
 "the creation request is approved, these accounts will become usable."
@@ -824,8 +824,8 @@ msgid "To"
 msgstr "Vers"
 
 #: src/components/TheBankAccountList.vue:49
-msgid "to create one."
-msgstr "pour en créer un."
+msgid "to create one"
+msgstr "pour en créer un"
 
 #: src/services/QrCodeService.ts:130
 msgid "To scan QR code, allow access to camera in the app settings."
@@ -969,7 +969,8 @@ msgstr "Le compte de l'utilisateur %{ name } a été validé"
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
-#: src/components/CreateAccount.vue:284
+#: src/components/CreateAccount.vue:297
+#: src/components/TheBankAccountList.vue:234
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
 
@@ -1042,7 +1043,7 @@ msgstr "Vous n'avez pas encore de portefeuille,"
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 
-#: src/components/TheBankAccountList.vue:56
+#: src/components/TheBankAccountList.vue:74
 msgid "your accounts"
 msgstr "vos comptes"
 
@@ -1054,6 +1055,6 @@ msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 msgid "Your password"
 msgstr "Votre mot de passe"
 
-#: src/components/TheBankAccountList.vue:81
+#: src/components/TheBankAccountList.vue:99
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"

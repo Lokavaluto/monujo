@@ -41,7 +41,7 @@
           }}
         </p>
       </div>
-      <p
+      <div
         class="notification is-default notification-no-accounts"
         v-else-if="totalAccountsLoaded === 0"
       >
@@ -49,8 +49,26 @@
         <router-link to="/create-account">{{
           $gettext("click here")
         }}</router-link>
-        {{ $gettext("to create one.") }}
-      </p>
+        {{ $gettext("to create one") }}
+        <div class="is-flex mt-3">
+          Or import an existing wallet:
+          <div>
+            <input
+              type="file"
+              ref="fileInput"
+              @change="handleFileChange"
+              style="display: none"
+            />
+            <button
+              class="button is-default is-pulled-right is-rounded"
+              id="import-wallet"
+              @click="triggerFileInput"
+            >
+              Import File
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
         <h2 class="custom-card-title title-card">
           {{ $gettext("your accounts") }}
@@ -113,6 +131,14 @@
 
   let interval: any
 
+  function readFileAsText(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = () => reject(reader.error)
+      reader.readAsText(file)
+    })
+  }
   @Options({
     name: "TheBankAccountList",
     props: {
@@ -122,6 +148,11 @@
     components: {
       BankAccountItem,
       Loading,
+    },
+    data() {
+      return {
+        fileData: null,
+      }
     },
     mounted() {
       const accountsRefreshInterval = this.$config.accountsRefreshInterval || 90
@@ -154,12 +185,54 @@
       ...mapGetters(["activeVirtualAccounts", "inactiveVirtualAccounts"]),
 
       ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingError"]),
+      ...mapGetters(["getUnconfiguredBackends"]),
+    },
+    watch: {
+      getUnconfiguredBackends(newval, oldval): void {
+        if (newval.length === 1) {
+          this.form.accountBackend = newval[0]
+        }
+      },
     },
     methods: {
       refreshBalanceAndTransactions() {
         this.$lokapi.flushBackendCaches()
         this.$store.dispatch("fetchAccounts")
         this.$emit("refreshTransaction")
+      },
+      triggerFileInput() {
+        this.$refs.fileInput.click()
+      },
+      async handleFileChange(event: any) {
+        const file = event.target.files[0]
+        if (!file) {
+          console.error("No file selected")
+          return
+        }
+
+        try {
+          const fileContent = await readFileAsText(file)
+          if (typeof fileContent !== "string") return
+          const dataObject = JSON.parse(fileContent)
+          this.fileData = dataObject
+        } catch (error) {
+          console.error("Error processing the file:", error)
+        }
+        await this.registerWallet()
+      },
+      async registerWallet() {
+        try {
+          await this.$store.dispatch("registerWallet", [
+            this.fileData,
+            this.getUnconfiguredBackends(),
+          ])
+        } catch (err: any) {
+          console.error(
+            "Something went wrong on createUserAccount request",
+            err
+          )
+          this.$msg.error(this.$gettext("Wallet already created"))
+        }
       },
     },
   })
@@ -180,5 +253,9 @@
   }
   .active-refresh-button .icon {
     color: $top-menu-link-color;
+  }
+  #import-wallet {
+    position: relative;
+    bottom: 0.4em;
   }
 </style>

@@ -81,6 +81,17 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         const errors = await backend.isPasswordStrongEnough(password)
         return passwordUtils.translatePwdFieldErrors(errors)
       },
+      async registerWallet(
+        { commit, state, dispatch }: any,
+        [wallet, backendId]: Array<string>
+      ) {
+        const backend = state.backends[backendId]
+        const userAccount = await backend.registerWallet(wallet)
+        lokApiService.clearBackendCache()
+        dispatch("setBackends")
+        dispatch("fetchAccounts")
+        return userAccount
+      },
       async createUserAccount(
         { commit, state, dispatch }: any,
         [password, backendId]: Array<string>
