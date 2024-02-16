@@ -132,7 +132,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le transfert d'argent. Veuillez "
 "nous excuser pour la gêne occasionnée."
 
-#: src/views/admin/PendingAccounts.vue:146
+#: src/views/admin/PendingAccounts.vue:147
 msgid ""
 "An unexpected issue occurred while approving the wallet account creation of "
 "user %{ name }"
@@ -241,7 +241,7 @@ msgstr ""
 "Choisissez le mot de passe de votre portefeuille. Il est différent de celui "
 "de votre compte utilisateur et ne concerne que votre portefeuille."
 
-#: src/components/TheBankAccountList.vue:50
+#: src/components/TheBankAccountList.vue:56
 msgid "click here"
 msgstr "cliquez ici"
 
@@ -352,9 +352,9 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 
-#: src/components/TheBankAccountList.vue:216
+#: src/components/TheBankAccountList.vue:225
 msgid "Failed to read the file contents"
-msgstr ""
+msgstr "Le contenu du fichier n'a pas pu être lu"
 
 #: src/views/Signup.vue:49
 msgid "Firstname"
@@ -387,8 +387,8 @@ msgstr "Les codes PINs entrés ne sont pas identiques"
 msgid "Help"
 msgstr "Aide"
 
-#: src/components/TheBankAccountList.vue:58
-#: src/components/TheBankAccountList.vue:63
+#: src/components/TheBankAccountList.vue:64
+#: src/components/TheBankAccountList.vue:68
 msgid "Import"
 msgstr "Importer"
 
@@ -504,7 +504,7 @@ msgstr "Ok"
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
-#: src/components/TheBankAccountList.vue:55
+#: src/components/TheBankAccountList.vue:61
 msgid "Or import an existing wallet"
 msgstr "Ou importer un fichier portefeuille"
 
@@ -602,7 +602,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:279
-#: src/components/TheBankAccountList.vue:235
+#: src/components/TheBankAccountList.vue:248
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -763,7 +763,7 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/TheBankAccountList.vue:103
+#: src/components/TheBankAccountList.vue:108
 msgid ""
 "The accounts listed below have been subjected to a creation request. Once "
 "the creation request is approved, these accounts will become usable."
@@ -839,7 +839,7 @@ msgstr "à"
 msgid "To"
 msgstr "Vers"
 
-#: src/components/TheBankAccountList.vue:49
+#: src/components/TheBankAccountList.vue:55
 msgid "to create one"
 msgstr "pour en créer un"
 
@@ -939,8 +939,7 @@ msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:227
-#, fuzzy
+#: src/components/TheBankAccountList.vue:236
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
@@ -958,8 +957,7 @@ msgstr ""
 "serveur distant."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:222
-#, fuzzy
+#: src/components/TheBankAccountList.vue:231
 msgid "Unexpected type of file"
 msgstr "Erreure Inattendue"
 
@@ -989,7 +987,7 @@ msgstr "Spécifier la langue"
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/views/admin/PendingAccounts.vue:159
+#: src/views/admin/PendingAccounts.vue:158
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
@@ -998,7 +996,6 @@ msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
 #: src/components/CreateAccount.vue:284
-#: src/components/TheBankAccountList.vue:242
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
 
@@ -1006,8 +1003,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/TheBankAccountList.vue:233
-#, fuzzy
+#: src/components/TheBankAccountList.vue:246
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
@@ -1068,7 +1064,7 @@ msgstr ""
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
-#: src/components/TheBankAccountList.vue:45
+#: src/components/TheBankAccountList.vue:51
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
 
@@ -1076,7 +1072,7 @@ msgstr "Vous n'avez pas encore de portefeuille,"
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 
-#: src/components/TheBankAccountList.vue:74
+#: src/components/TheBankAccountList.vue:79
 msgid "your accounts"
 msgstr "vos comptes"
 
@@ -1088,6 +1084,6 @@ msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 msgid "Your password"
 msgstr "Votre mot de passe"
 
-#: src/components/TheBankAccountList.vue:99
+#: src/components/TheBankAccountList.vue:104
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
