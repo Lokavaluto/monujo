@@ -109,6 +109,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import Loading from "vue-loading-overlay"
+  import { UIError } from "@/exception"
 
   @Options({
     name: "PendingAccounts",
@@ -142,16 +143,14 @@
             return
           }
 
-          this.$msg.error(
+          throw new UIError(
             this.$gettext(
               "An unexpected issue occurred while approving " +
                 "the wallet account creation of user %{ name }",
               {
                 name: account.name,
               }
-            )
-          )
-          throw err
+          ), err)
         }
         this.isWaitingForValidation = false
         await this.updatePendingAccount()

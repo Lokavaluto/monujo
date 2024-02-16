@@ -41,6 +41,12 @@
           }}
         </p>
       </div>
+      <loading
+         v-if="isWalletUploading"
+         v-model:active="isWalletUploading"
+         :can-cancel="false"
+         :is-full-page="false"
+      />
       <div
         class="notification is-default notification-no-accounts"
         v-else-if="totalAccountsLoaded === 0"
@@ -145,6 +151,11 @@
       loaded: Boolean,
       account: Object,
     },
+    data() {
+      return {
+        isWalletUploading: false
+      }
+    },
     components: {
       BankAccountItem,
       Loading,
@@ -224,6 +235,7 @@
         } catch (err) {
           throw new UIError(this.$gettext("Unexpected format of file"), err)
         }
+        this.isWalletUploading = true
         try {
           await backend.registerWallet(fileData)
         } catch (err: any) {
@@ -236,6 +248,8 @@
               this.$gettext("Please try again or contact your administrator"),
             err
           )
+        } finally {
+          this.isWalletUploading = false
         }
         this.$lokapi.clearBackendCache()
         this.$store.dispatch("setBackends")
