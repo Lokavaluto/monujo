@@ -22,7 +22,7 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
-#: src/components/MoneyTransferModal.vue:458
+#: src/components/MoneyTransferModal.vue:459
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -51,7 +51,7 @@ msgstr "Demandes de comptes"
 msgid "Accounts waiting for approval"
 msgstr "Comptes en attente de validation"
 
-#: src/components/MoneyTransferModal.vue:443
+#: src/components/MoneyTransferModal.vue:444
 msgid "Add"
 msgstr "Ajouter"
 
@@ -59,7 +59,7 @@ msgstr "Ajouter"
 msgid "Add a memo (optional)"
 msgstr "Ajoutez un texte (optionnel)"
 
-#: src/components/MoneyTransferModal.vue:437
+#: src/components/MoneyTransferModal.vue:438
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -87,13 +87,21 @@ msgstr "Avez-vous déjà créé un compte ?"
 msgid "Amount"
 msgstr "Montant"
 
-#: src/components/MoneyTransferModal.vue:371
+#: src/components/MoneyTransferModal.vue:372
 msgid "Amount to send must be greater than 0"
 msgstr "Le montant à transférer doit être un nombre positif"
 
-#: src/components/MoneyTransferModal.vue:341
+#: src/components/MoneyTransferModal.vue:342
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
+
+#: src/services/lokapiService.ts:190
+msgid "An error occurred while adding to favorites."
+msgstr "Une erreur est survenue lors de la mise en favoris."
+
+#: src/services/lokapiService.ts:194
+msgid "An error occurred while removing from favorites."
+msgstr "Une erreur est survenue lors de la suppression du favori."
 
 #: src/components/ConfirmPaymentModal.vue:277
 msgid ""
@@ -109,7 +117,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/MoneyTransferModal.vue:278
+#: src/components/MoneyTransferModal.vue:279
 #: src/components/TransactionListModal.vue:327
 msgid "An unexpected issue occured while downloading recipient list"
 msgstr ""
@@ -124,7 +132,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "transactions"
 
-#: src/components/MoneyTransferModal.vue:407
+#: src/components/MoneyTransferModal.vue:408
 msgid ""
 "An unexpected issue occurred during the money transfer. We are sorry for the "
 "inconvenience."
@@ -302,7 +310,7 @@ msgid_plural "digits"
 msgstr[0] "chiffre"
 msgstr[1] "chiffres"
 
-#: src/components/MoneyTransferModal.vue:438
+#: src/components/MoneyTransferModal.vue:439
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -352,7 +360,7 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 
-#: src/components/TheBankAccountList.vue:225
+#: src/components/TheBankAccountList.vue:230
 msgid "Failed to read the file contents"
 msgstr "Le contenu du fichier n'a pas pu être lu"
 
@@ -400,7 +408,7 @@ msgstr "Identifiant ou mot de passe incorrect"
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
-#: src/components/MoneyTransferModal.vue:318
+#: src/components/MoneyTransferModal.vue:319
 msgid "Invalid QR code content format"
 msgstr "Format du QR code invalide"
 
@@ -412,7 +420,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:444
+#: src/components/MoneyTransferModal.vue:445
 msgid "Later"
 msgstr "Plus tard"
 
@@ -602,7 +610,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:279
-#: src/components/TheBankAccountList.vue:248
+#: src/components/TheBankAccountList.vue:253 src/services/lokapiService.ts:200
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -755,7 +763,7 @@ msgstr "Source"
 msgid "Target"
 msgstr "Destination"
 
-#: src/components/MoneyTransferModal.vue:396
+#: src/components/MoneyTransferModal.vue:397
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
@@ -921,7 +929,7 @@ msgstr "Opération traitée"
 msgid "Transaction sent"
 msgstr "Opération envoyée"
 
-#: src/components/MoneyTransferModal.vue:389
+#: src/components/MoneyTransferModal.vue:390
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -929,7 +937,7 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/components/MoneyTransferModal.vue:330
+#: src/components/MoneyTransferModal.vue:331
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le QR code."
 
@@ -939,7 +947,7 @@ msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:236
+#: src/components/TheBankAccountList.vue:241
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
@@ -957,7 +965,7 @@ msgstr ""
 "serveur distant."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:231
+#: src/components/TheBankAccountList.vue:236
 msgid "Unexpected type of file"
 msgstr "Erreure Inattendue"
 
@@ -987,7 +995,7 @@ msgstr "Spécifier la langue"
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/views/admin/PendingAccounts.vue:158
+#: src/views/admin/PendingAccounts.vue:160
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
@@ -1003,7 +1011,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/TheBankAccountList.vue:246
+#: src/components/TheBankAccountList.vue:251
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
@@ -1039,11 +1047,11 @@ msgstr ""
 "Vous avez déjà une demande de rechargement en attente. Veuillez la payer ou "
 "la retirer avant de poursuivre"
 
-#: src/components/MoneyTransferModal.vue:325
+#: src/components/MoneyTransferModal.vue:326
 msgid "You can not transfer money to your own account"
 msgstr "Vous ne pouvez pas envoyer de l'argent vers votre propre compte."
 
-#: src/components/MoneyTransferModal.vue:412
+#: src/components/MoneyTransferModal.vue:413
 msgid ""
 "You can try again. If the issue persists, please contact your administrator."
 msgstr ""
@@ -1060,7 +1068,7 @@ msgstr ""
 "Vous pouvez essayer de recharger la page, ou contacter votre administrateur "
 "si l'erreur persiste."
 
-#: src/components/MoneyTransferModal.vue:398
+#: src/components/MoneyTransferModal.vue:399
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 

@@ -149,13 +149,6 @@ export class LokAPI extends LokAPIBrowserAbstract {
       .map((accountWithrequiresUnlock: any) => accountWithrequiresUnlock[0])
   }
 
-  public async *searchRecipients(value: string): AsyncGenerator<t.IRecipient> {
-    const recipients = super.searchRecipients(value)
-    for await (const recipient of recipients) {
-      yield makeUIProxyRecipient(recipient)
-    }
-  }
-
   // XXXvlab: this is less than ideal way to handle the cache
   // clearance. Waiting for a generalized cache management
   clearBackendCache() {
@@ -184,7 +177,7 @@ export function replaceOrInsertElt<T>(
   array.splice(idx, replace, elt)
 }
 
-function makeUIProxyRecipient(recipient: t.IRecipient) {
+function makeUIProxyRecipient(recipient: t.IRecipient, $gettext: any) {
   return new Proxy(recipient, {
     get: (target, prop, receiver) => {
       if (prop == "toggleFavorite") {
@@ -194,16 +187,35 @@ function makeUIProxyRecipient(recipient: t.IRecipient) {
           } catch (e) {
             let errorMessage = ""
             if (!target.is_favorite)
-              errorMessage =
-                "Une erreur est survenue lors de la mise en favoris,"
+              errorMessage = $gettext(
+                "An error occurred while adding to favorites."
+              )
             else
-              errorMessage =
-                "Une erreur est survenue lors de la suppression du favori,"
+              errorMessage = $gettext(
+                "An error occurred while removing from favorites."
+              )
             throw new UIError(
               errorMessage +
-                " veuillez ré-essayer ou contacter votre administrateur",
+                " " +
+                $gettext("Please try again or contact your administrator"),
               e
             )
+          }
+        }
+      }
+      return Reflect.get(target, prop, receiver)
+    },
+  })
+}
+
+export function makeUIProxyBackend(backend: t.IBackend, $gettext: any) {
+  return new Proxy(backend, {
+    get: (target, prop, receiver) => {
+      if (prop === "searchRecipients") {
+        return async function* (value: string): AsyncGenerator<t.IRecipient> {
+          const recipients = backend.searchRecipients(value)
+          for await (const recipient of recipients) {
+            yield makeUIProxyRecipient(recipient, $gettext)
           }
         }
       }

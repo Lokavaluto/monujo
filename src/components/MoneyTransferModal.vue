@@ -226,6 +226,7 @@
   import { App as CapacitorApp } from "@capacitor/app"
   import { Camera, CameraResultType } from "@capacitor/camera"
   import { UIError } from "../exception"
+  import { makeUIProxyBackend } from "@/services/lokapiService"
 
   import UseBatchLoading from "@/services/UseBatchLoading"
 
@@ -262,7 +263,7 @@
       }
       this.account = account
       // No need to declare in data, no live mechanism required here
-      this.selectedBackend = account.parent
+      this.selectedBackend = makeUIProxyBackend(account.parent, this.$gettext)
 
       this.recipientBatchLoader = UseBatchLoading({
         genFactory: this.selectedBackend.searchRecipients.bind(
