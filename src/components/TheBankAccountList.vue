@@ -42,10 +42,10 @@
         </p>
       </div>
       <loading
-         v-if="isWalletUploading"
-         v-model:active="isWalletUploading"
-         :can-cancel="false"
-         :is-full-page="false"
+        v-if="isWalletUploading"
+        v-model:active="isWalletUploading"
+        :can-cancel="false"
+        :is-full-page="false"
       />
       <div
         class="notification is-default notification-no-accounts"
@@ -153,7 +153,7 @@
     },
     data() {
       return {
-        isWalletUploading: false
+        isWalletUploading: false,
       }
     },
     components: {
@@ -188,7 +188,12 @@
         }
         return accounts
       },
-      ...mapGetters(["activeVirtualAccounts", "inactiveVirtualAccounts", "getUnconfiguredBackends", "getBackends"]),
+      ...mapGetters([
+        "activeVirtualAccounts",
+        "inactiveVirtualAccounts",
+        "getUnconfiguredBackends",
+        "getBackends",
+      ]),
       ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingError"]),
     },
     watch: {
@@ -204,7 +209,7 @@
         this.$store.dispatch("fetchAccounts")
         this.$emit("refreshTransaction")
       },
-      triggerFileInput(event:any) {
+      triggerFileInput(event: any) {
         event.target.parentElement.querySelector("input[type=file]").click()
       },
       async registerWalletHandle(event: any, backendId: any) {

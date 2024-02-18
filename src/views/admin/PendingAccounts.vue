@@ -150,7 +150,9 @@
               {
                 name: account.name,
               }
-          ), err)
+            ),
+            err
+          )
         }
         this.isWaitingForValidation = false
         await this.updatePendingAccount()
