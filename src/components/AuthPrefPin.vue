@@ -37,6 +37,7 @@
             maxlength="4"
             v-model="pinConf"
             @input="isPinValid"
+            ref="confirmPin"
           />
           <span class="icon is-small is-left">
             <fa-icon icon="key" />
@@ -109,7 +110,13 @@
         }
       },
       showConfirmPin() {
-        if (this.pin.length == this.pinLength) this.showConfPin = true
+        if (this.pin.length == this.pinLength) {
+          this.$nextTick(() => {
+            this.$refs.confirmPin.focus()
+            this.$refs.confirmPin.select()
+          })
+          this.showConfPin = true
+        }
       },
       isPinValid() {
         if (this.pinConf.length !== this.pinLength) {
