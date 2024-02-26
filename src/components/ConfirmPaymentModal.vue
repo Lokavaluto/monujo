@@ -27,7 +27,7 @@
           >
             {{
               $gettext(
-                "You already have a pending top-up. Please either pay or withdraw it before proceeding"
+                "You already have a pending top-up. Please either pay or delete it before proceeding"
               )
             }}
           </p>
@@ -98,7 +98,7 @@
                     "This top-up request is waiting for an administrator of your local currency to validate it"
                   )
                 : $gettext(
-                    "This top-up request is waiting for you to pay it or withdraw it"
+                    "This top-up request is waiting for you to pay it or delete it"
                   )
             }}
           </h2>
@@ -144,7 +144,7 @@
             id="delete"
             @click="cancelTopUpRequest"
           >
-            <span>{{ $gettext("Withdraw") }}</span>
+            <span>{{ $gettext("Delete") }}</span>
           </button>
           <button
             class="button custom-button-modal has-text-weight-medium"
@@ -275,7 +275,7 @@
           this.$loading.hide()
           throw new UIError(
             this.$gettext(
-              "An error occurred while withdrawing top-up request, please try again or contact an administrator"
+              "An error occurred while deleting top-up request, please try again or contact an administrator"
             ),
             err
           )
@@ -283,7 +283,7 @@
         await this.closeAndRefresh()
         this.$loading.hide()
         this.$msg.success(
-          this.$gettext("The top-up request has been successfully withdrawn")
+          this.$gettext("The top-up request has been successfully deleted")
         )
       },
       async closeAndRefresh(): Promise<void> {
