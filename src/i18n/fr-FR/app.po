@@ -317,6 +317,10 @@ msgstr "Date"
 msgid "day"
 msgstr "jour"
 
+#: src/components/ConfirmPaymentModal.vue:147
+msgid "Delete"
+msgstr "Supprimer"
+
 #: src/components/TransactionListModal.vue:430
 msgid "Description"
 msgstr "Description"
@@ -853,9 +857,9 @@ msgstr ""
 #: src/components/ConfirmPaymentModal.vue:81
 #: src/components/ConfirmPaymentModal.vue:85
 #: src/components/ConfirmPaymentModal.vue:97
-msgid "This top-up request is waiting for you to pay it or withdraw it"
+msgid "This top-up request is waiting for you to pay it or delete it"
 msgstr ""
-"Cette demande de recharge est en attente d'être payée ou retirée par vous"
+"Cette demande de recharge est en attente d'être payée ou supprimée par vous"
 
 #: src/components/ConfirmPaymentModal.vue:108
 #: src/components/ConfirmPaymentModal.vue:88
@@ -1046,10 +1050,6 @@ msgstr "Création de compte interrompue inopinément."
 msgid "week"
 msgstr "semaine"
 
-#: src/components/ConfirmPaymentModal.vue:147
-msgid "Withdraw"
-msgstr "Retirer"
-
 #: src/views/Login.vue:196
 msgid ""
 "Would you like to use your device's biometric (fingerprint, face "
@@ -1068,11 +1068,11 @@ msgstr "Oui"
 
 #: src/components/ConfirmPaymentModal.vue:26
 msgid ""
-"You already have a pending top-up. Please either pay or withdraw it before "
+"You already have a pending top-up. Please either pay or delete it before "
 "proceeding"
 msgstr ""
 "Vous avez déjà une demande de rechargement en attente. Veuillez la payer ou "
-"la retirer avant de poursuivre"
+"la supprimer avant de poursuivre"
 
 #: src/components/MoneyTransferModal.vue:326
 msgid "You can not transfer money to your own account"
@@ -1118,6 +1118,9 @@ msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 #: src/components/TheBankAccountList.vue:104
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
+
+#~ msgid "Withdraw"
+#~ msgstr "Retirer"
 
 #~ msgid "Your password"
 #~ msgstr "Votre mot de passe"

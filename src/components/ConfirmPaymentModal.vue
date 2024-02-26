@@ -27,7 +27,7 @@
           >
             {{
               $gettext(
-                "You already have a pending top-up. Please either pay or withdraw it before proceeding"
+                "You already have a pending top-up. Please either pay or delete it before proceeding"
               )
             }}
           </p>
@@ -98,7 +98,7 @@
                     "This top-up request is waiting for an administrator of your local currency to validate it"
                   )
                 : $gettext(
-                    "This top-up request is waiting for you to pay it or withdraw it"
+                    "This top-up request is waiting for you to pay it or delete it"
                   )
             }}
           </h2>
@@ -144,7 +144,7 @@
             id="delete"
             @click="cancelTopUpRequest"
           >
-            <span>{{ $gettext("Withdraw") }}</span>
+            <span>{{ $gettext("Delete") }}</span>
           </button>
           <button
             class="button custom-button-modal has-text-weight-medium"
