@@ -6,7 +6,7 @@
     :is-full-page="false"
   />
   <div class="section-card" v-if="pendingUnpaidTopUpList.length">
-    <h2 class="custom-card-title title-card">
+    <h2 class="custom-card-title">
       {{ $gettext("Unpaid top-up requests") }}
     </h2>
     <p class="top-up-info">
@@ -57,7 +57,7 @@
       TransactionItem,
     },
     props: {
-      refreshToggle: Boolean,
+      autoRefresh: Boolean,
       account: Object,
     },
     data(this: any) {
@@ -108,7 +108,7 @@
       },
     },
     watch: {
-      refreshToggle: async function () {
+      autoRefresh: async function () {
         this.fetchTopUpList()
       },
       isPendingTopUpLoading(newVal: boolean) {
