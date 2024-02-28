@@ -37,7 +37,7 @@ Cypress.Commands.add("requestButton", () => {
 })
 
 Cypress.Commands.add("topUpButton", () => {
-  return cy.get(".is-top-up")
+  return cy.get("button.is-top-up")
 })
 
 Cypress.Commands.add("menu", () => {
@@ -174,6 +174,7 @@ Cypress.Commands.add("closeModal", () => {
   cy.modal().within(() => {
     cy.get(".modal-card-head").find(".delete").click()
   })
+  cy.modal().should("not.exist")
 })
 Cypress.Commands.add("isSignupVisible", () => {
   cy.get(".links-container")
@@ -211,6 +212,19 @@ Cypress.Commands.add("getButtonSubmit", () => {
 })
 Cypress.Commands.add("getSignupError", () => {
   return cy.get(".is-danger")
+})
+
+Cypress.Commands.add("topUpModalWarningText", () => {
+  return cy.get(".modal-card-body > .body-content > .is-danger")
+})
+Cypress.Commands.add("topUpModalButtons", () => {
+  cy.get(".modal-card-foot").find("button").should("have.length", 3)
+})
+Cypress.Commands.add("getPendingTopUpList", () => {
+  return cy.get("#pending-top-up-list")
+})
+Cypress.Commands.add("getPendingTopUpElement", () => {
+  return cy.getPendingTopUpList().find(".pending-top-up-item")
 })
 
 declare global {
@@ -262,6 +276,10 @@ declare global {
       getConfirmPasswordInput(): Chainable<JQuery<HTMLElement>>
       getButtonSubmit(): Chainable<JQuery<HTMLElement>>
       getSignupError(): Chainable<JQuery<HTMLElement>>
+      topUpModalWarningText(): Chainable<JQuery<HTMLElement>>
+      topUpModalButtons(): boolean | void
+      getPendingTopUpList(): Chainable<JQuery<HTMLElement>>
+      getPendingTopUpElement(): Chainable<JQuery<HTMLElement>>
     }
   }
 }

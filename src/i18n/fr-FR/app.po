@@ -210,7 +210,7 @@ msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
-#: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:89
+#: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:90
 #: src/components/TheDashboardFooter.vue:102
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
@@ -801,7 +801,7 @@ msgstr ""
 "Une fois la demande de création approuvée, ces comptes deviendront "
 "utilisables."
 
-#: src/components/PendingTopUp.vue:30
+#: src/components/PendingTopUp.vue:31
 msgid ""
 "The following top up have been paid and are waiting for an administrator of "
 "your local currency to validate them."
@@ -901,7 +901,7 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/components/PendingTopUp.vue:26
+#: src/components/PendingTopUp.vue:27
 msgid "Top up waiting admin validation"
 msgstr "Rechargement en attente de validation de la part d'un administrateur"
 
@@ -1118,6 +1118,3 @@ msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 #: src/components/TheBankAccountList.vue:104
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
-
-#~ msgid "Your password"
-#~ msgstr "Votre mot de passe"

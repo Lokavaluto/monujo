@@ -81,18 +81,56 @@ describe("General processes when logged in", () => {
     cy.accountsPane().within(() => {
       cy.contains(".account-backend", "comchain").parents(".account").click()
     })
-    cy.topUpButton().should("be.visible")
-    cy.topUpButton().click()
-    if (Cypress.env("screenshot")) cy.takeScreenshot("top-up")
+    // remove pending top-up if exist
+    cy.wait(2000) // waiting for top-up list to load
+    cy.get('body').then((body) => {
+      if (body.find('#pending-top-up-list').length > 0) {
+        cy.get('#pending-top-up-list')
+          .should('be.visible')
+          .then(() => {
+            cy.get('.pending-top-up-item').first().click()
+            cy.get("footer > div > #delete").click()
+            cy.get("#pending-top-up-list").should("not.exist")
+          })
+      }
+    })
 
-    // top-up empty or invalid amount
+    cy.topUpButton().should("be.visible")
+    
+    // click top-up button
+    cy.topUpButton().click()
     cy.amountInput().should("be.visible")
+    
+    // enter invalid amount
     cy.amountInput().type("test invalid amount")
     cy.topUpNextButton().should("be.disabled")
+    
+    // enter valid amount
+    cy.amountInput().type("30")
+    if (Cypress.env("screenshot")) cy.takeScreenshot("top-up")
+    cy.topUpNextButton().click()
 
-    // close top-up modal
+    // check confirmation modal
+    // by clicking on the top-up element
+    cy.get("header.topup").should("be.visible")
     cy.closeModal()
-    cy.modal().should("not.exist")
+
+    // by clicking on the top-up button in the footer
+    cy.topUpButton().click()
+    cy.topUpModalWarningText().should("be.visible")
+    cy.topUpModalButtons()
+    cy.closeModal()
+   
+    // back to dashboard and check pending top-up
+    cy.getPendingTopUpList().should("be.visible")
+    cy.getPendingTopUpElement().click()
+    
+    // withdraw top-up
+    cy.get("footer > div > #delete").click()
+
+    // check pending top-up empty
+    cy.get("#pending-top-up-list").should("not.exist")
+    
   })
 })
 

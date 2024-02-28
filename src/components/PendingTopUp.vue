@@ -5,7 +5,7 @@
     :can-cancel="false"
     :is-full-page="false"
   />
-  <div class="section-card" v-if="pendingUnpaidTopUpList.length">
+  <div class="section-card" id="pending-top-up-list" v-if="pendingUnpaidTopUpList.length">
     <h2 class="custom-card-title title-card">
       {{ $gettext("Unpaid top-up requests") }}
     </h2>
@@ -14,9 +14,10 @@
         $gettext("The following top up requests needs to be paid or canceled")
       }}
     </p>
-    <TransactionItem
+  <TransactionItem
       v-for="topup in pendingUnpaidTopUpList"
       :key="topup"
+      class="pending-top-up-item"
       :transaction="topup"
       @click="openModal(topup)"
     />
