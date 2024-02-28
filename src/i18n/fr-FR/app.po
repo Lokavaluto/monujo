@@ -107,7 +107,9 @@ msgstr "Une erreur est survenue lors de la mise en favoris."
 msgid ""
 "An error occurred while deleting top-up request, please try again or contact "
 "an administrator"
-msgstr "Une erreur s'est produite lors de la suppression de la demande de rechargement, veuillez ré-éssayer ou contacter votre administrateur"
+msgstr ""
+"Une erreur s'est produite lors de la suppression de la demande de "
+"rechargement, veuillez ré-éssayer ou contacter votre administrateur"
 
 #: src/services/lokapiService.ts:194
 msgid "An error occurred while removing from favorites."
@@ -208,7 +210,7 @@ msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
-#: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:89
+#: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:95
 #: src/components/TheDashboardFooter.vue:102
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
@@ -803,7 +805,7 @@ msgstr ""
 "Une fois la demande de création approuvée, ces comptes deviendront "
 "utilisables."
 
-#: src/components/PendingTopUp.vue:30
+#: src/components/PendingTopUp.vue:36
 msgid ""
 "The following top up have been paid and are waiting for an administrator of "
 "your local currency to validate them."
@@ -811,7 +813,7 @@ msgstr ""
 "Les rechargements suivants ont été payés et attendent qu'un administrateur "
 "de votre monnaie locale les valide."
 
-#: src/components/PendingTopUp.vue:14
+#: src/components/PendingTopUp.vue:19
 msgid "The following top up requests needs to be paid or canceled"
 msgstr "Les demandes de rechargement suivantes doivent être payées ou annulées"
 
@@ -903,7 +905,7 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/components/PendingTopUp.vue:26
+#: src/components/PendingTopUp.vue:32
 msgid "Top up waiting admin validation"
 msgstr "Rechargement en attente de validation de la part d'un administrateur"
 
@@ -999,7 +1001,7 @@ msgstr ""
 "Utilisateur ou e-mail inconnu. Veuillez vous assurer de fournir un nom "
 "d'utilisateur ou une adresse e-mail valide."
 
-#: src/components/PendingTopUp.vue:10
+#: src/components/PendingTopUp.vue:15
 msgid "Unpaid top-up requests"
 msgstr "Demandes de crédit non payées"
 
