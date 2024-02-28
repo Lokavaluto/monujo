@@ -2,7 +2,7 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-card">
-      <header class="modal-card-head">
+      <header class="modal-card-head" :class="$modal.args?.value[0].type">
         <p class="modal-card-title is-title-shrink">
           {{
             {
