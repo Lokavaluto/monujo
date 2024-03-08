@@ -70,20 +70,6 @@
   import "vue-loading-overlay/dist/css/index.css"
   import { mapModuleState } from "@/utils/vuex"
 
-  let timeout: any
-
-  function clearRefresh() {
-    if (timeout) {
-      clearTimeout(timeout)
-      timeout = null
-    }
-  }
-
-  function setupRefresh(fn: () => void, ms: number) {
-    clearRefresh()
-    timeout = setTimeout(fn, ms)
-  }
-
   @Options({
     name: "TransactionListRecent",
     props: {
@@ -102,25 +88,11 @@
       }
     },
     mounted() {
-      this.setRefreshIfNeeded()
       this.resetTransactionsGen()
-    },
-    unmounted() {
-      clearRefresh()
     },
     computed: {},
 
     methods: {
-      setRefreshIfNeeded() {
-        const transactionsRefreshInterval =
-          this.$config.transactionsRefreshInterval || 90
-        if (transactionsRefreshInterval != -1) {
-          setupRefresh(
-            this.resetTransactionsGen.bind(this.resetTransactionsGen),
-            transactionsRefreshInterval * 1000
-          )
-        }
-      },
       async getNextFilteredTransactions() {
         if (!this.transactionGen) return
         this.isTransactionsLoading = true
@@ -158,7 +130,6 @@
           this.transactionGen = this.account._obj.parent.getTransactions()
         }
         this.$nextTick(() => this.getNextFilteredTransactions())
-        this.setRefreshIfNeeded()
       },
     },
     watch: {
