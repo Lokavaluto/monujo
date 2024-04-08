@@ -7,7 +7,7 @@ class ToastService {
   private show(
     message: string,
     type: string,
-    duration: boolean | number = this.duration
+    duration: false | number = this.duration
   ) {
     const toaster = createToaster({
       type,
@@ -16,20 +16,17 @@ class ToastService {
     })
     toaster.show(message)
   }
-  public error_Persistant(message: string) {
-    this.show(message, "error", false)
+  public error(message: string, duration?: false | number) {
+    this.show(message, "error", duration)
   }
-  public error(message: string) {
-    this.show(message, "error")
+  public warning(message: string, duration?: false | number) {
+    this.show(message, "warning", duration)
   }
-  public warning(message: string) {
-    this.show(message, "warning")
+  public success(message: string, duration?: false | number) {
+    this.show(message, "success", duration)
   }
-  public success(message: string) {
-    this.show(message, "success")
-  }
-  public info(message: string) {
-    this.show(message, "info")
+  public info(message: string, duration?: false | number) {
+    this.show(message, "info", duration)
   }
 }
 

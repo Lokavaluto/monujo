@@ -420,13 +420,33 @@
 
         let dateBegin = Date.now()
         let payment
+        this.$store.commit("setRequestLoadingAfterCreds", true)
         try {
-          this.$store.commit("setRequestLoadingAfterCreds", true)
           payment = await this.selectedRecipient.transfer(
             this.amount.toString(),
             this.message
           )
         } catch (err: any) {
+          if (err instanceof LokapiExc.PaymentConfirmationMissing) {
+            this.$modal.args.value[0].refreshTransaction()
+            this.close()
+            this.$msg.warning(
+              this.$gettext(
+                "The transaction was sent but no confirmation was received. "
+              ) +
+                "<br/>" +
+                this.$gettext(
+                  "Please make sure to double check in the transaction list " +
+                    "if this transaction appears in the near future. "
+                ) +
+                "<br/>" +
+                this.$gettext(
+                  "Contact your administrator if it fails to show up."
+                ),
+              false
+            )
+            return
+          }
           if (err instanceof LokapiExc.InsufficientBalance) {
             this.errors.balance = this.$gettext(
               "Transaction was refused due to insufficient balance"
