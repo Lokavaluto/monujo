@@ -377,6 +377,47 @@
         }
         // This to ensure we are left with 2 decimals only
         this.amount = parseFloat(this.amount).toFixed(2)
+
+        if (this.ownSelectedAccount._obj.getGlobalBalance) {
+          let realBal
+          try {
+            realBal = await this.ownSelectedAccount._obj.getGlobalBalance(
+              "latest"
+            )
+          } catch (err) {
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected issue occurred while checking available funds. " +
+                  "The transaction was not sent. We are sorry for the inconvenience."
+              ) +
+                "<br/>" +
+                this.$gettext(
+                  "You can try again. If the issue persists, " +
+                    "please contact your administrator."
+                )
+            )
+            console.error("getGlobalBalance failed:", err)
+            this.transferOngoing = false
+            return
+          }
+          if (this.amount > realBal) {
+            this.errors.balance = this.$gettext(
+              "The last transactions were not yet all processed. " +
+                "To ensure that this transaction can be sent, you need " +
+                "to wait for these pending transactions to be processed. " +
+                "This can take a few minutes. You can also lower your " +
+                "transaction amount underneath %{ realBal } %{ currency }. " +
+                "If the problem persists, please contact an administrator.",
+              {
+                realBal,
+                currency: this.ownSelectedAccount.curr,
+              }
+            )
+            this.transferOngoing = false
+            return
+          }
+        }
+
         let dateBegin = Date.now()
         let payment
         try {
