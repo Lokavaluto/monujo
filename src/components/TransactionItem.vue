@@ -8,7 +8,7 @@
         {{ relativeDateFormat(transaction.date) }}
         <fa-icon
           :class="{
-            hide: transaction?.pending === True,
+            hide: transaction?.pending === true,
           }"
           icon="check"
           class="fa-thin"
