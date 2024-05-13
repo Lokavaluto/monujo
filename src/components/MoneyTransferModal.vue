@@ -377,6 +377,70 @@
         }
         // This to ensure we are left with 2 decimals only
         this.amount = parseFloat(this.amount).toFixed(2)
+
+        if (this.ownSelectedAccount._obj.getGlobalBalance) {
+          let realBal
+          try {
+            realBal = await this.ownSelectedAccount._obj.getGlobalBalance(
+              "latest"
+            )
+          } catch (err) {
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected issue occurred while checking available funds. " +
+                  "The transaction was not sent. We are sorry for the inconvenience."
+              ) +
+                "<br/>" +
+                this.$gettext(
+                  "You can try again. If the issue persists, " +
+                    "please contact your administrator."
+                )
+            )
+            console.error("getGlobalBalance failed:", err)
+            this.transferOngoing = false
+            return
+          }
+          // ensure realBal is the correct format
+          if (!(realBal.includes(".") && realBal.split(".")[1].length === 2)) {
+            throw new Error("Invalid amount returned by getGlobalBalance", realBal)
+          }
+          const amount_cents = parseInt(this.amount.replace(".", ""))
+          const realBal_cents = parseInt(realBal.replace(".", ""))
+          const bal_cents = parseInt(
+            this.ownSelectedAccount.bal.toFixed(2).replace(".", "")
+          )
+          // ensure we are in safe limits (we could use BigInt if needed)
+          Object.entries({amount_cents, realBal_cents, bal_cents}).forEach(([label, value]) => {
+            if (value > Number.MAX_SAFE_INTEGER)
+              throw new Error(
+                `Amount ${label.split("_")[0]} exceeds safe max values` +
+                  'for current internal representation'
+              )
+          })
+          if (amount_cents > bal_cents) {
+            this.errors.balance = this.$gettext(
+              "Transaction was refused due to insufficient balance"
+            )
+            return
+          }
+          if (amount_cents > realBal_cents) {
+            this.errors.balance = this.$gettext(
+              "The last transactions were not yet all processed. " +
+                "To ensure that this payment can be sent, you need " +
+                "to wait for these pending transactions to be processed. " +
+                "This can take a few minutes. You can also lower your " +
+                "transaction amount underneath %{ realBal } %{ currency }. " +
+                "If the problem persists, please contact an administrator.",
+              {
+                realBal,
+                currency: this.ownSelectedAccount.curr,
+              }
+            )
+            this.transferOngoing = false
+            return
+          }
+        }
+
         let dateBegin = Date.now()
         let payment
         try {
