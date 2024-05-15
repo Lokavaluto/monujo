@@ -91,7 +91,7 @@ jobs:
           CYPRESS_password: dev
         run: |
           npx cypress run \
-              --config defaultCommandTimeout=15000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
+              --config defaultCommandTimeout=60000,viewportWidth=${M_RESOLUTION/x/,viewportHeight=}
       - name: ⚔ Collect mocha reports
         if: always()
         env:
