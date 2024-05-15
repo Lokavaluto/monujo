@@ -116,6 +116,9 @@ jobs:
       - name: 🚚 Install dependencies
         run: |
           git fetch --unshallow --tags &&
+          npm install &&
+          git clone https://github.com/0k/prettierx &&
+          cd prettierx &&
           npm install
       - name: ⚔ Check prettierx
         id: linter
@@ -124,7 +127,7 @@ jobs:
           mkdir -p "$REPORT_PATH"
           REPORT_FILE="$REPORT_PATH/report"
 
-          npx prettierx -w src/
+          prettierx/bin/prettierx.js -w src/
 
           if out=$(git diff --exit-code -- src/); then
               echo '### ✔️ code style matches our guidelines' > "$REPORT_FILE"
