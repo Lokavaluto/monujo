@@ -10,6 +10,7 @@
   import TransactionListModal from "./TransactionListModal.vue"
   import ConfirmPaymentModal from "./ConfirmPaymentModal.vue"
   import QrCodeModal from "./QrCodeModal.vue"
+  import MoneyRequestModal from "./MoneyRequestModal.vue"
 
   @Options({
     name: "Modal",
@@ -20,6 +21,7 @@
       TransactionListModal,
       ConfirmPaymentModal,
       QrCodeModal,
+      MoneyRequestModal,
     },
     data() {
       return {
