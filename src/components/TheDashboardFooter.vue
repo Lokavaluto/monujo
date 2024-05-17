@@ -25,7 +25,8 @@
         </div>
         <div class="column has-text-centered mb-2">
           <button
-            :disabled="true"
+            :disabled="!account"
+            @click="openModal('MoneyRequestModal', { account })"
             class="
               button
               custom-button

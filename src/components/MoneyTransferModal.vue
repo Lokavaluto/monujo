@@ -172,6 +172,8 @@
                   :class="{
                     'is-danger': errors.balance || errors.amount,
                   }"
+                  :readonly="config?.amount"
+                  :disabled="config?.amount"
                 />
                 <div class="amount-currency-symbol pl-2">
                   {{ selectedRecipient.currencySymbol }}
@@ -245,6 +247,7 @@
         selectedRecipient: null,
         ownSelectedAccount: null,
         amount: null,
+        config: {},
         message: null,
         errors: {
           balance: false,
@@ -343,18 +346,29 @@
           )
           throw err
         }
-        await this.handleClickRecipient(recipient)
+        await this.toPaymentStage({
+          recipient,
+          amount: resultData.amount,
+          message: resultData.message,
+        })
       },
-      async handleClickRecipient(recipient: any): Promise<void> {
-        this.selectedRecipient = recipient
-        this.selectedRecipient.currencySymbol = await recipient.getSymbol()
+      handleClickRecipient(recipient: any): void {
+        return this.toPaymentStage({ recipient })
+      },
+      async toPaymentStage(config: any): Promise<void> {
+        this.selectedRecipient = config.recipient
+        this.selectedRecipient.currencySymbol =
+          await config.recipient.getSymbol()
         this.ownSelectedAccount =
           this.$store.getters.activeVirtualAccounts.find(
-            (va: any) => va.currencyId === recipient.backendId
+            (va: any) => va.currencyId === config.recipient.backendId
           )
         this.$modal.next()
         this.errors.balance = false
         this.errors.amount = false
+        this.amount = config?.amount || null
+        this.message = config?.message
+        this.config = config
         this.setFocus("amountSend")
       },
       async sendTransaction(): Promise<void> {

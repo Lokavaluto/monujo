@@ -22,7 +22,7 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
-#: src/components/MoneyTransferModal.vue:533
+#: src/components/MoneyTransferModal.vue:547
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -55,15 +55,18 @@ msgstr "Comptes en attente de validation"
 msgid "Action"
 msgstr "Action"
 
-#: src/components/MoneyTransferModal.vue:518
+#: src/components/MoneyTransferModal.vue:532
 msgid "Add"
 msgstr "Ajouter"
 
-#: src/components/MoneyTransferModal.vue:192
+#: src/components/MoneyRequestModal.vue:39
+#: src/components/MoneyRequestModal.vue:43
+#: src/components/MoneyRequestModal.vue:65
+#: src/components/MoneyTransferModal.vue:194
 msgid "Add a memo (optional)"
 msgstr "Ajoutez un texte (optionnel)"
 
-#: src/components/MoneyTransferModal.vue:512
+#: src/components/MoneyTransferModal.vue:526
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -85,17 +88,22 @@ msgstr "Toutes les opérations"
 msgid "Already have an account ?"
 msgstr "Avez-vous déjà créé un compte ?"
 
+#: src/components/MoneyRequestModal.vue:35
 #: src/components/MoneyTransferModal.vue:161
 #: src/components/TransactionListModal.vue:428
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
 
-#: src/components/MoneyTransferModal.vue:372
+#: src/components/MoneyRequestModal.vue:198
+msgid "Amount requested must be a number greater than 0"
+msgstr "Le montant demandé doit être un nombre positif"
+
+#: src/components/MoneyTransferModal.vue:386
 msgid "Amount to send must be greater than 0"
 msgstr "Le montant à transférer doit être un nombre positif"
 
-#: src/components/MoneyTransferModal.vue:342
+#: src/components/MoneyTransferModal.vue:345
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
@@ -121,7 +129,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/MoneyTransferModal.vue:279
+#: src/components/MoneyTransferModal.vue:282
 #: src/components/TransactionListModal.vue:327
 msgid "An unexpected issue occured while downloading recipient list"
 msgstr ""
@@ -136,7 +144,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "transactions"
 
-#: src/components/MoneyTransferModal.vue:482
+#: src/components/MoneyTransferModal.vue:496
 msgid ""
 "An unexpected issue occurred during the money transfer. We are sorry for the "
 "inconvenience."
@@ -158,7 +166,7 @@ msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/components/MoneyTransferModal.vue:389
+#: src/components/MoneyTransferModal.vue:403
 msgid ""
 "An unexpected issue occurred while checking available funds. The transaction "
 "was not sent. We are sorry for the inconvenience."
@@ -220,7 +228,7 @@ msgstr ""
 "validation de portefeuilles"
 
 #: src/components/MoneyCreditModal.vue:206 src/components/PendingTopUp.vue:95
-#: src/components/TheDashboardFooter.vue:102
+#: src/components/TheDashboardFooter.vue:103
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -279,7 +287,8 @@ msgstr ""
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/QrCodeModal.vue:49
+#: src/components/MoneyRequestModal.vue:133
+#: src/components/MoneyRequestModal.vue:139 src/components/QrCodeModal.vue:49
 msgid "Close"
 msgstr "Fermer"
 
@@ -304,7 +313,7 @@ msgstr "Confirmez votre mot de passe"
 msgid "Connection successful"
 msgstr "Connection réussie"
 
-#: src/components/MoneyTransferModal.vue:456
+#: src/components/MoneyTransferModal.vue:470
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
@@ -348,7 +357,7 @@ msgstr[1] "chiffres"
 msgid "Discard"
 msgstr "Annuler"
 
-#: src/components/MoneyTransferModal.vue:513
+#: src/components/MoneyTransferModal.vue:527
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -361,6 +370,7 @@ msgid "Download transactions"
 msgstr "Télécharger les opérations"
 
 #: src/components/MoneyCreditModal.vue:52
+#: src/components/MoneyRequestModal.vue:45
 #: src/components/MoneyTransferModal.vue:171
 msgid "e.g. 50"
 msgstr "ex: 50"
@@ -425,6 +435,11 @@ msgstr "De"
 msgid "From"
 msgstr "Depuis"
 
+#: src/components/MoneyRequestModal.vue:78
+#: src/components/MoneyRequestModal.vue:84
+msgid "Generate QrCode"
+msgstr "Générer le QrCode"
+
 #: src/components/AuthPrefPin.vue:127
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
@@ -446,7 +461,7 @@ msgstr "Identifiant ou mot de passe incorrect"
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
-#: src/components/MoneyTransferModal.vue:319
+#: src/components/MoneyTransferModal.vue:322
 msgid "Invalid QR code content format"
 msgstr "Format du QR code invalide"
 
@@ -458,7 +473,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:519
+#: src/components/MoneyTransferModal.vue:533
 msgid "Later"
 msgstr "Plus tard"
 
@@ -634,7 +649,7 @@ msgstr ""
 "Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
 "pour créer votre compte."
 
-#: src/components/MoneyTransferModal.vue:451
+#: src/components/MoneyTransferModal.vue:465
 msgid ""
 "Please make sure to double check in the transaction list if this transaction "
 "appears in the near future. "
@@ -650,7 +665,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/QrCodeModal.vue:35
+#: src/components/MoneyRequestModal.vue:128 src/components/QrCodeModal.vue:35
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
@@ -687,13 +702,18 @@ msgstr "Rafraîchir"
 msgid "Refresh balance and transaction list"
 msgstr "Rafraîchir le solde et les transactions"
 
-#: src/components/TheDashboardFooter.vue:42
+#: src/components/TheDashboardFooter.vue:43
 msgid "Request"
 msgstr "Recevoir"
 
 #: src/views/Login.vue:173
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
+
+#: src/components/MoneyRequestModal.vue:108
+#: src/components/MoneyRequestModal.vue:8
+msgid "Request money"
+msgstr "Recevoir"
 
 #: src/views/Login.vue:163
 msgid "Request refused by remote server. Contact your administrator"
@@ -739,8 +759,8 @@ msgstr "Sélectionnez un intervalle de temps :"
 #: src/components/AuthChallengeDirect.vue:13
 #: src/components/AuthChallengeDirect.vue:7
 #: src/components/AuthChallengeDirect.vue:8
-#: src/components/MoneyTransferModal.vue:199
-#: src/components/MoneyTransferModal.vue:205
+#: src/components/MoneyTransferModal.vue:201
+#: src/components/MoneyTransferModal.vue:207
 msgid "Send"
 msgstr "Envoyer"
 
@@ -809,7 +829,7 @@ msgstr "Source"
 msgid "Target"
 msgstr "Destination"
 
-#: src/components/MoneyTransferModal.vue:471
+#: src/components/MoneyTransferModal.vue:485
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
@@ -838,8 +858,7 @@ msgstr ""
 msgid "The following top up requests needs to be paid or canceled"
 msgstr "Les demandes de rechargement suivantes doivent être payées ou annulées"
 
-#: src/components/MoneyTransferModal.vue:417
-#, fuzzy
+#: src/components/MoneyTransferModal.vue:431
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -858,6 +877,10 @@ msgstr ""
 msgid "The maximum top up amount must be equal or less than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 
+#: src/components/MoneyRequestModal.vue:189
+msgid "the message description is too long"
+msgstr "Le message de description est trop long"
+
 #: src/components/MoneyCreditModal.vue:141
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
@@ -875,7 +898,7 @@ msgstr "Votre demande de rechargement a été supprimée"
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 
-#: src/components/MoneyTransferModal.vue:447
+#: src/components/MoneyTransferModal.vue:461
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
 
@@ -909,6 +932,7 @@ msgstr ""
 msgid "to"
 msgstr "à"
 
+#: src/components/MoneyRequestModal.vue:21
 #: src/components/MoneyTransferModal.vue:157
 msgid "To"
 msgstr "Vers"
@@ -923,7 +947,7 @@ msgstr ""
 "Pour scanner un QR code, vous devez autoriser l'accès à la caméra dans la "
 "configuration de l'application."
 
-#: src/components/TheDashboardFooter.vue:63
+#: src/components/TheDashboardFooter.vue:64
 msgid "Top up"
 msgstr "Recharger"
 
@@ -995,8 +1019,8 @@ msgstr "Opération traitée"
 msgid "Transaction sent"
 msgstr "Opération envoyée"
 
-#: src/components/MoneyTransferModal.vue:411
-#: src/components/MoneyTransferModal.vue:464
+#: src/components/MoneyTransferModal.vue:425
+#: src/components/MoneyTransferModal.vue:478
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -1004,7 +1028,7 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/components/MoneyTransferModal.vue:331
+#: src/components/MoneyTransferModal.vue:334
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le QR code."
 
@@ -1116,12 +1140,12 @@ msgstr ""
 "Vous avez déjà une demande de rechargement en attente. Veuillez la payer ou "
 "la supprimer avant de poursuivre"
 
-#: src/components/MoneyTransferModal.vue:326
+#: src/components/MoneyTransferModal.vue:329
 msgid "You can not transfer money to your own account"
 msgstr "Vous ne pouvez pas envoyer de l'argent vers votre propre compte."
 
-#: src/components/MoneyTransferModal.vue:394
-#: src/components/MoneyTransferModal.vue:487
+#: src/components/MoneyTransferModal.vue:408
+#: src/components/MoneyTransferModal.vue:501
 msgid ""
 "You can try again. If the issue persists, please contact your administrator."
 msgstr ""
@@ -1138,7 +1162,7 @@ msgstr ""
 "Vous pouvez essayer de recharger la page, ou contacter votre administrateur "
 "si l'erreur persiste."
 
-#: src/components/MoneyTransferModal.vue:473
+#: src/components/MoneyTransferModal.vue:487
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
