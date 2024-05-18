@@ -10,68 +10,15 @@
           <button class="delete" aria-label="close" @click="close()"></button>
         </header>
         <section class="modal-card-body">
-          <div
-            class="
-              is-flex is-flex-direction-column is-justify-content-space-evenly
-            "
-          >
-            <div class="is-flex is-flex-direction-column custom-amount-input">
-              <div v-if="selectedAccount">
-                <h2 class="frame3-sub-title mb-3">
-                  {{ $gettext("To") }}
-                </h2>
-                <BankAccountItem
-                  :bal="selectedAccount.bal"
-                  :curr="selectedAccount.curr"
-                  :backend="selectedAccount.backend"
-                  :type="selectedAccount.type"
-                  :active="selectedAccount.active"
-                  class="mb-4"
-                >
-                  <template v-slot:name>{{ selectedAccount.name() }}</template>
-                </BankAccountItem>
-              </div>
-              <h2 class="frame3-sub-title mt-3 mb-3">
-                {{ $gettext("Amount") }}
-              </h2>
-              <div class="is-flex">
-                <input
-                  v-model.number="amount"
-                  ref="amountRequested"
-                  type="number"
-                  min="0"
-                  class="input is-custom"
-                  id="send-amount-input"
-                  :placeholder="$gettext('e.g. 50')"
-                  :class="{
-                    'is-danger': errors.amount,
-                  }"
-                  @input="handleAmountInput()"
-                />
-                <div class="amount-currency-symbol pl-2">
-                  {{ selectedAccount?.curr }}
-                </div>
-              </div>
-              <div class="notification is-danger is-light" v-if="errors.amount">
-                {{ errors.amount }}
-              </div>
-              <textarea
-                @input="handleMessageInput()"
-                v-model="message"
-                class="custom-textarea textarea mt-5"
-                :class="{
-                  'is-danger': errors.message,
-                }"
-                :placeholder="$gettext('Add a memo (optional)')"
-              ></textarea>
-              <div
-                class="notification is-danger is-light mt-2"
-                v-if="errors.message"
-              >
-                {{ errors.message }}
-              </div>
-            </div>
-          </div>
+          <MoneyTransaction
+            directionTransfer="receive"
+            :account="$modal.args.value[0].account"
+            :selectedRecipient="selectedRecipient"
+            :config="config"
+            @update:amount="(x) => (amount = x)"
+            @update:message="(x) => (message = x)"
+            @update:isValid="(x) => (isValid = x)"
+          />
         </section>
         <footer
           class="
@@ -81,7 +28,7 @@
           "
         >
           <button
-            :disabled="!amount || errors.amount || errors.message"
+            :disabled="!isValid"
             class="button custom-button-modal has-text-weight-medium"
             id="send-money-button"
             @click="$modal.next()"
@@ -95,10 +42,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <span class="is-flex is-flex-shrink-0">
-            <a
-              class="mr-3 is-flex"
-              @click="$modal.back(), setFocus('amountRequested')"
-            >
+            <a class="mr-3 is-flex" @click="$modal.back()">
               <span class="icon has-text-white">
                 <fa-icon icon="arrow-left" class="fa-lg" />
               </span>
@@ -155,7 +99,7 @@
   import "vue-loading-overlay/dist/css/index.css"
   import BankAccountItem from "@/components/BankAccountItem.vue"
   import QrCodeVue from "qrcode.vue"
-
+  import MoneyTransaction from "@/components/MoneyTransaction.vue"
   import UseBatchLoading from "@/services/UseBatchLoading"
 
   @Options({
@@ -164,44 +108,32 @@
       Loading,
       BankAccountItem,
       QrCodeVue,
+      MoneyTransaction,
     },
     data() {
       return {
-        selectedAccount: null,
         amount: null,
         message: null,
-        errors: {
-          amount: false,
-          message: false,
-        },
+        isValid: false,
+        config: {},
       }
-    },
-    mounted() {
-      this.setFocus("amountRequested")
-      this.selectedAccount = this.$modal.args.value[0].account
     },
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),
     },
+    watch: {
+      message: {
+        handler(newVal, oldVal) {
+          this.config.message = newVal
+        },
+      },
+      amount: {
+        handler(newVal, oldVal) {
+          this.config.amount = newVal
+        },
+      },
+    },
     methods: {
-      handleMessageInput() {
-        if (this.message.length > 50) {
-          this.errors.message = this.$gettext(
-            "the message description is too long"
-          )
-          return
-        }
-        this.errors.message = false
-      },
-      handleAmountInput() {
-        if (this.amount <= 0 || this.amount.length === 0) {
-          this.errors.amount = this.$gettext(
-            "Amount requested must be a number greater than 0"
-          )
-          return
-        }
-        this.errors.amount = false
-      },
       close() {
         this.amount = 0
         this.$modal.close()

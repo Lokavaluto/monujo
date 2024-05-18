@@ -65,8 +65,11 @@ describe("General processes when logged in", () => {
     if (Cypress.env("screenshot")) cy.takeScreenshot("pay")
 
     // send empty or wrong amount
-    cy.sendMoneyButton().should("be.visible")
-    cy.sendMoneyButton().click()
+    cy.sendMoneyButton().should("be.disabled")
+    cy.amountSendInput().should("be.visible")
+    cy.amountSendInput().type("0")
+
+    cy.sendMoneyButton().should("be.disabled")
     cy.errorMessage().should("be.visible")
     cy.amountSendInput().should("be.visible")
     cy.amountSendInput().type("wrong amount")

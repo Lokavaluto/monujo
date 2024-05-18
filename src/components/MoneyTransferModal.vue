@@ -134,67 +134,16 @@
           <button class="delete" aria-label="close" @click="close()"></button>
         </header>
         <section class="modal-card-body">
-          <div
-            class="
-              is-flex is-flex-direction-column is-justify-content-space-evenly
-            "
-          >
-            <div class="is-flex is-flex-direction-column custom-amount-input">
-              <h2 class="frame3-sub-title mb-3">
-                {{ $gettext("From") }}
-              </h2>
-              <BankAccountItem
-                :bal="ownSelectedAccount.bal"
-                :curr="ownSelectedAccount.curr"
-                :backend="ownSelectedAccount.backend"
-                :type="ownSelectedAccount.type"
-                :active="ownSelectedAccount.active"
-                class="mb-4"
-              >
-                <template v-slot:name>{{ ownSelectedAccount.name() }}</template>
-              </BankAccountItem>
-              <h2 class="frame3-sub-title mb-3">
-                {{ $gettext("To") }}
-              </h2>
-              <RecipientItem :recipient="selectedRecipient" />
-              <h2 class="frame3-sub-title mt-3 mb-3">
-                {{ $gettext("Amount") }}
-              </h2>
-              <div class="is-flex">
-                <input
-                  v-model.number="amount"
-                  ref="amountSend"
-                  type="number"
-                  min="0"
-                  class="input is-custom"
-                  id="send-amount-input"
-                  :placeholder="$gettext('e.g. 50')"
-                  :class="{
-                    'is-danger': errors.balance || errors.amount,
-                  }"
-                  :readonly="config?.amount"
-                  :disabled="config?.amount"
-                />
-                <div class="amount-currency-symbol pl-2">
-                  {{ selectedRecipient.currencySymbol }}
-                </div>
-              </div>
-              <div
-                class="notification is-danger is-light"
-                v-if="errors.balance"
-              >
-                {{ errors.balance }}
-              </div>
-              <div class="notification is-danger is-light" v-if="errors.amount">
-                {{ errors.amount }}
-              </div>
-              <textarea
-                v-model="message"
-                class="custom-textarea textarea mt-5"
-                :placeholder="$gettext('Add a memo (optional)')"
-              ></textarea>
-            </div>
-          </div>
+          <MoneyTransaction
+            directionTransfer="send"
+            :account="ownSelectedAccount"
+            :selectedRecipient="selectedRecipient"
+            :config="config"
+            :parentErrors="errors"
+            @update:amount="(x) => (amount = x)"
+            @update:message="(x) => (message = x)"
+            @update:isValid="(x) => (isValid = x)"
+          />
         </section>
         <footer
           class="
@@ -207,6 +156,7 @@
             class="button custom-button-modal has-text-weight-medium"
             id="send-money-button"
             @click="sendTransaction()"
+            :disabled="!isValid"
           >
             {{ $gettext("Send") }}
           </button>
@@ -220,24 +170,18 @@
   import { mapModuleState } from "@/utils/vuex"
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
-  import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/css/index.css"
   import RecipientItem from "@/components/RecipientItem.vue"
-  import BankAccountItem from "@/components/BankAccountItem.vue"
-  import { Capacitor } from "@capacitor/core"
-  import { App as CapacitorApp } from "@capacitor/app"
-  import { Camera, CameraResultType } from "@capacitor/camera"
   import { UIError } from "../exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
-
+  import MoneyTransaction from "./MoneyTransaction.vue"
   import UseBatchLoading from "@/services/UseBatchLoading"
 
   @Options({
     name: "MoneyTransferModal",
     components: {
-      Loading,
       RecipientItem,
-      BankAccountItem,
+      MoneyTransaction,
     },
     data() {
       return {
@@ -249,11 +193,9 @@
         amount: null,
         config: {},
         message: null,
-        errors: {
-          balance: false,
-          amount: false,
-        },
+        errors: false,
         account: null,
+        isValid: false,
       }
     },
     created() {
@@ -364,12 +306,10 @@
             (va: any) => va.currencyId === config.recipient.backendId
           )
         this.$modal.next()
-        this.errors.balance = false
-        this.errors.amount = false
+        this.errors = false
         this.amount = config?.amount || null
         this.message = config?.message
         this.config = config
-        this.setFocus("amountSend")
       },
       async sendTransaction(): Promise<void> {
         if (this.transferOngoing) {
@@ -380,17 +320,7 @@
         }
         this.transferOngoing = true
 
-        this.errors.amount = false
-        this.errors.balance = false
-        if (this.amount <= 0) {
-          this.errors.amount = this.$gettext(
-            "Amount to send must be greater than 0"
-          )
-          this.transferOngoing = false
-          return
-        }
-        // This to ensure we are left with 2 decimals only
-        this.amount = parseFloat(this.amount).toFixed(2)
+        this.errors = false
 
         if (this.ownSelectedAccount._obj.getGlobalBalance) {
           let realBal
@@ -432,13 +362,11 @@
               )
           })
           if (amount_cents > bal_cents) {
-            this.errors.balance = this.$gettext(
-              "Transaction was refused due to insufficient balance"
-            )
+            this.errors = this.$gettext("Insufficient balance")
             return
           }
           if (amount_cents > realBal_cents) {
-            this.errors.balance = this.$gettext(
+            this.errors = this.$gettext(
               "The last transactions were not yet all processed. " +
                 "To ensure that this payment can be sent, you need " +
                 "to wait for these pending transactions to be processed. " +
@@ -485,7 +413,7 @@
             return
           }
           if (err instanceof LokapiExc.InsufficientBalance) {
-            this.errors.balance = this.$gettext(
+            this.errors = this.$gettext(
               "Transaction was refused due to insufficient balance"
             )
             return
@@ -522,8 +450,7 @@
           this.$loading.hide()
         }
 
-        this.errors.balance = false
-        this.errors.amount = false
+        this.errors = false
         this.$modal.args.value[0].refreshTransaction()
         this.close()
         this.$modal.open("ConfirmPaymentModal", {
