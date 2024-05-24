@@ -95,11 +95,11 @@ msgstr "Montant"
 
 #: src/components/MoneyTransaction.vue:131
 msgid "Amount to request must be a number greater than 0"
-msgstr "Le montant à demander doit être un nombre positif"
+msgstr "Le montant demandé doit être un nombre positif"
 
 #: src/components/MoneyTransaction.vue:127
 msgid "Amount to send must be a number greater than 0"
-msgstr "Le montant à transférer doit être un nombre positif"
+msgstr "Le montant envoyé doit être un nombre positif"
 
 #: src/components/MoneyTransferModal.vue:287
 msgid "An error occured while searching recipient"
@@ -285,8 +285,8 @@ msgstr ""
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/MoneyRequestModal.vue:77
-#: src/components/MoneyRequestModal.vue:83 src/components/QrCodeModal.vue:49
+#: src/components/MoneyRequestModal.vue:86
+#: src/components/MoneyRequestModal.vue:92 src/components/QrCodeModal.vue:49
 msgid "Close"
 msgstr "Fermer"
 
@@ -666,7 +666,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/MoneyRequestModal.vue:72 src/components/QrCodeModal.vue:35
+#: src/components/MoneyRequestModal.vue:81 src/components/QrCodeModal.vue:35
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
@@ -990,7 +990,7 @@ msgstr "Rechargement demandé"
 msgid "Transaction details"
 msgstr "Détails de l'opération"
 
-#: src/services/ExportService.ts:72
+#: src/services/ExportService.ts:75
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
@@ -1003,7 +1003,7 @@ msgstr "La liste des transactions n'a pas pu être téléchargée"
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/services/ExportService.ts:68
+#: src/services/ExportService.ts:71
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 

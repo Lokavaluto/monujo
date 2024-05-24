@@ -1,6 +1,9 @@
 import { Capacitor, Plugins } from "@capacitor/core"
 import { Directory, Encoding } from "@capacitor/filesystem"
 
+import jsPDF from "jspdf"
+import { Canvg } from "canvg"
+
 const { Filesystem, Share } = Plugins
 
 class ExportService {
@@ -80,6 +83,45 @@ class ExportService {
     } else {
       console.log(`Share is not yet available on ${platform} platform.`)
     }
+  }
+
+  public async DownloadQrCode(svgQrCode: any) {
+    const finalSizeMm = 120 // mm of final printed QrCode
+    const resolution = 5 // px/mm
+
+    svgQrCode = svgQrCode.replace(
+      'width="200"',
+      `width="${finalSizeMm * resolution}"`
+    )
+    svgQrCode = svgQrCode.replace(
+      'height="200"',
+      `height="${finalSizeMm * resolution}"`
+    )
+
+    const canvas = document.createElement("canvas")
+    const context = canvas.getContext("2d")
+    if (context === null) {
+      throw new Error("Unexpected null context")
+    }
+
+    let v = await Canvg.from(context, svgQrCode)
+    await v.start()
+
+    const imgData = canvas.toDataURL("image/png")
+
+    // Generate PDF
+    let pdf = new jsPDF("p", "mm", "a4")
+
+    await pdf.addImage(
+      imgData,
+      "PNG",
+      (210 - finalSizeMm) / 2,
+      (297 - finalSizeMm) / 2,
+      finalSizeMm,
+      finalSizeMm
+    )
+
+    pdf.save("Qrcode.pdf")
   }
 }
 
