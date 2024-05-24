@@ -107,10 +107,19 @@
           <p class="modal-card-title is-title-shrink">
             {{ $gettext("Request money") }} - 2/2
           </p>
+          <span
+            v-if="$platform === 'web'"
+            @click="downloadQrCodePdf"
+            class="button download is-default is-rounded refresh mr-2 ml-2"
+          >
+            <span class="icon">
+              <fa-icon icon="download" />
+            </span>
+          </span>
           <button class="delete" aria-label="close" @click="close()"></button>
         </header>
         <section class="modal-card-body">
-          <div class="qrcode-container" ref="qrCode">
+          <div class="qrcode-container" ref="qrCodeTransaction">
             <QrCodeVue
               render-as="svg"
               :size="200"
@@ -201,6 +210,11 @@
           return
         }
         this.errors.amount = false
+      },
+
+      async downloadQrCodePdf() {
+        let svgQrCode = this.$refs.qrCodeTransaction.firstChild.outerHTML
+        await this.$export.DownloadQrCode(svgQrCode)
       },
       close() {
         this.amount = 0

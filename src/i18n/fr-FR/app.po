@@ -88,14 +88,14 @@ msgstr "Toutes les opérations"
 msgid "Already have an account ?"
 msgstr "Avez-vous déjà créé un compte ?"
 
-#: src/components/MoneyRequestModal.vue:35
+#: src/components/AmountField.vue:5 src/components/MoneyRequestModal.vue:35
 #: src/components/MoneyTransferModal.vue:161
 #: src/components/TransactionListModal.vue:428
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
 
-#: src/components/MoneyRequestModal.vue:198
+#: src/components/MoneyRequestModal.vue:207
 msgid "Amount requested must be a number greater than 0"
 msgstr "Le montant demandé doit être un nombre positif"
 
@@ -287,8 +287,8 @@ msgstr ""
 msgid "click here"
 msgstr "cliquez ici"
 
-#: src/components/MoneyRequestModal.vue:133
-#: src/components/MoneyRequestModal.vue:139 src/components/QrCodeModal.vue:49
+#: src/components/MoneyRequestModal.vue:142
+#: src/components/MoneyRequestModal.vue:148 src/components/QrCodeModal.vue:49
 msgid "Close"
 msgstr "Fermer"
 
@@ -369,7 +369,7 @@ msgstr "Télécharger"
 msgid "Download transactions"
 msgstr "Télécharger les opérations"
 
-#: src/components/MoneyCreditModal.vue:52
+#: src/components/AmountField.vue:12 src/components/MoneyCreditModal.vue:52
 #: src/components/MoneyRequestModal.vue:45
 #: src/components/MoneyTransferModal.vue:171
 msgid "e.g. 50"
@@ -665,7 +665,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/MoneyRequestModal.vue:128 src/components/QrCodeModal.vue:35
+#: src/components/MoneyRequestModal.vue:137 src/components/QrCodeModal.vue:35
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
@@ -877,7 +877,7 @@ msgstr ""
 msgid "The maximum top up amount must be equal or less than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 
-#: src/components/MoneyRequestModal.vue:189
+#: src/components/MoneyRequestModal.vue:198
 msgid "the message description is too long"
 msgstr "Le message de description est trop long"
 
@@ -990,7 +990,7 @@ msgstr "Rechargement demandé"
 msgid "Transaction details"
 msgstr "Détails de l'opération"
 
-#: src/services/ExportService.ts:72
+#: src/services/ExportService.ts:75
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
@@ -1003,7 +1003,7 @@ msgstr "La liste des transactions n'a pas pu être téléchargée"
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/services/ExportService.ts:68
+#: src/services/ExportService.ts:71
 msgid "Transaction list from %{ begin } to %{ end }"
 msgstr "Liste des transactions du %{ begin } au %{ end }"
 

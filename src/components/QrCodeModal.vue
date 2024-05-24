@@ -55,10 +55,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
-  import { mapGetters } from "vuex"
   import QrCodeVue from "qrcode.vue"
-  import jsPDF from "jspdf"
-  import { Canvg } from "canvg"
 
   @Options({
     name: "QrCodeModal",
@@ -70,43 +67,9 @@
     },
     methods: {
       async downloadQrCodePdf() {
-        let svgQrCode = this.$refs.qrCode.firstChild.outerHTML
-        const finalSizeMm = 120 // mm of final printed QrCode
-        const resolution = 5 // px/mm
-
-        svgQrCode = svgQrCode.replace(
-          'width="200"',
-          `width="${finalSizeMm * resolution}"`
+        await this.$export.DownloadQrCode(
+          this.$refs.qrCode.firstChild.outerHTML
         )
-        svgQrCode = svgQrCode.replace(
-          'height="200"',
-          `height="${finalSizeMm * resolution}"`
-        )
-
-        const canvas = document.createElement("canvas")
-        const context = canvas.getContext("2d")
-        if (context === null) {
-          throw new Error("Unexpected null context")
-        }
-
-        let v = await Canvg.from(context, svgQrCode)
-        await v.start()
-
-        const imgData = canvas.toDataURL("image/png")
-
-        // Generate PDF
-        let pdf = new jsPDF("p", "mm", "a4")
-
-        await pdf.addImage(
-          imgData,
-          "PNG",
-          (210 - finalSizeMm) / 2,
-          (297 - finalSizeMm) / 2,
-          finalSizeMm,
-          finalSizeMm
-        )
-
-        pdf.save("Qrcode.pdf")
       },
     },
   })
