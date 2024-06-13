@@ -76,6 +76,18 @@
                     {{ $gettext("Reconversion") }}
                   </div>
                 </a>
+                <a
+                  href="#"
+                  class="dropdown-item is-flex"
+                  @click="exportWallet()"
+                >
+                  <div class="mr-5">
+                    <fa-icon class="qrcode-icon" icon="qrcode" />
+                  </div>
+                  <div class="icon is-small ml-5">
+                    {{ $gettext("Export wallet") }}
+                  </div>
+                </a>
               </div>
             </div>
           </div>
@@ -107,6 +119,7 @@
   import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
+  import { UIError } from "../exception"
 
   @Options({
     name: "BankAccountItem",
@@ -153,6 +166,21 @@
       }
     },
     methods: {
+      async exportWallet() {
+        const wallet = this.account._obj.jsonData.wallet
+        try {
+          await this.$export.download(
+            JSON.stringify(wallet, null, 4),
+            "wallet",
+            "text/dat"
+          )
+        } catch (err) {
+          throw new UIError(
+            this.$gettext("The wallet could not be downloaded"),
+            err
+          )
+        }
+      },
       refreshTransaction() {
         this.$emit("refreshTransaction")
       },

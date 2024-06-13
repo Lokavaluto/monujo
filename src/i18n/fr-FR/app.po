@@ -397,6 +397,10 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
+#: src/components/BankAccountItem.vue:88
+msgid "Export wallet"
+msgstr "Exporter mon portefeuille"
+
 #: src/components/AuthChallenge.vue:18
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
@@ -916,6 +920,10 @@ msgstr "Votre demande de rechargement a été traitée avec succès"
 #: src/components/MoneyTransferModal.vue:415
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
+
+#: src/components/BankAccountItem.vue:179
+msgid "The wallet could not be downloaded"
+msgstr "Le portefeuille n'a pas pu être téléchargé"
 
 #: src/views/Signup.vue:231 src/views/Signup.vue:242 src/views/Signup.vue:249
 msgid "This fiels can not be empty."
