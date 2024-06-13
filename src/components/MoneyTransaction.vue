@@ -9,12 +9,9 @@
           {{ $gettext("To") }}
         </h2>
         <BankAccountItem
-          :bal="account.bal"
-          :curr="account.curr"
-          :backend="account.backend"
-          :type="account.type"
-          :active="account.active"
           class="mb-4"
+          :account="account"
+          :showSubAccounts="false"
         >
           <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>

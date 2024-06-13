@@ -61,7 +61,7 @@ msgstr "Ajouter"
 
 #: src/components/MoneyTransaction.vue:39
 #: src/components/MoneyTransaction.vue:40
-#: src/components/MoneyTransaction.vue:63
+#: src/components/MoneyTransaction.vue:60
 msgid "Add a memo (optional)"
 msgstr "Ajoutez un texte (optionnel)"
 
@@ -87,17 +87,17 @@ msgstr "Toutes les opérations"
 msgid "Already have an account ?"
 msgstr "Avez-vous déjà créé un compte ?"
 
-#: src/components/MoneyTransaction.vue:29
+#: src/components/MoneyTransaction.vue:26
 #: src/components/TransactionListModal.vue:428
 #: src/views/admin/PendingCredits.vue:52
 msgid "Amount"
 msgstr "Montant"
 
-#: src/components/MoneyTransaction.vue:131
+#: src/components/MoneyTransaction.vue:128
 msgid "Amount to request must be a number greater than 0"
 msgstr "Le montant demandé doit être un nombre positif"
 
-#: src/components/MoneyTransaction.vue:127
+#: src/components/MoneyTransaction.vue:124
 msgid "Amount to send must be a number greater than 0"
 msgstr "Le montant envoyé doit être un nombre positif"
 
@@ -368,7 +368,7 @@ msgid "Download transactions"
 msgstr "Télécharger les opérations"
 
 #: src/components/MoneyCreditModal.vue:52
-#: src/components/MoneyTransaction.vue:39
+#: src/components/MoneyTransaction.vue:36
 msgid "e.g. 50"
 msgstr "ex: 50"
 
@@ -405,7 +405,7 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 
-#: src/components/TheBankAccountList.vue:230
+#: src/components/TheBankAccountList.vue:222
 msgid "Failed to read the file contents"
 msgstr "Le contenu du fichier n'a pas pu être lu"
 
@@ -671,7 +671,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:274
-#: src/components/TheBankAccountList.vue:253 src/services/lokapiService.ts:200
+#: src/components/TheBankAccountList.vue:245 src/services/lokapiService.ts:200
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -838,7 +838,7 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/TheBankAccountList.vue:108
+#: src/components/TheBankAccountList.vue:104
 msgid ""
 "The accounts listed below have been subjected to a creation request. Once "
 "the creation request is approved, these accounts will become usable."
@@ -878,7 +878,7 @@ msgstr ""
 msgid "The maximum top up amount must be equal or less than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 
-#: src/components/MoneyTransaction.vue:142
+#: src/components/MoneyTransaction.vue:139
 msgid "the message description is too long"
 msgstr "Le message de description est trop long"
 
@@ -933,7 +933,7 @@ msgstr ""
 msgid "to"
 msgstr "à"
 
-#: src/components/MoneyTransaction.vue:24 src/components/MoneyTransaction.vue:9
+#: src/components/MoneyTransaction.vue:21 src/components/MoneyTransaction.vue:9
 msgid "To"
 msgstr "Vers"
 
@@ -1037,7 +1037,7 @@ msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:241
+#: src/components/TheBankAccountList.vue:233
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
@@ -1055,7 +1055,7 @@ msgstr ""
 "serveur distant."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:236
+#: src/components/TheBankAccountList.vue:228
 msgid "Unexpected type of file"
 msgstr "Erreure Inattendue"
 
@@ -1107,7 +1107,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/TheBankAccountList.vue:251
+#: src/components/TheBankAccountList.vue:243
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
@@ -1181,6 +1181,6 @@ msgstr "vos comptes"
 msgid "Your credentials will be saved after your next login"
 msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 
-#: src/components/TheBankAccountList.vue:104
+#: src/components/TheBankAccountList.vue:100
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
