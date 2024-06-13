@@ -105,7 +105,7 @@ msgstr "Le montant envoyé doit être un nombre positif"
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
-#: src/services/lokapiService.ts:190
+#: src/services/lokapiService.ts:201
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
@@ -117,7 +117,7 @@ msgstr ""
 "Une erreur s'est produite lors de la suppression de la demande de "
 "rechargement, veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/services/lokapiService.ts:194
+#: src/services/lokapiService.ts:205
 msgid "An error occurred while removing from favorites."
 msgstr "Une erreur est survenue lors de la suppression du favori."
 
@@ -397,6 +397,10 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
+#: src/components/BankAccountItem.vue:70
+msgid "Export wallet"
+msgstr "Exporter mon portefeuille"
+
 #: src/components/AuthChallenge.vue:18
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
@@ -671,7 +675,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:274
-#: src/components/TheBankAccountList.vue:245 src/services/lokapiService.ts:200
+#: src/components/TheBankAccountList.vue:245 src/services/lokapiService.ts:211
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -906,6 +910,10 @@ msgstr "Votre demande de rechargement a été traitée avec succès"
 #: src/components/MoneyTransferModal.vue:404
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
+
+#: src/components/BankAccountItem.vue:164
+msgid "The wallet could not be downloaded"
+msgstr "Le portefeuille n'a pas pu être téléchargé"
 
 #: src/views/Signup.vue:231 src/views/Signup.vue:242 src/views/Signup.vue:249
 msgid "This fiels can not be empty."

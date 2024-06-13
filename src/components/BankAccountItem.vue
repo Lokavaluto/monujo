@@ -57,6 +57,19 @@
                   </div>
                   <div class="ml-1 is-small">{{ $gettext("Qrcode") }}</div>
                 </a>
+                <a
+                  v-if="account.walletData"
+                  href="#"
+                  class="dropdown-item is-flex"
+                  @click="exportWallet()"
+                >
+                  <div class="mr-1">
+                    <fa-icon class="wallet" icon="wallet" />
+                  </div>
+                  <div class="ml-1 is-small">
+                    {{ $gettext("Export wallet") }}
+                  </div>
+                </a>
               </div>
             </div>
           </div>
@@ -88,6 +101,7 @@
   import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
+  import { UIError } from "../exception"
 
   @Options({
     name: "BankAccountItem",
@@ -134,6 +148,24 @@
       }
     },
     methods: {
+      async exportWallet() {
+        const wallet = this.account.walletData
+        const mkFilename = (a: any) =>
+          `${a.curr}_${a.backend}_${a.userAccountId.split(":")[1]}.json`
+        const filename = mkFilename(this.account)
+        try {
+          await this.$export.download(
+            JSON.stringify(wallet, null, 4),
+            filename,
+            "text/dat"
+          )
+        } catch (err) {
+          throw new UIError(
+            this.$gettext("The wallet could not be downloaded"),
+            err
+          )
+        }
+      },
       refreshTransaction() {
         this.$emit("refreshTransaction")
       },
