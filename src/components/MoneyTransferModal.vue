@@ -118,7 +118,7 @@
     <template v-if="$modal.step.value == 2 && selectedRecipient">
       <div class="modal-card">
         <header class="modal-card-head">
-          <span class="is-flex is-flex-shrink-0">
+          <span v-if="!isReconversion" class="is-flex is-flex-shrink-0">
             <a
               class="mr-3 is-flex"
               @click="$modal.back(), setFocus('searchRecipient')"
@@ -129,7 +129,11 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Send money") }} - 2/2
+            {{
+              isReconversion
+                ? $gettext("Money reconversion")
+                : $gettext("Send money") + " - 2/2"
+            }}
           </p>
           <button class="delete" aria-label="close" @click="close()"></button>
         </header>
@@ -158,7 +162,7 @@
             @click="sendTransaction()"
             :disabled="!isValid"
           >
-            {{ $gettext("Send") }}
+            {{ isReconversion ? $gettext("Reconversion") : $gettext("Send") }}
           </button>
         </footer>
       </div>
@@ -196,6 +200,7 @@
         errors: false,
         account: null,
         isValid: false,
+        isReconversion: false,
       }
     },
     created() {
@@ -230,8 +235,13 @@
       })
     },
     mounted() {
-      this.setFocus("searchRecipient")
-      this.recipientBatchLoader.newGen("")
+      if (this.$modal.args.value[0]?.safeWallet) {
+        this.isReconversion = true
+        this.toPaymentStage({ recipient: this.$modal.args.value[0].safeWallet })
+      } else {
+        this.setFocus("searchRecipient")
+        this.recipientBatchLoader.newGen("")
+      }
     },
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),
@@ -445,9 +455,9 @@
         this.close()
         this.$modal.open("ConfirmPaymentModal", {
           transaction: payment,
-          type: "paymentConfirmation",
+          type: this.isReconversion ? "reconversion" : "paymentConfirmation",
         })
-        if (!this.selectedRecipient.is_favorite) {
+        if (!this.selectedRecipient.is_favorite && !this.isReconversion) {
           this.$dialog
             .show({
               title: this.$gettext("Add as favorite"),

@@ -65,8 +65,9 @@
                   href="#"
                   class="dropdown-item is-flex"
                   @click="
-                    $modal.open('MoneyReconversionModal', {
+                    $modal.open('MoneyTransferModal', {
                       account: account,
+                      safeWallet: account?.safeWalletRecipient,
                       refreshTransaction,
                     })
                   "
