@@ -84,6 +84,7 @@
       directionTransfer: String,
       config: Object,
       parentErrors: String,
+      isReconversion: Boolean,
     },
     data() {
       return {
