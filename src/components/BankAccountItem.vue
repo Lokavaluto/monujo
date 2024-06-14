@@ -25,12 +25,8 @@
         <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
           account.curr
         }}</span>
-        <span v-if="showActions">
-          <div
-            v-if="$config?.reconversion"
-            class="dropdown"
-            :class="{ 'is-active': dropDownMenuState }"
-          >
+        <span :class="{ hide: isSub || !showActions }">
+          <div class="dropdown" :class="{ 'is-active': dropDownMenuState }">
             <div class="dropdown-trigger">
               <span
                 class="
@@ -63,10 +59,12 @@
                 </a>
                 <a
                   href="#"
+                  v-if="account?.safeWalletRecipient && $config?.reconversion"
                   class="dropdown-item is-flex"
                   @click="
-                    $modal.open('MoneyReconversionModal', {
+                    $modal.open('MoneyTransferModal', {
                       account: account,
+                      safeWallet: account?.safeWalletRecipient,
                       refreshTransaction,
                     })
                   "
@@ -93,18 +91,6 @@
               </div>
             </div>
           </div>
-          <span
-            v-else
-            :class="{ hide: !showActions }"
-            class="button is-default is-pulled-right is-rounded refresh ml-2"
-          >
-            <span
-              class="icon is-small"
-              @click="$modal.open('QrCodeModal', { accountId: account.id })"
-            >
-              <fa-icon class="qrcode-icon" icon="qrcode" />
-            </span>
-          </span>
         </span>
       </div>
     </div>
@@ -159,26 +145,24 @@
       }
     },
     mounted() {
-      if (this.showActions && this.$config?.reconversion) {
-        const $clickableDropdowns = this.$el.querySelectorAll(
-          ".dropdown:not(.is-hoverable)"
-        )
-        if ($clickableDropdowns.length > 0) {
-          $clickableDropdowns.forEach(($dropdown: any) => {
-            $dropdown
-              .querySelector(".button-contextual-menu")
-              .addEventListener("click", (event: any) => {
-                event.stopPropagation()
-                $dropdown.classList.toggle("is-active")
-              })
-          })
-          this.handleCloseContextualMenu = () => {
-            $clickableDropdowns.forEach(($el: any) => {
-              $el.classList.remove("is-active")
+      const $clickableDropdowns = this.$el.querySelectorAll(
+        ".dropdown:not(.is-hoverable)"
+      )
+      if ($clickableDropdowns.length > 0) {
+        $clickableDropdowns.forEach(($dropdown: any) => {
+          $dropdown
+            .querySelector(".button-contextual-menu")
+            .addEventListener("click", (event: any) => {
+              event.stopPropagation()
+              $dropdown.classList.toggle("is-active")
             })
-          }
-          document.addEventListener("click", this.handleCloseContextualMenu)
+        })
+        this.handleCloseContextualMenu = () => {
+          $clickableDropdowns.forEach(($el: any) => {
+            $el.classList.remove("is-active")
+          })
         }
+        document.addEventListener("click", this.handleCloseContextualMenu)
       }
     },
     methods: {
