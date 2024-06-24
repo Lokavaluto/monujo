@@ -9,17 +9,14 @@
           {{ $gettext("To") }}
         </h2>
         <BankAccountItem
-          :bal="account.bal"
-          :curr="account.curr"
-          :backend="account.backend"
-          :type="account.type"
-          :active="account.active"
           class="mb-4"
+          :account="account"
+          :showSubAccounts="false"
         >
           <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>
       </div>
-      <div v-if="selectedRecipient">
+      <div v-if="selectedRecipient && !isReconversion">
         <h2 class="frame3-sub-title mb-3">
           {{ $gettext("To") }}
         </h2>
@@ -87,6 +84,7 @@
       directionTransfer: String,
       config: Object,
       parentErrors: String,
+      isReconversion: Boolean,
     },
     data() {
       return {

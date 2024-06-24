@@ -165,6 +165,9 @@
   @Options({
     name: "TheNavBar",
     components: {},
+    props: {
+      account: Object,
+    },
     data() {
       return {
         showNav: false,

@@ -1,5 +1,5 @@
 <template>
-  <div class="account" :class="{ active }">
+  <div class="account" :class="{ active: account.active }">
     <div
       class="custom-inner-card card px-5 py-2 is-flex"
       @click="$emit('accountSelected', account)"
@@ -7,15 +7,15 @@
       <div class="is-size-5 is-flex-grow-1">
         <slot name="name">default name</slot>
         <div v-if="isMultiCurrency && !isSub" class="account-backend is-size-6">
-          {{ backend }}
+          {{ account.backend }}
         </div>
       </div>
       <div class="is-align-items-center is-flex">
         <span
           class="is-size-6-mobile is-size-4-tablet account-bal"
-          v-if="active"
+          v-if="account.active"
         >
-          {{ numericFormat(parseFloat(bal)) }}
+          {{ numericFormat(parseFloat(account.bal)) }}
         </span>
         <span
           class="is-size-6-mobile is-size-4-tablet account-bal inactive"
@@ -23,37 +23,91 @@
           >-.---,--</span
         >
         <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
-          curr
+          account.curr
         }}</span>
-        <span
-          :class="{
-            hide: !qrcode,
-          }"
-          class="button is-default is-pulled-right is-rounded refresh ml-2"
-        >
-          <span
-            class="icon is-small"
-            @click="$modal.open('QrCodeModal', { accountId: id })"
-          >
-            <fa-icon class="qrcode-icon" icon="qrcode" />
-          </span>
+        <span :class="{ hide: isSub || !showActions }">
+          <div class="dropdown" :class="{ 'is-active': dropDownMenuState }">
+            <div class="dropdown-trigger">
+              <span
+                class="
+                  button
+                  is-default
+                  button-contextual-menu
+                  is-pulled-right is-rounded
+                  refresh
+                  ml-2
+                "
+                aria-haspopup="true"
+                aria-controls="dropdown-menu3"
+              >
+                <span class="icon">
+                  <fa-icon class="qrcode-icon" icon="ellipsis-v" />
+                </span>
+              </span>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+              <div class="dropdown-content">
+                <a
+                  href="#"
+                  class="dropdown-item is-flex"
+                  @click="$modal.open('QrCodeModal', { accountId: account.id })"
+                >
+                  <div class="mr-5">
+                    <fa-icon class="qrcode-icon" icon="qrcode" />
+                  </div>
+                  <div class="icon is-small">{{ $gettext("Qrcode") }}</div>
+                </a>
+                <a
+                  href="#"
+                  v-if="account?.safeWalletRecipient && $config?.reconversion"
+                  class="dropdown-item is-flex"
+                  @click="
+                    $modal.open('MoneyTransferModal', {
+                      account: account,
+                      safeWallet: account?.safeWalletRecipient,
+                      refreshTransaction,
+                    })
+                  "
+                >
+                  <div class="mr-5">
+                    <fa-icon class="qrcode-icon" icon="qrcode" />
+                  </div>
+                  <div class="icon is-small ml-5">
+                    {{ $gettext("Reconversion") }}
+                  </div>
+                </a>
+                <a
+                  href="#"
+                  class="dropdown-item is-flex"
+                  @click="exportWallet()"
+                >
+                  <div class="mr-5">
+                    <fa-icon class="qrcode-icon" icon="qrcode" />
+                  </div>
+                  <div class="icon is-small ml-5">
+                    {{ $gettext("Export wallet") }}
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
         </span>
       </div>
     </div>
 
-    <div class="sub-accounts" v-if="subAccounts && subAccounts.length > 0">
+    <div
+      class="sub-accounts"
+      v-if="
+        account.subAccounts && account.subAccounts.length > 0 && showSubAccounts
+      "
+    >
       <BankAccountItem
-        v-for="account in subAccounts"
-        :bal="account.bal"
-        :curr="account.curr"
-        :backend="account.backend"
-        :type="account.type"
-        :active="account.active"
+        v-for="account in account.subAccounts"
         :isSub="true"
+        :show-actions="false"
         class="mt-4 subaccount"
         @accountSelected="$emit('accountSelected', account)"
-        :qrcode="false"
-        :id="id"
+        :account="account"
       >
         <template v-slot:name>{{ account.name() }}</template>
       </BankAccountItem>
@@ -65,24 +119,71 @@
   import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
+  import { UIError } from "../exception"
 
   @Options({
     name: "BankAccountItem",
     props: {
-      name: String,
-      bal: Number,
-      curr: String,
-      backend: String,
-      type: String,
-      active: Boolean,
-      subAccounts: Array,
+      showActions: Boolean,
       isSub: Boolean,
-      qrcode: Boolean,
-      id: Object,
+      account: Object,
+      showSubAccounts: Boolean,
+    },
+    data() {
+      return {
+        dropDownMenuState: false,
+      }
     },
     computed: {
       ...mapModuleState("lokapi", ["isMultiCurrency"]),
       ...mapGetters(["numericFormat"]),
+    },
+    unmounted() {
+      if (this.handleCloseContextualMenu) {
+        document.removeEventListener("click", this.handleCloseContextualMenu)
+        this.handleCloseContextualMenu = null
+      }
+    },
+    mounted() {
+      const $clickableDropdowns = this.$el.querySelectorAll(
+        ".dropdown:not(.is-hoverable)"
+      )
+      if ($clickableDropdowns.length > 0) {
+        $clickableDropdowns.forEach(($dropdown: any) => {
+          $dropdown
+            .querySelector(".button-contextual-menu")
+            .addEventListener("click", (event: any) => {
+              event.stopPropagation()
+              $dropdown.classList.toggle("is-active")
+            })
+        })
+        this.handleCloseContextualMenu = () => {
+          $clickableDropdowns.forEach(($el: any) => {
+            $el.classList.remove("is-active")
+          })
+        }
+        document.addEventListener("click", this.handleCloseContextualMenu)
+      }
+    },
+    methods: {
+      async exportWallet() {
+        const wallet = this.account._obj.jsonData.wallet
+        try {
+          await this.$export.download(
+            JSON.stringify(wallet, null, 4),
+            "wallet",
+            "text/dat"
+          )
+        } catch (err) {
+          throw new UIError(
+            this.$gettext("the Wallet could not be downloaded"),
+            err
+          )
+        }
+      },
+      refreshTransaction() {
+        this.$emit("refreshTransaction")
+      },
     },
   })
   export default class BankAccountItem extends Vue {}
@@ -127,5 +228,8 @@
         border: 1px #eee solid;
       }
     }
+  }
+  .dropdown-item {
+    font-size: inherit;
   }
 </style>

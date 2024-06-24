@@ -45,6 +45,7 @@
     props: {
       msg: String,
     },
+    emits: ["update:account"],
     data() {
       return {
         refreshToggle: false,
@@ -55,6 +56,9 @@
       TheTransactionList,
       TheBankAccountList,
       TheDashboardFooter,
+    },
+    mounted() {
+      this.$emit("update:account", this.account)
     },
     methods: {
       refreshTransaction() {

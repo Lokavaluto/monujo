@@ -1,5 +1,8 @@
 <template>
-  <div class="pb-3 pt-3 shadow-bottom cursor-pointer">
+  <div
+    class="p-3 shadow-bottom cursor-pointer"
+    :class="{ reconversion: isReconversion }"
+  >
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">
         {{ dateFormat(transaction.date) }}
@@ -26,9 +29,8 @@
         {{ numericFormat(parseFloat(transaction.amount)) }}
         {{ transaction.currency }}
       </h3>
-
       <h4 class="custom-card-destinataire">
-        {{ transaction.related }}
+        {{ isReconversion ? $gettext("Reconversion") : transaction.related }}
       </h4>
       <h5 class="has-text-grey-light transaction-desc">
         {{ transaction.description }}
@@ -47,6 +49,16 @@
     methods: {},
     props: {
       transaction: Object,
+    },
+    data() {
+      return {
+        isReconversion: false,
+      }
+    },
+    mounted() {
+      this.isReconversion =
+        this.transaction.parent.parent.safeWalletRecipient.name ===
+        this.transaction.related
     },
     computed: {
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
@@ -90,5 +102,10 @@
   }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .reconversion {
+    background-color: $inner-card-background-color;
+    margin-top: 3px;
+    border-radius: 1em;
   }
 </style>
