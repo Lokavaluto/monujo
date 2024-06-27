@@ -9,17 +9,14 @@
           {{ $gettext("To") }}
         </h2>
         <BankAccountItem
-          :bal="account.bal"
-          :curr="account.curr"
-          :backend="account.backend"
-          :type="account.type"
-          :active="account.active"
           class="mb-4"
+          :account="account"
+          :showSubAccounts="false"
         >
           <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>
       </div>
-      <div v-if="selectedRecipient">
+      <div v-if="selectedRecipient && transactionType !== 'reconversion'">
         <h2 class="frame3-sub-title mb-3">
           {{ $gettext("To") }}
         </h2>
@@ -34,7 +31,7 @@
           ref="amountRequested"
           type="number"
           min="0"
-          class="input is-custom"
+          class="input is-custom mb-2"
           id="send-amount-input"
           :placeholder="$gettext('e.g. 50')"
           :class="{
@@ -53,17 +50,64 @@
       <div class="notification is-danger is-light" v-if="parentErrors">
         {{ parentErrors }}
       </div>
+      <div
+        v-if="
+          transactionType !== 'reconversion' && transactionType !== 'requestPay'
+        "
+        class="is-flex mt-3"
+      >
+        <div class="switch-centered">
+          <label class="switch">
+            <input
+              type="checkbox"
+              v-model="isCopyMemo"
+              :checked="isCopyMemo"
+              @click="handleSwitch"
+            />
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="ml-2 switch-centered">
+          {{ $gettext("Copy memo") }}
+        </div>
+      </div>
       <textarea
-        @input="handleMessageInput()"
-        v-model="message"
-        class="custom-textarea textarea mt-5"
+        @input="handleSenderMemoInput()"
+        v-model="senderMemo"
+        class="custom-textarea textarea mt-1 mb-2"
         :class="{
-          'is-danger': errors.message,
+          'is-danger': errors.senderMemo,
         }"
-        :placeholder="$gettext('Add a memo (optional)')"
+        :placeholder="$gettext('Add a payment memo (optional)')"
+        ref="sendertMemo"
       ></textarea>
-      <div class="notification is-danger is-light mt-2" v-if="errors.message">
-        {{ errors.message }}
+      <div
+        class="notification is-danger is-light mt-2"
+        v-if="errors.senderMemo"
+      >
+        {{ errors.senderMemo }}
+      </div>
+      <div v-if="transactionType !== 'reconversion' && !isCopyMemo">
+        <textarea
+          @input="handleRecipientMemoInput()"
+          v-model="recipientMemo"
+          class="custom-textarea textarea mt-1 mb-1"
+          :class="{
+            'is-danger': errors.recipientMemo,
+          }"
+          :placeholder="
+            $gettext('Add a reference for the recipient (optional)')
+          "
+          ref="recipientMemo"
+          :disabled="transactionType === 'requestPay'"
+        >
+        </textarea>
+        <div
+          class="notification is-danger is-light mt-2"
+          v-if="errors.recipientMemo"
+        >
+          {{ errors.recipientMemo }}
+        </div>
       </div>
     </div>
   </div>
@@ -80,22 +124,31 @@
       RecipientItem,
       BankAccountItem,
     },
-    emits: ["update:amount", "update:message", "update:isValid"],
+    emits: [
+      "update:amount",
+      "update:senderMemo",
+      "update:recipientMemo",
+      "update:isValid",
+    ],
     props: {
       account: Object,
       selectedRecipient: Object,
       directionTransfer: String,
       config: Object,
       parentErrors: String,
+      transactionType: String,
     },
     data() {
       return {
         amount: null,
-        message: null,
+        senderMomo: null,
+        recipientMemo: null,
+        isCopyMemo: true,
         errors: {
           amountLength: true,
           amount: false,
-          message: false,
+          senderMomo: false,
+          recipientMemo: false,
         },
       }
     },
@@ -103,8 +156,12 @@
       this.setFocus("amountRequested")
       if (this.config?.amount) {
         this.amount = this.config?.amount
-        this.message = this.config?.message
+        this.senderMemo = this.config?.senderMemo
+        this.recipientMemo = this.config?.recipientMemo
         this.errors.amountLength = this.amount?.length === 0
+      }
+      if (this.transactionType === "requestPay") {
+        this.isCopyMemo = false
       }
     },
     computed: {
@@ -137,15 +194,29 @@
         this.$emit("update:amount", parseFloat(this.amount).toFixed(2))
         this.errors.amount = false
       },
-      handleMessageInput() {
-        if (this.message.length > 50) {
-          this.errors.message = this.$gettext(
+      handleSenderMemoInput() {
+        if (this.senderMemo.length > 50) {
+          this.errors.senderMemo = this.$gettext(
             "the message description is too long"
           )
           return
         }
-        this.$emit("update:message", this.message)
-        this.errors.message = false
+        if (this.isCopyMemo) {
+          this.recipientMemo = this.senderMemo
+        }
+        this.$emit("update:senderMemo", this.senderMemo)
+        this.$emit("update:recipientMemo", this.recipientMemo)
+        this.errors.senderMemo = false
+      },
+      handleRecipientMemoInput() {
+        if (this.recipientMemo.length > 50) {
+          this.errors.recipientMemo = this.$gettext(
+            "the message description is too long"
+          )
+          return
+        }
+        this.$emit("update:recipientMemo", this.recipientMemo)
+        this.errors.recipientMemo = false
       },
       setFocus(refLabel: string) {
         this.$nextTick(() => {
@@ -154,12 +225,24 @@
           ref.select()
         })
       },
+      handleSwitch(event: any) {
+        this.isCopyMemo = event.target.checked
+        if (this.isCopyMemo) {
+          this.recipientMemo = this.senderMemo
+          this.errors.recipientMemo = false
+          this.setFocus("sendertMemo")
+        } else {
+          this.recipientMemo = null
+          this.setFocus("recipientMemo")
+        }
+      },
     },
   })
   export default class MoneyTransaction extends Vue {}
 </script>
 <style lang="scss" scoped>
   @import "@/assets/custom-variables";
+  @import "@/assets/switch-prefs";
 
   .search-area {
     background: #f0faf9;
@@ -233,5 +316,10 @@
   .qrcode-container {
     width: fit-content;
     margin: auto;
+  }
+  .memo-checkbox {
+    width: 2em;
+    height: 2em;
+    margin-top: 0.7em;
   }
 </style>

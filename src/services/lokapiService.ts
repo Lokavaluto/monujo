@@ -59,6 +59,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
                 backend: userAccount.internalId.split(":")[0],
                 minCreditAmount: userAccount.parent.minCreditAmount,
                 maxCreditAmount: userAccount.parent.maxCreditAmount,
+                safeWalletRecipient: userAccount.parent.safeWalletRecipient,
                 userAccountId: userAccount.internalId,
                 currencyId: userAccount.parent.internalId,
                 active: userAccount.active, // FTM only the UserAccount is active or not
@@ -84,6 +85,8 @@ export class LokAPI extends LokAPIBrowserAbstract {
                       backend: account.parent.internalId.split(":")[0],
                       minCreditAmount: account.parent.parent.minCreditAmount,
                       maxCreditAmount: account.parent.parent.maxCreditAmount,
+                      safeWalletRecipient:
+                        account.parent.parent.safeWalletRecipient,
                       userAccountId: account.parent.internalId,
                       currencyId: account.parent.parent.internalId,
                       active: account.parent.active, // FTM only the UserAccount is active or not
