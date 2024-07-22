@@ -353,10 +353,7 @@
           }
           // ensure realBal is the correct format
           if (!(realBal.includes(".") && realBal.split(".")[1].length === 2)) {
-            throw new Error(
-              "Invalid amount returned by getBalance",
-              realBal
-            )
+            throw new Error("Invalid amount returned by getBalance", realBal)
           }
           const amount_cents = parseInt(this.amount.replace(".", ""))
           const realBal_cents = parseInt(realBal.replace(".", ""))

@@ -22,7 +22,7 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
-#: src/components/MoneyTransferModal.vue:496
+#: src/components/MoneyTransferModal.vue:493
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -55,7 +55,7 @@ msgstr "Comptes en attente de validation"
 msgid "Action"
 msgstr "Action"
 
-#: src/components/MoneyTransferModal.vue:481
+#: src/components/MoneyTransferModal.vue:478
 msgid "Add"
 msgstr "Ajouter"
 
@@ -65,7 +65,7 @@ msgstr "Ajouter"
 msgid "Add a memo (optional)"
 msgstr "Ajouter un motif de paiement (optionnel)"
 
-#: src/components/MoneyTransferModal.vue:475
+#: src/components/MoneyTransferModal.vue:472
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -150,7 +150,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "transactions"
 
-#: src/components/MoneyTransferModal.vue:446
+#: src/components/MoneyTransferModal.vue:443
 msgid ""
 "An unexpected issue occurred during the money transfer. We are sorry for the "
 "inconvenience."
@@ -181,7 +181,7 @@ msgstr ""
 "disponibles. votre transaction n'a pas été envoyée. Veuillez nous excuser "
 "pour le désagrément."
 
-#: src/views/admin/PendingAccounts.vue:199
+#: src/views/admin/PendingAccounts.vue:201
 msgid ""
 "An unexpected issue occurred while discarding the wallet account creation of "
 "user %{ name }"
@@ -227,14 +227,15 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste des "
 "comptes. Veuillez nous excuser pour le désagrément."
 
-#: src/views/admin/PendingAccounts.vue:178
+#: src/views/admin/PendingAccounts.vue:179
+#: src/views/admin/PendingAccounts.vue:216
 msgid "An unexpected issue occurred while updating the pending accounts list"
 msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
 #: src/components/MoneyCreditModal.vue:200 src/components/PendingTopUp.vue:95
-#: src/components/TheDashboardFooter.vue:103
+#: src/components/TheDashboardFooter.vue:106
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -319,7 +320,7 @@ msgstr "Confirmez votre mot de passe"
 msgid "Connection successful"
 msgstr "Connection réussie"
 
-#: src/components/MoneyTransferModal.vue:420
+#: src/components/MoneyTransferModal.vue:417
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
@@ -363,7 +364,7 @@ msgstr[1] "chiffres"
 msgid "Discard"
 msgstr "Annuler"
 
-#: src/components/MoneyTransferModal.vue:476
+#: src/components/MoneyTransferModal.vue:473
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -405,7 +406,7 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: src/components/BankAccountItem.vue:88
+#: src/components/BankAccountItem.vue:91
 msgid "Export wallet"
 msgstr "Exporter mon portefeuille"
 
@@ -463,7 +464,7 @@ msgstr "Aide"
 msgid "Import"
 msgstr "Importer"
 
-#: src/components/MoneyTransferModal.vue:377
+#: src/components/MoneyTransferModal.vue:374
 msgid "Insufficient balance"
 msgstr "Fonds disponibles insuffisants"
 
@@ -487,7 +488,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:482
+#: src/components/MoneyTransferModal.vue:479
 msgid "Later"
 msgstr "Plus tard"
 
@@ -667,7 +668,7 @@ msgstr ""
 "Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
 "pour créer votre compte."
 
-#: src/components/MoneyTransferModal.vue:415
+#: src/components/MoneyTransferModal.vue:412
 msgid ""
 "Please make sure to double check in the transaction list if this transaction "
 "appears in the near future. "
@@ -715,7 +716,7 @@ msgstr "QrCode"
 msgid "Received %{amount}"
 msgstr "%{amount} reçu"
 
-#: src/components/BankAccountItem.vue:76
+#: src/components/BankAccountItem.vue:79
 #: src/components/MoneyTransferModal.vue:155
 #: src/components/MoneyTransferModal.vue:161
 #: src/components/TransactionItem.vue:33
@@ -870,7 +871,7 @@ msgstr "Source"
 msgid "Target"
 msgstr "Destination"
 
-#: src/components/MoneyTransferModal.vue:435
+#: src/components/MoneyTransferModal.vue:432
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
@@ -899,7 +900,7 @@ msgstr ""
 msgid "The following top up requests needs to be paid or canceled"
 msgstr "Les demandes de rechargement suivantes doivent être payées ou annulées"
 
-#: src/components/MoneyTransferModal.vue:381
+#: src/components/MoneyTransferModal.vue:378
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -939,11 +940,11 @@ msgstr "Votre demande de rechargement a été supprimée"
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 
-#: src/components/MoneyTransferModal.vue:411
+#: src/components/MoneyTransferModal.vue:408
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
 
-#: src/components/BankAccountItem.vue:179
+#: src/components/BankAccountItem.vue:182
 msgid "The wallet could not be downloaded"
 msgstr "Le portefeuille n'a pas pu être téléchargé"
 
@@ -992,7 +993,7 @@ msgstr ""
 "Pour scanner un QR code, vous devez autoriser l'accès à la caméra dans la "
 "configuration de l'application."
 
-#: src/components/TheDashboardFooter.vue:64
+#: src/components/TheDashboardFooter.vue:67
 msgid "Top up"
 msgstr "Recharger"
 
@@ -1064,7 +1065,7 @@ msgstr "Opération traitée"
 msgid "Transaction sent"
 msgstr "Opération envoyée"
 
-#: src/components/MoneyTransferModal.vue:428
+#: src/components/MoneyTransferModal.vue:425
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -1138,11 +1139,11 @@ msgstr "Spécifier la langue"
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/views/admin/PendingAccounts.vue:185
+#: src/views/admin/PendingAccounts.vue:187
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
-#: src/views/admin/PendingAccounts.vue:212
+#: src/views/admin/PendingAccounts.vue:223
 msgid "User %{ name }'s account creation was discarded"
 msgstr ""
 "La demande d'activation de portefeuille de l'utilisateur %{ name } a été "
@@ -1197,7 +1198,7 @@ msgid "You can not transfer money to your own account"
 msgstr "Vous ne pouvez pas envoyer de l'argent vers votre propre compte."
 
 #: src/components/MoneyTransferModal.vue:345
-#: src/components/MoneyTransferModal.vue:451
+#: src/components/MoneyTransferModal.vue:448
 msgid ""
 "You can try again. If the issue persists, please contact your administrator."
 msgstr ""
@@ -1214,7 +1215,7 @@ msgstr ""
 "Vous pouvez essayer de recharger la page, ou contacter votre administrateur "
 "si l'erreur persiste."
 
-#: src/components/MoneyTransferModal.vue:437
+#: src/components/MoneyTransferModal.vue:434
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
