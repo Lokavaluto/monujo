@@ -44,7 +44,7 @@
             </span>
           </button>
         </div>
-        <div class="column has-text-centered mb-2">
+        <div v-if="$config?.topUp" class="column has-text-centered mb-2">
           <button
             :disabled="!account"
             class="
