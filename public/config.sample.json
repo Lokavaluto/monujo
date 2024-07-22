@@ -76,5 +76,6 @@
   "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}",
   "accountsRefreshInterval": 90,
   "transactionsRefreshInterval": 47,
-  "disableReconversion": false
+  "disableReconversion": false,
+  "disableTopUp": false
 }

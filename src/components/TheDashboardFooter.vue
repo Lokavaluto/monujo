@@ -44,7 +44,10 @@
             </span>
           </button>
         </div>
-        <div class="column has-text-centered mb-2">
+        <div
+          v-if="$config?.disableTopUp !== true"
+          class="column has-text-centered mb-2"
+        >
           <button
             :disabled="!account"
             class="

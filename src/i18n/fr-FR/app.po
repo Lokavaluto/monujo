@@ -235,7 +235,7 @@ msgstr ""
 "validation de portefeuilles"
 
 #: src/components/MoneyCreditModal.vue:200 src/components/PendingTopUp.vue:95
-#: src/components/TheDashboardFooter.vue:103
+#: src/components/TheDashboardFooter.vue:106
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -993,7 +993,7 @@ msgstr ""
 "Pour scanner un QR code, vous devez autoriser l'accès à la caméra dans la "
 "configuration de l'application."
 
-#: src/components/TheDashboardFooter.vue:64
+#: src/components/TheDashboardFooter.vue:67
 msgid "Top up"
 msgstr "Recharger"
 
