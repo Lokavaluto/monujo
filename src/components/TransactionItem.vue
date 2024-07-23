@@ -57,7 +57,7 @@
     },
     mounted() {
       this.isReconversion =
-        this.transaction.parent.parent.safeWalletRecipient.name ===
+        this.transaction.parent.parent?.safeWalletRecipient?.name ===
         this.transaction.related
     },
     computed: {
