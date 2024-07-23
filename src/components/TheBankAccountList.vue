@@ -82,13 +82,15 @@
           v-for="a in activeVirtualAccountsMiddleware"
           class="mb-5"
           :class="{ selected: a._obj.internalId === account?._obj?.internalId }"
-          @accountSelected="$emit('accountSelected', a)"
-          :show-actions="a._obj.internalId === account?._obj?.internalId"
+          @accountSelected="accounSelected"
+          :isAccountSelected="a._obj.internalId === account?._obj?.internalId"
           :account="a"
           showSubAccounts="true"
           @refreshTransaction="refreshBalanceAndTransactions()"
         >
-          <template v-slot:name>{{ a.name() }}</template>
+          <template v-slot:name>{{
+            a._obj.internalId === account?._obj?.internalId + " " + a.name()
+          }}</template>
         </BankAccountItem>
       </div>
     </div>
@@ -251,6 +253,9 @@
         this.$lokapi.clearBackendCache()
         this.$store.dispatch("setBackends")
         this.$store.dispatch("fetchAccounts")
+      },
+      accounSelected(account: any) {
+        this.$emit("accountSelected", account)
       },
     },
   })

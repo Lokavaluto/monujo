@@ -237,9 +237,11 @@
       })
     },
     mounted() {
-      if (this.$modal.args.value[0]?.safeWallet) {
-        this.isReconversion = true
-        this.toPaymentStage({ recipient: this.$modal.args.value[0].safeWallet })
+      if (this.$modal.args.value[0]?.transactionType === "reconversion") {
+        this.transactionType = "reconversion"
+        this.toPaymentStage({
+          recipient: this.$modal.args.value[0].account.safeWalletRecipient,
+        })
       } else {
         this.setFocus("searchRecipient")
         this.recipientBatchLoader.newGen("")
