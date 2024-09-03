@@ -330,15 +330,11 @@
           return
         }
         this.transferOngoing = true
-
         this.errors = false
-
-        if (this.ownSelectedAccount._obj.getGlobalBalance) {
+        if (this.ownSelectedAccount._obj.getBalance) {
           let realBal
           try {
-            realBal = await this.ownSelectedAccount._obj.getGlobalBalance(
-              "latest"
-            )
+            realBal = await this.ownSelectedAccount._obj.getBalance("latest")
           } catch (err) {
             this.$msg.error(
               this.$gettext(
@@ -351,7 +347,7 @@
                     "please contact your administrator."
                 )
             )
-            console.error("getGlobalBalance failed:", err)
+            console.error("getBalance failed:", err)
             this.transferOngoing = false
             return
           }
