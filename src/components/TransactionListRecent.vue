@@ -43,7 +43,10 @@
         @click="
           $modal.open('ConfirmPaymentModal', {
             transaction,
-            type: 'transactionDetail',
+            type:
+              account.safeWalletRecipient?.name === transaction.related
+                ? 'reconversion'
+                : 'transactionDetail',
           })
         "
       />

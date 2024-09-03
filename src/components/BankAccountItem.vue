@@ -59,7 +59,7 @@
                 </a>
                 <a
                   href="#"
-                  v-if="account?.safeWalletRecipient && $config?.reconversion"
+                  v-if="account?.safeWalletRecipient && !$config?.disableReconversion"
                   class="dropdown-item is-flex"
                   @click="
                     $modal.open('MoneyTransferModal', {

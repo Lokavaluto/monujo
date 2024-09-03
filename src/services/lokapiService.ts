@@ -52,6 +52,21 @@ export class LokAPI extends LokAPIBrowserAbstract {
               const [name, bal, curr, moneyAccounts] = vals.map(
                 (a) => (<any>a).value
               )
+
+              let _errorLogged: any[] = []
+              let getSafeWalletRecipient = (account: any) => {
+                let safeWalletRecipient
+                try {
+                  safeWalletRecipient = account.safeWalletRecipient
+                } catch (e: any) {
+                  if (!_errorLogged.includes(account.internalId)) {
+                    console.error(`Couldn't get safeWalletRecipient`, e)
+                    _errorLogged.push(account.internalId)
+                  }
+                  return null
+                }
+                return safeWalletRecipient
+              }
               const userAccountData = {
                 name,
                 bal,
@@ -59,6 +74,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
                 backend: userAccount.internalId.split(":")[0],
                 minCreditAmount: userAccount.parent.minCreditAmount,
                 maxCreditAmount: userAccount.parent.maxCreditAmount,
+                safeWalletRecipient: getSafeWalletRecipient(userAccount.parent),
                 userAccountId: userAccount.internalId,
                 currencyId: userAccount.parent.internalId,
                 active: userAccount.active, // FTM only the UserAccount is active or not
@@ -79,11 +95,14 @@ export class LokAPI extends LokAPIBrowserAbstract {
                     const [name, bal, curr] = vals.map((a) => (<any>a).value)
                     const accountData = {
                       name,
-                      bal: parseFloat(bal),
+                      bal,
                       curr,
                       backend: account.parent.internalId.split(":")[0],
                       minCreditAmount: account.parent.parent.minCreditAmount,
                       maxCreditAmount: account.parent.parent.maxCreditAmount,
+                      safeWalletRecipient: getSafeWalletRecipient(
+                        account.parent.parent
+                      ),
                       userAccountId: account.parent.internalId,
                       currencyId: account.parent.parent.internalId,
                       active: account.parent.active, // FTM only the UserAccount is active or not

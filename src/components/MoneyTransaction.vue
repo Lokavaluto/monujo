@@ -16,7 +16,7 @@
           <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>
       </div>
-      <div v-if="selectedRecipient">
+      <div v-if="selectedRecipient && !isReconversion">
         <h2 class="frame3-sub-title mb-3">
           {{ $gettext("To") }}
         </h2>
@@ -51,6 +51,7 @@
         {{ parentErrors }}
       </div>
       <textarea
+        v-if="!isReconversion"
         @input="handleMessageInput()"
         v-model="message"
         class="custom-textarea textarea mt-5"
@@ -59,7 +60,10 @@
         }"
         :placeholder="$gettext('Add a memo (optional)')"
       ></textarea>
-      <div class="notification is-danger is-light mt-2" v-if="errors.message">
+      <div
+        class="notification is-danger is-light mt-2"
+        v-if="!isReconversion && errors.message"
+      >
         {{ errors.message }}
       </div>
     </div>
