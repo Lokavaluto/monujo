@@ -98,16 +98,10 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import { mapGetters } from "vuex"
   import { UIError } from "../exception"
-
-  import BankAccountItem from "./BankAccountItem.vue"
 
   @Options({
     name: "MoneyCreditModal",
-    components: {
-      BankAccountItem,
-    },
     data() {
       return {
         creditOrderUrl: "",

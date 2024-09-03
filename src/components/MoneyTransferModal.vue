@@ -346,7 +346,10 @@
           }
           // ensure realBal is the correct format
           if (!(realBal.includes(".") && realBal.split(".")[1].length === 2)) {
-            throw new Error("Invalid amount returned by getGlobalBalance", realBal)
+            throw new Error(
+              "Invalid amount returned by getGlobalBalance",
+              realBal
+            )
           }
           const amount_cents = parseInt(this.amount.replace(".", ""))
           const realBal_cents = parseInt(realBal.replace(".", ""))
@@ -354,13 +357,15 @@
             this.ownSelectedAccount.bal.toFixed(2).replace(".", "")
           )
           // ensure we are in safe limits (we could use BigInt if needed)
-          Object.entries({amount_cents, realBal_cents, bal_cents}).forEach(([label, value]) => {
-            if (value > Number.MAX_SAFE_INTEGER)
-              throw new Error(
-                `Amount ${label.split("_")[0]} exceeds safe max values` +
-                  'for current internal representation'
-              )
-          })
+          Object.entries({ amount_cents, realBal_cents, bal_cents }).forEach(
+            ([label, value]) => {
+              if (value > Number.MAX_SAFE_INTEGER)
+                throw new Error(
+                  `Amount ${label.split("_")[0]} exceeds safe max values` +
+                    "for current internal representation"
+                )
+            }
+          )
           if (amount_cents > bal_cents) {
             this.errors = this.$gettext("Insufficient balance")
             return

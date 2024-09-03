@@ -106,16 +106,13 @@
 
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/css/index.css"
-  import BankAccountItem from "@/components/BankAccountItem.vue"
   import QrCodeVue from "qrcode.vue"
   import MoneyTransaction from "@/components/MoneyTransaction.vue"
-  import UseBatchLoading from "@/services/UseBatchLoading"
 
   @Options({
     name: "MoneyRequestModal",
     components: {
       Loading,
-      BankAccountItem,
       QrCodeVue,
       MoneyTransaction,
     },
