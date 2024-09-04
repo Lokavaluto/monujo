@@ -97,9 +97,17 @@ msgstr "Montant"
 msgid "Amount to request must be a number greater than 0"
 msgstr "Le montant demandé doit être un nombre positif"
 
+#: src/components/MoneyTransaction.vue:147
+msgid "Amount to send is too large (<= %{ maxValue })"
+msgstr "Le montant envoyé est trop grand (<= %{ maxValue})"
+
 #: src/components/MoneyTransaction.vue:129
 msgid "Amount to send must be a number greater than 0"
 msgstr "Le montant envoyé doit être un nombre positif"
+
+#: src/components/MoneyTransaction.vue:158
+msgid "Amount to send must be a number with not more than 2 decimals"
+msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales"
 
 #: src/components/MoneyTransferModal.vue:298
 msgid "An error occured while searching recipient"
@@ -910,7 +918,7 @@ msgstr ""
 msgid "The maximum top up amount must be equal or less than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 
-#: src/components/MoneyTransaction.vue:144
+#: src/components/MoneyTransaction.vue:181
 msgid "the message description is too long"
 msgstr "Le message de description est trop long"
 
@@ -1067,6 +1075,14 @@ msgstr "Opérations"
 #: src/components/MoneyTransferModal.vue:287
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le QR code."
+
+#: src/components/MoneyTransaction.vue:170
+msgid ""
+"Unexpected amount received. Try to reenter your amount, and if the problem "
+"persists please contact your administator."
+msgstr ""
+"Montant reçu inattendu. Essayez de saisir à nouveau votre montant et si le "
+"problème persiste, veuillez contacter votre administrateur."
 
 # Erreur inattendue
 #: src/services/QrCodeService.ts:93

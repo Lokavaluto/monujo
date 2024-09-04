@@ -135,6 +135,43 @@
             )
           return
         }
+
+        const amountStrRaw = this.$refs.amountRequested.value
+        const amountStr = this.amount.toString()
+        // XXXvlab: this is the maximum size of a XXXX.YY that
+        // is safely converted to a number in javascript. (We
+        // can garantee that what the user typed in is
+        // eauivalent to what we get in the code.
+        const maxValue = Number.MAX_SAFE_INTEGER / 2 ** 7
+        if (this.amount > maxValue) {
+          this.errors.amount = this.$gettext(
+            "Amount to send is too large (<= %{ maxValue })",
+            { maxValue }
+          )
+          return
+        }
+
+        const amountParts = amountStrRaw.split(".")
+
+        if (amountParts.length > 1) {
+          if (amountParts[1].length > 2) {
+            this.errors.amount = this.$gettext(
+              "Amount to send must be a number with not more than 2 decimals"
+            )
+            return
+          }
+        }
+        if (
+          !(
+            amountStr == this.$refs.amountRequested.value ||
+            (amountParts.length > 1 && /0+$/.test(amountParts[1]))
+          )
+        ) {
+          this.errors.amount = this.$gettext(
+            "Unexpected amount received. Try to reenter your amount, and if the problem persists please contact your administator."
+          )
+          return
+        }
         this.errors.amountLength = this.amount.length === 0
         this.$emit("update:amount", parseFloat(this.amount).toFixed(2))
         this.errors.amount = false
