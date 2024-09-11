@@ -160,25 +160,25 @@
             return
           }
 
-          this.$msg.error(
+          throw new UIError(
             this.$gettext(
               "An unexpected issue occurred while approving " +
                 "the wallet account creation of user %{ name }",
               {
                 name: account.name,
               }
-            )
+            ), err
           )
-          console.error(err)
         }
         this.isWaitingForValidation = false
         try {
           await this.updatePendingAccount()
         } catch (err) {
-          this.$gettext(
-            "An unexpected issue occurred while updating the pending accounts list"
+          throw new UIError(
+            this.$gettext(
+              "An unexpected issue occurred while updating the pending accounts list"
+            ), err
           )
-          console.error("Failed to update the pending accounts list", err)
         }
 
         this.$msg.success(
@@ -207,7 +207,15 @@
           )
         }
         this.isWaitingForValidation = false
-        await this.updatePendingAccount()
+        try {
+          await this.updatePendingAccount()
+        } catch (err) {
+          throw new UIError(
+            this.$gettext(
+              "An unexpected issue occurred while updating the pending accounts list"
+            ), err
+          )
+        }
         this.$msg.success(
           this.$gettext("User %{ name }'s account creation was discarded", {
             name: account.name,
