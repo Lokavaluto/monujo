@@ -181,7 +181,7 @@ msgstr ""
 "disponibles. votre transaction n'a pas été envoyée. Veuillez nous excuser "
 "pour le désagrément."
 
-#: src/views/admin/PendingAccounts.vue:199
+#: src/views/admin/PendingAccounts.vue:201
 msgid ""
 "An unexpected issue occurred while discarding the wallet account creation of "
 "user %{ name }"
@@ -227,7 +227,8 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste des "
 "comptes. Veuillez nous excuser pour le désagrément."
 
-#: src/views/admin/PendingAccounts.vue:178
+#: src/views/admin/PendingAccounts.vue:179
+#: src/views/admin/PendingAccounts.vue:216
 msgid "An unexpected issue occurred while updating the pending accounts list"
 msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
@@ -1138,11 +1139,11 @@ msgstr "Spécifier la langue"
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/views/admin/PendingAccounts.vue:185
+#: src/views/admin/PendingAccounts.vue:187
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
-#: src/views/admin/PendingAccounts.vue:212
+#: src/views/admin/PendingAccounts.vue:223
 msgid "User %{ name }'s account creation was discarded"
 msgstr ""
 "La demande d'activation de portefeuille de l'utilisateur %{ name } a été "
