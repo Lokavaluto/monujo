@@ -7,6 +7,6 @@ eval_gemfile(plugins_path) if File.exist?(plugins_path)
 
 gem "ox", "~> 2.14"
 
-gem "cocoapods", "~> 1.10"
+gem "cocoapods", "~> 1.12"
 
 gem "mini_magick"
