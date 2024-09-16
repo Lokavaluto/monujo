@@ -165,6 +165,7 @@
   import AuthPref from "@/components/AuthPref.vue"
   import PasswordField from "@/components/PasswordField.vue"
   import { mapGetters } from "vuex"
+  import { debounceMethod } from "@/utils/debounce"
   @Options({
     name: "CreateAccount",
     components: { AuthPref, PasswordField },
@@ -255,7 +256,7 @@
       saveSimplifiedAuthPref(accountAuthService: any, userConfigInput: any) {
         this.userAuthPref = [accountAuthService, userConfigInput]
       },
-      async createUserAccount() {
+      createUserAccount: debounceMethod(async function () {
         let userAccount
         try {
           userAccount = await this.$store.dispatch("createUserAccount", [
@@ -299,7 +300,7 @@
         }
         this.$store.dispatch("fetchComponentDefs")
         this.$router.push({ name: "dashboard" })
-      },
+      }),
     },
   })
   export default class CreateAccount extends Vue {}

@@ -617,7 +617,7 @@ msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 
-#: src/components/CreateAccount.vue:247
+#: src/components/CreateAccount.vue:248
 msgid "Passwords do not match"
 msgstr "Le mot de passe entré n'est pas identique"
 
@@ -688,7 +688,7 @@ msgstr ""
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
-#: src/components/CreateAccount.vue:274
+#: src/components/CreateAccount.vue:275
 #: src/components/TheBankAccountList.vue:245 src/services/lokapiService.ts:229
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
@@ -822,7 +822,7 @@ msgstr "%{amount} envoyé"
 msgid "Settings"
 msgstr "Préferences"
 
-#: src/components/CreateAccount.vue:293
+#: src/components/CreateAccount.vue:294
 msgid ""
 "Settings for simplified authentication were not saved correctly... Please "
 "try again in the \"Settings\" page or contact your administrator"
@@ -1153,11 +1153,11 @@ msgstr ""
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
-#: src/components/CreateAccount.vue:279
+#: src/components/CreateAccount.vue:280
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
 
-#: src/components/CreateAccount.vue:272
+#: src/components/CreateAccount.vue:273
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
