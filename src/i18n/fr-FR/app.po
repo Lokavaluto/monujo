@@ -687,6 +687,10 @@ msgstr "Préferences"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/components/BankAccountItem.vue:58
+msgid "Qrcode"
+msgstr "QrCode"
+
 #: src/components/ConfirmPaymentModal.vue:56
 #: src/components/ConfirmPaymentModal.vue:57
 #: src/components/ConfirmPaymentModal.vue:61

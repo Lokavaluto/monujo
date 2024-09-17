@@ -83,7 +83,7 @@
           class="mb-5"
           :class="{ selected: a._obj.internalId === account?._obj?.internalId }"
           @accountSelected="$emit('accountSelected', a)"
-          :show-actions="true"
+          :show-actions="a._obj.internalId === account?._obj?.internalId"
           :account="a"
           showSubAccounts="true"
           @refreshTransaction="refreshBalanceAndTransactions()"

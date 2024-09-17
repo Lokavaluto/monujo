@@ -25,18 +25,41 @@
         <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
           account.curr
         }}</span>
-        <span
-          :class="{
-            hide: !qrcode,
-          }"
-          class="button is-default is-pulled-right is-rounded refresh ml-2"
-        >
-          <span
-            class="icon is-small"
-            @click="$modal.open('QrCodeModal', { accountId: account.id })"
-          >
-            <fa-icon class="qrcode-icon" icon="qrcode" />
-          </span>
+        <span :class="{ hide: isSub || !showActions }">
+          <div class="dropdown" :class="{ 'is-active': dropDownMenuState }">
+            <div class="dropdown-trigger">
+              <span
+                class="
+                  button
+                  is-default
+                  button-contextual-menu
+                  is-pulled-right is-rounded
+                  refresh
+                  ml-2
+                "
+                aria-haspopup="true"
+                aria-controls="bank-account-menu"
+              >
+                <span class="icon">
+                  <fa-icon class="qrcode-icon" icon="ellipsis-v" />
+                </span>
+              </span>
+            </div>
+            <div class="dropdown-menu" id="bank-account-menu" role="menu">
+              <div class="dropdown-content">
+                <a
+                  href="#"
+                  class="dropdown-item is-flex"
+                  @click="$modal.open('QrCodeModal', { accountId: account.id })"
+                >
+                  <div class="mr-1">
+                    <fa-icon class="qrcode-icon" icon="qrcode" />
+                  </div>
+                  <div class="ml-1 is-small">{{ $gettext("Qrcode") }}</div>
+                </a>
+              </div>
+            </div>
+          </div>
         </span>
       </div>
     </div>
@@ -50,6 +73,7 @@
       <BankAccountItem
         v-for="account in account.subAccounts"
         :isSub="true"
+        :show-actions="false"
         class="mt-4 subaccount"
         @accountSelected="$emit('accountSelected', account)"
         :account="account"
@@ -81,6 +105,38 @@
     computed: {
       ...mapModuleState("lokapi", ["isMultiCurrency"]),
       ...mapGetters(["numericFormat"]),
+    },
+    unmounted() {
+      if (this.handleCloseContextualMenu) {
+        document.removeEventListener("click", this.handleCloseContextualMenu)
+        this.handleCloseContextualMenu = null
+      }
+    },
+    mounted() {
+      const $clickableDropdowns = this.$el.querySelectorAll(
+        ".dropdown:not(.is-hoverable)"
+      )
+      if ($clickableDropdowns.length > 0) {
+        $clickableDropdowns.forEach(($dropdown: any) => {
+          $dropdown
+            .querySelector(".button-contextual-menu")
+            .addEventListener("click", (event: any) => {
+              event.stopPropagation()
+              $dropdown.classList.toggle("is-active")
+            })
+        })
+        this.handleCloseContextualMenu = () => {
+          $clickableDropdowns.forEach(($el: any) => {
+            $el.classList.remove("is-active")
+          })
+        }
+        document.addEventListener("click", this.handleCloseContextualMenu)
+      }
+    },
+    methods: {
+      refreshTransaction() {
+        this.$emit("refreshTransaction")
+      },
     },
   })
   export default class BankAccountItem extends Vue {}
@@ -124,6 +180,20 @@
         opacity: 0.8;
         border: 1px #eee solid;
       }
+    }
+  }
+  .dropdown-item {
+    font-size: inherit;
+    -webkit-user-select: none; /* Chrome, Safari, Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard syntax */
+  }
+  .dropdown-menu {
+    @media screen and (max-width: 768px) {
+      position: absolute;
+      right: 0em;
+      left: unset;
     }
   }
 </style>
