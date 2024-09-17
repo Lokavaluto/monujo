@@ -58,6 +58,28 @@
                   <div class="ml-1 is-small">{{ $gettext("Qrcode") }}</div>
                 </a>
                 <a
+                  href="#"
+                  v-if="
+                    account?.safeWalletRecipient &&
+                    !$config?.disableReconversion
+                  "
+                  class="dropdown-item is-flex"
+                  @click="
+                    $modal.open('MoneyTransferModal', {
+                      account: account,
+                      safeWallet: account?.safeWalletRecipient,
+                      refreshTransaction,
+                    })
+                  "
+                >
+                  <div class="mr-1">
+                    <fa-icon class="euro-sign" icon="euro-sign" />
+                  </div>
+                  <div class="ml-1 is-small">
+                    {{ $gettext("Reconversion") }}
+                  </div>
+                </a>
+                <a
                   v-if="account.walletData"
                   href="#"
                   class="dropdown-item is-flex"

@@ -27,6 +27,7 @@ import {
   faEyeSlash,
   faEllipsisV,
   faWallet,
+  faEuroSign,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -58,7 +59,8 @@ library.add(
   faEye,
   faEyeSlash,
   faEllipsisV,
-  faWallet
+  faWallet,
+  faEuroSign
 )
 
 export default FontAwesomeIcon

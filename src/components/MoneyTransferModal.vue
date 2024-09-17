@@ -118,7 +118,7 @@
     <template v-if="$modal.step.value == 2 && selectedRecipient">
       <div class="modal-card">
         <header class="modal-card-head">
-          <span class="is-flex is-flex-shrink-0">
+          <span v-if="!isReconversion" class="is-flex is-flex-shrink-0">
             <a
               class="mr-3 is-flex"
               @click="$modal.back(), setFocus('searchRecipient')"
@@ -129,7 +129,11 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Send money") }} - 2/2
+            {{
+              isReconversion
+                ? $gettext("Money reconversion")
+                : $gettext("Send money") + " - 2/2"
+            }}
           </p>
           <button class="delete" aria-label="close" @click="close()"></button>
         </header>
@@ -140,6 +144,7 @@
             :selectedRecipient="selectedRecipient"
             :config="config"
             :parentErrors="errors"
+            :isReconversion="isReconversion"
             @update:amount="(x) => (amount = x)"
             @update:message="(x) => (message = x)"
             @update:isValid="(x) => (isValid = x)"
@@ -158,7 +163,7 @@
             @click="sendTransaction()"
             :disabled="!isValid"
           >
-            {{ $gettext("Send") }}
+            {{ isReconversion ? $gettext("Reconversion") : $gettext("Send") }}
           </button>
         </footer>
       </div>
@@ -196,6 +201,7 @@
         errors: false,
         account: null,
         isValid: false,
+        isReconversion: false,
       }
     },
     created() {
@@ -230,8 +236,13 @@
       })
     },
     mounted() {
-      this.setFocus("searchRecipient")
-      this.recipientBatchLoader.newGen("")
+      if (this.$modal.args.value[0]?.safeWallet) {
+        this.isReconversion = true
+        this.toPaymentStage({ recipient: this.$modal.args.value[0].safeWallet })
+      } else {
+        this.setFocus("searchRecipient")
+        this.recipientBatchLoader.newGen("")
+      }
     },
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),
@@ -319,15 +330,11 @@
           return
         }
         this.transferOngoing = true
-
         this.errors = false
-
-        if (this.ownSelectedAccount._obj.getGlobalBalance) {
+        if (this.ownSelectedAccount._obj.getBalance) {
           let realBal
           try {
-            realBal = await this.ownSelectedAccount._obj.getGlobalBalance(
-              "latest"
-            )
+            realBal = await this.ownSelectedAccount._obj.getBalance("latest")
           } catch (err) {
             this.$msg.error(
               this.$gettext(
@@ -340,21 +347,18 @@
                     "please contact your administrator."
                 )
             )
-            console.error("getGlobalBalance failed:", err)
+            console.error("getBalance failed:", err)
             this.transferOngoing = false
             return
           }
           // ensure realBal is the correct format
           if (!(realBal.includes(".") && realBal.split(".")[1].length === 2)) {
-            throw new Error(
-              "Invalid amount returned by getGlobalBalance",
-              realBal
-            )
+            throw new Error("Invalid amount returned by getBalance", realBal)
           }
           const amount_cents = parseInt(this.amount.replace(".", ""))
           const realBal_cents = parseInt(realBal.replace(".", ""))
           const bal_cents = parseInt(
-            this.ownSelectedAccount.bal.toFixed(2).replace(".", "")
+            this.ownSelectedAccount.bal.replace(".", "")
           )
           // ensure we are in safe limits (we could use BigInt if needed)
           Object.entries({ amount_cents, realBal_cents, bal_cents }).forEach(
@@ -460,9 +464,9 @@
         this.close()
         this.$modal.open("ConfirmPaymentModal", {
           transaction: payment,
-          type: "paymentConfirmation",
+          type: this.isReconversion ? "reconversion" : "paymentConfirmation",
         })
-        if (!this.selectedRecipient.is_favorite) {
+        if (!this.selectedRecipient.is_favorite && !this.isReconversion) {
           this.$dialog
             .show({
               title: this.$gettext("Add as favorite"),

@@ -175,7 +175,12 @@
             @click="
               $modal.open('ConfirmPaymentModal', {
                 transaction,
-                type: 'transactionDetail',
+                type:
+                  transaction.amount < 0 &&
+                  $modal.args.value[0].account.safeWalletRecipient?.name ===
+                    transaction.related
+                    ? 'reconversion'
+                    : 'transactionDetail',
               })
             "
           />
