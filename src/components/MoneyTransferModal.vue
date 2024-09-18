@@ -181,6 +181,7 @@
   import { makeUIProxyBackend } from "@/services/lokapiService"
   import MoneyTransaction from "./MoneyTransaction.vue"
   import UseBatchLoading from "@/services/UseBatchLoading"
+  import { debounceMethod } from "@/utils/debounce"
 
   @Options({
     name: "MoneyTransferModal",
@@ -191,7 +192,6 @@
     data() {
       return {
         recipientsSearchString: "",
-        transferOngoing: false,
         recipientsSearchError: false,
         selectedRecipient: null,
         ownSelectedAccount: null,
@@ -322,14 +322,7 @@
         this.message = config?.message
         this.config = config
       },
-      async sendTransaction(): Promise<void> {
-        if (this.transferOngoing) {
-          console.log(
-            "Debounced `sendTransaction()` call as another transfer is ongoing..."
-          )
-          return
-        }
-        this.transferOngoing = true
+      sendTransaction: debounceMethod(async function (): Promise<void> {
         this.errors = false
         if (this.ownSelectedAccount._obj.getBalance) {
           let realBal
@@ -348,7 +341,6 @@
                 )
             )
             console.error("getBalance failed:", err)
-            this.transferOngoing = false
             return
           }
           // ensure realBal is the correct format
@@ -387,7 +379,6 @@
                 currency: this.ownSelectedAccount.curr,
               }
             )
-            this.transferOngoing = false
             return
           }
         }
@@ -454,7 +445,6 @@
           console.error("Payment failed:", err)
           return
         } finally {
-          this.transferOngoing = false
           this.$store.commit("setRequestLoadingAfterCreds", false)
           this.$loading.hide()
         }
@@ -497,7 +487,7 @@
             })
         }
         await this.$store.dispatch("fetchAccounts")
-      },
+      }),
       wait(ms: number): Promise<void> {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
