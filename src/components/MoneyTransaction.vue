@@ -124,6 +124,7 @@
     },
     methods: {
       handleAmountInput() {
+        this.$emit("change")
         if (this.amount <= 0 || this.amount.length === 0) {
           if (this.directionTransfer === "send")
             this.errors.amount = this.$gettext(

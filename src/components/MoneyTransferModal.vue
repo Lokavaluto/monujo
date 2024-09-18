@@ -148,6 +148,7 @@
             @update:amount="(x) => (amount = x)"
             @update:message="(x) => (message = x)"
             @update:isValid="(x) => (isValid = x)"
+            @change="errors = false"
           />
         </section>
         <footer
