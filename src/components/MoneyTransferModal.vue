@@ -358,8 +358,8 @@
             ([label, value]) => {
               if (value > Number.MAX_SAFE_INTEGER)
                 throw new Error(
-                  `Amount ${label.split("_")[0]} exceeds safe max values` +
-                    "for current internal representation"
+                  `Amount '${label.split("_")[0]}' exceeds safe max values ` +
+                    `for current internal representation (value: ${value})`
                 )
             }
           )
