@@ -51,6 +51,8 @@
   import { Options, Vue } from "vue-class-component"
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { e as RequestExc } from "@0k/types-request"
+  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
     name: "ResetPassword",
@@ -62,10 +64,10 @@
       }
     },
     methods: {
-      async submit(): Promise<void> {
-        this.$loading.show()
-
-        try {
+      submit: applyDecorators(
+        [showSpinnerMethod("#reset-password")],
+        async function (this: any): Promise<void> {
+      try {
           await this.$lokapi.resetPassword(this.email.toLowerCase())
         } catch (e) {
           if (e instanceof RestExc.InvalidUserOrEmail) {
@@ -79,12 +81,10 @@
           )
           console.log(e)
           return
-        } finally {
-          this.$loading.hide()
         }
         this.success = this.$gettext("Email sent")
         this.$router.push({ name: "Login" })
-      },
+      }),
     },
   })
   export default class ResetPassword extends Vue {}
