@@ -11,7 +11,6 @@ export function debounceMethodWithOpts<
 
   const debounceFunction = function (fn: T): T {
     const promiseMapKey = Symbol("__debouncePromiseMap__")
-
     return function (
       this: ThisParameterType<T>,
       ...args: Parameters<T>
