@@ -104,6 +104,7 @@
   import { Options, Vue } from "vue-class-component"
   import { UIError } from "@/exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
+  import { debounceMethodWithOpts } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
@@ -123,7 +124,12 @@
     },
     methods: {
       validateUserAccount: applyDecorators(
-        [showSpinnerMethod(".accounts")],
+        [
+          debounceMethodWithOpts({
+            keyFn: (account: any) => account.internalId,
+          }),
+          showSpinnerMethod(".accounts"),
+        ],
         async function (this: any, account: any): Promise<void> {
           try {
             await account.validateCreation()
@@ -157,9 +163,29 @@
         }
       ),
       discardUserAccount: applyDecorators(
-        [showSpinnerMethod(".accounts")],
+        [
+          debounceMethodWithOpts({
+            keyFn: (account: any) => account.internalId,
+          }),
+          showSpinnerMethod(".accounts"),
+        ],
         async function (this: any, account: any): Promise<void> {
           this.isWaitingForValidation = false
+          try {
+            await account.discardCreateRequest()
+          } catch (err) {
+            throw new UIError(
+              this.$gettext(
+                "An unexpected issue occurred while discarding " +
+                  "the wallet account creation of user %{ name }",
+                {
+                  name: account.name,
+                }
+              ),
+              err
+            )
+          }
+
           try {
             await this.updatePendingAccount()
           } catch (err) {

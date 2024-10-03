@@ -6,7 +6,10 @@
       }"
       class="icon is-small is-default is-pulled-right is-rounded refresh"
     >
-      <fa-icon :class="{ refreshing: !!refreshAwaitingList.size }" icon="sync" />
+      <fa-icon
+        :class="{ refreshing: !!refreshAwaitingList.size }"
+        icon="sync"
+      />
     </span>
     <PendingTopUp
       :account="account"

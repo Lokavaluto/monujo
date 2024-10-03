@@ -2,7 +2,9 @@ import { createApp } from "vue"
 import Loading from "vue-loading-overlay"
 import "vue-loading-overlay/dist/css/index.css"
 
-export function showSpinnerMethod(selector: string | ((this:any, state: boolean) => void)) {
+export function showSpinnerMethod(
+  selector: string | ((this: any, state: boolean) => void)
+) {
   return function <T extends (this: any, ...args: any[]) => Promise<any>>(
     fn: T
   ): T {
@@ -48,7 +50,7 @@ export function showSpinnerMethod(selector: string | ((this:any, state: boolean)
           loadingElement.remove()
         } else {
           selector.apply(this, [false])
-        } 
+        }
       }
     } as unknown as T
   }

@@ -92,12 +92,12 @@
 
     methods: {
       getNextFilteredTransactions: applyDecorators(
-      [
-        showSpinnerMethod(function (this: any, isLoading: boolean) {
-          this.$emit("triggerTransactionRefresh", isLoading, this)
-        }),
-        showSpinnerMethod("#transaction-list-recent")
-      ],
+        [
+          showSpinnerMethod(function (this: any, isLoading: boolean) {
+            this.$emit("triggerTransactionRefresh", isLoading, this)
+          }),
+          showSpinnerMethod("#transaction-list-recent"),
+        ],
         async function (this: any): Promise<void> {
           if (!this.transactionGen) return
           let transactions = []
@@ -138,7 +138,7 @@
     watch: {
       refreshToggle: function () {
         this.resetTransactionsGen()
-      }
+      },
     },
   })
   export default class TransactionListRecent extends Vue {}

@@ -96,7 +96,7 @@
                       !errors?.passwordStrength && password.length > 0,
                   }"
                   id="password"
-                  @input="checkPasswordStrength(), checkConfirmPassword()"
+                  @input="checkPasswordStrength()"
                 />
               </p>
               <p
@@ -171,7 +171,7 @@
   import PasswordField from "@/components/PasswordField.vue"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
-
+  import { debounceMethod } from "@/utils/debounce"
   @Options({
     name: "Signup",
     components: {
@@ -200,7 +200,7 @@
     },
     methods: {
       submit: applyDecorators(
-        [showSpinnerMethod(".signup-container")],
+        [debounceMethod, showSpinnerMethod(".signup-container")],
         async function (this: any): Promise<void> {
           try {
             await this.$lokapi.signup(

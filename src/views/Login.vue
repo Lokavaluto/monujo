@@ -84,6 +84,7 @@
   import PasswordField from "@/components/PasswordField.vue"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
+  import { debounceMethod } from "@/utils/debounce"
 
   @Options({
     name: "Login",
@@ -151,7 +152,7 @@
         }
       },
       submit: applyDecorators(
-        [showSpinnerMethod(".login-container")],
+        [debounceMethod, showSpinnerMethod(".login-container")],
         async function (this: any): Promise<void> {
           try {
             await this.$store.dispatch("login", {

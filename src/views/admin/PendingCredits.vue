@@ -102,7 +102,7 @@
   import { Options, Vue } from "vue-class-component"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
-
+  import { debounceMethod, debounceMethodWithOpts } from "@/utils/debounce"
   @Options({
     name: "PendingCredits",
     data() {
@@ -122,7 +122,12 @@
     },
     methods: {
       validateCreditRequest: applyDecorators(
-        [showSpinnerMethod(".transactions")],
+        [
+          debounceMethodWithOpts({
+            keyFn: (request: any) => request.jsonData.odoo.credit_id,
+          }),
+          showSpinnerMethod(".transactions"),
+        ],
         async function (this: any, request: any): Promise<void> {
           if (this.validationRequestOngoing.includes(request)) {
             console.log("Debounced `.validateCreditRequest()` call")
@@ -166,7 +171,7 @@
         }
       ),
       updatePendingCreditRequests: applyDecorators(
-        [showSpinnerMethod(".transactions")],
+        [debounceMethod, showSpinnerMethod(".transactions")],
         async function (this: any): Promise<void> {
           try {
             await this.$store.dispatch("fetchPendingCreditRequests")

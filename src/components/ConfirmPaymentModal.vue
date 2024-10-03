@@ -175,6 +175,7 @@
   import moment from "moment"
   import { UIError } from "../exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
+  import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
@@ -276,7 +277,7 @@
         })
       },
       cancelTopUpRequest: applyDecorators(
-        [showSpinnerMethod(".modal-card-body")],
+        [debounceMethod, showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<void> {
           try {
             await this.$modal.args?.value[0].transaction.cancel()
