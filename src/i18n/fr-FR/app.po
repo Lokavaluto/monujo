@@ -1026,7 +1026,7 @@ msgstr "Détails de l'opération"
 
 #: src/components/MoneyCreditModal.vue:219
 msgid "Top-up request has been successfully created"
-msgstr "Votre compte a été créé avec succès."
+msgstr "Votre demande de rechargement a été créé avec succès."
 
 #: src/components/ConfirmPaymentModal.vue:42
 msgid "Top-up requested"
