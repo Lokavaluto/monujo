@@ -422,7 +422,7 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 
-#: src/components/TheBankAccountList.vue:224
+#: src/components/TheBankAccountList.vue:225
 msgid "Failed to read the file contents"
 msgstr "Le contenu du fichier n'a pas pu être lu"
 
@@ -693,7 +693,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:280
-#: src/components/TheBankAccountList.vue:246 src/services/lokapiService.ts:229
+#: src/components/TheBankAccountList.vue:247 src/services/lokapiService.ts:229
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -1095,7 +1095,7 @@ msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:235
+#: src/components/TheBankAccountList.vue:236
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
@@ -1113,7 +1113,7 @@ msgstr ""
 "serveur distant."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:230
+#: src/components/TheBankAccountList.vue:231
 msgid "Unexpected type of file"
 msgstr "Erreure Inattendue"
 
@@ -1159,7 +1159,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/TheBankAccountList.vue:244
+#: src/components/TheBankAccountList.vue:245
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
