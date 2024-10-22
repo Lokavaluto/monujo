@@ -699,7 +699,7 @@ msgstr "Compte nantis"
 
 #: src/router/index.ts:56
 msgid "Preferences"
-msgstr "Préferences"
+msgstr "Préférences"
 
 #: src/components/TheNavBar.vue:69
 msgid "Profile"
@@ -820,7 +820,7 @@ msgstr "%{amount} envoyé"
 
 #: src/components/TheNavBar.vue:77
 msgid "Settings"
-msgstr "Préferences"
+msgstr "Préférences"
 
 #: src/components/CreateAccount.vue:294
 msgid ""
