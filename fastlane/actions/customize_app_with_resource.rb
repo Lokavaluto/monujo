@@ -137,8 +137,8 @@ export default config;
                 dir_path = "android/app/src/main/java/#{app_id.split(".").join("/")}"
                 FileUtils.mkdir_p(dir_path)
                 FileUtils.mv(
-                  "android/app/src/main/java/com/lokavaluto/monujo/MainActivity.java",
-                  "#{dir_path}/MainActivity.java")
+                  "android/app/src/main/java/com/lokavaluto/monujo",
+                  "#{dir_path}")
                 sh "find 'android/app/src/main/java' -depth -type d -empty -delete"
 
                 ## Replace app_name in Manifest
