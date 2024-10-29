@@ -150,9 +150,9 @@ export default config;
                 strings.resources.nodes.each do |element|
                   next if ! element.respond_to? :name
                   next if ! ["app_name", "title_activity_main"].include?(element['name'])
-		          element.replace_text(app_name.gsub("'", %q(\\\')))
+                  element.replace_text(app_name.gsub("'", %q(\\\')))
                   UI.message "    Overridden #{element['name']} with: #{app_name}"
-			    end
+                end
 
                 File.write(strings_path, Ox.dump(strings))
               when :ios
