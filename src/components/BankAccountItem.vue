@@ -176,11 +176,19 @@
           `${a.curr}_${a.backend}_${a.userAccountId.split(":")[1]}.json`
         const filename = mkFilename(this.account)
         try {
-          await this.$export.download(
-            JSON.stringify(wallet, null, 4),
-            filename,
-            "text/dat"
-          )
+          if (this.$platform !== "web") {
+            await this.$export.share(
+              JSON.stringify(wallet, null, 4),
+              filename,
+              this.$gettext("Wallet export")
+            )
+          } else {
+            await this.$export.download(
+              JSON.stringify(wallet, null, 4),
+              filename,
+              "text/dat"
+            )
+          }
         } catch (err) {
           throw new UIError(
             this.$gettext("The wallet could not be downloaded"),

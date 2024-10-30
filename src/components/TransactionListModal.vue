@@ -491,11 +491,20 @@
           dateBeginStr = ""
           dateEndStr = ""
         }
+
+        const message =
+          dateBeginStr && dateEndStr
+            ? this.$gettext(
+                "Transaction list from %{ dateBeginStr } to %{ dateEndStr }",
+                {
+                  dateBeginStr,
+                  dateEndStr,
+                }
+              )
+            : this.$gettext("Transaction list")
+
         try {
-          await this.$export.share(csvContent, exportFileName, [
-            dateBeginStr,
-            dateEndStr,
-          ])
+          await this.$export.share(csvContent, exportFileName, message)
         } catch (e) {
           this.$msg.error(
             this.$gettext("Transaction list could not be downloaded")

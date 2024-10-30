@@ -49,7 +49,7 @@ class ExportService {
   public async share(
     data: any,
     fileName: string,
-    exportDates: [string, string]
+    message: string
   ): Promise<any> {
     const platform = Capacitor.getPlatform()
     if (platform !== "web") {
@@ -64,18 +64,9 @@ class ExportService {
         directory: Directory.Cache,
         path: fileName,
       })
-      const { $gettext } = this.gettext
-      const [begin, end] = exportDates
-      const message =
-        begin && end
-          ? $gettext("Transaction list from %{ begin } to %{ end }", {
-              begin,
-              end,
-            })
-          : $gettext("Transaction list")
 
       await Share.share({
-        title: message,
+        title: fileName,
         text: message,
         url: fileResult.uri,
         dialogTitle: message,
