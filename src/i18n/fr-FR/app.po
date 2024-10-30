@@ -472,7 +472,7 @@ msgstr "Fonds disponibles insuffisants"
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/views/Signup.vue:235
+#: src/views/Signup.vue:239
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
@@ -927,7 +927,7 @@ msgstr "Le message de description est trop long"
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
 
-#: src/views/Signup.vue:266
+#: src/views/Signup.vue:270
 msgid "The password and the password confirmation must be equal."
 msgstr ""
 "Le mot de passe et la confirmation du mot de passe doivent être identiques."
@@ -948,7 +948,7 @@ msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçu
 msgid "The wallet could not be downloaded"
 msgstr "Le portefeuille n'a pas pu être téléchargé"
 
-#: src/views/Signup.vue:231 src/views/Signup.vue:242 src/views/Signup.vue:249
+#: src/views/Signup.vue:235 src/views/Signup.vue:246 src/views/Signup.vue:253
 msgid "This fiels can not be empty."
 msgstr "Ce champs est obligatoire."
 
@@ -1102,7 +1102,7 @@ msgstr ""
 "identifiants"
 
 #: src/views/Login.vue:176 src/views/ResetPassword.vue:77
-#: src/views/Signup.vue:213
+#: src/views/Signup.vue:215
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -1149,7 +1149,7 @@ msgstr ""
 "La demande d'activation de portefeuille de l'utilisateur %{ name } a été "
 "annulée"
 
-#: src/views/Signup.vue:211
+#: src/views/Signup.vue:212
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
@@ -1223,7 +1223,7 @@ msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
 
-#: src/views/Signup.vue:226
+#: src/views/Signup.vue:230
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 

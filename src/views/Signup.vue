@@ -169,6 +169,7 @@
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import PasswordUtilsFactory from "@/utils/password"
   import PasswordField from "@/components/PasswordField.vue"
+  import { UIError } from "../exception"
 
   @Options({
     name: "Signup",
@@ -210,8 +211,11 @@
           if (e instanceof RestExc.UserOrEmailAlreadyTaken) {
             this.errors.email = this.$gettext("User or email already exist.")
           } else {
-            this.errors.default = this.$gettext(
-              "Unexpected issue when attempting to connect to remote server."
+            throw new UIError(
+              this.$gettext(
+                "Unexpected issue when attempting to connect to remote server."
+              ),
+              e
             )
           }
 
