@@ -135,9 +135,12 @@ export default config;
 
                 UI.message "  Rebuild directory structure"
                 dir_path = "android/app/src/main/java/#{app_id.split(".").join("/")}"
-                FileUtils.mkdir_p(dir_path)
                 FileUtils.mv(
                   "android/app/src/main/java/com/lokavaluto/monujo",
+                  "android/app/src/main/java/com/lokavaluto/monujo.tmp")
+                FileUtils.mkdir_p(dir_path)
+                FileUtils.mv(
+                  "android/app/src/main/java/com/lokavaluto/monujo.tmp",
                   "#{dir_path}")
                 sh "find 'android/app/src/main/java' -depth -type d -empty -delete"
 
