@@ -41,15 +41,9 @@
           }}
         </p>
       </div>
-      <loading
-        v-if="isWalletUploading"
-        v-model:active="isWalletUploading"
-        :can-cancel="false"
-        :is-full-page="false"
-      />
       <div
         class="notification is-default notification-no-accounts"
-        v-else-if="totalAccountsLoaded === 0"
+        v-if="totalAccountsLoaded === 0"
       >
         {{ $gettext("You don't have any wallet yet,") }}
         <router-link to="/create-account">{{
@@ -74,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
+      <div class="section-card" v-else>
         <h2 class="custom-card-title title-card">
           {{ $gettext("your accounts") }}
         </h2>
@@ -126,6 +120,8 @@
   import Loading from "vue-loading-overlay"
   import "vue-loading-overlay/dist/css/index.css"
   import { mapModuleState } from "@/utils/vuex"
+  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import applyDecorators from "@/utils/applyDecorators"
 
   let interval: any
 
@@ -204,54 +200,58 @@
       triggerFileInput(event: any) {
         event.target.parentElement.querySelector("input[type=file]").click()
       },
-      async registerWalletHandle(event: any, backendId: any) {
-        const backend = this.getBackends()[backendId]
-        const file = event.target.files[0]
-        if (!file) {
-          // This doesn't happen even if user has canceled dialog
-          // and it is not clear when this actually occurs.
-          console.log("Unexpectedly received no file. Ignoring.")
-          return
-        }
-
-        let fileContent: unknown
-        try {
-          fileContent = await readFileAsText(file)
-        } catch (err) {
-          throw new UIError(
-            this.$gettext("Failed to read the file contents"),
-            err
-          )
-        }
-        if (typeof fileContent !== "string")
-          // typeguard
-          throw new UIError(this.$gettext("Unexpected type of file"), null)
-        let fileData: any
-        try {
-          fileData = JSON.parse(fileContent)
-        } catch (err) {
-          throw new UIError(this.$gettext("Unexpected format of file"), err)
-        }
-        this.isWalletUploading = true
-        try {
-          await backend.registerWallet(fileData)
-        } catch (err: any) {
-          if (err.message === "User canceled the dialog box") {
-            return false
+      registerWalletHandle: applyDecorators(
+        [showSpinnerMethod(".accounts")],
+        async function (
+          this: any,
+          event: any,
+          backendId: any
+        ): Promise<Boolean | undefined> {
+          const backend = this.getBackends()[backendId]
+          const file = event.target.files[0]
+          if (!file) {
+            // This doesn't happen even if user has canceled dialog
+            // and it is not clear when this actually occurs.
+            console.log("Unexpectedly received no file. Ignoring.")
+            return
           }
-          throw new UIError(
-            this.$gettext("Wallet registration unexpectedly failed") +
-              " " +
-              this.$gettext("Please try again or contact your administrator"),
-            err
-          )
-        } finally {
-          this.isWalletUploading = false
+
+          let fileContent: unknown
+          try {
+            fileContent = await readFileAsText(file)
+          } catch (err) {
+            throw new UIError(
+              this.$gettext("Failed to read the file contents"),
+              err
+            )
+          }
+          if (typeof fileContent !== "string")
+            // typeguard
+            throw new UIError(this.$gettext("Unexpected type of file"), null)
+          let fileData: any
+          try {
+            fileData = JSON.parse(fileContent)
+          } catch (err) {
+            throw new UIError(this.$gettext("Unexpected format of file"), err)
+          }
+          try {
+            await backend.registerWallet(fileData)
+          } catch (err: any) {
+            if (err.message === "User canceled the dialog box") {
+              return false
+            }
+            throw new UIError(
+              this.$gettext("Wallet registration unexpectedly failed") +
+                " " +
+                this.$gettext("Please try again or contact your administrator"),
+              err
+            )
+          }
+          this.$lokapi.clearBackendCache()
+          this.$store.dispatch("setBackends")
+          this.$store.dispatch("fetchAccounts")
         }
-        this.$lokapi.clearBackendCache()
-        this.$store.dispatch("setBackends")
-        this.$store.dispatch("fetchAccounts")
-      },
+      ),
     },
   })
   export default class TheBankAccountList extends Vue {}
