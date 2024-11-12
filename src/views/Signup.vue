@@ -96,7 +96,7 @@
                       !errors?.passwordStrength && password.length > 0,
                   }"
                   id="password"
-                  @input="checkPasswordStrength(), checkConfirmPassword()"
+                  @input="checkPasswordStrength()"
                 />
               </p>
               <p
@@ -169,7 +169,9 @@
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import PasswordUtilsFactory from "@/utils/password"
   import PasswordField from "@/components/PasswordField.vue"
-
+  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import applyDecorators from "@/utils/applyDecorators"
+  import { debounceMethod } from "@/utils/debounce"
   @Options({
     name: "Signup",
     components: {
@@ -197,35 +199,34 @@
       },
     },
     methods: {
-      async submit(): Promise<void> {
-        this.$loading.show()
-        try {
-          await this.$lokapi.signup(
-            this.email.toLowerCase(),
-            this.lastName,
-            this.firstName,
-            this.password
-          )
-        } catch (e) {
-          if (e instanceof RestExc.UserOrEmailAlreadyTaken) {
-            this.errors.email = this.$gettext("User or email already exist.")
-          } else {
-            this.errors.default = this.$gettext(
-              "Unexpected issue when attempting to connect to remote server."
+      submit: applyDecorators(
+        [debounceMethod, showSpinnerMethod(".signup-container")],
+        async function (this: any): Promise<void> {
+          try {
+            await this.$lokapi.signup(
+              this.email.toLowerCase(),
+              this.lastName,
+              this.firstName,
+              this.password
             )
-          }
+          } catch (e) {
+            if (e instanceof RestExc.UserOrEmailAlreadyTaken) {
+              this.errors.email = this.$gettext("User or email already exist.")
+            } else {
+              this.errors.default = this.$gettext(
+                "Unexpected issue when attempting to connect to remote server."
+              )
+            }
 
-          console.error("Exception received upon `.signup(..)`:", e)
-          return
-        } finally {
-          this.$loading.hide()
+            console.error("Exception received upon `.signup(..)`:", e)
+            return
+          }
+          this.$router.push({ name: "Login" })
+          this.$msg.success(
+            this.$gettext("Your account has been created successfully.")
+          )
         }
-        this.$loading.hide()
-        this.$router.push({ name: "Login" })
-        this.$msg.success(
-          this.$gettext("Your account has been created successfully.")
-        )
-      },
+      ),
       checkEmail() {
         if (this.email === "") {
           this.errors.email = this.$gettext("This fiels can not be empty.")
