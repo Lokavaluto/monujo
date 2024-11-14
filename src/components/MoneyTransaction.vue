@@ -41,7 +41,7 @@
           :disabled="config?.amount && directionTransfer !== 'receive'"
         />
         <div class="amount-currency-symbol pl-2">
-          {{ selectedRecipient?.curr }}
+          {{ account?.curr }}
         </div>
       </div>
       <div class="notification is-danger is-light" v-if="errors.amount">
