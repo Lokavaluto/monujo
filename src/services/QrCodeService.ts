@@ -107,7 +107,9 @@ class QrCodeService {
     let permission
     let isPermissionGranted
     if (platform === "android") {
-      permission = await Camera.requestPermissions()
+      permission = await Camera.requestPermissions({
+        permissions: ["camera"],
+      })
       isPermissionGranted = permission.camera === "granted"
     } else if (platform === "ios") {
       permission = await BarCodeScanner.checkPermission({ force: true })
