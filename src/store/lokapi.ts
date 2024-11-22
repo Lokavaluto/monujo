@@ -1,5 +1,5 @@
 ///<reference types="@types/node"/>
-import { RestExc } from "@lokavaluto/lokapi-browser"
+import { RestExc, e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
 export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
   return {
@@ -20,7 +20,7 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
       hasCreditRequestValidationRights: false,
       pendingCreditRequests: [],
       accountsLoading: true,
-      accountsLoadingError: false,
+      accountsLoadingErrors: [],
     },
     actions: {
       async login(
@@ -53,18 +53,34 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         dispatch("fetchUserAccountValidationRights")
         dispatch("fetchCreditRequestValidationRights")
       },
-      async fetchAccounts({ commit }: any) {
+      async fetchAccounts({ commit, state }: any) {
         commit("setAccountsLoading", true)
-        commit("setAccountsLoadingError", false)
+        commit("setAccountsLoadingErrors", [])
+        lokApiService.clearBackendCache()
+        let virtualAccountTreeArtifacts
         try {
-          const { virtualAccountTree, allMoneyAccounts } =
+          virtualAccountTreeArtifacts =
             await lokApiService.buildVirtualAccountTree()
-          commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
         } catch (e: any) {
           console.error("Error fetching wallets", e)
-          commit("setAccountsLoadingError", true)
+          commit("setAccountsLoadingErrors", [e])
+          return
+        } finally {
+          commit("setAccountsLoading", false)
         }
-        commit("setAccountsLoading", false)
+        const { virtualAccountTree, allMoneyAccounts, errors } =
+          virtualAccountTreeArtifacts
+        commit("setAccounts", { virtualAccountTree, allMoneyAccounts })
+        if (errors.length > 0) {
+          const currentErrors = [...state.accountsLoadingErrors]
+          for (const error of errors) {
+            if (currentErrors.every((e: any) => e !== error)) {
+              currentErrors.push(error)
+              console.error("Exception while fetching account data", error)
+            }
+          }
+          commit("setAccountsLoadingErrors", currentErrors)
+        }
       },
       async genPaymentLink({ commit }: any, amount: number) {
         await commit("genPaymentLink", amount)
@@ -105,7 +121,24 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         }
       },
       async fetchUserAccountValidationRights({ commit, state }: any) {
-        const hasRight = await lokApiService.hasUserAccountValidationRights()
+        let hasRight
+        try {
+          hasRight = await lokApiService.hasUserAccountValidationRights()
+        } catch (err) {
+          if (!(err instanceof LokapiExc.BackendUnavailableTransient)) {
+            if (state.accountsLoadingErrors.every((e: any) => e !== err)) {
+              commit("setAccountsLoadingErrors", [
+                err,
+                ...state.accountsLoadingErrors,
+              ])
+              console.error(
+                "Exception while fetching account validation rights",
+                err
+              )
+            }
+          }
+          hasRight = false
+        }
         commit("setHasUserAccountValidationRights", hasRight)
       },
       async fetchPendingUserAccounts({ commit, state }: any) {
@@ -113,7 +146,24 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         commit("setPendingUserAccounts", accounts)
       },
       async fetchCreditRequestValidationRights({ commit, state }: any) {
-        const hasRight = await lokApiService.hasCreditRequestValidationRights()
+        let hasRight
+        try {
+          hasRight = await lokApiService.hasCreditRequestValidationRights()
+        } catch (err) {
+          if (!(err instanceof LokapiExc.BackendUnavailableTransient)) {
+            if (state.accountsLoadingErrors.every((e: any) => e !== err)) {
+              commit("setAccountsLoadingErrors", [
+                err,
+                ...state.accountsLoadingErrors,
+              ])
+              console.error(
+                "Exception while fetching credits validation rights",
+                err
+              )
+            }
+          }
+          hasRight = false
+        }
         commit("setHasCreditRequestValidationRights", hasRight)
       },
       async fetchPendingCreditRequests({ commit, state }: any) {
@@ -150,7 +200,7 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         state.hasCreditRequestValidationRights = false
         state.pendingCreditRequests = []
         state.accountsLoading = false
-        state.accountsLoadingError = false
+        state.accountsLoadingErrors = []
       },
 
       setAccounts(state: any, { virtualAccountTree, allMoneyAccounts }: any) {
@@ -191,8 +241,8 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
       setAccountsLoading(state: any, loading: boolean) {
         state.accountsLoading = loading
       },
-      setAccountsLoadingError(state: any, hasError: boolean) {
-        state.accountsLoadingError = hasError
+      setAccountsLoadingErrors(state: any, errors: any[]) {
+        state.accountsLoadingErrors = errors
       },
     },
     getters: {
@@ -233,8 +283,13 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
             .map(([backendId, _]) => backendId)
         }
       },
-      activeVirtualAccounts: (state: any) => {
+      availableVirtualAccounts: (state: any) => {
         return state.virtualAccountTree.filter((a: any) => a.active === true)
+      },
+      activeVirtualAccounts: (state: any) => {
+        return state.virtualAccountTree.filter(
+          (a: any) => a?.active === true || a instanceof Array
+        )
       },
       inactiveVirtualAccounts: (state: any) => {
         return state.virtualAccountTree.filter((a: any) => a.active === false)

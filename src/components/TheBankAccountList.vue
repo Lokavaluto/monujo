@@ -21,15 +21,17 @@
           <fa-icon :class="{ refreshing: accountsLoading }" icon="sync" />
         </span>
       </a>
-      <div class="notification is-danger is-light" v-if="accountsLoadingError">
+      <div
+        class="notification is-danger is-light"
+        v-if="accountsLoadingErrors.length > 0"
+      >
         <p class="mb-4">
           {{
             $gettext(
               "An unexpected issue occurred while loading your " +
-                "wallet information."
+                "wallet information. Sorry for the inconvenience."
             )
           }}
-          {{ $gettext("Sorry for the inconvenience.") }}
         </p>
         <p class="mb-4">
           {{
@@ -49,7 +51,9 @@
       />
       <div
         class="notification is-default notification-no-accounts"
-        v-else-if="totalAccountsLoaded === 0"
+        v-else-if="
+          accountsLoadingErrors.length == 0 && totalAccountsLoaded === 0
+        "
       >
         {{ $gettext("You don't have any wallet yet,") }}
         <router-link to="/create-account">{{
@@ -81,14 +85,21 @@
         <BankAccountItem
           v-for="a in activeVirtualAccountsMiddleware"
           class="mb-5"
-          :class="{ selected: a._obj.internalId === account?._obj?.internalId }"
+          :class="{
+            selected:
+              a?.active && a?._obj?.internalId === account?._obj?.internalId,
+          }"
           @accountSelected="$emit('accountSelected', a)"
-          :show-actions="a._obj.internalId === account?._obj?.internalId"
+          :show-actions="
+            a?.active && a._obj.internalId === account?._obj?.internalId
+          "
           :account="a"
           showSubAccounts="true"
           @refreshTransaction="refreshBalanceAndTransactions()"
         >
-          <template v-slot:name>{{ a.name() }}</template>
+          <template v-slot:name>{{
+            a.name ? a.name() : $gettext("Unavailable")
+          }}</template>
         </BankAccountItem>
       </div>
     </div>
@@ -174,19 +185,20 @@
         return this.$store.state.lokapi.virtualAccountTree.length
       },
       activeVirtualAccountsMiddleware(this: any) {
-        const accounts = this.activeVirtualAccounts
+        const accounts = this.availableVirtualAccounts
         if (!this.account && accounts.length > 0) {
           this.$emit("accountSelected", accounts[0])
         }
-        return accounts
+        return this.activeVirtualAccounts
       },
       ...mapGetters([
+        "availableVirtualAccounts",
         "activeVirtualAccounts",
         "inactiveVirtualAccounts",
         "getUnconfiguredBackends",
         "getBackends",
       ]),
-      ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingError"]),
+      ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingErrors"]),
     },
     watch: {
       getUnconfiguredBackends(newval, oldval): void {
