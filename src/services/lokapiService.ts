@@ -4,6 +4,9 @@ import cyclos from "@lokavaluto/lokapi-backend-cyclos"
 
 import { UIError } from "../exception"
 
+const isFulfilled = <T>(
+  p: PromiseSettledResult<T>
+): p is PromiseFulfilledResult<T> => p.status === "fulfilled"
 export class LokAPI extends LokAPIBrowserAbstract {
   BackendFactories = {
     comchain,
@@ -38,126 +41,147 @@ export class LokAPI extends LokAPIBrowserAbstract {
 
     const allMoneyAccounts: any[] = []
     const userAccounts = await this.getUserAccounts()
+    const errors: any[] = []
 
     await Promise.allSettled(
-      userAccounts.map(
-        (userAccount: any) =>
-          new Promise((resolve, reject) => {
-            Promise.allSettled([
-              this.getBankAccountName(userAccount),
-              userAccount.getBalance ? userAccount.getBalance() : "-.---,--",
-              userAccount.getSymbol ? userAccount.getSymbol() : "",
-              userAccount.getAccounts(),
-            ]).then((vals) => {
-              const [name, bal, curr, moneyAccounts] = vals.map(
-                (a) => (<any>a).value
+      userAccounts.map(async (userAccount: any) => {
+        let vals: any[] = await Promise.allSettled([
+          this.getBankAccountName(userAccount),
+          userAccount.getBalance
+            ? userAccount.getBalance().catch((e: any) => e)
+            : "-.---,--",
+          userAccount.getSymbol
+            ? userAccount.getSymbol().catch((e: any) => e)
+            : "",
+          userAccount.getAccounts().catch((e: any) => e),
+        ])
+        vals = vals.filter(isFulfilled).map((v) => v.value)
+        const exceptions = vals.filter((v) => v instanceof Error)
+        const accountErrors: any[] = []
+        if (exceptions.length > 0) {
+          for (const exception of exceptions) {
+            if (accountErrors.every((e) => e !== exception)) {
+              accountErrors.push(exception)
+            }
+            if (exception instanceof e.BackendUnavailableTransient) {
+              continue
+            }
+            if (errors.every((e) => e !== exception)) {
+              errors.push(exception)
+            }
+          }
+          replaceOrInsertElt(
+            virtualAccountTree,
+            accountErrors,
+            (a: any) => false,
+            sortOrder
+          )
+          return
+        }
+        const [name, bal, curr, moneyAccounts] = vals
+        const _errorLogged: any[] = []
+        const getSafeWalletRecipient = (account: any) => {
+          let safeWalletRecipient
+          try {
+            safeWalletRecipient = account.safeWalletRecipient
+          } catch (e: any) {
+            if (!_errorLogged.includes(account.internalId)) {
+              console.error(`Couldn't get safeWalletRecipient`, e)
+              _errorLogged.push(account.internalId)
+            }
+            return null
+          }
+          return safeWalletRecipient
+        }
+        let getWalletData = (account: any) => {
+          let walletData
+          try {
+            walletData = account.jsonData.wallet
+          } catch (e: any) {
+            return null
+          }
+          return walletData
+        }
+        const userAccountData = {
+          name,
+          bal,
+          curr,
+          backend: userAccount.internalId.split(":")[0],
+          minCreditAmount: userAccount.parent.minCreditAmount,
+          maxCreditAmount: userAccount.parent.maxCreditAmount,
+          walletData: getWalletData(userAccount),
+          safeWalletRecipient: getSafeWalletRecipient(userAccount.parent),
+          userAccountId: userAccount.internalId,
+          currencyId: userAccount.parent.internalId,
+          active: userAccount.active, // FTM only the UserAccount is active or not
+          id: userAccount.internalId,
+          subAccounts: [],
+          _obj: userAccount,
+          creditable: false,
+        }
+
+        // Query moneyAccounts in this userAccount
+        const r = Promise.allSettled(
+          (moneyAccounts || []).map(async (account: any) => {
+            const vals = await Promise.allSettled([
+              this.getBankAccountName(account),
+              account.getBalance(),
+              account.getSymbol(),
+            ])
+            const [name, bal, curr] = vals.map((a) => (<any>a).value)
+            const accountData = {
+              name,
+              bal,
+              curr,
+              backend: account.parent.internalId.split(":")[0],
+              minCreditAmount: account.parent.parent.minCreditAmount,
+              maxCreditAmount: account.parent.parent.maxCreditAmount,
+              walletData: getWalletData(account.parent),
+              safeWalletRecipient: getSafeWalletRecipient(
+                account.parent.parent
+              ),
+              userAccountId: account.parent.internalId,
+              currencyId: account.parent.parent.internalId,
+              active: account.parent.active, // FTM only the UserAccount is active or not
+              id: account.internalId,
+              _obj: account,
+              creditable: account.creditable,
+            }
+            allMoneyAccounts.push(accountData)
+            if (moneyAccounts.length === 1) {
+              // replace the userAccount
+              accountData.id = userAccountData.id
+              replaceOrInsertElt(
+                virtualAccountTree,
+                accountData,
+                (a: any) => userAccountData.id === a.id,
+                sortOrder
               )
-              let _errorLogged: any[] = []
-              let getSafeWalletRecipient = (account: any) => {
-                let safeWalletRecipient
-                try {
-                  safeWalletRecipient = account.safeWalletRecipient
-                } catch (e: any) {
-                  if (!_errorLogged.includes(account.internalId)) {
-                    console.error(`Couldn't get safeWalletRecipient`, e)
-                    _errorLogged.push(account.internalId)
-                  }
-                  return null
-                }
-                return safeWalletRecipient
-              }
-              let getWalletData = (account: any) => {
-                let walletData
-                try {
-                  walletData = account.jsonData.wallet
-                } catch (e: any) {
-                  return null
-                }
-                return walletData
-              }
-              const userAccountData = {
-                name,
-                bal,
-                curr,
-                backend: userAccount.internalId.split(":")[0],
-                minCreditAmount: userAccount.parent.minCreditAmount,
-                maxCreditAmount: userAccount.parent.maxCreditAmount,
-                walletData: getWalletData(userAccount),
-                safeWalletRecipient: getSafeWalletRecipient(userAccount.parent),
-                userAccountId: userAccount.internalId,
-                currencyId: userAccount.parent.internalId,
-                active: userAccount.active, // FTM only the UserAccount is active or not
-                id: userAccount.internalId,
-                subAccounts: [],
-                _obj: userAccount,
-                creditable: false,
-              }
-
-              // Query moneyAccounts in this userAccount
-              Promise.allSettled(
-                (moneyAccounts || []).map((account: any) =>
-                  Promise.allSettled([
-                    this.getBankAccountName(account),
-                    account.getBalance(),
-                    account.getSymbol(),
-                  ]).then((vals) => {
-                    const [name, bal, curr] = vals.map((a) => (<any>a).value)
-                    const accountData = {
-                      name,
-                      bal,
-                      curr,
-                      backend: account.parent.internalId.split(":")[0],
-                      minCreditAmount: account.parent.parent.minCreditAmount,
-                      maxCreditAmount: account.parent.parent.maxCreditAmount,
-                      walletData: getWalletData(account.parent),
-                      safeWalletRecipient: getSafeWalletRecipient(
-                        account.parent.parent
-                      ),
-                      userAccountId: account.parent.internalId,
-                      currencyId: account.parent.parent.internalId,
-                      active: account.parent.active, // FTM only the UserAccount is active or not
-                      id: account.internalId,
-                      _obj: account,
-                      creditable: account.creditable,
-                    }
-                    allMoneyAccounts.push(accountData)
-                    if (moneyAccounts.length === 1) {
-                      // replace the userAccount
-                      accountData.id = userAccountData.id
-                      replaceOrInsertElt(
-                        virtualAccountTree,
-                        accountData,
-                        (a: any) => userAccountData.id === a.id,
-                        sortOrder
-                      )
-                    } else {
-                      // Add as subAccounts
-                      replaceOrInsertElt(
-                        userAccountData.subAccounts,
-                        accountData,
-                        (a: any) => account.internalId === a.id,
-                        sortOrder
-                      )
-                    }
-                  })
-                )
-              ).then((r) => {
-                if (moneyAccounts && moneyAccounts.length !== 1) {
-                  replaceOrInsertElt(
-                    virtualAccountTree,
-                    userAccountData,
-                    (a: any) => userAccount.internalId === a.id,
-                    sortOrder
-                  )
-                }
-
-                resolve(r)
-              }) // Resolving for all info related to this userAccount
-            })
+            } else {
+              // Add as subAccounts
+              replaceOrInsertElt(
+                userAccountData.subAccounts,
+                accountData,
+                (a: any) => account.internalId === a.id,
+                sortOrder
+              )
+            }
           })
-      )
+        )
+
+        if (moneyAccounts && moneyAccounts.length !== 1) {
+          replaceOrInsertElt(
+            virtualAccountTree,
+            userAccountData,
+            (a: any) => userAccount.internalId === a.id,
+            sortOrder
+          )
+        }
+
+        return r // Resolving for all info related to this userAccount
+      })
     )
-    return { virtualAccountTree, allMoneyAccounts }
+    return { virtualAccountTree, allMoneyAccounts, errors }
   }
 
   async getUserAccountsRequiringUnlock() {

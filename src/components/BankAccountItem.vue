@@ -1,21 +1,27 @@
 <template>
-  <div class="account" :class="{ active: account.active }">
+  <div class="account" :class="{ active: account?.active }">
     <div
       class="custom-inner-card card px-5 py-2 is-flex"
       @click="$emit('accountSelected', account)"
     >
       <div class="is-size-5 is-flex-grow-1">
         <slot name="name">default name</slot>
+        <div
+          v-if="isTemporarilyUnavailable"
+          class="account-backend is-size-6 error-msg"
+        >
+          {{ $gettext("Temporarily unavailable - please refresh") }}
+        </div>
         <div v-if="isMultiCurrency && !isSub" class="account-backend is-size-6">
-          {{ account.backend }}
+          {{ account?.backend }}
         </div>
       </div>
       <div class="is-align-items-center is-flex">
         <span
           class="is-size-6-mobile is-size-4-tablet account-bal"
-          v-if="account.active"
+          v-if="account?.active"
         >
-          {{ numericFormat(parseFloat(account.bal)) }}
+          {{ numericFormat(parseFloat(account?.bal)) }}
         </span>
         <span
           class="is-size-6-mobile is-size-4-tablet account-bal inactive"
@@ -23,7 +29,7 @@
           >-.---,--</span
         >
         <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
-          account.curr
+          account?.curr || "--"
         }}</span>
         <span :class="{ hide: isSub || !showActions }">
           <div class="dropdown" :class="{ 'is-active': dropDownMenuState }">
@@ -50,7 +56,9 @@
                 <a
                   href="#"
                   class="dropdown-item is-flex"
-                  @click="$modal.open('QrCodeModal', { accountId: account.id })"
+                  @click="
+                    $modal.open('QrCodeModal', { accountId: account?.id })
+                  "
                 >
                   <div class="mr-1">
                     <fa-icon class="qrcode-icon" icon="qrcode" />
@@ -80,7 +88,7 @@
                   </div>
                 </a>
                 <a
-                  v-if="account.walletData"
+                  v-if="account?.walletData"
                   href="#"
                   class="dropdown-item is-flex"
                   @click="exportWallet()"
@@ -102,7 +110,9 @@
     <div
       class="sub-accounts"
       v-if="
-        account.subAccounts && account.subAccounts.length > 0 && showSubAccounts
+        account?.subAccounts &&
+        account.subAccounts.length > 0 &&
+        showSubAccounts
       "
     >
       <BankAccountItem
@@ -124,6 +134,7 @@
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
   import { UIError } from "../exception"
+  import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
   @Options({
     name: "BankAccountItem",
@@ -139,6 +150,13 @@
       }
     },
     computed: {
+      isTemporarilyUnavailable() {
+        return (
+          this.account instanceof Array &&
+          this.account.length == 1 &&
+          this.account[0] instanceof LokapiExc.BackendUnavailableTransient
+        )
+      },
       ...mapModuleState("lokapi", ["isMultiCurrency"]),
       ...mapGetters(["numericFormat"]),
     },
@@ -257,5 +275,8 @@
       right: 0em;
       left: unset;
     }
+  }
+  .error-msg {
+    font-style: italic;
   }
 </style>

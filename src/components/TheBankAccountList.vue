@@ -21,15 +21,17 @@
           <fa-icon :class="{ refreshing: accountsLoading }" icon="sync" />
         </span>
       </a>
-      <div class="notification is-danger is-light" v-if="accountsLoadingError">
+      <div
+        class="notification is-danger is-light"
+        v-if="accountsLoadingErrors.length > 0"
+      >
         <p class="mb-4">
           {{
             $gettext(
               "An unexpected issue occurred while loading your " +
-                "wallet information."
+                "wallet information. Sorry for the inconvenience."
             )
           }}
-          {{ $gettext("Sorry for the inconvenience.") }}
         </p>
         <p class="mb-4">
           {{
@@ -49,7 +51,9 @@
       />
       <div
         class="notification is-default notification-no-accounts"
-        v-else-if="totalAccountsLoaded === 0"
+        v-else-if="
+          accountsLoadingErrors.length == 0 && totalAccountsLoaded === 0
+        "
       >
         {{ $gettext("You don't have any wallet yet,") }}
         <router-link to="/create-account">{{
@@ -74,10 +78,22 @@
           </div>
         </div>
       </div>
-      <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
+      <div
+        class="section-card"
+        v-else-if="
+          activeVirtualAccounts.length + unavailableVirtualAccounts.length !== 0
+        "
+      >
         <h2 class="custom-card-title title-card">
           {{ $gettext("your accounts") }}
         </h2>
+        <BankAccountItem
+          v-for="a in unavailableVirtualAccounts"
+          class="mb-5"
+          :account="a"
+        >
+          <template v-slot:name>{{ $gettext("Unavailable") }}</template>
+        </BankAccountItem>
         <BankAccountItem
           v-for="a in activeVirtualAccountsMiddleware"
           class="mb-5"
@@ -181,12 +197,13 @@
         return accounts
       },
       ...mapGetters([
+        "unavailableVirtualAccounts",
         "activeVirtualAccounts",
         "inactiveVirtualAccounts",
         "getUnconfiguredBackends",
         "getBackends",
       ]),
-      ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingError"]),
+      ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingErrors"]),
     },
     watch: {
       getUnconfiguredBackends(newval, oldval): void {
