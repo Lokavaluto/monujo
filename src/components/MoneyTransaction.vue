@@ -16,7 +16,7 @@
           <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>
       </div>
-      <div v-if="selectedRecipient && !isReconversion">
+      <div v-if="selectedRecipient && transactionType !== 'reconversion'">
         <h2 class="frame3-sub-title mb-3">
           {{ $gettext("To") }}
         </h2>
@@ -31,7 +31,7 @@
           ref="amountRequested"
           type="number"
           min="0"
-          class="input is-custom"
+          class="input is-custom mb-2"
           id="send-amount-input"
           :placeholder="$gettext('e.g. 50')"
           :class="{
@@ -50,21 +50,68 @@
       <div class="notification is-danger is-light" v-if="parentErrors">
         {{ parentErrors }}
       </div>
-      <textarea
-        v-if="!isReconversion"
-        @input="handleMessageInput()"
-        v-model="message"
-        class="custom-textarea textarea mt-5"
-        :class="{
-          'is-danger': errors.message,
-        }"
-        :placeholder="$gettext('Add a memo (optional)')"
-      ></textarea>
-      <div
-        class="notification is-danger is-light mt-2"
-        v-if="!isReconversion && errors.message"
-      >
-        {{ errors.message }}
+      <div class="memo-container" v-if="transactionType !== 'reconversion'">
+        <textarea
+          @input="handleSenderMemoInput()"
+          v-model="senderMemo"
+          class="custom-textarea textarea mt-1 mb-2"
+          :class="{
+            'is-danger': errors.senderMemo,
+          }"
+          :placeholder="$gettext('Add a payment memo (optional)')"
+          ref="sendertMemo"
+        ></textarea>
+        <div
+          class="notification is-danger is-light mt-2"
+          v-if="errors.senderMemo"
+        >
+          {{ errors.senderMemo }}
+        </div>
+        <div
+          v-if="
+            !['requestPay', 'createRequestPay'].includes(transactionType) &&
+            hasSplitMemoSupport
+          "
+        >
+          <div class="is-flex mt-3">
+            <div class="switch-centered">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  v-model="isCopyMemo"
+                  :checked="isCopyMemo"
+                  @click="handleSwitch"
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <div class="ml-2 switch-centered">
+              {{ $gettext("Use the same memo for the recipient") }}
+            </div>
+          </div>
+          <div v-if="!isCopyMemo">
+            <textarea
+              @input="handleRecipientMemoInput()"
+              v-model="recipientMemo"
+              class="custom-textarea textarea mt-1 mb-1"
+              :class="{
+                'is-danger': errors.recipientMemo,
+              }"
+              :placeholder="
+                $gettext('Add a reference for the recipient (optional)')
+              "
+              ref="recipientMemo"
+              :disabled="transactionType === 'requestPay'"
+            >
+            </textarea>
+            <div
+              class="notification is-danger is-light mt-2"
+              v-if="errors.recipientMemo"
+            >
+              {{ errors.recipientMemo }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -81,23 +128,32 @@
       RecipientItem,
       BankAccountItem,
     },
-    emits: ["update:amount", "update:message", "update:isValid"],
+    emits: [
+      "update:amount",
+      "update:senderMemo",
+      "update:recipientMemo",
+      "update:isValid",
+    ],
     props: {
       account: Object,
       selectedRecipient: Object,
       directionTransfer: String,
       config: Object,
       parentErrors: String,
-      isReconversion: Boolean,
+      transactionType: String,
     },
     data() {
       return {
         amount: null,
-        message: null,
+        senderMemo: null,
+        recipientMemo: null,
+        isCopyMemo: true,
+        backend: null,
         errors: {
           amountLength: true,
           amount: false,
-          message: false,
+          senderMemo: false,
+          recipientMemo: false,
         },
       }
     },
@@ -105,11 +161,24 @@
       this.setFocus("amountRequested")
       if (this.config?.amount) {
         this.amount = this.config?.amount
-        this.message = this.config?.message
+        this.senderMemo = this.config?.senderMemo
+        this.recipientMemo = this.config?.recipientMemo
         this.errors.amountLength = this.amount?.length === 0
+      }
+      if (this.transactionType === "requestPay") {
+        this.isCopyMemo = false
+      }
+      if (this.account._obj?.getTransactions) {
+        this.backend = this.account._obj.parent
+      } else {
+        this.backend = this.account._obj.parent.parent
       }
     },
     computed: {
+      hasSplitMemoSupport() {
+        return this.backend?.splitMemoSupport && !this.$config.disableSplitMemo
+      },
+
       isValid() {
         return Object.values(this.errors).every((value) => value === false)
       },
@@ -177,15 +246,30 @@
         this.$emit("update:amount", parseFloat(this.amount).toFixed(2))
         this.errors.amount = false
       },
-      handleMessageInput() {
-        if (this.message.length > 50) {
-          this.errors.message = this.$gettext(
+      handleSenderMemoInput() {
+        if (this.senderMemo.length > 50) {
+          this.errors.senderMemo = this.$gettext(
             "the message description is too long"
           )
           return
         }
-        this.$emit("update:message", this.message)
-        this.errors.message = false
+        if (this.isCopyMemo || !this.hasSplitMemoSupport) {
+          this.recipientMemo = this.senderMemo
+          this.$emit("update:recipientMemo", this.recipientMemo)
+        }
+
+        this.$emit("update:senderMemo", this.senderMemo)
+        this.errors.senderMemo = false
+      },
+      handleRecipientMemoInput() {
+        if (this.recipientMemo.length > 50) {
+          this.errors.recipientMemo = this.$gettext(
+            "the message description is too long"
+          )
+          return
+        }
+        this.$emit("update:recipientMemo", this.recipientMemo)
+        this.errors.recipientMemo = false
       },
       setFocus(refLabel: string) {
         this.$nextTick(() => {
@@ -194,12 +278,25 @@
           ref.select()
         })
       },
+      handleSwitch(event: any) {
+        this.isCopyMemo = event.target.checked
+        if (this.isCopyMemo) {
+          this.recipientMemo = this.senderMemo
+          this.errors.recipientMemo = false
+          this.setFocus("sendertMemo")
+        } else {
+          this.recipientMemo = null
+          this.setFocus("recipientMemo")
+        }
+        this.$emit("update:recipientMemo", this.recipientMemo)
+      },
     },
   })
   export default class MoneyTransaction extends Vue {}
 </script>
 <style lang="scss" scoped>
   @import "@/assets/custom-variables";
+  @import "@/assets/switch-prefs";
 
   .search-area {
     background: #f0faf9;
@@ -273,5 +370,10 @@
   .qrcode-container {
     width: fit-content;
     margin: auto;
+  }
+  .memo-checkbox {
+    width: 2em;
+    height: 2em;
+    margin-top: 0.7em;
   }
 </style>
