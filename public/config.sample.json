@@ -77,5 +77,6 @@
   "accountsRefreshInterval": 90,
   "transactionsRefreshInterval": 47,
   "disableReconversion": false,
-  "disableTopUp": false
+  "disableTopUp": false,
+  "disableSplitMemo": false
 }

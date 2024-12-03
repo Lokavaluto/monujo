@@ -118,7 +118,7 @@
     <template v-if="$modal.step.value == 2 && selectedRecipient">
       <div class="modal-card">
         <header class="modal-card-head">
-          <span v-if="!isReconversion" class="is-flex is-flex-shrink-0">
+          <span v-if="!transactionType" class="is-flex is-flex-shrink-0">
             <a
               class="mr-3 is-flex"
               @click="$modal.back(), setFocus('searchRecipient')"
@@ -130,7 +130,7 @@
           </span>
           <p class="modal-card-title is-title-shrink">
             {{
-              isReconversion
+              transactionType === "reconversion"
                 ? $gettext("Money reconversion")
                 : $gettext("Send money") + " - 2/2"
             }}
@@ -144,9 +144,10 @@
             :selectedRecipient="selectedRecipient"
             :config="config"
             :parentErrors="errors"
-            :isReconversion="isReconversion"
+            :transactionType="transactionType"
             @update:amount="(x) => (amount = x)"
-            @update:message="(x) => (message = x)"
+            @update:senderMemo="(x) => (senderMemo = x)"
+            @update:recipientMemo="(x) => (recipientMemo = x)"
             @update:isValid="(x) => (isValid = x)"
             @change="errors = false"
           />
@@ -164,7 +165,11 @@
             @click="sendTransaction()"
             :disabled="!isValid"
           >
-            {{ isReconversion ? $gettext("Reconversion") : $gettext("Send") }}
+            {{
+              transactionType === "reconversion"
+                ? $gettext("Reconversion")
+                : $gettext("Send")
+            }}
           </button>
         </footer>
       </div>
@@ -198,11 +203,12 @@
         ownSelectedAccount: null,
         amount: null,
         config: {},
-        message: null,
+        senderMemo: null,
+        recipientMemo: null,
         errors: false,
         account: null,
         isValid: false,
-        isReconversion: false,
+        transactionType: null,
       }
     },
     created() {
@@ -238,7 +244,7 @@
     },
     mounted() {
       if (this.$modal.args.value[0]?.safeWallet) {
-        this.isReconversion = true
+        this.transactionType = "reconversion"
         this.toPaymentStage({ recipient: this.$modal.args.value[0].safeWallet })
       } else {
         this.setFocus("searchRecipient")
@@ -289,6 +295,8 @@
           return
         }
         let recipient
+
+        this.transactionType = "requestPay"
         try {
           recipient = await this.selectedBackend.searchRecipientByUri({
             rp,
@@ -303,7 +311,8 @@
         await this.toPaymentStage({
           recipient,
           amount: resultData.amount,
-          message: resultData.message,
+          senderMemo: resultData.senderMemo,
+          recipientMemo: resultData.recipientMemo,
         })
       },
       handleClickRecipient(recipient: any): void {
@@ -320,7 +329,8 @@
         this.$modal.next()
         this.errors = false
         this.amount = config?.amount || null
-        this.message = config?.message
+        this.sendermemo = config?.senderMemo
+        this.recipientMemo = config?.recipientMemo
         this.config = config
       },
       sendTransaction: debounceMethod(async function (): Promise<void> {
@@ -390,7 +400,8 @@
         try {
           payment = await this.selectedRecipient.transfer(
             this.amount.toString(),
-            this.message
+            this.senderMemo,
+            this.recipientMemo
           )
         } catch (err: any) {
           if (err instanceof LokapiExc.PaymentConfirmationMissing) {
@@ -455,9 +466,15 @@
         this.close()
         this.$modal.open("ConfirmPaymentModal", {
           transaction: payment,
-          type: this.isReconversion ? "reconversion" : "paymentConfirmation",
+          type:
+            this.transactionType === "reconversion"
+              ? "reconversion"
+              : "paymentConfirmation",
         })
-        if (!this.selectedRecipient.is_favorite && !this.isReconversion) {
+        if (
+          !this.selectedRecipient.is_favorite &&
+          this.transactionType !== "reconversion"
+        ) {
           this.$dialog
             .show({
               title: this.$gettext("Add as favorite"),
