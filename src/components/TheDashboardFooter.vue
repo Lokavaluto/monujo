@@ -88,6 +88,7 @@
           label,
           {
             refreshTransaction: this.refreshTransaction,
+            refreshAccounts: this.refreshAccounts,
             ...args[0],
           },
           ...args.slice(1)
@@ -95,6 +96,9 @@
       },
       refreshTransaction() {
         this.$emit("refreshTransaction")
+      },
+      refreshAccounts() {
+        this.$emit("refreshAccounts")
       },
       async topUpModalOpen() {
         await this.$nextTick(async function (this: any) {

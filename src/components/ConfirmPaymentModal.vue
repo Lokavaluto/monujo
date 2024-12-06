@@ -293,9 +293,8 @@
         )
       },
       async closeAndRefresh(): Promise<void> {
-        await this.$lokapi.flushBackendCaches()
-        await this.$store.dispatch("fetchAccounts")
         this.$modal.args?.value[0].refreshTransaction()
+        this.$modal.args?.value[0].refreshAccounts(true)
         this.$modal.close()
       },
     },

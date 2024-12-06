@@ -62,6 +62,10 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
           virtualAccountTreeArtifacts =
             await lokApiService.buildVirtualAccountTree()
         } catch (e: any) {
+          if (e instanceof LokapiExc.CanceledOperation) {
+            // ignoring as we probably are requestion a new fetchAccount
+            return
+          }
           console.error("Error fetching wallets", e)
           commit("setAccountsLoadingErrors", [e])
           return

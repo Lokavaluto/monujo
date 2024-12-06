@@ -9,16 +9,23 @@
 
     <div class="active" v-if="!accountsLoading || activeVirtualAccounts.length">
       <a
-        @click="refreshBalanceAndTransactions"
+        @click="refreshBalance(), refreshTransactions()"
         :title="$gettext('Refresh balance and transaction list')"
         class="button is-default is-pulled-right is-rounded refresh"
-        :class="{ 'active-refresh-button': accountsLoading }"
+        :class="{
+          'active-refresh-button': accountsLoading || isAccountsLoadingRetrying,
+        }"
       >
-        <span :class="{ hide: accountsLoading }">
+        <span :class="{ hide: accountsLoading || isAccountsLoadingRetrying }">
           {{ $gettext("Refresh") }}
         </span>
         <span class="icon is-small">
-          <fa-icon :class="{ refreshing: accountsLoading }" icon="sync" />
+          <fa-icon
+            :class="{
+              refreshing: accountsLoading || isAccountsLoadingRetrying,
+            }"
+            icon="sync"
+          />
         </span>
       </a>
       <div
@@ -95,7 +102,8 @@
           "
           :account="a"
           showSubAccounts="true"
-          @refreshTransaction="refreshBalanceAndTransactions()"
+          @refreshTransaction="refreshTransactions()"
+          @refreshAccounts="refreshBalance"
         >
           <template v-slot:name>{{
             a.name ? a.name() : $gettext("Unavailable")
@@ -153,10 +161,12 @@
     props: {
       loaded: Boolean,
       account: Object,
+      refreshToggle: Boolean,
     },
     data() {
       return {
         isWalletUploading: false,
+        isAccountsLoadingRetrying: false,
       }
     },
     components: {
@@ -206,11 +216,61 @@
           this.form.accountBackend = newval[0]
         }
       },
+      async refreshToggle(newval, oldVal): Promise<void> {
+        await this.refreshBalance(true)
+      },
     },
     methods: {
-      refreshBalanceAndTransactions() {
+      async refreshBalance(retryUntilChange = false) {
+        const balanceOrig = this.account.bal
+        const startTime = Date.now()
+        let maxDuration = 0
+        if (retryUntilChange) {
+          maxDuration = 3000
+        }
+        this.isAccountsLoadingRetrying = true
+        const checkBalance = async () => {
+          try {
+            await this.$lokapi.flushBackendCaches()
+            await this.$store.dispatch("setBackends")
+            await this.$store.dispatch("fetchAccounts")
+          } catch (error) {
+            this.$msg.error(
+              this.$gettext("Failed to refresh account informations")
+            )
+            return
+          }
+          // fetch account in new account list
+          const account = this.activeVirtualAccountsMiddleware.find(
+            (a: any) =>
+              a?.active && a?._obj.internalId === this.account?._obj.internalId
+          )
+          const balance = account.bal
+
+          if (balanceOrig === balance) {
+            if (Date.now() - startTime < maxDuration) {
+              setTimeout(checkBalance, 200)
+              return
+            } else {
+              if (retryUntilChange) {
+                console.log(
+                  `Expected balance change didn't happen in imparted ${
+                    maxDuration / 1000
+                  }s`
+                )
+              }
+            }
+          }
+          // XXXvlab: enforce the selection of the account as sometimes
+          // it seems it doesn't register the new account
+          this.$emit("accountSelected", account)
+          this.isAccountsLoadingRetrying = false
+        }
+        await checkBalance()
+      },
+      async refreshTransactions() {
         this.$lokapi.flushBackendCaches()
-        this.$store.dispatch("fetchAccounts")
+        await this.$store.dispatch("fetchAccounts")
         this.$emit("refreshTransaction")
       },
       triggerFileInput(event: any) {

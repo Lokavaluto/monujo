@@ -463,8 +463,10 @@
 
         this.errors = false
         this.$modal.args.value[0].refreshTransaction()
+        this.$modal.args.value[0].refreshAccounts(true)
         this.close()
-        this.$modal.open("ConfirmPaymentModal", {
+
+        await this.$modal.open("ConfirmPaymentModal", {
           transaction: payment,
           type:
             this.transactionType === "reconversion"
@@ -504,7 +506,6 @@
               )
             })
         }
-        await this.$store.dispatch("fetchAccounts")
       }),
       wait(ms: number): Promise<void> {
         return new Promise((resolve, reject) => {
