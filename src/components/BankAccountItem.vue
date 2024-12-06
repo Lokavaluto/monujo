@@ -77,6 +77,7 @@
                       account: account,
                       safeWallet: account?.safeWalletRecipient,
                       refreshTransaction,
+                      refreshAccounts,
                     })
                   "
                 >
@@ -216,6 +217,9 @@
       },
       refreshTransaction() {
         this.$emit("refreshTransaction")
+      },
+      refreshAccounts(retryUntilChange: boolean) {
+        this.$emit("refreshAccounts", retryUntilChange)
       },
     },
   })

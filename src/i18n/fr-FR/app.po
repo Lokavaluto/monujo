@@ -22,7 +22,7 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
-#: src/components/MoneyTransferModal.vue:501
+#: src/components/MoneyTransferModal.vue:503
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -55,7 +55,7 @@ msgstr "Comptes en attente de validation"
 msgid "Action"
 msgstr "Action"
 
-#: src/components/MoneyTransferModal.vue:486
+#: src/components/MoneyTransferModal.vue:488
 msgid "Add"
 msgstr "Ajouter"
 
@@ -69,7 +69,7 @@ msgstr "Ajouter un motif de paiement (optionnel)"
 msgid "Add a reference for the recipient (optional)"
 msgstr "Ajouter une référence du paiement pour le destinataire"
 
-#: src/components/MoneyTransferModal.vue:480
+#: src/components/MoneyTransferModal.vue:482
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -117,7 +117,7 @@ msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
-#: src/services/lokapiService.ts:252
+#: src/services/lokapiService.ts:256
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
@@ -129,7 +129,7 @@ msgstr ""
 "Une erreur s'est produite lors de la suppression de la demande de "
 "rechargement, veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/services/lokapiService.ts:256
+#: src/services/lokapiService.ts:260
 msgid "An error occurred while removing from favorites."
 msgstr "Une erreur est survenue lors de la suppression du favori."
 
@@ -217,7 +217,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste de "
 "demandes de crédits. Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheBankAccountList.vue:30
+#: src/components/TheBankAccountList.vue:37
 msgid ""
 "An unexpected issue occurred while loading your wallet information. Sorry "
 "for the inconvenience."
@@ -241,7 +241,7 @@ msgstr ""
 "validation de portefeuilles"
 
 #: src/components/MoneyCreditModal.vue:200 src/components/PendingTopUp.vue:95
-#: src/components/TheDashboardFooter.vue:106
+#: src/components/TheDashboardFooter.vue:110
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -296,7 +296,7 @@ msgstr ""
 "Choisissez le mot de passe de votre portefeuille. Il est différent de celui "
 "de votre compte utilisateur et ne concerne que votre portefeuille."
 
-#: src/components/TheBankAccountList.vue:60
+#: src/components/TheBankAccountList.vue:67
 msgid "click here"
 msgstr "cliquez ici"
 
@@ -370,7 +370,7 @@ msgstr[1] "chiffres"
 msgid "Discard"
 msgstr "Annuler"
 
-#: src/components/MoneyTransferModal.vue:481
+#: src/components/MoneyTransferModal.vue:483
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -412,7 +412,7 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: src/components/BankAccountItem.vue:100
+#: src/components/BankAccountItem.vue:101
 msgid "Export wallet"
 msgstr "Exporter mon portefeuille"
 
@@ -424,8 +424,13 @@ msgstr "Échec de l'authentification. Veuillez ré-essayer."
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 
-#: src/components/TheBankAccountList.vue:234
+#: src/components/TheBankAccountList.vue:294
 msgid "Failed to read the file contents"
+msgstr "Le contenu du fichier n'a pas pu être lu"
+
+#: src/components/TheBankAccountList.vue:239
+#, fuzzy
+msgid "Failed to refresh account informations"
 msgstr "Le contenu du fichier n'a pas pu être lu"
 
 #: src/views/Signup.vue:49
@@ -465,8 +470,8 @@ msgstr "Les codes PINs entrés ne sont pas identiques"
 msgid "Help"
 msgstr "Aide"
 
-#: src/components/TheBankAccountList.vue:68
-#: src/components/TheBankAccountList.vue:72
+#: src/components/TheBankAccountList.vue:75
+#: src/components/TheBankAccountList.vue:79
 msgid "Import"
 msgstr "Importer"
 
@@ -494,7 +499,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:487
+#: src/components/MoneyTransferModal.vue:489
 msgid "Later"
 msgstr "Plus tard"
 
@@ -593,7 +598,7 @@ msgstr "Ok"
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
-#: src/components/TheBankAccountList.vue:65
+#: src/components/TheBankAccountList.vue:72
 msgid "Or import an existing wallet"
 msgstr "Ou importer un fichier portefeuille"
 
@@ -698,7 +703,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le QR code ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:275
-#: src/components/TheBankAccountList.vue:257 src/services/lokapiService.ts:262
+#: src/components/TheBankAccountList.vue:317 src/services/lokapiService.ts:266
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -725,7 +730,7 @@ msgstr "QrCode"
 msgid "Received %{amount}"
 msgstr "%{amount} reçu"
 
-#: src/components/BankAccountItem.vue:87
+#: src/components/BankAccountItem.vue:88
 #: src/components/MoneyTransferModal.vue:107
 #: src/components/MoneyTransferModal.vue:108
 #: src/components/MoneyTransferModal.vue:148
@@ -748,7 +753,8 @@ msgid "Reconversion sent"
 msgstr "Reconversion envoyée"
 
 #: src/components/TheBankAccountList.vue:13
-#: src/components/TheBankAccountList.vue:18
+#: src/components/TheBankAccountList.vue:15
+#: src/components/TheBankAccountList.vue:20
 msgid "Refresh"
 msgstr "Rafraîchir"
 
@@ -897,7 +903,7 @@ msgstr "Momentanément indisponible - veuillez rafraîchir"
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/TheBankAccountList.vue:115
+#: src/components/TheBankAccountList.vue:123
 msgid ""
 "The accounts listed below have been subjected to a creation request. Once "
 "the creation request is approved, these accounts will become usable."
@@ -963,7 +969,7 @@ msgstr "Votre demande de rechargement a été traitée avec succès"
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
 
-#: src/components/BankAccountItem.vue:212
+#: src/components/BankAccountItem.vue:213
 msgid "The wallet could not be downloaded"
 msgstr "Le portefeuille n'a pas pu être téléchargé"
 
@@ -1002,7 +1008,7 @@ msgstr "à"
 msgid "To"
 msgstr "Vers"
 
-#: src/components/TheBankAccountList.vue:57
+#: src/components/TheBankAccountList.vue:64
 msgid "to create one"
 msgstr "pour en créer un"
 
@@ -1096,13 +1102,13 @@ msgstr "Opérations"
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le QR code."
 
-#: src/components/TheBankAccountList.vue:101
-#: src/components/TheBankAccountList.vue:62
-#: src/components/TheBankAccountList.vue:63
-#: src/components/TheBankAccountList.vue:68
-#: src/components/TheBankAccountList.vue:76
-#: src/components/TheBankAccountList.vue:87
-#: src/components/TheBankAccountList.vue:92
+#: src/components/TheBankAccountList.vue:109
+#: src/components/TheBankAccountList.vue:66
+#: src/components/TheBankAccountList.vue:67
+#: src/components/TheBankAccountList.vue:72
+#: src/components/TheBankAccountList.vue:83
+#: src/components/TheBankAccountList.vue:94
+#: src/components/TheBankAccountList.vue:99
 msgid "Unavailable"
 msgstr "Indisponible"
 
@@ -1120,7 +1126,7 @@ msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:245
+#: src/components/TheBankAccountList.vue:305
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
@@ -1138,7 +1144,7 @@ msgstr ""
 "serveur distant."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:240
+#: src/components/TheBankAccountList.vue:300
 msgid "Unexpected type of file"
 msgstr "Erreure Inattendue"
 
@@ -1194,11 +1200,11 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/BankAccountItem.vue:201
+#: src/components/BankAccountItem.vue:202
 msgid "Wallet export"
 msgstr "Export du portefeuille"
 
-#: src/components/TheBankAccountList.vue:255
+#: src/components/TheBankAccountList.vue:315
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
@@ -1242,7 +1248,7 @@ msgstr ""
 "Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre "
 "administrateur."
 
-#: src/components/TheBankAccountList.vue:38
+#: src/components/TheBankAccountList.vue:45
 #: src/components/TransactionListRecent.vue:28
 #: src/views/admin/PendingAccounts.vue:27 src/views/admin/PendingCredits.vue:27
 msgid ""
@@ -1256,7 +1262,7 @@ msgstr ""
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
-#: src/components/TheBankAccountList.vue:53
+#: src/components/TheBankAccountList.vue:60
 msgid "You don't have any wallet yet,"
 msgstr "Vous n'avez pas encore de portefeuille,"
 
@@ -1264,7 +1270,7 @@ msgstr "Vous n'avez pas encore de portefeuille,"
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 
-#: src/components/TheBankAccountList.vue:83
+#: src/components/TheBankAccountList.vue:90
 msgid "your accounts"
 msgstr "vos comptes"
 
@@ -1272,6 +1278,6 @@ msgstr "vos comptes"
 msgid "Your credentials will be saved after your next login"
 msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 
-#: src/components/TheBankAccountList.vue:111
+#: src/components/TheBankAccountList.vue:119
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
