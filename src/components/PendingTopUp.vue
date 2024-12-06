@@ -107,10 +107,14 @@
           type: "topup",
           account: this.account,
           refreshTransaction: this.refreshTransaction,
+          refreshAccounts: this.refreshAccounts,
         })
       },
       refreshTransaction() {
         this.$emit("refreshTransaction")
+      },
+      refreshAccounts() {
+        this.$emit("refreshAccounts")
       },
     },
     watch: {

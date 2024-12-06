@@ -35,11 +35,15 @@ export class LokAPI extends LokAPIBrowserAbstract {
   _buildVirtualAccountTreePromise: Promise<any> | null = null
   buildVirtualAccountTree() {
     if (!this._buildVirtualAccountTreePromise) {
-      this._buildVirtualAccountTreePromise =
-        this._buildVirtualAccountTree().then((r) => {
+      this._buildVirtualAccountTreePromise = (async () => {
+        let r
+        try {
+          r = await this._buildVirtualAccountTree()
+        } finally {
           this._buildVirtualAccountTreePromise = null
-          return r
-        })
+        }
+        return r
+      })()
     }
     return this._buildVirtualAccountTreePromise
   }

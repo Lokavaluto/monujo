@@ -7,14 +7,16 @@
             <TheBankAccountList
               @refreshTransaction="refreshTransaction"
               @accountSelected="accountSelected"
+              :refreshToggle="refreshAccountsToggle"
               :account="account"
             />
           </div>
           <div class="column is-half">
             <TheTransactionList
               v-if="account"
+              @refreshAccounts="refreshAccounts"
               @refreshTransaction="refreshTransaction"
-              :refreshToggle="refreshToggle"
+              :refreshToggle="refreshTransactionsToggle"
               :account="account"
               :key="account"
             />
@@ -26,6 +28,7 @@
           <TheDashboardFooter
             :account="account"
             @refreshTransaction="refreshTransaction"
+            @refreshAccounts="refreshAccounts"
           />
         </div>
       </div>
@@ -47,7 +50,8 @@
     },
     data() {
       return {
-        refreshToggle: false,
+        refreshTransactionsToggle: false,
+        refreshAccountsToggle: false,
         account: null,
       }
     },
@@ -59,10 +63,13 @@
     methods: {
       refreshTransaction() {
         // This change is propagated through props to children components
-        this.refreshToggle = !this.refreshToggle
+        this.refreshTransactionsToggle = !this.refreshTransactionsToggle
+      },
+      refreshAccounts() {
+        // This change is propagated through props to children components
+        this.refreshAccountsToggle = !this.refreshAccountsToggle
       },
       accountSelected(account: any) {
-        if (account?._obj?.internalId === this.account?._obj?.internalId) return
         this.account = account
       },
     },

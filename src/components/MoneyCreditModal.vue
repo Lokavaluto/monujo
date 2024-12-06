@@ -166,8 +166,8 @@
       async newLinkTab() {
         // This to ensure we are left with 2 decimals only
         this.amount = this.amount.toFixed(2)
-        const { refreshTransaction, account } = this.$modal.args.value[0]
-
+        const { refreshTransaction, refreshAccounts, account } =
+          this.$modal.args.value[0]
         let url: any = null
         try {
           if (!this.selectedCreditAccount) {
@@ -225,6 +225,7 @@
           transaction: pendingTopUp[0],
           type: "topup",
           refreshTransaction,
+          refreshAccounts,
         })
       },
       setFocus() {
