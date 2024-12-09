@@ -51,6 +51,8 @@
   import { Options, Vue } from "vue-class-component"
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { e as RequestExc } from "@0k/types-request"
+  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
     name: "ResetPassword",
@@ -62,29 +64,28 @@
       }
     },
     methods: {
-      async submit(): Promise<void> {
-        this.$loading.show()
-
-        try {
-          await this.$lokapi.resetPassword(this.email.toLowerCase())
-        } catch (e) {
-          if (e instanceof RestExc.InvalidUserOrEmail) {
+      submit: applyDecorators(
+        [showSpinnerMethod("#reset-password")],
+        async function (this: any): Promise<void> {
+          try {
+            await this.$lokapi.resetPassword(this.email.toLowerCase())
+          } catch (e) {
+            if (e instanceof RestExc.InvalidUserOrEmail) {
+              this.fail = this.$gettext(
+                "Unknown user or email. Please make sure to provide a valid username or email."
+              )
+              return
+            }
             this.fail = this.$gettext(
-              "Unknown user or email. Please make sure to provide a valid username or email."
+              "Unexpected issue when attempting to connect to remote server."
             )
+            console.log(e)
             return
           }
-          this.fail = this.$gettext(
-            "Unexpected issue when attempting to connect to remote server."
-          )
-          console.log(e)
-          return
-        } finally {
-          this.$loading.hide()
+          this.success = this.$gettext("Email sent")
+          this.$router.push({ name: "Login" })
         }
-        this.success = this.$gettext("Email sent")
-        this.$router.push({ name: "Login" })
-      },
+      ),
     },
   })
   export default class ResetPassword extends Vue {}
