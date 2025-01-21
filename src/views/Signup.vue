@@ -172,7 +172,7 @@
   import { UIError } from "../exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
-
+  import { debounceMethod } from "@/utils/debounce"
   @Options({
     name: "Signup",
     components: {
@@ -201,7 +201,7 @@
     },
     methods: {
       submit: applyDecorators(
-        [showSpinnerMethod(".signup-container")],
+        [debounceMethod, showSpinnerMethod(".signup-container")],
         async function (this: any): Promise<void> {
           try {
             await this.$lokapi.signup(

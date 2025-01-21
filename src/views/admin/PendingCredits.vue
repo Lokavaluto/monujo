@@ -104,7 +104,7 @@
   import { UIError } from "@/exception"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
-
+  import { debounceMethod, debounceMethodWithOpts } from "@/utils/debounce"
   @Options({
     name: "PendingCredits",
     data() {
@@ -123,15 +123,22 @@
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
     },
     methods: {
-      async validateCreditRequest(request: any): Promise<void> {
-        if (this.validationRequestOngoing.includes(request)) {
-          console.log("Debounced `.validateCreditRequest()` call")
-          return
+      validateCreditRequest: applyDecorators(
+        [
+          debounceMethodWithOpts({
+            keyFn: (request: any) => request.jsonData.odoo.credit_id,
+          }),
+        ],
+        async function (this: any, request: any): Promise<void> {
+          if (this.validationRequestOngoing.includes(request)) {
+            console.log("Debounced `.validateCreditRequest()` call")
+            return
+          }
+          this.validationRequestOngoing.push(request)
+          await this.validateRequest(request)
+          await this.updatePendingCreditRequests
         }
-        this.validationRequestOngoing.push(request)
-        await this.validateRequest(request)
-        await this.updatePendingCreditRequests
-      },
+      ),
       validateRequest: applyDecorators(
         [
           showSpinnerMethod(function (

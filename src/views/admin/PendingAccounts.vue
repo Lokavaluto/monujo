@@ -107,6 +107,7 @@
   import { Options, Vue } from "vue-class-component"
   import { UIError } from "@/exception"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
+  import { debounceMethodWithOpts } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
@@ -125,10 +126,17 @@
       },
     },
     methods: {
-      async validateUserAccount(account: any): Promise<void> {
-        await this.validateCreation(account)
-        await this.updatePendingAccount()
-      },
+      validateUserAccount: applyDecorators(
+        [
+          debounceMethodWithOpts({
+            keyFn: (account: any) => account.internalId,
+          }),
+        ],
+        async function (this: any, account: any): Promise<void> {
+          await this.validateCreation(account)
+          await this.updatePendingAccount()
+        }
+      ),
       validateCreation: applyDecorators(
         [
           showSpinnerMethod(function (
@@ -169,10 +177,18 @@
           )
         }
       ),
-      async discardUserAccount(account: any): Promise<void> {
-        await this.discardCreation(account)
-        await this.updatePendingAccount()
-      },
+
+      discardUserAccount: applyDecorators(
+        [
+          debounceMethodWithOpts({
+            keyFn: (account: any) => account.internalId,
+          }),
+        ],
+        async function (this: any, account: any): Promise<void> {
+          await this.discardCreation(account)
+          await this.updatePendingAccount()
+        }
+      ),
       discardCreation: applyDecorators(
         [
           showSpinnerMethod(function (

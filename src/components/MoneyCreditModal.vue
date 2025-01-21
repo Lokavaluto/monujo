@@ -100,6 +100,7 @@
   import { Options, Vue } from "vue-class-component"
   import { UIError } from "../exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
+  import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
@@ -166,7 +167,7 @@
             : false
       },
       newLinkTab: applyDecorators(
-        [showSpinnerMethod(".modal-card-body")],
+        [debounceMethod, showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<void> {
           // This to ensure we are left with 2 decimals only
           this.amount = this.amount.toFixed(2)

@@ -286,6 +286,7 @@
 
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
+  import { debounceMethod } from "@/utils/debounce"
 
   @Options({
     name: "TransactionListModal",
@@ -472,7 +473,7 @@
         }
       },
       downloadCsvFile: applyDecorators(
-        [showSpinnerMethod(".custom-card-transactions")],
+        [debounceMethod, showSpinnerMethod(".custom-card-transactions")],
         async function (this: any): Promise<void> {
           //this.selectExportLoader = 1
           let csvComponents

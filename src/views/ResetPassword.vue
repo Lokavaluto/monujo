@@ -51,8 +51,9 @@
   import { Options, Vue } from "vue-class-component"
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import { e as RequestExc } from "@0k/types-request"
-  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
+  import { showSpinnerMethod } from "@/utils/showSpinner"
 
   @Options({
     name: "ResetPassword",
@@ -65,7 +66,7 @@
     },
     methods: {
       submit: applyDecorators(
-        [showSpinnerMethod("#reset-password")],
+        [debounceMethod, showSpinnerMethod("#reset-password")],
         async function (this: any): Promise<void> {
           try {
             await this.$lokapi.resetPassword(this.email.toLowerCase())
