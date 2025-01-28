@@ -45,7 +45,7 @@
           </button>
         </div>
         <div
-          v-if="$config?.disableTopUp !== true"
+          v-if="$config?.disableTopUp !== true && account?.isTopUpAllowed"
           class="column has-text-centered mb-2"
         >
           <button
@@ -76,11 +76,15 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { UIError } from "../exception"
+  import { mapModuleState } from "@/utils/vuex"
 
   @Options({
     name: "TheDashboardFooter",
     props: {
       account: Object,
+    },
+    computed: {
+      ...mapModuleState("lokapi", ["userProfile"]),
     },
     methods: {
       async openModal(label: string, ...args: any[]) {

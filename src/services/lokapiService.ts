@@ -128,6 +128,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
           currencyId: userAccount.parent.internalId,
           active: userAccount.active, // FTM only the UserAccount is active or not
           id: userAccount.internalId,
+          isTopUpAllowed: userAccount.isTopUpAllowed,
           subAccounts: [],
           _obj: userAccount,
           creditable: false,
@@ -157,6 +158,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
               currencyId: account.parent.parent.internalId,
               active: account.parent.active, // FTM only the UserAccount is active or not
               id: account.internalId,
+              isTopUpAllowed: userAccount.isTopUpAllowed,
               _obj: account,
               creditable: account.creditable,
             }

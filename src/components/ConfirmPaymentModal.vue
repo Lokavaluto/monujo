@@ -141,7 +141,10 @@
         <div
           v-if="
             $modal.args?.value[0].type == 'topup' &&
-            !$modal.args?.value[0].transaction.paid
+            !$modal.args?.value[0].transaction.paid &&
+            $modal.args?.value[0].account.isTopUpAllowed &&
+            $modal.args?.value[0].transaction?.requester?.id ===
+              this.userProfile.id
           "
           class="ml-2 mr-2"
         >
@@ -171,6 +174,7 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import { mapModuleState } from "@/utils/vuex"
   import { mapGetters } from "vuex"
   import moment from "moment"
   import { UIError } from "../exception"
@@ -179,6 +183,7 @@
     name: "ConfirmPaymentModal",
     computed: {
       ...mapGetters(["numericFormat"]),
+      ...mapModuleState("lokapi", ["userProfile"]),
       dateFormat() {
         return moment(
           this.$modal.args?.value[0].transaction.date.toString()
