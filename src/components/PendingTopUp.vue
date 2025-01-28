@@ -3,10 +3,10 @@
     <div
       class="section-card"
       id="pending-top-up-list"
-      v-if="pendingUnpaidTopUpList.length"
+      v-if="pendingMyUnpaidTopUpList.length"
     >
       <h2 class="custom-card-title title-card">
-        {{ $gettext("Unpaid top-up requests") }}
+        {{ $gettext("My unpaid top-up requests") }}
       </h2>
       <p class="top-up-info">
         {{
@@ -14,7 +14,28 @@
         }}
       </p>
       <TransactionItem
-        v-for="topup in pendingUnpaidTopUpList"
+        v-for="topup in pendingMyUnpaidTopUpList"
+        :key="topup"
+        class="pending-top-up-item"
+        :transaction="topup"
+        @click="openModal(topup)"
+      />
+    </div>
+    <div
+      class="section-card"
+      id="pending-top-up-list"
+      v-if="pendingOthersUnpaidTopUpList.length"
+    >
+      <h2 class="custom-card-title title-card">
+        {{ $gettext("Pending top-up requests") }}
+      </h2>
+      <p class="top-up-info">
+        {{
+          $gettext("The following top up requests await payment by third party")
+        }}
+      </p>
+      <TransactionItem
+        v-for="topup in pendingOthersUnpaidTopUpList"
         :key="topup"
         class="pending-top-up-item"
         :transaction="topup"
@@ -46,6 +67,7 @@
   import { mapGetters } from "vuex"
   import { Options, Vue } from "vue-class-component"
 
+  import { mapModuleState } from "@/utils/vuex"
   import TransactionItem from "./TransactionItem.vue"
   import { UIError } from "../exception"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
@@ -73,9 +95,23 @@
       pendingPaidTopUpList() {
         return this.pendingTopUpList.filter((topup: any) => topup.paid)
       },
-      pendingUnpaidTopUpList() {
-        return this.pendingTopUpList.filter((topup: any) => !topup.paid)
+      pendingMyUnpaidTopUpList() {
+        return this.pendingTopUpList.filter(
+          (topup: any) =>
+            !topup.paid &&
+            (topup.requester === undefined ||
+              topup.requester.id === this.userProfile.id)
+        )
       },
+      pendingOthersUnpaidTopUpList() {
+        return this.pendingTopUpList.filter(
+          (topup: any) =>
+            !topup.paid &&
+            topup.requester !== undefined &&
+            topup.requester.id !== this.userProfile.id
+        )
+      },
+      ...mapModuleState("lokapi", ["userProfile"]),
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
     },
 

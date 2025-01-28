@@ -1,7 +1,7 @@
 <template>
   <div
     class="p-3 shadow-bottom cursor-pointer"
-    :class="{ reconversion: isReconversion }"
+    :class="{ highlight: transaction.isReconversion || transaction.isTopUp }"
   >
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">
@@ -29,10 +29,23 @@
         {{ numericFormat(parseFloat(transaction.amount)) }}
         {{ transaction.currency }}
       </h3>
-      <h4 class="custom-card-destinataire">
-        {{ isReconversion ? $gettext("Reconversion") : transaction.related }}
+
+      <h5
+        v-if="transaction.isTopUp || transaction.isReconversion"
+        class="custom-card-type"
+      >
+        {{
+          transaction.isTopUp ? $gettext("Top-up") : $gettext("Reconversion")
+        }}
+      </h5>
+      <h4 v-else class="custom-card-destinataire">
+        {{ transaction.related }}
       </h4>
-      <h5 class="has-text-grey-light transaction-desc">
+
+      <h5
+        v-if="!transaction.isTopUp && !transaction.isReconversion"
+        class="has-text-grey-light transaction-desc"
+      >
         {{ transaction.description }}
       </h5>
     </div>
@@ -41,6 +54,7 @@
 
 <script lang="ts">
   import { mapGetters } from "vuex"
+  import { mapModuleState } from "@/utils/vuex"
   import { Options, Vue } from "vue-class-component"
 
   @Options({
@@ -50,27 +64,9 @@
     props: {
       transaction: Object,
     },
-    data() {
-      return {
-        isReconversion: false,
-      }
-    },
-    mounted() {
-      let safeWalletRecipient
-      try {
-        safeWalletRecipient = this.transaction.parent.parent.safeWalletRecipient
-      } catch (e: any) {
-        // XXXvlab: already reported this error in service/lokapiService.ts
-        // console.error(e.message)
-        this.isReconversion = false
-        return
-      }
-      this.isReconversion =
-        this.transaction.amount < 0 &&
-        safeWalletRecipient?.name === this.transaction.related
-    },
     computed: {
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
+      ...mapModuleState("lokapi", ["userProfile"]),
     },
   })
   export default class TransactionItem extends Vue {}
@@ -99,6 +95,13 @@
     line-height: 1.5rem;
     width: auto !important;
   }
+  .custom-card-type {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    font-style: italic;
+    opacity: 0.8;
+    width: auto !important;
+  }
   .custom-line-separator {
     display: flex;
     height: 2px;
@@ -112,7 +115,7 @@
   .cursor-pointer {
     cursor: pointer;
   }
-  .reconversion {
+  .highlight {
     background-color: $inner-card-background-color;
     margin-top: 3px;
     border-radius: 1em;
