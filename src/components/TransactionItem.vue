@@ -43,7 +43,10 @@
         {{ isReconversion ? $gettext("Reconversion") : transaction.related }}
       </h4>
 
-      <h5 class="has-text-grey-light transaction-desc">
+      <h5
+        v-if="!transaction.isTopUp"
+        class="has-text-grey-light transaction-desc"
+      >
         {{ transaction.description }}
       </h5>
     </div>
