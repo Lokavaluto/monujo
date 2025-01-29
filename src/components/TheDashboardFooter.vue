@@ -117,7 +117,10 @@
               err
             )
           }
-          pendingTopUp = pendingTopUp.filter((topup: any) => !topup.paid)
+          pendingTopUp = pendingTopUp.filter(
+            (topup: any) =>
+              !topup.paid && topup.requester.id === this.userProfile.id
+          )
           if (pendingTopUp?.length === 0) {
             await this.openModal("MoneyCreditModal", {
               account: this.account,
