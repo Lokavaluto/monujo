@@ -1,7 +1,7 @@
 <template>
   <div
     class="p-3 shadow-bottom cursor-pointer"
-    :class="{ reconversion: isReconversion }"
+    :class="{ highlighted: isReconversion || transaction.isTopUp }"
   >
     <div class="is-pulled-right">
       <h5 class="custom-card-destinataire has-text-right">
@@ -112,7 +112,7 @@
   .cursor-pointer {
     cursor: pointer;
   }
-  .reconversion {
+  .highlighted {
     background-color: $inner-card-background-color;
     margin-top: 3px;
     border-radius: 1em;
