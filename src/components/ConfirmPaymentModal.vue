@@ -93,37 +93,58 @@
             }}
           </p>
           <div v-if="$modal.args?.value[0].type !== 'reconversion'">
-            <h2
-              v-if="$modal.args?.value[0].type == 'topup'"
-              class="frame3-sub-title"
-            >
-              {{
-                $modal.args?.value[0].transaction.paid
-                  ? $gettext(
-                      "This top-up request is waiting for an administrator of your local currency to validate it"
-                    )
-                  : $gettext(
-                      "This top-up request is waiting for you to pay it or delete it"
-                    )
-              }}
+            <h2 v-if="$modal.args?.value[0].transaction.isTopUp">
+              <h2
+                v-if="$modal.args?.value[0].type == 'topup'"
+                class="frame3-sub-title"
+              >
+                {{
+                  $modal.args?.value[0].transaction.paid
+                    ? $gettext(
+                        "This top-up request is waiting for an administrator of your local currency to validate it"
+                      )
+                    : $gettext(
+                        "This top-up request is waiting for you to pay it or delete it"
+                      )
+                }}
+                <h2 class="frame3-sub-title">
+                  {{
+                    $modal.args?.value[0].transaction.amount < 0
+                      ? $gettext("to")
+                      : $gettext("from")
+                  }}
+                </h2>
+                <p
+                  class="
+                    frame3-sub-title
+                    has-text-weight-bold
+                    is-size-3
+                    hide-overflow
+                  "
+                >
+                  {{ $modal.args?.value[0].transaction.requester.name }}
+                </p>
+              </h2>
             </h2>
-            <h2 v-else class="frame3-sub-title">
-              {{
-                $modal.args?.value[0].transaction.amount < 0
-                  ? $gettext("to")
-                  : $gettext("from")
-              }}
+            <h2 v-else>
+              <h2 class="frame3-sub-title">
+                {{
+                  $modal.args?.value[0].transaction.amount < 0
+                    ? $gettext("to")
+                    : $gettext("from")
+                }}
+              </h2>
+              <p
+                class="
+                  frame3-sub-title
+                  has-text-weight-bold
+                  is-size-3
+                  hide-overflow
+                "
+              >
+                {{ $modal.args?.value[0].transaction.related }}
+              </p>
             </h2>
-            <p
-              class="
-                frame3-sub-title
-                has-text-weight-bold
-                is-size-3
-                hide-overflow
-              "
-            >
-              {{ $modal.args?.value[0].transaction.related }}
-            </p>
           </div>
 
           <p class="frame3-sub-title mb-3">
@@ -188,6 +209,24 @@
         return moment(
           this.$modal.args?.value[0].transaction.date.toString()
         ).format("YYYY-MM-DD HH:mm:ssZ")
+      },
+
+      transactionType() {
+        const transaction = this.$modal.args?.value[0].transaction
+        let transactionType = ""
+        if (
+          transaction.amount < 0 &&
+          transaction.parent.parent.safeWalletRecipient?.name ===
+            transaction.related
+        ) {
+          transactionType = "reconversion"
+        } else if (transaction.isTopUp) {
+          if (transaction.paid) transactionType = "topup"
+          else transactionType = "pendingTopup"
+        } else {
+          transactionType = "transactionDetail"
+        }
+        return transactionType
       },
     },
     methods: {

@@ -121,7 +121,7 @@ msgstr "Il y a eu un problème lors de la recherche du destinataire"
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
-#: src/components/ConfirmPaymentModal.vue:288
+#: src/components/ConfirmPaymentModal.vue:327
 msgid ""
 "An error occurred while deleting top-up request, please try again or contact "
 "an administrator"
@@ -247,7 +247,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/components/ConfirmPaymentModal.vue:217
+#: src/components/ConfirmPaymentModal.vue:256
 msgid "An unexpected server error occurred while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -352,7 +352,7 @@ msgstr "Date"
 msgid "day"
 msgstr "jour"
 
-#: src/components/ConfirmPaymentModal.vue:156
+#: src/components/ConfirmPaymentModal.vue:177
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -441,7 +441,12 @@ msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
 #: src/components/ConfirmPaymentModal.vue:111
+#: src/components/ConfirmPaymentModal.vue:112
+#: src/components/ConfirmPaymentModal.vue:113
 #: src/components/ConfirmPaymentModal.vue:114
+#: src/components/ConfirmPaymentModal.vue:117
+#: src/components/ConfirmPaymentModal.vue:129
+#: src/components/ConfirmPaymentModal.vue:134
 #: src/components/ConfirmPaymentModal.vue:94
 #: src/components/ConfirmPaymentModal.vue:95
 #: src/components/ConfirmPaymentModal.vue:99
@@ -585,7 +590,7 @@ msgstr "Aucune transaction à afficher"
 msgid "Not a member yet ?"
 msgstr "Pas encore adhérent ?"
 
-#: src/components/ConfirmPaymentModal.vue:169
+#: src/components/ConfirmPaymentModal.vue:190
 msgid "Ok"
 msgstr "Ok"
 
@@ -630,7 +635,7 @@ msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 msgid "Passwords do not match"
 msgstr "Le mot de passe entré n'est pas identique"
 
-#: src/components/ConfirmPaymentModal.vue:162
+#: src/components/ConfirmPaymentModal.vue:183
 #: src/components/TheDashboardFooter.vue:22
 msgid "Pay"
 msgstr "Payer"
@@ -961,11 +966,11 @@ msgid "The password and the password confirmation must be equal."
 msgstr ""
 "Le mot de passe et la confirmation du mot de passe doivent être identiques."
 
-#: src/components/ConfirmPaymentModal.vue:297
+#: src/components/ConfirmPaymentModal.vue:336
 msgid "The top-up request has been successfully deleted"
 msgstr "Votre demande de rechargement a été supprimée"
 
-#: src/components/ConfirmPaymentModal.vue:236
+#: src/components/ConfirmPaymentModal.vue:275
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 
@@ -977,10 +982,10 @@ msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçu
 msgid "This fiels can not be empty."
 msgstr "Ce champs est obligatoire."
 
-#: src/components/ConfirmPaymentModal.vue:82
+#: src/components/ConfirmPaymentModal.vue:100
 #: src/components/ConfirmPaymentModal.vue:83
-#: src/components/ConfirmPaymentModal.vue:87
-#: src/components/ConfirmPaymentModal.vue:99
+#: src/components/ConfirmPaymentModal.vue:84
+#: src/components/ConfirmPaymentModal.vue:88
 msgid ""
 "This top-up request is waiting for an administrator of your local currency "
 "to validate it"
@@ -988,16 +993,21 @@ msgstr ""
 "Cette demande de recharge est en attente de validation par un administrateur "
 "de votre monnaie locale"
 
-#: src/components/ConfirmPaymentModal.vue:102
-#: src/components/ConfirmPaymentModal.vue:85
+#: src/components/ConfirmPaymentModal.vue:103
 #: src/components/ConfirmPaymentModal.vue:86
-#: src/components/ConfirmPaymentModal.vue:90
+#: src/components/ConfirmPaymentModal.vue:87
+#: src/components/ConfirmPaymentModal.vue:91
 msgid "This top-up request is waiting for you to pay it or delete it"
 msgstr ""
 "Cette demande de recharge est en attente d'être payée ou supprimée par vous"
 
 #: src/components/ConfirmPaymentModal.vue:110
+#: src/components/ConfirmPaymentModal.vue:111
+#: src/components/ConfirmPaymentModal.vue:112
 #: src/components/ConfirmPaymentModal.vue:113
+#: src/components/ConfirmPaymentModal.vue:116
+#: src/components/ConfirmPaymentModal.vue:128
+#: src/components/ConfirmPaymentModal.vue:133
 #: src/components/ConfirmPaymentModal.vue:93
 #: src/components/ConfirmPaymentModal.vue:94
 #: src/components/ConfirmPaymentModal.vue:98
