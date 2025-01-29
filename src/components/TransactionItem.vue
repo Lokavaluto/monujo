@@ -29,9 +29,20 @@
         {{ numericFormat(parseFloat(transaction.amount)) }}
         {{ transaction.currency }}
       </h3>
-      <h4 class="custom-card-destinataire">
+
+      <h4
+        v-if="transaction.related === userProfile?.name || transaction.isTopUp"
+        class="custom-card-destinataire"
+      >
+        {{ $gettext("Top-up") }}
+      </h4>
+      <h4
+        v-else="transaction.related !== userProfile?.name"
+        class="custom-card-destinataire"
+      >
         {{ isReconversion ? $gettext("Reconversion") : transaction.related }}
       </h4>
+
       <h5 class="has-text-grey-light transaction-desc">
         {{ transaction.description }}
       </h5>
@@ -41,6 +52,7 @@
 
 <script lang="ts">
   import { mapGetters } from "vuex"
+  import { mapModuleState } from "@/utils/vuex"
   import { Options, Vue } from "vue-class-component"
 
   @Options({
@@ -71,6 +83,8 @@
     },
     computed: {
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
+
+      ...mapModuleState("lokapi", ["userProfile"]),
     },
   })
   export default class TransactionItem extends Vue {}

@@ -740,7 +740,7 @@ msgstr "%{amount} reçu"
 #: src/components/MoneyTransferModal.vue:148
 #: src/components/MoneyTransferModal.vue:159
 #: src/components/MoneyTransferModal.vue:165
-#: src/components/TransactionItem.vue:33
+#: src/components/TransactionItem.vue:40
 msgid "Reconversion"
 msgstr "Reconversion"
 
@@ -1044,6 +1044,10 @@ msgstr "Opérations de crédit en attente de validation"
 #: src/components/PendingTopUp.vue:32
 msgid "Top up waiting admin validation"
 msgstr "Rechargement en attente de validation de la part d'un administrateur"
+
+#: src/components/TransactionItem.vue:34
+msgid "Top-up"
+msgstr "Rechargement"
 
 #: src/components/ConfirmPaymentModal.vue:11
 msgid "Top-up details"
