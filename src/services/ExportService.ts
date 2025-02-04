@@ -76,7 +76,7 @@ class ExportService {
     }
   }
 
-  public async DownloadQrCode(svgQrCode: any) {
+  public async DownloadQrCode(svgQrCode: any, fileName: string) {
     const finalSizeMm = 120 // mm of final printed QrCode
     const resolution = 5 // px/mm
 
@@ -111,8 +111,7 @@ class ExportService {
       finalSizeMm,
       finalSizeMm
     )
-
-    pdf.save("Qrcode.pdf")
+    pdf.save(fileName + ".pdf")
   }
 }
 

@@ -8,6 +8,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/components/QrCodeModal.vue:72
+msgid "{name} QR code wallet"
+msgstr "Code QR du portefeuille %{ name }"
+
 #: src/components/AboutModal.vue:67
 msgid ""
 "%{ appName } is designed by %{ organizationName } an association whose goal "
@@ -714,6 +718,12 @@ msgstr "Préférences"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/components/MoneyRequestModal.vue:154
+msgid "QR code - Payment request to {name} of {amount} {currency}"
+msgstr ""
+"Code QR - demande de crédit de %{ name } d'un montant de %{ amount } "
+"%{ currency }"
+
 #: src/main.ts:287
 msgid "Qrcode"
 msgstr "QrCode"
@@ -1194,7 +1204,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/BankAccountItem.vue:149
+#: src/components/BankAccountItem.vue:149 src/main.ts:322
 msgid "Wallet export"
 msgstr "Export du portefeuille"
 

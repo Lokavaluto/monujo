@@ -151,7 +151,19 @@
     methods: {
       async downloadQrCodePdf() {
         let svgQrCode = this.$refs.qrCodeTransaction.firstChild.outerHTML
-        await this.$export.DownloadQrCode(svgQrCode)
+        let fileName = this.$gettext(
+          "QR code - Payment request to {name} of {amount} {currency}",
+          {
+            name: this.userProfile.name,
+            amount: this.amount,
+            currency: this.$modal.args?.value[0].account?.curr,
+          }
+        )
+
+        if (this.recipientMemo) {
+          fileName += " (" + this.recipientMemo + ")"
+        }
+        await this.$export.DownloadQrCode(svgQrCode, fileName)
       },
       close() {
         this.amount = 0
