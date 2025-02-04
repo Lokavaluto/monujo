@@ -284,7 +284,7 @@ fetchConfig("config.json").then(async (config: any) => {
     let items = []
     if (store.state.lokapi.virtualAccountTree.includes(obj)) {
       items.push({
-        label: $gettext("Qrcode"),
+        label: $gettext("QR code"),
         icon: "qrcode",
         action: () => modal.open("QrCodeModal", { accountId: obj.id }),
       })
