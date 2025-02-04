@@ -714,6 +714,14 @@ msgstr "Préférences"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/components/MoneyRequestModal.vue:154
+msgid "QR code - Payment request to %{ name } of %{ amount } %{ currency }"
+msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
+
+#: src/components/QrCodeModal.vue:72
+msgid "QR code wallet - %{name}"
+msgstr "Code QR portefeuille - %{ name }"
+
 #: src/main.ts:287
 msgid "Qrcode"
 msgstr "QrCode"
