@@ -68,7 +68,10 @@
     methods: {
       async downloadQrCodePdf() {
         await this.$export.DownloadQrCode(
-          this.$refs.qrCode.firstChild.outerHTML
+          this.$refs.qrCode.firstChild.outerHTML,
+          this.$gettext("QR code wallet - %{name}", {
+            name: this.userProfile.name,
+          })
         )
       },
     },
