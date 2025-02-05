@@ -182,6 +182,7 @@
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
   import "vue-loading-overlay/dist/css/index.css"
+  import Loading from "vue-loading-overlay"
   import RecipientItem from "@/components/RecipientItem.vue"
   import { UIError } from "../exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
@@ -194,6 +195,7 @@
     components: {
       RecipientItem,
       MoneyTransaction,
+      Loading,
     },
     data() {
       return {
