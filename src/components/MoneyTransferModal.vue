@@ -469,6 +469,7 @@
         this.close()
 
         await this.$modal.open("ConfirmPaymentModal", {
+          account: this.ownSelectedAccount,
           transaction: payment,
           type:
             this.transactionType === "reconversion"

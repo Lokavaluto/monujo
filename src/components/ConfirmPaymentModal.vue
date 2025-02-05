@@ -69,7 +69,9 @@
               ((t) =>
                 t.amount < 0
                   ? $gettext("Sent %{amount}", {
-                      amount: `${numericFormat(-t.amount)} ${t.currency}`,
+                      amount: `${numericFormat(-t.amount)} ${
+                        t.currency || $modal.args?.value[0]?.account?.curr
+                      }`,
                     })
                   : $gettext("Received %{amount}", {
                       amount: `${numericFormat(t.amount)} ${t.currency}`,
