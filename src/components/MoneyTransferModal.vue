@@ -119,7 +119,11 @@
       </div>
     </template>
     <template v-if="$modal.step.value == 2 && selectedRecipient">
-      <div class="modal-card">
+      <div
+        class="modal-card"
+        tabindex="0"
+        @keyup.enter="isValid ? sendTransaction() : null"
+      >
         <header class="modal-card-head">
           <span v-if="!transactionType" class="is-flex is-flex-shrink-0">
             <a
@@ -259,6 +263,7 @@
         this.setFocus("searchRecipient")
         this.recipientBatchLoader.newGen("")
       }
+      ;(this.$el as HTMLElement).focus()
     },
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),

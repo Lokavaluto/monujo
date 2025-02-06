@@ -1,5 +1,5 @@
 <template>
-  <section id="login">
+  <section id="login" tabindex="0" @keyup.enter="submit()">
     <div class="login-container">
       <div class="card">
         <img
@@ -104,6 +104,7 @@
       }
     },
     async mounted() {
+      ;(this.$el as HTMLElement).focus()
       const savedLoginEmail = this.$persistentStore.get("loginEmail")
       if (savedLoginEmail) this.email = savedLoginEmail
 

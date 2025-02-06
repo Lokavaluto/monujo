@@ -1,5 +1,9 @@
 <template>
-  <div class="modal is-active">
+  <div
+    class="modal is-active"
+    tabindex="0"
+    @keyup.enter="isValid ? $modal.next() : null"
+  >
     <div class="modal-background"></div>
     <template v-if="$modal.step.value == 1">
       <div class="modal-card">
@@ -124,6 +128,9 @@
         isValid: false,
         config: {},
       }
+    },
+    mounted() {
+      ;(this.$el as HTMLElement).focus()
     },
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),

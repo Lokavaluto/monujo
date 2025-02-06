@@ -1,5 +1,9 @@
 <template>
-  <section id="signup">
+  <section
+    id="signup"
+    tabindex="0"
+    @keyup.enter="isFormValid ? submit() : null"
+  >
     <div class="signup-container">
       <div class="card">
         <img
@@ -198,6 +202,9 @@
       isFormValid() {
         return !Object.keys(this.errors).length
       },
+    },
+    mounted() {
+      ;(this.$el as HTMLElement).focus()
     },
     methods: {
       submit: applyDecorators(
