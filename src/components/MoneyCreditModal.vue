@@ -12,7 +12,11 @@
           @click="resetCredit(), $modal.close()"
         ></button>
       </header>
-      <section class="modal-card-body">
+      <section
+        class="modal-card-body"
+        tabindex="0"
+        @keyup.enter="amountError === false ? newLinkTab() : null"
+      >
         <div
           v-if="creditOrderUrl.length === 0 && $modal.step.value == 1"
           class="custom-amount-input"
@@ -110,6 +114,7 @@
       }
     },
     mounted() {
+      ;(this.$el as HTMLElement).focus()
       this.setFocus()
       this.resetCredit()
     },
