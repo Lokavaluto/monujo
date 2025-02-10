@@ -85,6 +85,9 @@
                 <RecipientItem
                   :recipient="recipient"
                   :key="index"
+                  @mousedown.prevent="
+                    &quot;// on some android, input gets a change event&quot;
+                  "
                   @select="handleClickRecipient(recipient)"
                 />
               </div>
