@@ -85,7 +85,7 @@
                 <RecipientItem
                   :recipient="recipient"
                   :key="index"
-                  @select="handleClickRecipient(recipient)"
+                  @mousedown.prevent="handleClickRecipient(recipient)"
                 />
               </div>
             </template>
