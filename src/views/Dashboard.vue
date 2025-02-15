@@ -18,7 +18,7 @@
               @refreshTransaction="refreshTransaction"
               :refreshToggle="refreshTransactionsToggle"
               :account="account"
-              :key="account"
+              :key="account._obj.internalId"
             />
           </div>
         </div>

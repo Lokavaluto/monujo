@@ -273,6 +273,8 @@
   import TransactionListRecent from "./TransactionListRecent.vue"
   import TransactionItem from "./TransactionItem.vue"
 
+  import { UIError } from "../exception"
+
   // Assets
 
   import "vue-datepicker-next/index.css"
@@ -281,6 +283,9 @@
 
   import { mapModuleState } from "@/utils/vuex"
   import UseBatchLoading from "@/services/UseBatchLoading"
+
+  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import applyDecorators from "@/utils/applyDecorators"
 
   @Options({
     name: "TransactionListModal",
@@ -466,20 +471,33 @@
           exportFileName,
         }
       },
-      async downloadCsvFile() {
-        this.selectExportLoader = 1
-        const { csvContent, exportFileName } = await this.createCsvFile()
-        try {
-          await this.$export.download(csvContent, exportFileName, "text/csv")
-        } catch (e) {
-          this.$msg.error(
-            this.$gettext("Transaction list could not be downloaded")
-          )
-          throw e
+      downloadCsvFile: applyDecorators(
+        [showSpinnerMethod(".custom-card-transactions")],
+        async function (this: any): Promise<void> {
+          //this.selectExportLoader = 1
+          let csvComponents
+          try {
+            csvComponents = await this.createCsvFile()
+          } catch (e) {
+            throw new UIError(
+              this.$gettext("An error occured while creating the CSV file"),
+              e
+            )
+          }
+          const { csvContent, exportFileName } = csvComponents
+
+          try {
+            await this.$export.download(csvContent, exportFileName, "text/csv")
+          } catch (e) {
+            this.$msg.error(
+              this.$gettext("Transaction list could not be downloaded")
+            )
+            throw e
+          }
+          this.$modal.close()
+          this.$msg.success(this.$gettext("Transaction list downloaded"))
         }
-        this.$modal.close()
-        this.$msg.success(this.$gettext("Transaction list downloaded"))
-      },
+      ),
       async shareCsvFile() {
         this.selectExportLoader = 2
         const { csvContent, exportFileName } = await this.createCsvFile()
