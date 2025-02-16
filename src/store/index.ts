@@ -30,15 +30,8 @@ export default async function mkStore(localesConfig: any, gettext: any) {
       numericFormatLanguage: false,
       dateFormatLanguage: false,
       datePickerLanguage: false,
-      requestLoadingAfterCreds: false,
     },
     mutations: {
-      setRequestLoadingAfterCreds(
-        state: any,
-        requestLoadingAfterCreds: boolean
-      ) {
-        state.requestLoadingAfterCreds = requestLoadingAfterCreds
-      },
       setNumericFormatLanguage(state: any, numericFormatLanguage: string) {
         state.numericFormatLanguage = numericFormatLanguage
       },

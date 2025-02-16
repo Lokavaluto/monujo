@@ -155,7 +155,7 @@
         <div class="container is-fluid custom-heavy-line-separator"></div>
       </div>
       <section
-        class="modal-card-body custom-card-transactions"
+        class="modal-card-body"
         ref="transactionsContainer"
         @scroll="transactionBatchLoader.getNextElements"
       >
@@ -473,7 +473,7 @@
         }
       },
       downloadCsvFile: applyDecorators(
-        [debounceMethod, showSpinnerMethod(".custom-card-transactions")],
+        [debounceMethod, showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<void> {
           //this.selectExportLoader = 1
           let csvComponents

@@ -241,17 +241,10 @@ fetchConfig("config.json").then(async (config: any) => {
     state: string,
     userAccount: any
   ) {
-    if (store.state.requestLoadingAfterCreds && state === "failedUnlock") {
-      ;(<any>app.config.globalProperties.$loading).hide()
-    }
     const accountAuthService = await authService.getAccountAuth(
       userAccount.internalId
     )
-    const creds = await accountAuthService.requestCredentials(state)
-    if (store.state.requestLoadingAfterCreds) {
-      app.config.globalProperties.$loading.show()
-    }
-    return creds
+    return await accountAuthService.requestCredentials(state)
   }
   const passwordUtils = PasswordUtilsFactory(gettext)
   store.registerModule(

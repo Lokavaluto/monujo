@@ -270,7 +270,7 @@
     },
     methods: {
       startScan: applyDecorators(
-        [showSpinnerMethod(".modal-card")],
+        [showSpinnerMethod(".modal-card-body")],
         async function (this: any) {
           const scanPermission = await this.$qrCode.isPermissionGranted()
           if (!scanPermission) {
@@ -340,9 +340,9 @@
         this.config = config
       },
 
-      sendTransaction: applyDecorators(
-        [debounceMethod, showSpinnerMethod(".transactions")],
-        async function (this: any): Promise<void> {
+      _checkBeforeTransaction: applyDecorators(
+        [showSpinnerMethod(".modal-card-body")],
+        async function (this: any): Promise<boolean> {
           this.errors = false
           if (this.ownSelectedAccount._obj.getBalance) {
             let realBal
@@ -361,7 +361,7 @@
                   )
               )
               console.error("getBalance failed:", err)
-              return
+              return false
             }
             // ensure realBal is the correct format
             if (
@@ -386,7 +386,7 @@
             )
             if (amount_cents > bal_cents) {
               this.errors = this.$gettext("Insufficient balance")
-              return
+              return false
             }
             if (amount_cents > realBal_cents) {
               this.errors = this.$gettext(
@@ -401,13 +401,16 @@
                   currency: this.ownSelectedAccount.curr,
                 }
               )
-              return
+              return false
             }
           }
-
-          let dateBegin = Date.now()
+          return true
+        }
+      ),
+      _executeTransaction: applyDecorators(
+        [showSpinnerMethod(".modal-card-body")],
+        async function (this: any): Promise<boolean | any> {
           let payment
-          this.$store.commit("setRequestLoadingAfterCreds", true)
           try {
             payment = await this.selectedRecipient.transfer(
               this.amount.toString(),
@@ -433,13 +436,13 @@
                   ),
                 false
               )
-              return
+              return false
             }
             if (err instanceof LokapiExc.InsufficientBalance) {
               this.errors = this.$gettext(
                 "Transaction was refused due to insufficient balance"
               )
-              return
+              return false
             }
             if (err instanceof LokapiExc.InactiveAccount) {
               this.$msg.error(
@@ -447,11 +450,11 @@
                   "<br/>" +
                   this.$gettext("You can't send money to this account.")
               )
-              return
+              return false
             }
             if (err.message === "User canceled the dialog box") {
               // A warning message should have already been sent
-              return
+              return false
             }
             this.$msg.error(
               this.$gettext(
@@ -466,13 +469,20 @@
             )
 
             console.error("Payment failed:", err)
-            return
-          } finally {
-            this.$store.commit("setRequestLoadingAfterCreds", false)
-            this.$loading.hide()
+            return false
           }
+          return payment
+        }
+      ),
 
-          this.errors = false
+      sendTransaction: applyDecorators(
+        [debounceMethod],
+        async function (this: any): Promise<void> {
+          if (!(await this._checkBeforeTransaction())) return
+
+          const payment = await this._executeTransaction()
+          if (payment === false) return
+
           this.$modal.args.value[0].refreshTransaction()
           this.$modal.args.value[0].refreshAccounts(true)
           this.close()
