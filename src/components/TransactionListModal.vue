@@ -270,7 +270,6 @@
   import { Capacitor } from "@capacitor/core"
   import moment from "moment"
 
-  import TransactionListRecent from "./TransactionListRecent.vue"
   import TransactionItem from "./TransactionItem.vue"
 
   import { UIError } from "../exception"
@@ -418,8 +417,8 @@
 
         let exportFileName
         if (dateBegin && dateEnd) {
-          let dateBeginStr = moment(dateBegin).format("YYYY-MM-DD")
-          let dateEndStr = moment(dateEnd).format("YYYY-MM-DD")
+          const dateBeginStr = moment(dateBegin).format("YYYY-MM-DD")
+          const dateEndStr = moment(dateEnd).format("YYYY-MM-DD")
           exportFileName = `transactions_${dateBeginStr}_${dateEndStr}.csv`
         } else {
           exportFileName = "transactions.csv"
@@ -432,7 +431,7 @@
           "date",
           "description",
         ]
-        let csvDataLine: { [key: string]: string }[] = [
+        const csvDataLine: { [key: string]: string }[] = [
           {
             sender: this.$gettext("Source"),
             receiver: this.$gettext("Target"),
@@ -443,11 +442,11 @@
         ]
 
         for (let e of transactions) {
-          let name = e.related
-          let [sender, receiver] = e.amount.startsWith("-")
+          const name = e.related
+          const [sender, receiver] = e.amount.startsWith("-")
             ? [this.userProfile.name, name]
             : [name, this.userProfile.name]
-          let data: { [key: string]: string } = {
+          const data: { [key: string]: string } = {
             sender,
             receiver,
             amount: this.numericFormat(e.amount),
@@ -581,7 +580,7 @@
         this.transactionBatchLoader.newGen()
       },
       exportDate: async function (newExportDate): Promise<void> {
-        let [newBegin, newEnd] = newExportDate
+        const [newBegin, newEnd] = newExportDate
         const [normBegin, normEnd] = [
           newBegin ? moment(newBegin).startOf("day").toDate() : null,
           newEnd ? moment(newEnd).endOf("day").toDate() : null,
