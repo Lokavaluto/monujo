@@ -4,7 +4,7 @@
     :class="{ highlight: transaction.isReconversion || transaction.isTopUp }"
   >
     <div class="is-pulled-right">
-      <h5 class="custom-card-destinataire has-text-right">
+      <h5 class="custom-card-related has-text-right">
         {{ dateFormat(transaction.date) }}
       </h5>
       <h5 class="status card-paiement-defaut-carte has-text-right mt-1">
@@ -22,8 +22,8 @@
       <h3
         :class="[
           transaction.amount.toString().charAt(0) == '-'
-            ? 'custom-card-destinataire has-text-danger'
-            : 'custom-card-destinataire has-text-success',
+            ? 'custom-card-related has-text-danger'
+            : 'custom-card-related has-text-success',
         ]"
       >
         {{ numericFormat(parseFloat(transaction.amount)) }}
@@ -38,7 +38,7 @@
           transaction.isTopUp ? $gettext("Top-up") : $gettext("Reconversion")
         }}
       </h5>
-      <h4 v-else class="custom-card-destinataire">
+      <h4 v-else class="custom-card-related">
         {{ transaction.related }}
       </h4>
 
@@ -73,7 +73,7 @@
 </script>
 <style lang="scss" scoped>
   @import "../assets/custom-variables.scss";
-  h4.custom-card-destinataire {
+  h4.custom-card-related {
     min-height: 1rem;
     white-space: nowrap;
     overflow: hidden;
@@ -90,7 +90,7 @@
     line-height: 16px;
     color: rgba(53, 53, 53, 0.64);
   }
-  .custom-card-destinataire {
+  .custom-card-related {
     font-size: 1.2rem;
     line-height: 1.5rem;
     width: auto !important;

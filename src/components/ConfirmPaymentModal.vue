@@ -58,12 +58,7 @@
 
           <p
             v-if="$modal.args?.value[0].type != 'topup'"
-            class="
-              amount
-              custom-card-destinataire
-              has-text-weight-bold
-              is-size-4
-            "
+            class="amount has-text-weight-bold is-size-4"
           >
             {{
               ((t) =>
@@ -76,15 +71,7 @@
                     }))($modal.args?.value[0].transaction)
             }}
           </p>
-          <p
-            v-else
-            class="
-              amount
-              custom-card-destinataire
-              has-text-weight-bold
-              is-size-4
-            "
-          >
+          <p v-else class="amount has-text-weight-bold is-size-4">
             {{
               ((t) =>
                 $gettext("Requested %{amount}", {
