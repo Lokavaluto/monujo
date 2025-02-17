@@ -506,8 +506,9 @@
             !this.selectedRecipient.is_favorite &&
             this.transactionType !== "reconversion"
           ) {
-            this.$dialog
-              .show({
+            let answer
+            try {
+              answer = await this.$dialog.show({
                 title: this.$gettext("Add as favorite"),
                 content: this.$gettext(
                   "Do you want to add %{ name } to your favorite list ?",
@@ -518,22 +519,21 @@
                   { label: this.$gettext("Later"), id: "later" },
                 ],
               })
-              .then(async (result: any) => {
-                if (result === "later") return
-                try {
-                  await this.selectedRecipient.toggleFavorite()
-                } catch (err) {
-                  // XXXvlab: using ``.then`` makes it trigger outside of
-                  // view js grasp.
-                  this.$errorHandler(err)
-                  return
-                }
-                this.$msg.success(
-                  this.$gettext("%{ name } was added to your favorite list", {
-                    name: this.selectedRecipient.name,
-                  })
-                )
-              })
+            } catch (err: any) {
+              if (err.message === "User canceled the dialog box") {
+                answer = "later"
+              } else {
+                throw err
+              }
+            }
+            if (answer === "add") {
+              await this.selectedRecipient.toggleFavorite()
+              this.$msg.success(
+                this.$gettext("%{ name } was added to your favorite list", {
+                  name: this.selectedRecipient.name,
+                })
+              )
+            }
           }
         }
       ),
