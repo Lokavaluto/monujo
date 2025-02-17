@@ -55,7 +55,7 @@ msgstr "Comptes en attente de validation"
 msgid "Action"
 msgstr "Action"
 
-#: src/components/MoneyTransferModal.vue:517
+#: src/components/MoneyTransferModal.vue:518
 msgid "Add"
 msgstr "Ajouter"
 
@@ -69,7 +69,7 @@ msgstr "Ajouter un motif de paiement (optionnel)"
 msgid "Add a reference for the recipient (optional)"
 msgstr "Ajouter une référence du paiement pour le destinataire"
 
-#: src/components/MoneyTransferModal.vue:511
+#: src/components/MoneyTransferModal.vue:512
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -378,7 +378,7 @@ msgstr[1] "chiffres"
 msgid "Discard"
 msgstr "Annuler"
 
-#: src/components/MoneyTransferModal.vue:512
+#: src/components/MoneyTransferModal.vue:513
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -502,7 +502,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:518
+#: src/components/MoneyTransferModal.vue:519
 msgid "Later"
 msgstr "Plus tard"
 
@@ -602,7 +602,7 @@ msgstr "Pas encore adhérent ?"
 msgid "Ok"
 msgstr "Ok"
 
-#: src/components/AuthChallenge.vue:68 src/components/Dialog.vue:65
+#: src/components/AuthChallenge.vue:68
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
