@@ -1,9 +1,10 @@
 <template>
   <div class="is-flex is-justify-content-flex-start" v-if="recipient">
     <div
-      class="pr-3 is-clickable is-align-items-center is-flex"
+      class="mr-2 is-clickable is-align-items-center is-flex recipient-icon"
       :class="[recipient.is_favorite ? 'is-active' : '']"
-      @click="recipient.toggleFavorite()"
+      @click="toggleFavorite()"
+      id="toggle-fav"
     >
       <span class="icon">
         <fa-icon
@@ -24,12 +25,47 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
 
+  import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
+  import { debounceMethod } from "@/utils/debounce"
+  import applyDecorators from "@/utils/applyDecorators"
+  import { UIError } from "@/exception"
+
   import moment from "moment"
 
+  function wait(ms: any) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
   @Options({
     name: "RecipientItem",
     props: {
       recipient: Object,
+    },
+    methods: {
+      toggleFavorite: applyDecorators(
+        [
+          debounceMethod,
+          showSpinnerMethod(function (this: any) {
+            return replaceWithLoader.apply(this, [
+              "#toggle-fav",
+              "1.2em",
+              5,
+              true,
+            ])
+          }),
+        ],
+        async function (this: any): Promise<void> {
+          try {
+            await this.recipient.toggleFavorite()
+          } catch (err: any) {
+            throw new UIError(
+              this.$gettext(
+                "An unexpected issue occurred while adding this recipient to your favorit list"
+              ),
+              err
+            )
+          }
+        }
+      ),
     },
   })
   export default class RecipientItem extends Vue {}
@@ -37,5 +73,12 @@
 <style lang="scss" scoped>
   .recipient-name {
     width: 100%;
+  }
+  .recipient-icon {
+    position: relative;
+  }
+  .vl-overlay {
+    margin-top: 0.6rem;
+    background-color: red !important;
   }
 </style>
