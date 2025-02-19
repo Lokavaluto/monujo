@@ -6,7 +6,9 @@ import "@/utils/showSpinner.scss"
 export function replaceWithLoader(
   this: any,
   selector: string,
-  size: string = "75px"
+  size: string = "75px",
+  strokeWidth: Number = 2,
+  replace: boolean = false
 ) {
   let element: HTMLElement | null = null
   if (this && this.$el && this.$el instanceof HTMLElement) {
@@ -28,7 +30,21 @@ export function replaceWithLoader(
     isFullPage: false,
     width: size,
     height: size,
+    strokeWidth,
   })
+
+  if (replace) {
+    element.style.visibility = "hidden"
+    loadingElement.style.visibility = "visible"
+    const origRemove = loadingElement.remove
+    loadingElement.remove = function () {
+      if (element instanceof HTMLElement) {
+        element.style.visibility = "visible"
+      }
+      origRemove.call(this)
+    }
+  }
+
   loadingApp.mount(loadingElement)
   return loadingElement
 }
