@@ -288,6 +288,13 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste des "
 "comptes. Veuillez nous excuser pour le désagrément."
 
+#: src/components/RecipientItem.vue:62
+msgid ""
+"An unexpected issue occurred while switching this recipient favorite status"
+msgstr ""
+"Il y a eu un problème lors de la bascule du status de favoris sur ce "
+"destinataire"
+
 #: src/views/admin/PendingAccounts.vue:237
 #: src/views/admin/PendingCredits.vue:205
 msgid "An unexpected issue occurred while updating the pending accounts list"
