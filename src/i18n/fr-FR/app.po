@@ -72,19 +72,19 @@ msgstr "Action"
 msgid "Add"
 msgstr "Ajouter"
 
-#: src/components/MoneyTransaction.vue:40
-#: src/components/MoneyTransaction.vue:41
-#: src/components/MoneyTransaction.vue:57
-#: src/components/MoneyTransaction.vue:62
+#: src/components/MoneyTransaction.vue:50
+#: src/components/MoneyTransaction.vue:51
+#: src/components/MoneyTransaction.vue:76
+#: src/components/MoneyTransaction.vue:84
 msgid "Add a payment memo (optional)"
 msgstr "Ajouter un motif de paiement (optionnel)"
 
-#: src/components/MoneyTransaction.vue:102
-#: src/components/MoneyTransaction.vue:63
-#: src/components/MoneyTransaction.vue:64
-#: src/components/MoneyTransaction.vue:80
-#: src/components/MoneyTransaction.vue:87
-#: src/components/MoneyTransaction.vue:97
+#: src/components/MoneyTransaction.vue:109
+#: src/components/MoneyTransaction.vue:119
+#: src/components/MoneyTransaction.vue:124
+#: src/components/MoneyTransaction.vue:73
+#: src/components/MoneyTransaction.vue:74
+#: src/components/MoneyTransaction.vue:99
 msgid "Add a reference for the recipient (optional)"
 msgstr "Ajouter une référence du paiement pour le destinataire"
 
@@ -123,26 +123,26 @@ msgstr "Avez-vous déjà créé un compte ?"
 
 #: src/components/MoneyTransaction.vue:21
 #: src/components/MoneyTransaction.vue:22
-#: src/components/MoneyTransaction.vue:27
+#: src/components/MoneyTransaction.vue:30
 #: src/components/TransactionListModal.vue:454
 #: src/views/admin/PendingCredits.vue:39 src/views/admin/PendingCredits.vue:40
 #: src/views/admin/PendingCredits.vue:43
 msgid "Amount"
 msgstr "Montant"
 
-#: src/components/MoneyTransaction.vue:207
+#: src/components/MoneyTransaction.vue:229
 msgid "Amount to request must be a number greater than 0"
 msgstr "Le montant demandé doit être un nombre positif"
 
-#: src/components/MoneyTransaction.vue:221
+#: src/components/MoneyTransaction.vue:243
 msgid "Amount to send is too large (<= %{ maxValue })"
 msgstr "Le montant envoyé est trop grand (<= %{ maxValue})"
 
-#: src/components/MoneyTransaction.vue:203
+#: src/components/MoneyTransaction.vue:225
 msgid "Amount to send must be a number greater than 0"
 msgstr "Le montant envoyé doit être un nombre positif"
 
-#: src/components/MoneyTransaction.vue:232
+#: src/components/MoneyTransaction.vue:254
 msgid "Amount to send must be a number with not more than 2 decimals"
 msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales"
 
@@ -213,7 +213,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de l'utilisateur "
 "%{ name }"
 
-#: src/components/MoneyCreditModal.vue:202
+#: src/components/MoneyCreditModal.vue:163
 msgid "An unexpected issue occurred while attempting to top up your account"
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -302,7 +302,7 @@ msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
-#: src/components/MoneyCreditModal.vue:216 src/components/PendingTopUp.vue:145
+#: src/components/MoneyCreditModal.vue:177 src/components/PendingTopUp.vue:145
 #: src/components/TheDashboardFooter.vue:114
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
@@ -315,7 +315,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/components/MoneyCreditModal.vue:228
+#: src/components/MoneyCreditModal.vue:189
 msgid "An unexpected value was returned in the pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -505,8 +505,7 @@ msgstr "Télécharger"
 msgid "Download transactions"
 msgstr "Télécharger les opérations"
 
-#: src/components/MoneyCreditModal.vue:56
-#: src/components/MoneyTransaction.vue:37
+#: src/components/MoneyTransaction.vue:56
 msgid "e.g. 50"
 msgstr "ex: 50"
 
@@ -671,21 +670,15 @@ msgstr "Principal"
 msgid "Map"
 msgstr "Carte"
 
-#: src/components/MoneyCreditModal.vue:24
-#: src/components/MoneyCreditModal.vue:25
-#: src/components/MoneyCreditModal.vue:29
-#: src/components/MoneyCreditModal.vue:33
-#: src/components/MoneyCreditModal.vue:34
-#: src/components/MoneyCreditModal.vue:42
+#: src/components/MoneyTransaction.vue:29
+#: src/components/MoneyTransaction.vue:30
+#: src/components/MoneyTransaction.vue:41
 msgid "Maximum credit amount: "
 msgstr "Montant maximum à créditer : "
 
-#: src/components/MoneyCreditModal.vue:19
-#: src/components/MoneyCreditModal.vue:20
-#: src/components/MoneyCreditModal.vue:24
-#: src/components/MoneyCreditModal.vue:28
-#: src/components/MoneyCreditModal.vue:29
-#: src/components/MoneyCreditModal.vue:34
+#: src/components/MoneyTransaction.vue:24
+#: src/components/MoneyTransaction.vue:25
+#: src/components/MoneyTransaction.vue:33
 msgid "Minimum credit amount: "
 msgstr "Montant minimum à créditer : "
 
@@ -722,11 +715,11 @@ msgstr "Mes demandes de crédit non payées"
 msgid "Name, email address or phone number"
 msgstr "Nom, adresse email ou téléphone"
 
-#: src/components/MoneyCreditModal.vue:58
-#: src/components/MoneyCreditModal.vue:59
-#: src/components/MoneyCreditModal.vue:83
-#: src/components/MoneyCreditModal.vue:85
-#: src/components/MoneyCreditModal.vue:86
+#: src/components/MoneyCreditModal.vue:33
+#: src/components/MoneyCreditModal.vue:34
+#: src/components/MoneyCreditModal.vue:46
+#: src/components/MoneyCreditModal.vue:48
+#: src/components/MoneyCreditModal.vue:49
 msgid "Next"
 msgstr "Suivant"
 
@@ -1322,16 +1315,16 @@ msgstr ""
 "%{ safeAmount } %{ currency }. Si le problème persiste, veuillez contacter "
 "un administrateur."
 
-#: src/components/MoneyCreditModal.vue:152
+#: src/components/MoneyCreditModal.vue:121
 msgid "The maximum top up amount must be equal or less than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou inférieur à %{ amount }"
 
-#: src/components/MoneyTransaction.vue:255
-#: src/components/MoneyTransaction.vue:270
+#: src/components/MoneyTransaction.vue:277
+#: src/components/MoneyTransaction.vue:292
 msgid "the message description is too long"
 msgstr "Le message de description est trop long"
 
-#: src/components/MoneyCreditModal.vue:143
+#: src/components/MoneyCreditModal.vue:112
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
 
@@ -1403,15 +1396,6 @@ msgstr ""
 msgid "Top up"
 msgstr "Recharger"
 
-#: src/components/MoneyCreditModal.vue:16
-#: src/components/MoneyCreditModal.vue:17
-#: src/components/MoneyCreditModal.vue:21
-#: src/components/MoneyCreditModal.vue:25
-#: src/components/MoneyCreditModal.vue:26
-#: src/components/MoneyCreditModal.vue:31
-msgid "Top up amount"
-msgstr "Montant à créditer"
-
 #: src/components/MoneyCreditModal.vue:6 src/components/MoneyCreditModal.vue:7
 msgid "Top up my account"
 msgstr "Créditer mon compte"
@@ -1450,7 +1434,7 @@ msgstr "Détails de l'opération"
 msgid "Top-up received"
 msgstr "Rechargement reçu"
 
-#: src/components/MoneyCreditModal.vue:235
+#: src/components/MoneyCreditModal.vue:196
 msgid "Top-up request has been successfully created"
 msgstr "Votre demande de rechargement a été créé avec succès."
 
@@ -1524,7 +1508,7 @@ msgstr "Impossible de lire le code QR."
 msgid "Unavailable"
 msgstr "Indisponible"
 
-#: src/components/MoneyTransaction.vue:244
+#: src/components/MoneyTransaction.vue:266
 msgid ""
 "Unexpected amount received. Try to reenter your amount, and if the problem "
 "persists please contact your administator."
@@ -1584,12 +1568,12 @@ msgstr "Activer le login biométrique"
 msgid "Use custom language"
 msgstr "Spécifier la langue"
 
-#: src/components/MoneyTransaction.vue:56
-#: src/components/MoneyTransaction.vue:57
-#: src/components/MoneyTransaction.vue:73
-#: src/components/MoneyTransaction.vue:80
-#: src/components/MoneyTransaction.vue:85
-#: src/components/MoneyTransaction.vue:90
+#: src/components/MoneyTransaction.vue:102
+#: src/components/MoneyTransaction.vue:107
+#: src/components/MoneyTransaction.vue:112
+#: src/components/MoneyTransaction.vue:66
+#: src/components/MoneyTransaction.vue:67
+#: src/components/MoneyTransaction.vue:92
 msgid "Use the same memo for the recipient"
 msgstr "Utiliser le même mémo pour le destinataire"
 
