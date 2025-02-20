@@ -238,8 +238,8 @@
         // is safely converted to a number in javascript. (We
         // can garantee that what the user typed in is
         // eauivalent to what we get in the code.
-        const maxValue = Number.MAX_SAFE_INTEGER / 2 ** 7
-        if (this.amount > maxValue) {
+        const maxValue = 2 ** 46
+        if (this.amount >= maxValue) {
           this.errors.amount = this.$gettext(
             "Amount to send is too large (<= %{ maxValue })",
             { maxValue }
