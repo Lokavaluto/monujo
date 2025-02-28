@@ -78,8 +78,10 @@
         let settings = (await this.$localSettings.load()) || {}
         if (settings.language != l) {
           settings.language = l
-          await this.$localSettings.save(settings)
-          await this.$store.dispatch("switchLocale", l)
+          if (!l || this.useCustomLanguage) {
+            await this.$localSettings.save(settings)
+            await this.$store.dispatch("switchLocale", l)
+          }
         }
       },
     },
