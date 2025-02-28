@@ -175,7 +175,15 @@
         [debounceMethod, showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<void> {
           // This to ensure we are left with 2 decimals only
-          this.amount = this.amount.toFixed(2)
+          let amount = this.amount
+          if (typeof amount === "string") {
+            amount = parseFloat(amount)
+          }
+
+          amount = amount.toFixed(2)
+          if (this.amount !== amount) {
+            this.amount = amount
+          }
           const { refreshTransaction, refreshAccounts, account } =
             this.$modal.args.value[0]
 
@@ -187,9 +195,7 @@
               }
               this.selectedCreditAccount = this.creditableMoneyAccounts[0]
             }
-            url = await this.selectedCreditAccount._obj.getCreditUrl(
-              this.amount
-            )
+            url = await this.selectedCreditAccount._obj.getCreditUrl(amount)
             this.creditOrderUrl = url.order_url
           } catch (err) {
             throw new UIError(

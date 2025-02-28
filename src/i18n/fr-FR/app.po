@@ -174,7 +174,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de l'utilisateur "
 "%{ name }"
 
-#: src/components/MoneyCreditModal.vue:196
+#: src/components/MoneyCreditModal.vue:202
 msgid "An unexpected issue occurred while attempting to top up your account"
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -244,7 +244,7 @@ msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
-#: src/components/MoneyCreditModal.vue:210 src/components/PendingTopUp.vue:139
+#: src/components/MoneyCreditModal.vue:216 src/components/PendingTopUp.vue:139
 #: src/components/TheDashboardFooter.vue:114
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
@@ -257,7 +257,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/components/MoneyCreditModal.vue:222
+#: src/components/MoneyCreditModal.vue:228
 msgid "An unexpected value was returned in the pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -1068,7 +1068,7 @@ msgstr "Rechargement"
 msgid "Top-up details"
 msgstr "Détails de l'opération"
 
-#: src/components/MoneyCreditModal.vue:229
+#: src/components/MoneyCreditModal.vue:235
 msgid "Top-up request has been successfully created"
 msgstr "Votre demande de rechargement a été créé avec succès."
 
