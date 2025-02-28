@@ -74,7 +74,7 @@ export default async function mkGettext(
     l = (l ||
       (await getDefaultLanguage(localesConfig, localesSettings))) as string
     if (!l) return
-    if (l === this.current) return
+    if (l === this.current) return l
     if (l !== localesConfig.appStringsLanguage && !this.translations[l]) {
       const { label, url } = localesConfig.availableLanguages[l]
 

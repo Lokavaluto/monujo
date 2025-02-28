@@ -66,7 +66,6 @@ export default async function mkStore(localesConfig: any, gettext: any) {
         }
 
         const localeConfig = availableLanguages[localeIdentifier] || {}
-        localeIdentifier = localeIdentifier || "en-US"
         commit(
           "setNumericFormatLanguage",
           localeConfig?.numericFormat || localeIdentifier
