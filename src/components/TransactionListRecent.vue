@@ -38,11 +38,12 @@
           @click="
             $modal.open('ConfirmPaymentModal', {
               transaction,
-              type:
-                transaction.amount < 0 &&
-                account.safeWalletRecipient?.name === transaction.related
-                  ? 'reconversion'
-                  : 'transactionDetail',
+              type: transaction.isReconversion
+                ? 'reconversion'
+                : transaction.isTopUp
+                ? 'topup'
+                : 'transactionDetail',
+              account,
             })
           "
         />

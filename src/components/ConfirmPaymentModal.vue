@@ -39,7 +39,11 @@
                   ? $gettext("Transaction sent")
                   : $gettext("Transaction processed"),
                 paymentConfirmation: $gettext("Payment sent"),
-                topup: $gettext("Top-up requested"),
+                topup:
+                  typeof $modal.args?.value[0].transaction.cancel !==
+                  "undefined"
+                    ? $gettext("Top-up requested")
+                    : $gettext("Top-up received"),
                 reconversion: $modal.args?.value[0].transaction.pending
                   ? $gettext("Reconversion sent")
                   : $gettext("Reconversion processed"),
@@ -74,9 +78,13 @@
           <p v-else class="amount has-text-weight-bold is-size-4">
             {{
               ((t) =>
-                $gettext("Requested %{amount}", {
-                  amount: `${numericFormat(t.amount)} ${t.currency}`,
-                }))($modal.args?.value[0].transaction)
+                typeof t.cancel !== "undefined"
+                  ? $gettext("Requested %{amount}", {
+                      amount: `${numericFormat(t.amount)} ${t.currency}`,
+                    })
+                  : $gettext("Received %{amount}", {
+                      amount: `${numericFormat(t.amount)} ${t.currency}`,
+                    }))($modal.args?.value[0].transaction)
             }}
           </p>
           <div v-if="$modal.args?.value[0].type !== 'reconversion'">
@@ -86,14 +94,16 @@
                 class="frame3-sub-title"
               >
                 {{
-                  $modal.args?.value[0].transaction.paid
+                  $modal.args?.value[0].transaction.paid === true
                     ? $gettext(
                         "This top-up request is waiting for an administrator of your local currency to validate it"
                       )
-                    : $modal.args?.value[0].transaction.requester ===
+                    : typeof $modal.args?.value[0].transaction.cancel !==
+                        "undefined" &&
+                      ($modal.args?.value[0].transaction.requester ===
                         undefined ||
-                      $modal.args?.value[0].transaction.requester.id ===
-                        userProfile.id
+                        $modal.args?.value[0].transaction.requester.id ===
+                          userProfile.id)
                     ? $gettext(
                         "Your top-up request is waiting for you to pay it or delete it"
                       )
@@ -158,7 +168,7 @@
         <div
           v-if="
             $modal.args?.value[0].type == 'topup' &&
-            !$modal.args?.value[0].transaction.paid &&
+            $modal.args?.value[0].transaction.paid === false &&
             $modal.args?.value[0].account.isTopUpAllowed &&
             ($modal.args?.value[0].transaction?.requester === undefined ||
               $modal.args?.value[0].transaction?.requester?.id ===
