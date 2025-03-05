@@ -44,9 +44,7 @@
                   "undefined"
                     ? $gettext("Top-up requested")
                     : $gettext("Top-up received"),
-                reconversion: $modal.args?.value[0].transaction.pending
-                  ? $gettext("Reconversion sent")
-                  : $gettext("Reconversion processed"),
+                reconversion: reconversionStatus,
               }[$modal.args?.value[0].type]
             }}
           </p>
@@ -237,6 +235,17 @@
           transactionType = "transactionDetail"
         }
         return transactionType
+      },
+      reconversionStatus(): string {
+        const transaction = this.$modal.args?.value[0].transaction
+        if (!transaction.isReconversion) return ""
+        return {
+          true: this.$gettext("Reconversion sent"),
+          false: null, // This should not happen
+          received: this.$gettext("Reconversion received"),
+          invoiced: this.$gettext("Reconversion invoiced"),
+          paid: this.$gettext("Reconversion processed"),
+        }[transaction.isReconversion.toString() as string]
       },
     },
     methods: {

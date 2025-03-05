@@ -1,24 +1,9 @@
 <template>
   <div
-    class="p-3 shadow-bottom cursor-pointer"
+    class="p-3 shadow-bottom cursor-pointer tx-item"
     :class="{ highlight: transaction.isReconversion || transaction.isTopUp }"
   >
-    <div class="is-pulled-right">
-      <h5 class="custom-card-related has-text-right">
-        {{ dateFormat(transaction.date) }}
-      </h5>
-      <h5 class="status card-paiement-defaut-carte has-text-right mt-1">
-        {{ relativeDateFormat(transaction.date) }}
-        <fa-icon
-          :class="{
-            hide: transaction?.pending === true,
-          }"
-          icon="check"
-          class="fa-thin"
-        />
-      </h5>
-    </div>
-    <div class="is-flex-direction-column">
+    <div class="is-flex-direction-column left">
       <h3
         :class="[
           transaction.amount.toString().charAt(0) == '-'
@@ -49,6 +34,37 @@
         {{ transaction.description }}
       </h5>
     </div>
+    <div
+      v-if="
+        $config.disableReconversionStatusDisplay !== true &&
+        transaction.isReconversion
+      "
+      class="center"
+    >
+      <div class="status-label">{{ reconversionStatus }}</div>
+      <div class="status-indicator">
+        <WorkflowIndicator
+          format="small"
+          :stages="reconversionStatuses"
+          :current="reconversionStatus"
+        />
+      </div>
+    </div>
+    <div class="is-pulled-right right">
+      <h5 class="custom-card-related has-text-right">
+        {{ dateFormat(transaction.date) }}
+      </h5>
+      <h5 class="status card-paiement-defaut-carte has-text-right mt-1">
+        {{ relativeDateFormat(transaction.date) }}
+        <fa-icon
+          :class="{
+            hide: transaction?.pending === true,
+          }"
+          icon="check"
+          class="fa-thin"
+        />
+      </h5>
+    </div>
   </div>
 </template>
 
@@ -57,16 +73,36 @@
   import { mapModuleState } from "@/utils/vuex"
   import { Options, Vue } from "vue-class-component"
 
+  import WorkflowIndicator from "./WorkflowIndicator.vue"
   @Options({
     name: "TransactionItem",
-    components: {},
+    components: {
+      WorkflowIndicator,
+    },
     methods: {},
     props: {
       transaction: Object,
     },
+    created() {
+      this.reconversionStatusTranslations = {
+        true: this.$gettext("sent"),
+        received: this.$gettext("received"),
+        invoiced: this.$gettext("invoiced"),
+        paid: this.$gettext("processed"),
+      }
+      this.reconversionStatuses = [true, "received", "invoiced", "paid"]
+        .map((v) => this.reconversionStatusTranslations[v.toString()])
+        .join("|")
+    },
     computed: {
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
       ...mapModuleState("lokapi", ["userProfile"]),
+
+      reconversionStatus() {
+        return this.reconversionStatusTranslations[
+          this.transaction?.isReconversion.toString()
+        ]
+      },
     },
   })
   export default class TransactionItem extends Vue {}
@@ -119,5 +155,45 @@
     background-color: $inner-card-background-color;
     margin-top: 3px;
     border-radius: 1em;
+  }
+
+  .tx-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .left {
+      margin-right: auto;
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-grow: 1;
+    }
+
+    .center {
+      flex-grow: 1;
+      margin: 0 auto; /* centers it if present */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+
+      .status-label {
+        line-height: 1.2em;
+        text-weight: bold;
+        text-align: center;
+        color: $color-2;
+      }
+      .status-indicator {
+        line-height: 1.5em;
+        text-align: center;
+      }
+    }
+
+    .right {
+      margin-left: auto;
+      flex-grow: 0;
+    }
   }
 </style>

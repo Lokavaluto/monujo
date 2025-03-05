@@ -96,6 +96,9 @@
         return this.pendingTopUpList.filter((topup: any) => topup.paid)
       },
       pendingMyUnpaidTopUpList() {
+        // This check is necessary as re-render will be triggered before
+        // a logout is effective.
+        if (!this.userProfile) return []
         return this.pendingTopUpList.filter(
           (topup: any) =>
             !topup.paid &&
@@ -104,6 +107,9 @@
         )
       },
       pendingOthersUnpaidTopUpList() {
+        // This check is necessary as re-render will be triggered before
+        // a logout is effective.
+        if (!this.userProfile) return []
         return this.pendingTopUpList.filter(
           (topup: any) =>
             !topup.paid &&
