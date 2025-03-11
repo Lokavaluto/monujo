@@ -60,24 +60,7 @@
         <router-link to="/create-account">{{
           $gettext("click here")
         }}</router-link>
-        {{ $gettext("to create one") }}
-        <div v-for="backend in getUnconfiguredBackends()" class="is-flex mt-3">
-          <div v-if="backend.startsWith('comchain:')">
-            {{ $gettext("Or import an existing wallet") }}
-            <input
-              type="file"
-              @change="(event) => registerWalletHandle(event, backend)"
-              style="display: none"
-            />
-            <button
-              class="button is-default is-pulled-right is-rounded"
-              id="import-wallet"
-              @click="triggerFileInput"
-            >
-              {{ $gettext("Import") }}
-            </button>
-          </div>
-        </div>
+        {{ $gettext("to create or to import one") }}
       </div>
       <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
         <h2 class="custom-card-title title-card">
@@ -144,14 +127,6 @@
 
   let interval: any
 
-  function readFileAsText(file: any) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = () => reject(reader.error)
-      reader.readAsText(file)
-    })
-  }
   @Options({
     name: "TheBankAccountList",
     props: {
@@ -201,17 +176,11 @@
         "availableVirtualAccounts",
         "activeVirtualAccounts",
         "inactiveVirtualAccounts",
-        "getUnconfiguredBackends",
         "getBackends",
       ]),
       ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingErrors"]),
     },
     watch: {
-      getUnconfiguredBackends(newval, oldval): void {
-        if (newval.length === 1) {
-          this.form.accountBackend = newval[0]
-        }
-      },
       async refreshToggle(newval, oldVal): Promise<void> {
         await this.refreshBalance(true)
       },
@@ -270,60 +239,8 @@
         this.$emit("refreshTransaction")
       },
       triggerFileInput(event: any) {
-        event.target.parentElement.querySelector("input[type=file]").click()
+        this.$router.push("/create-account")
       },
-      registerWalletHandle: applyDecorators(
-        [showSpinnerMethod(".accounts")],
-        async function (
-          this: any,
-          event: any,
-          backendId: any
-        ): Promise<Boolean | undefined> {
-          const backend = this.getBackends()[backendId]
-          const file = event.target.files[0]
-          if (!file) {
-            // This doesn't happen even if user has canceled dialog
-            // and it is not clear when this actually occurs.
-            console.log("Unexpectedly received no file. Ignoring.")
-            return
-          }
-
-          let fileContent: unknown
-          try {
-            fileContent = await readFileAsText(file)
-          } catch (err) {
-            throw new UIError(
-              this.$gettext("Failed to read the file contents"),
-              err
-            )
-          }
-          if (typeof fileContent !== "string")
-            // typeguard
-            throw new UIError(this.$gettext("Unexpected type of file"), null)
-          let fileData: any
-          try {
-            fileData = JSON.parse(fileContent)
-          } catch (err) {
-            throw new UIError(this.$gettext("Unexpected format of file"), err)
-          }
-          try {
-            await backend.registerWallet(fileData)
-          } catch (err: any) {
-            if (err.message === "User canceled the dialog box") {
-              return false
-            }
-            throw new UIError(
-              this.$gettext("Wallet registration unexpectedly failed") +
-                " " +
-                this.$gettext("Please try again or contact your administrator"),
-              err
-            )
-          }
-          this.$lokapi.clearBackendCache()
-          this.$store.dispatch("setBackends")
-          this.$store.dispatch("fetchAccounts")
-        }
-      ),
     },
   })
   export default class TheBankAccountList extends Vue {}
@@ -343,9 +260,5 @@
   }
   .active-refresh-button .icon {
     color: $top-menu-link-color;
-  }
-  #import-wallet {
-    position: relative;
-    bottom: 0.4em;
   }
 </style>

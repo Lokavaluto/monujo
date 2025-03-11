@@ -87,7 +87,7 @@
                 to="/create-account"
                 class="navbar-item"
               >
-                {{ $gettext("Create my wallet") }}
+                {{ $gettext("Create or import my wallet") }}
               </router-link>
 
               <hr class="dropdown-divider" />

@@ -60,6 +60,48 @@
         </div>
         <div class="column">
           <div class="card custom-card">
+            <div class="card-content" v-if="configurableBackends.length > 0">
+              <h2 class="custom-card-title">
+                {{ $gettext("Import my  wallet") }}
+              </h2>
+              <div
+                v-for="configurableBackend in configurableBackends"
+                :key="configurableBackend"
+              >
+                <span
+                  v-html="
+                    $gettextInterpolate(
+                      $gettext(
+                        'Import an existing <b>%{ backendName }</b> wallet'
+                      ),
+                      {
+                        backendName:
+                          configurableBackend.backend.jsonData.type.split(
+                            ':'
+                          )[0],
+                      }
+                    )
+                  "
+                >
+                </span>
+                <input
+                  class="fileInput"
+                  type="file"
+                  @change="
+                    (event) =>
+                      registerWalletHandle(event, configurableBackend.backend)
+                  "
+                  style="display: none"
+                />
+                <button
+                  class="button is-default is-rounded ml-2"
+                  id="import-wallet"
+                  @click="triggerFileInput"
+                >
+                  {{ $gettext("Import") }}
+                </button>
+              </div>
+            </div>
             <div class="card-content">
               <h2 class="custom-card-title">
                 {{ $gettext("Create my wallet") }}
@@ -161,6 +203,7 @@
 <script lang="ts">
   import { markRaw } from "vue"
   import { Options, Vue } from "vue-class-component"
+  import { UIError } from "@/exception"
   import { LokAPIExc } from "@/services/lokapiService"
   import AuthPref from "@/components/AuthPref.vue"
   import PasswordField from "@/components/PasswordField.vue"
@@ -185,20 +228,32 @@
             accountPasswordConfirm: [],
           },
         },
+        configurableBackends: [],
       }
     },
     async created() {
       const accountAuth = await this.$auth.getAccountAuth("new")
       this.handler = markRaw(accountAuth.authPrefHandler)
     },
-    mounted() {
+    async mounted() {
       const unconfiguredBackends = this.getUnconfiguredBackends()
       if (unconfiguredBackends.length === 0) {
         this.$router.push("/")
         return
       }
       this.form.accountBackend = unconfiguredBackends[0]
+
+      for (const backend of Object.values(this.getBackends()) as {
+        isUnconfigured(): Promise<boolean>
+      }[]) {
+        const isUnconfigured = await backend.isUnconfigured()
+        if (isUnconfigured) {
+          this.configurableBackends.push({ backend })
+        }
+      }
     },
+
+    // of backends as { isUnconfigured(): Promise<boolean> }[]
     watch: {
       getUnconfiguredBackends(newval, oldval): void {
         if (newval.length === 1) {
@@ -237,9 +292,76 @@
         }
       },
 
-      ...mapGetters(["getUnconfiguredBackends"]),
+      ...mapGetters(["getUnconfiguredBackends", "getBackends"]),
     },
     methods: {
+      async readFileAsText(file: any) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = () => reject(reader.error)
+          reader.readAsText(file)
+        })
+      },
+
+      triggerFileInput(event: any) {
+        event.target.parentElement.parentElement
+          .querySelector("input[type=file]")
+          .click()
+      },
+      registerWalletHandle: applyDecorators(
+        [showSpinnerMethod(".main")],
+        async function (
+          this: any,
+          event: any,
+          backend: any
+        ): Promise<Boolean | undefined> {
+          const file = event.target.files[0]
+          if (!file) {
+            // This doesn't happen even if user has canceled dialog
+            // and it is not clear when this actually occurs.
+            console.log("Unexpectedly received no file. Ignoring.")
+            return
+          }
+
+          let fileContent: unknown
+          try {
+            fileContent = await this.readFileAsText(file)
+          } catch (err) {
+            throw new UIError(
+              this.$gettext("Failed to read the file contents"),
+              err
+            )
+          }
+          if (typeof fileContent !== "string")
+            // typeguard
+            throw new UIError(this.$gettext("Unexpected type of file"), null)
+          let fileData: any
+          try {
+            fileData = JSON.parse(fileContent)
+          } catch (err) {
+            throw new UIError(this.$gettext("Unexpected format of file"), err)
+          }
+          try {
+            await backend.registerWallet(fileData)
+          } catch (err: any) {
+            if (err.message === "User canceled the dialog box") {
+              return false
+            }
+            throw new UIError(
+              this.$gettext("Wallet registration unexpectedly failed") +
+                " " +
+                this.$gettext("Please try again or contact your administrator"),
+              err
+            )
+          }
+          this.$lokapi.clearBackendCache()
+          this.$store.dispatch("setBackends")
+          this.$store.dispatch("fetchAccounts")
+
+          this.$router.push("/")
+        }
+      ),
       async checkPasswordField(fieldname: string, accountBackend: string) {
         this.form.errors[fieldname] = await this.$store.dispatch(
           "checkPasswordStrength",
@@ -340,5 +462,10 @@
   .custom-card-wallet {
     border-radius: 16px !important;
     padding: 0.8em;
+  }
+
+  #import-wallet {
+    position: relative;
+    bottom: 0.4em;
   }
 </style>
