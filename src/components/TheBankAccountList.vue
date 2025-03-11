@@ -53,30 +53,40 @@
       <div
         class="notification is-default notification-no-accounts"
         v-else-if="
-          accountsLoadingErrors.length == 0 && totalAccountsLoaded === 0
+          accountsLoadingErrors.length == 0 &&
+          totalAccountsLoaded === 0 &&
+          getUnconfiguredBackends().length === 0
         "
       >
-        {{ $gettext("You don't have any wallet yet,") }}
-        <router-link to="/create-account">{{
-          $gettext("click here")
-        }}</router-link>
-        {{ $gettext("to create one") }}
-        <div v-for="backend in getUnconfiguredBackends()" class="is-flex mt-3">
-          <div v-if="backend.startsWith('comchain:')">
-            {{ $gettext("Or import an existing wallet") }}
-            <input
-              type="file"
-              @change="(event) => registerWalletHandle(event, backend)"
-              style="display: none"
-            />
-            <button
-              class="button is-default is-pulled-right is-rounded"
-              id="import-wallet"
-              @click="triggerFileInput"
+        {{ $gettext("You don't have any wallet yet.") }}
+      </div>
+      <div
+        class="notification is-default notification-no-accounts"
+        v-else-if="
+          accountsLoadingErrors.length == 0 &&
+          totalAccountsLoaded === 0 &&
+          getUnconfiguredBackends().length > 0
+        "
+      >
+        <div class="no-wallet">
+          {{ $gettext("You don't have any wallet yet.") }}
+        </div>
+        <div class="flex mt-3">
+          <a
+            @click="createImportWallet"
+            class="button is-default is-rounded create-import-wallet-btn"
+          >
+            <span
+              :class="{ hide: accountsLoading || isAccountsLoadingRetrying }"
             >
-              {{ $gettext("Import") }}
-            </button>
-          </div>
+              <span v-if="!$config.disableImportWallet">{{
+                $gettext("Create or import my wallet")
+              }}</span>
+              <span v-else>
+                {{ $gettext("Create my wallet") }}
+              </span>
+            </span>
+          </a>
         </div>
       </div>
       <div class="section-card" v-else-if="activeVirtualAccounts.length !== 0">
@@ -144,14 +154,6 @@
 
   let interval: any
 
-  function readFileAsText(file: any) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = () => reject(reader.error)
-      reader.readAsText(file)
-    })
-  }
   @Options({
     name: "TheBankAccountList",
     props: {
@@ -201,22 +203,20 @@
         "availableVirtualAccounts",
         "activeVirtualAccounts",
         "inactiveVirtualAccounts",
-        "getUnconfiguredBackends",
         "getBackends",
+        "getUnconfiguredBackends",
       ]),
       ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingErrors"]),
     },
     watch: {
-      getUnconfiguredBackends(newval, oldval): void {
-        if (newval.length === 1) {
-          this.form.accountBackend = newval[0]
-        }
-      },
       async refreshToggle(newval, oldVal): Promise<void> {
         await this.refreshBalance(true)
       },
     },
     methods: {
+      createImportWallet() {
+        this.$router.push("/create-account")
+      },
       async refreshBalance(retryUntilChange = false) {
         const balanceOrig = this.account?.bal
         const startTime = Date.now()
@@ -269,61 +269,6 @@
         await this.$store.dispatch("fetchAccounts")
         this.$emit("refreshTransaction")
       },
-      triggerFileInput(event: any) {
-        event.target.parentElement.querySelector("input[type=file]").click()
-      },
-      registerWalletHandle: applyDecorators(
-        [showSpinnerMethod(".accounts")],
-        async function (
-          this: any,
-          event: any,
-          backendId: any
-        ): Promise<Boolean | undefined> {
-          const backend = this.getBackends()[backendId]
-          const file = event.target.files[0]
-          if (!file) {
-            // This doesn't happen even if user has canceled dialog
-            // and it is not clear when this actually occurs.
-            console.log("Unexpectedly received no file. Ignoring.")
-            return
-          }
-
-          let fileContent: unknown
-          try {
-            fileContent = await readFileAsText(file)
-          } catch (err) {
-            throw new UIError(
-              this.$gettext("Failed to read the file contents"),
-              err
-            )
-          }
-          if (typeof fileContent !== "string")
-            // typeguard
-            throw new UIError(this.$gettext("Unexpected type of file"), null)
-          let fileData: any
-          try {
-            fileData = JSON.parse(fileContent)
-          } catch (err) {
-            throw new UIError(this.$gettext("Unexpected format of file"), err)
-          }
-          try {
-            await backend.registerWallet(fileData)
-          } catch (err: any) {
-            if (err.message === "User canceled the dialog box") {
-              return false
-            }
-            throw new UIError(
-              this.$gettext("Wallet registration unexpectedly failed") +
-                " " +
-                this.$gettext("Please try again or contact your administrator"),
-              err
-            )
-          }
-          this.$lokapi.clearBackendCache()
-          this.$store.dispatch("setBackends")
-          this.$store.dispatch("fetchAccounts")
-        }
-      ),
     },
   })
   export default class TheBankAccountList extends Vue {}
@@ -344,8 +289,16 @@
   .active-refresh-button .icon {
     color: $top-menu-link-color;
   }
-  #import-wallet {
-    position: relative;
-    bottom: 0.4em;
+  .create-import-wallet-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  }
+  .no-wallet {
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+    display: flex;
   }
 </style>
