@@ -313,6 +313,7 @@
         isTransactionsLoading: false,
         selectedRecipientIdx: null,
         recipientBatchLoader: null,
+        selectedRecipientName: "",
       }
     },
 
@@ -560,6 +561,8 @@
       },
 
       async onRecipientSearch(recipientsSearchString: any) {
+        this.selectedRecipientName =
+          this.recipientBatchLoader.elements[this.selectedRecipientIdx]?.name
         if (
           this.selectedRecipientIdx !== null &&
           recipientsSearchString === ""
@@ -576,6 +579,10 @@
     },
     watch: {
       selectedRecipientIdx: async function (newIdx, oldIdx): Promise<void> {
+        this.onRecipientSearch("")
+        this.transactionBatchLoader.newGen()
+      },
+      selectedRecipientName: async function (newIdx, oldIdx): Promise<void> {
         this.onRecipientSearch("")
         this.transactionBatchLoader.newGen()
       },
