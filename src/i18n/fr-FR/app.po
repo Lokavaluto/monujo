@@ -26,7 +26,7 @@ msgstr "%{ appName } version %{ appVersion }"
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
-#: src/utils/password.ts:8
+#: src/utils/password.js:8 src/utils/password.ts:8
 msgid "%{ nbChar } character"
 msgid_plural "%{ nbChar } characters"
 msgstr[0] "%{ nbChar } caractère"
@@ -38,10 +38,10 @@ msgid_plural "%{ pinLength } digits"
 msgstr[0] "%{ pinLength } chiffre"
 msgstr[1] "%{ pinLength } chiffres"
 
-#: src/components/AboutModal.vue:85 src/components/TheNavBar.vue:103
-#: src/components/TheNavBar.vue:108 src/components/TheNavBar.vue:140
-#: src/components/TheNavBar.vue:80 src/components/TheNavBar.vue:81
-#: src/components/TheNavBar.vue:98
+#: src/components/AboutModal.vue:85 src/components/TheNavBar.vue:102
+#: src/components/TheNavBar.vue:107 src/components/TheNavBar.vue:112
+#: src/components/TheNavBar.vue:144 src/components/TheNavBar.vue:84
+#: src/components/TheNavBar.vue:85
 msgid "About %{ appName }"
 msgstr "À propos de %{ appName }"
 
@@ -49,10 +49,10 @@ msgstr "À propos de %{ appName }"
 msgid "Account"
 msgstr "Compte"
 
-#: src/components/TheNavBar.vue:103 src/components/TheNavBar.vue:59
-#: src/components/TheNavBar.vue:60 src/components/TheNavBar.vue:77
-#: src/components/TheNavBar.vue:82 src/components/TheNavBar.vue:87
-#: src/components/TheNavBar.vue:97
+#: src/components/TheNavBar.vue:101 src/components/TheNavBar.vue:107
+#: src/components/TheNavBar.vue:63 src/components/TheNavBar.vue:64
+#: src/components/TheNavBar.vue:81 src/components/TheNavBar.vue:86
+#: src/components/TheNavBar.vue:91
 msgid "Account requests"
 msgstr "Demandes de comptes"
 
@@ -92,10 +92,10 @@ msgstr "Ajouter une référence du paiement pour le destinataire"
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
-#: src/components/TheNavBar.vue:106 src/components/TheNavBar.vue:117
-#: src/components/TheNavBar.vue:68 src/components/TheNavBar.vue:69
-#: src/components/TheNavBar.vue:86 src/components/TheNavBar.vue:91
-#: src/components/TheNavBar.vue:96
+#: src/components/TheNavBar.vue:100 src/components/TheNavBar.vue:110
+#: src/components/TheNavBar.vue:121 src/components/TheNavBar.vue:72
+#: src/components/TheNavBar.vue:73 src/components/TheNavBar.vue:90
+#: src/components/TheNavBar.vue:95
 msgid "Admin Comchain"
 msgstr "Administrateur Comchain"
 
@@ -154,7 +154,7 @@ msgstr "Une erreur est survenue lors de la creation du ficher CSV"
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
-#: src/services/lokapiService.ts:278
+#: src/services/lokapiService.js:249 src/services/lokapiService.ts:278
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
@@ -166,7 +166,7 @@ msgstr ""
 "Une erreur s'est produite lors de la suppression de la demande de "
 "rechargement, veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/services/lokapiService.ts:282
+#: src/services/lokapiService.js:253 src/services/lokapiService.ts:282
 msgid "An error occurred while removing from favorites."
 msgstr "Une erreur est survenue lors de la suppression du favori."
 
@@ -321,11 +321,11 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/router/index.ts:62
+#: src/router/index.js:61 src/router/index.ts:62
 msgid "Approval of account creation"
 msgstr "Validation des comptes en attente de création"
 
-#: src/router/index.ts:68
+#: src/router/index.js:67 src/router/index.ts:68
 msgid "Approval of top-up requests"
 msgstr "Validation des demandes de crédit"
 
@@ -366,22 +366,15 @@ msgstr "Identification biométrique mise en place"
 msgid "by"
 msgstr "par"
 
-#: src/components/CreateAccount.vue:38 src/components/CreateAccount.vue:39
-#: src/components/CreateAccount.vue:43
+#: src/components/CreateAccount.vue:59 src/components/CreateAccount.vue:60
+#: src/components/CreateAccount.vue:61 src/components/CreateAccount.vue:64
+#: src/components/CreateAccount.vue:76 src/components/CreateAccount.vue:79
 msgid ""
 "Choose the password for your wallet. It is different from your user account "
 "password and is only related to your wallet."
 msgstr ""
 "Choisissez le mot de passe de votre portefeuille. Il est différent de celui "
 "de votre compte utilisateur et ne concerne que votre portefeuille."
-
-#: src/components/TheBankAccountList.vue:41
-#: src/components/TheBankAccountList.vue:42
-#: src/components/TheBankAccountList.vue:47
-#: src/components/TheBankAccountList.vue:56
-#: src/components/TheBankAccountList.vue:61
-msgid "click here"
-msgstr "cliquez ici"
 
 #: src/components/MoneyRequestModal.vue:67
 #: src/components/MoneyRequestModal.vue:68
@@ -423,30 +416,56 @@ msgstr "Connection réussie"
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
-#: src/main.ts:142
+#: src/main.js:120 src/main.ts:142
 msgid "Converted"
 msgstr "Converti"
 
-#: src/components/CreateAccount.vue:113 src/components/CreateAccount.vue:114
-#: src/components/CreateAccount.vue:118 src/components/CreateAccount.vue:145
-#: src/components/CreateAccount.vue:60 src/components/CreateAccount.vue:61
-#: src/components/CreateAccount.vue:65 src/components/TheNavBar.vue:48
-#: src/components/TheNavBar.vue:49 src/components/TheNavBar.vue:66
-#: src/components/TheNavBar.vue:71 src/components/TheNavBar.vue:76
-#: src/components/TheNavBar.vue:86 src/router/index.ts:50
+#: src/components/CreateAccount.vue:112 src/components/CreateAccount.vue:113
+#: src/components/CreateAccount.vue:114 src/components/CreateAccount.vue:117
+#: src/components/CreateAccount.vue:129 src/components/CreateAccount.vue:164
+#: src/components/CreateAccount.vue:40 src/components/CreateAccount.vue:41
+#: src/components/CreateAccount.vue:45 src/components/CreateAccount.vue:51
+#: src/components/CreateAccount.vue:52 src/components/CreateAccount.vue:53
+#: src/components/CreateAccount.vue:56 src/components/CreateAccount.vue:58
+#: src/components/CreateAccount.vue:64 src/components/TheBankAccountList.vue:58
+#: src/components/TheBankAccountList.vue:59
+#: src/components/TheBankAccountList.vue:64
+#: src/components/TheBankAccountList.vue:74
+#: src/components/TheBankAccountList.vue:81
+#: src/components/TheBankAccountList.vue:84
+#: src/components/TheBankAccountList.vue:86 src/components/TheNavBar.vue:51
+#: src/components/TheNavBar.vue:52 src/components/TheNavBar.vue:69
+#: src/components/TheNavBar.vue:74 src/components/TheNavBar.vue:79
+#: src/components/TheNavBar.vue:89 src/router/index.js:49
+#: src/router/index.ts:50
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
 
-#: src/components/TheNavBar.vue:100 src/components/TheNavBar.vue:110
-#: src/components/TheNavBar.vue:62 src/components/TheNavBar.vue:63
-#: src/components/TheNavBar.vue:80 src/components/TheNavBar.vue:85
-#: src/components/TheNavBar.vue:90
+#: src/components/CreateAccount.vue:39 src/components/CreateAccount.vue:40
+#: src/components/CreateAccount.vue:44 src/components/TheBankAccountList.vue:55
+#: src/components/TheBankAccountList.vue:56
+#: src/components/TheBankAccountList.vue:61
+#: src/components/TheBankAccountList.vue:71
+#: src/components/TheBankAccountList.vue:78
+#: src/components/TheBankAccountList.vue:81
+#: src/components/TheBankAccountList.vue:83 src/components/TheNavBar.vue:50
+#: src/components/TheNavBar.vue:51 src/components/TheNavBar.vue:68
+#: src/components/TheNavBar.vue:73 src/components/TheNavBar.vue:78
+#: src/components/TheNavBar.vue:88
+msgid "Create or import my wallet"
+msgstr "Créer ou importer mon portefeuille"
+
+#: src/components/TheNavBar.vue:104 src/components/TheNavBar.vue:114
+#: src/components/TheNavBar.vue:66 src/components/TheNavBar.vue:67
+#: src/components/TheNavBar.vue:84 src/components/TheNavBar.vue:89
+#: src/components/TheNavBar.vue:94
 msgid "Credit requests"
 msgstr "Demandes de crédit"
 
 #: src/components/TheNavBar.vue:32 src/components/TheNavBar.vue:33
 #: src/components/TheNavBar.vue:50 src/components/TheNavBar.vue:55
-#: src/components/TheNavBar.vue:60 src/router/index.ts:20
+#: src/components/TheNavBar.vue:60 src/router/index.js:19
+#: src/router/index.ts:20
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -547,11 +566,11 @@ msgstr "Exporter le portefeuille"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
-#: src/store/index.ts:60
+#: src/store/index.js:52 src/store/index.ts:60
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 
-#: src/components/TheBankAccountList.vue:296
+#: src/components/CreateAccount.vue:392
 msgid "Failed to read the file contents"
 msgstr "Le contenu du fichier n'a pas pu être lu"
 
@@ -598,23 +617,20 @@ msgstr "Générer le code QR"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:102 src/components/TheNavBar.vue:131
-#: src/components/TheNavBar.vue:21 src/components/TheNavBar.vue:22
-#: src/components/TheNavBar.vue:39 src/components/TheNavBar.vue:44
-#: src/components/TheNavBar.vue:49 src/components/TheNavBar.vue:74
-#: src/components/TheNavBar.vue:75 src/components/TheNavBar.vue:92
-#: src/components/TheNavBar.vue:97
+#: src/components/TheNavBar.vue:101 src/components/TheNavBar.vue:106
+#: src/components/TheNavBar.vue:135 src/components/TheNavBar.vue:21
+#: src/components/TheNavBar.vue:22 src/components/TheNavBar.vue:39
+#: src/components/TheNavBar.vue:44 src/components/TheNavBar.vue:49
+#: src/components/TheNavBar.vue:78 src/components/TheNavBar.vue:79
+#: src/components/TheNavBar.vue:96
 msgid "Help"
 msgstr "Aide"
 
-#: src/components/TheBankAccountList.vue:49
-#: src/components/TheBankAccountList.vue:50
-#: src/components/TheBankAccountList.vue:55
-#: src/components/TheBankAccountList.vue:64
-#: src/components/TheBankAccountList.vue:69
-#: src/components/TheBankAccountList.vue:73
-msgid "Import"
-msgstr "Importer"
+#: src/components/CreateAccount.vue:135 src/components/CreateAccount.vue:136
+#: src/components/CreateAccount.vue:140 src/components/CreateAccount.vue:191
+#: src/components/CreateAccount.vue:195 src/components/CreateAccount.vue:200
+msgid "Import an existing wallet"
+msgstr "Importer un portefeuille existant"
 
 #: src/components/MoneyTransferModal.vue:488
 msgid ""
@@ -640,7 +656,7 @@ msgstr "Format du code QR invalide"
 msgid "invoiced"
 msgstr "facturée"
 
-#: src/main.ts:236
+#: src/main.js:208 src/main.ts:236
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -653,25 +669,25 @@ msgstr "Nom"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:112
+#: src/main.js:92 src/main.ts:112
 msgid "Log in"
 msgstr "Se connecter"
 
-#: src/router/index.ts:32
+#: src/router/index.js:31 src/router/index.ts:32
 msgid "Login"
 msgstr "Connection"
 
-#: src/main.ts:111
+#: src/main.js:91 src/main.ts:111
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:139 src/main.ts:146
+#: src/main.js:117 src/main.js:124 src/main.ts:139 src/main.ts:146
 msgid "Main"
 msgstr "Principal"
 
 #: src/components/TheNavBar.vue:17 src/components/TheNavBar.vue:18
 #: src/components/TheNavBar.vue:35 src/components/TheNavBar.vue:40
-#: src/router/index.ts:26
+#: src/router/index.js:25 src/router/index.ts:26
 msgid "Map"
 msgstr "Carte"
 
@@ -703,7 +719,7 @@ msgstr "mois"
 msgid "mutual"
 msgstr "mutuel"
 
-#: src/main.ts:143
+#: src/main.js:121 src/main.ts:143
 msgid "Mutual"
 msgstr "Mutuel"
 
@@ -795,48 +811,38 @@ msgstr "Ok"
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
-#: src/components/TheBankAccountList.vue:46
-#: src/components/TheBankAccountList.vue:47
-#: src/components/TheBankAccountList.vue:52
-#: src/components/TheBankAccountList.vue:61
-#: src/components/TheBankAccountList.vue:66
-msgid "Or import an existing wallet"
-msgstr "Ou importer un fichier portefeuille"
-
-#: src/components/CreateAccount.vue:63 src/components/CreateAccount.vue:64
-#: src/components/CreateAccount.vue:68 src/components/PasswordField.vue:7
+#: src/components/PasswordField.vue:7
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/components/CreateAccount.vue:105 src/components/CreateAccount.vue:111
-#: src/components/CreateAccount.vue:85 src/components/CreateAccount.vue:86
-#: src/components/CreateAccount.vue:90 src/components/CreateAccount.vue:93
-#: src/components/CreateAccount.vue:94 src/components/CreateAccount.vue:97
-#: src/components/CreateAccount.vue:98
+#: src/components/CreateAccount.vue:111 src/components/CreateAccount.vue:124
+#: src/components/CreateAccount.vue:130 src/components/CreateAccount.vue:94
+#: src/components/CreateAccount.vue:95 src/components/CreateAccount.vue:96
+#: src/components/CreateAccount.vue:99
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: src/utils/password.ts:16
+#: src/utils/password.js:16 src/utils/password.ts:16
 msgid "Password must be at least %{ msgSizePassword } long"
 msgstr "Le mot de passe doit faire au moins %{ msgSizePassword }"
 
-#: src/utils/password.ts:31
+#: src/utils/password.js:31 src/utils/password.ts:31
 msgid "Password should use at least one digit"
 msgstr "Le mot de passe doit contenir au moins un nombre"
 
-#: src/utils/password.ts:23
+#: src/utils/password.js:23 src/utils/password.ts:23
 msgid "Password should use at least one lowercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre minuscule"
 
-#: src/utils/password.ts:33
+#: src/utils/password.js:33 src/utils/password.ts:33
 msgid "Password should use at least one symbol"
 msgstr "Le mot de passe doit contenir au moins un caractère spécial"
 
-#: src/utils/password.ts:27
+#: src/utils/password.js:27 src/utils/password.ts:27
 msgid "Password should use at least one uppercase character"
 msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 
-#: src/components/CreateAccount.vue:251
+#: src/components/CreateAccount.vue:433
 msgid "Passwords do not match"
 msgstr "Le mot de passe entré n'est pas identique"
 
@@ -886,7 +892,7 @@ msgstr "Le paiement sera effectué en %{nbTransactions} opérations :"
 msgid "Pending top-up requests"
 msgstr "Demandes de crédit en cours"
 
-#: src/services/QrCodeService.ts:143
+#: src/services/QrCodeService.js:122 src/services/QrCodeService.ts:143
 msgid "Permission denied to the camera"
 msgstr "Permission d'accès à la caméra refusé"
 
@@ -932,8 +938,9 @@ msgstr ""
 "Pensez à vérifier dans la liste des transactions si votre transaction y "
 "apparaît bien."
 
-#: src/components/CreateAccount.vue:47 src/components/CreateAccount.vue:48
-#: src/components/CreateAccount.vue:52
+#: src/components/CreateAccount.vue:122 src/components/CreateAccount.vue:123
+#: src/components/CreateAccount.vue:124 src/components/CreateAccount.vue:127
+#: src/components/CreateAccount.vue:139 src/components/CreateAccount.vue:178
 msgid ""
 "Please note that this password can not be retrieved, so be sure to keep it "
 "in a safe and reachable place."
@@ -951,12 +958,12 @@ msgstr ""
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
-#: src/components/CreateAccount.vue:280
-#: src/components/TheBankAccountList.vue:318 src/services/lokapiService.ts:288
+#: src/components/CreateAccount.vue:414 src/components/CreateAccount.vue:462
+#: src/services/lokapiService.js:259 src/services/lokapiService.ts:288
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/router/index.ts:56
+#: src/router/index.js:55 src/router/index.ts:56
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -970,7 +977,7 @@ msgstr "traitée"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/main.ts:289
+#: src/main.js:255 src/main.ts:289
 msgid "QR code"
 msgstr "Code QR"
 
@@ -1092,7 +1099,7 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Requested %{amount}"
 msgstr "%{amount} demandé"
 
-#: src/router/index.ts:38
+#: src/router/index.js:37 src/router/index.ts:38
 msgid "Reset my password"
 msgstr "Ré-initialiser mon mot de passe"
 
@@ -1106,7 +1113,7 @@ msgstr "Ré-initialiser le mot de passe"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:207
+#: src/main.js:181 src/main.ts:207
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
@@ -1173,7 +1180,7 @@ msgstr "%{amount} envoyé"
 msgid "Settings"
 msgstr "Préférences"
 
-#: src/components/CreateAccount.vue:301
+#: src/components/CreateAccount.vue:483
 msgid ""
 "Settings for simplified authentication were not saved correctly... Please "
 "try again in the \"Settings\" page or contact your administrator"
@@ -1203,9 +1210,9 @@ msgstr "Partager les opérations"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:107 src/components/TheNavBar.vue:112
-#: src/components/TheNavBar.vue:117 src/components/TheNavBar.vue:150
-#: src/components/TheNavBar.vue:89 src/components/TheNavBar.vue:90
+#: src/components/TheNavBar.vue:111 src/components/TheNavBar.vue:116
+#: src/components/TheNavBar.vue:121 src/components/TheNavBar.vue:154
+#: src/components/TheNavBar.vue:93 src/components/TheNavBar.vue:94
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -1214,7 +1221,7 @@ msgstr "Déconnexion"
 msgid "Sign up"
 msgstr "Créer un compte"
 
-#: src/router/index.ts:44
+#: src/router/index.js:43 src/router/index.ts:44
 msgid "Sign-Up"
 msgstr "Créer un compte"
 
@@ -1240,19 +1247,19 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Temporarily unavailable - please refresh"
 msgstr "Momentanément indisponible - veuillez rafraîchir"
 
-#: src/components/TheNavBar.vue:100 src/components/TheNavBar.vue:105
-#: src/components/TheNavBar.vue:134 src/components/TheNavBar.vue:24
+#: src/components/TheNavBar.vue:104 src/components/TheNavBar.vue:109
+#: src/components/TheNavBar.vue:138 src/components/TheNavBar.vue:24
 #: src/components/TheNavBar.vue:25 src/components/TheNavBar.vue:42
 #: src/components/TheNavBar.vue:47 src/components/TheNavBar.vue:52
-#: src/components/TheNavBar.vue:77 src/components/TheNavBar.vue:78
-#: src/components/TheNavBar.vue:95
+#: src/components/TheNavBar.vue:81 src/components/TheNavBar.vue:82
+#: src/components/TheNavBar.vue:99
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/TheBankAccountList.vue:114
-#: src/components/TheBankAccountList.vue:117
-#: src/components/TheBankAccountList.vue:76
-#: src/components/TheBankAccountList.vue:77
+#: src/components/TheBankAccountList.vue:124
+#: src/components/TheBankAccountList.vue:127
+#: src/components/TheBankAccountList.vue:86
+#: src/components/TheBankAccountList.vue:87
 msgid ""
 "The accounts listed below have been subjected to a creation request. Once "
 "the creation request is approved, these accounts will become usable."
@@ -1381,14 +1388,7 @@ msgstr "à"
 msgid "To"
 msgstr "Vers"
 
-#: src/components/TheBankAccountList.vue:43
-#: src/components/TheBankAccountList.vue:44
-#: src/components/TheBankAccountList.vue:49
-#: src/components/TheBankAccountList.vue:58
-msgid "to create one"
-msgstr "pour en créer un"
-
-#: src/services/QrCodeService.ts:146
+#: src/services/QrCodeService.js:125 src/services/QrCodeService.ts:146
 msgid "To scan QR code, allow access to camera in the app settings."
 msgstr ""
 "Pour scanner un code QR, vous devez autoriser l'accès à la caméra dans la "
@@ -1506,11 +1506,11 @@ msgid "Unable to read QR code"
 msgstr "Impossible de lire le code QR."
 
 #: src/components/TheBankAccountList.vue:103
-#: src/components/TheBankAccountList.vue:65
-#: src/components/TheBankAccountList.vue:66
-#: src/components/TheBankAccountList.vue:71
-#: src/components/TheBankAccountList.vue:88
-#: src/components/TheBankAccountList.vue:93
+#: src/components/TheBankAccountList.vue:113
+#: src/components/TheBankAccountList.vue:75
+#: src/components/TheBankAccountList.vue:76
+#: src/components/TheBankAccountList.vue:81
+#: src/components/TheBankAccountList.vue:98
 msgid "Unavailable"
 msgstr "Indisponible"
 
@@ -1523,7 +1523,7 @@ msgstr ""
 "problème persiste, veuillez contacter votre administrateur."
 
 # Erreur inattendue
-#: src/services/QrCodeService.ts:107
+#: src/services/QrCodeService.js:88 src/services/QrCodeService.ts:107
 msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
@@ -1535,7 +1535,7 @@ msgstr ""
 "Veuillez contacter votre administrateur."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:307
+#: src/components/CreateAccount.vue:403
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
@@ -1553,7 +1553,7 @@ msgstr ""
 "serveur distant."
 
 # Erreur inattendue
-#: src/components/TheBankAccountList.vue:302
+#: src/components/CreateAccount.vue:398
 msgid "Unexpected type of file"
 msgstr "Erreure Inattendue"
 
@@ -1563,6 +1563,23 @@ msgid ""
 msgstr ""
 "Utilisateur ou e-mail inconnu. Veuillez vous assurer de fournir un nom "
 "d'utilisateur ou une adresse e-mail valide."
+
+#: src/components/CreateAccount.vue:231
+msgid "Upload <b>%{ backendName }</b> wallet file..."
+msgstr "Importer un fichier portefeuille <b>%{ backendName }</b>"
+
+#: src/components/CreateAccount.vue:160 src/components/CreateAccount.vue:161
+#: src/components/CreateAccount.vue:165 src/components/CreateAccount.vue:216
+#: src/components/CreateAccount.vue:225 src/components/CreateAccount.vue:228
+#: src/components/CreateAccount.vue:241
+msgid "Upload wallet file..."
+msgstr "Importer un fichier portefeuille…"
+
+#: src/components/CreateAccount.vue:150 src/components/CreateAccount.vue:151
+#: src/components/CreateAccount.vue:155 src/components/CreateAccount.vue:206
+#: src/components/CreateAccount.vue:215 src/components/CreateAccount.vue:218
+msgid "Upload&nbsp;<b>%{ backendName }</b>&nbsp;wallet file..."
+msgstr "Importer un fichier portefeuille&nbsp;<b>%{ backendName }</b>"
 
 #: src/components/BiometryPrefs.vue:11 src/components/BiometryPrefs.vue:12
 #: src/components/BiometryPrefs.vue:17
@@ -1606,19 +1623,19 @@ msgstr ""
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
-#: src/components/CreateAccount.vue:287
+#: src/components/CreateAccount.vue:469
 msgid "Wallet already created"
 msgstr "Compte déjà créé"
 
-#: src/components/CreateAccount.vue:278
+#: src/components/CreateAccount.vue:460
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/main.ts:332
+#: src/main.js:298 src/main.ts:332
 msgid "Wallet export"
 msgstr "Export du portefeuille"
 
-#: src/components/TheBankAccountList.vue:316
+#: src/components/CreateAccount.vue:412
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
@@ -1692,21 +1709,26 @@ msgstr ""
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
-#: src/components/TheBankAccountList.vue:39
-#: src/components/TheBankAccountList.vue:40
-#: src/components/TheBankAccountList.vue:45
+#: src/components/TheBankAccountList.vue:41
+#: src/components/TheBankAccountList.vue:42
+#: src/components/TheBankAccountList.vue:47
+#: src/components/TheBankAccountList.vue:49
+#: src/components/TheBankAccountList.vue:50
 #: src/components/TheBankAccountList.vue:54
-msgid "You don't have any wallet yet,"
-msgstr "Vous n'avez pas encore de portefeuille,"
+#: src/components/TheBankAccountList.vue:55
+#: src/components/TheBankAccountList.vue:65
+#: src/components/TheBankAccountList.vue:72
+msgid "You don't have any wallet yet."
+msgstr "Vous n'avez pas encore de portefeuille."
 
 #: src/views/Signup.vue:234
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 
-#: src/components/TheBankAccountList.vue:56
-#: src/components/TheBankAccountList.vue:57
-#: src/components/TheBankAccountList.vue:62
-#: src/components/TheBankAccountList.vue:84
+#: src/components/TheBankAccountList.vue:66
+#: src/components/TheBankAccountList.vue:67
+#: src/components/TheBankAccountList.vue:72
+#: src/components/TheBankAccountList.vue:94
 msgid "your accounts"
 msgstr "vos comptes"
 
@@ -1715,10 +1737,10 @@ msgstr "vos comptes"
 msgid "Your credentials will be saved after your next login"
 msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 
-#: src/components/TheBankAccountList.vue:110
-#: src/components/TheBankAccountList.vue:113
-#: src/components/TheBankAccountList.vue:72
-#: src/components/TheBankAccountList.vue:73
+#: src/components/TheBankAccountList.vue:120
+#: src/components/TheBankAccountList.vue:123
+#: src/components/TheBankAccountList.vue:82
+#: src/components/TheBankAccountList.vue:83
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
 

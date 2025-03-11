@@ -71,7 +71,7 @@
     "default-color": "$color-2",
     "modal-btn-background-color": "$color-2",
     "modal-btn-text-color": "#ffffff",
-    "modal-btn-border-color": "$color-2"
+    "modal-btn-border-color": "$color-2",
     "tx-topup-bg-color": "$inner-card-background-color",
     "tx-reconversion-bg-color": "$inner-card-background-color"
   },
@@ -81,5 +81,6 @@
   "disableReconversion": false,
   "disableTopUp": false,
   "disableSplitMemo": false,
-  "disableBadges": false
+  "disableBadges": false,
+  "disableImportWallet": false
 }
