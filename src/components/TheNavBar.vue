@@ -87,7 +87,11 @@
                 to="/create-account"
                 class="navbar-item"
               >
-                {{ $gettext("Create my wallet") }}
+                {{
+                  !$config.disableImportWallet
+                    ? $gettext("Create or import my wallet")
+                    : $gettext("Create my wallet")
+                }}
               </router-link>
 
               <hr class="dropdown-divider" />
