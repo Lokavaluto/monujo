@@ -71,7 +71,9 @@
     "default-color": "$color-2",
     "modal-btn-background-color": "$color-2",
     "modal-btn-text-color": "#ffffff",
-    "modal-btn-border-color": "$color-2"
+    "modal-btn-border-color": "$color-2",
+    "color-selected-switch": "$color-2",
+    "color-unselected-switch": "$color-1"
   },
   "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}",
   "accountsRefreshInterval": 90,

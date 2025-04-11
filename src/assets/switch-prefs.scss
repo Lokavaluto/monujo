@@ -18,7 +18,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: $switch-bg-color;
+  background-color: $color-unselected-switch;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -36,7 +36,7 @@
 }
 
 input:checked + .slider {
-  background-color: $color-2;
+  background-color: $color-selected-switch;
 }
 
 input:focus + .slider {

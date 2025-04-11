@@ -15,6 +15,10 @@ $top-menu-link-background-color: var(
   --top-menu-link-background-color,
   white
 ) !default;
+
+$color-selected-switch: var(--color-selected-switch, $color-1) !default;
+$color-unselected-switch: var(--color-unselected-switch, $color-2) !default;
+
 $top-menu-link-background-color-bg: var(
   --top-menu-link-background-color-bg,
   white
@@ -123,5 +127,4 @@ $modal-btn-background-color: var(
 $modal-btn-text-color: var(--modal-btn-text-color, #ffffff) !default;
 $modal-btn-border-color: var(--modal-btn-border-color, $color-2) !default;
 
-$switch-bg-color: var(--switch-bg-color, $color-1) !default;
 $input-amount-text-color: var(--input-amount-text-color, #4a4a4a) !default;
