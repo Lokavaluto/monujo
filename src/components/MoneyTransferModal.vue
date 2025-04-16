@@ -320,6 +320,28 @@
             )
             throw err
           }
+          let isTransactionAllowed = null
+          try {
+            isTransactionAllowed =
+              await this.userProfile.isTransferAllowedByAdministrativeBackend(
+                recipient
+              )
+          } catch (err) {
+            this.$msg.error(
+              this.$gettext(
+                "An unexpected error occured while verifying transaction authorizations."
+              )
+            )
+          }
+          if (!isTransactionAllowed) {
+            this.$msg.error(
+              this.$gettext(
+                "You are not allowed to send money to %{recipientName}",
+                { recipientName: recipient.name }
+              )
+            )
+            return
+          }
           await this.toPaymentStage({
             recipient,
             amount: resultData.amount,
