@@ -150,7 +150,7 @@ msgstr "Une erreur est survenue lors de la creation du ficher CSV"
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
-#: src/services/lokapiService.ts:258
+#: src/services/lokapiService.ts:268
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
@@ -162,7 +162,7 @@ msgstr ""
 "Une erreur s'est produite lors de la suppression de la demande de "
 "rechargement, veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/services/lokapiService.ts:262
+#: src/services/lokapiService.ts:272
 msgid "An error occurred while removing from favorites."
 msgstr "Une erreur est survenue lors de la suppression du favori."
 
@@ -909,7 +909,7 @@ msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:280
-#: src/components/TheBankAccountList.vue:318 src/services/lokapiService.ts:268
+#: src/components/TheBankAccountList.vue:318 src/services/lokapiService.ts:278
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
@@ -1178,8 +1178,8 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/BankAccountItem.vue:11 src/components/BankAccountItem.vue:6
-#: src/components/BankAccountItem.vue:7
+#: src/components/BankAccountItem.vue:12 src/components/BankAccountItem.vue:7
+#: src/components/BankAccountItem.vue:8
 msgid "Temporarily unavailable - please refresh"
 msgstr "Momentanément indisponible - veuillez rafraîchir"
 

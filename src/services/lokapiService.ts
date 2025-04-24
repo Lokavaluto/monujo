@@ -67,6 +67,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
             ? userAccount.getSymbol().catch((e: any) => e)
             : "",
           userAccount.getAccounts().catch((e: any) => e),
+          userAccount.isBusinessForFinanceBackend().catch((e: any) => e),
         ])
         vals = vals.filter(isFulfilled).map((v) => v.value)
         const exceptions = vals.filter((v) => v instanceof Error)
@@ -91,7 +92,8 @@ export class LokAPI extends LokAPIBrowserAbstract {
           )
           return
         }
-        const [name, bal, curr, moneyAccounts] = vals
+        const [name, bal, curr, moneyAccounts, isBusinessForFinanceBackend] =
+          vals
         const _errorLogged: any[] = []
         const getSafeWalletRecipient = (account: any) => {
           let safeWalletRecipient
@@ -126,6 +128,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
           safeWalletRecipient: getSafeWalletRecipient(userAccount.parent),
           userAccountId: userAccount.internalId,
           currencyId: userAccount.parent.internalId,
+          isBusinessForFinanceBackend,
           active: userAccount.active, // FTM only the UserAccount is active or not
           id: userAccount.internalId,
           isTopUpAllowed: userAccount.isTopUpAllowed,
@@ -141,8 +144,11 @@ export class LokAPI extends LokAPIBrowserAbstract {
               this.getBankAccountName(account),
               account.getBalance(),
               account.getSymbol(),
+              account.isBusinessForFinanceBackend(),
             ])
-            const [name, bal, curr] = vals.map((a) => (<any>a).value)
+            const [name, bal, curr, isBusinessForFinanceBackend] = vals.map(
+              (a) => (<any>a).value
+            )
             const accountData = {
               name,
               bal,
@@ -161,6 +167,10 @@ export class LokAPI extends LokAPIBrowserAbstract {
               isTopUpAllowed: userAccount.isTopUpAllowed,
               _obj: account,
               creditable: account.creditable,
+              isBusinessForFinanceBackend:
+                userAccountData.isBusinessForFinanceBackend
+                  ? false
+                  : isBusinessForFinanceBackend,
             }
             allMoneyAccounts.push(accountData)
             if (moneyAccounts.length === 1) {
