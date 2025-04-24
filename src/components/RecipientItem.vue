@@ -17,6 +17,7 @@
       <div v-if="recipient.markBackend" class="is-size-6 has-text-grey-light">
         {{ `${recipient.backendId}` }}
       </div>
+      <Badge v-if="$config.disableBadges !== true" :object="recipient" />
     </div>
   </div>
 </template>
@@ -24,10 +25,13 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
 
-  import moment from "moment"
+  import Badge from "@/components/Badge.vue"
 
   @Options({
     name: "RecipientItem",
+    components: {
+      Badge,
+    },
     props: {
       recipient: Object,
     },
@@ -37,5 +41,8 @@
 <style lang="scss" scoped>
   .recipient-name {
     width: 100%;
+  }
+  div.badges {
+    font-size: 1.2em;
   }
 </style>

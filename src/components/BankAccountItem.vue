@@ -7,6 +7,7 @@
     <div class="custom-inner-card card px-5 py-2 is-flex">
       <div class="is-size-5 is-flex-grow-1">
         <slot name="name">default name</slot>
+        <Badge v-if="$config.disableBadges !== true" :object="account" />
         <div
           v-if="isTemporarilyUnavailable"
           class="account-backend is-size-6 error-msg"
@@ -75,10 +76,13 @@
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
   import DropdownMenu from "@/components/DropdownMenu.vue"
+  import Badge from "@/components/Badge.vue"
+
   @Options({
     name: "BankAccountItem",
     components: {
       DropdownMenu,
+      Badge,
     },
     props: {
       isAccountSelected: Boolean,
@@ -168,5 +172,16 @@
   }
   .error-msg {
     font-style: italic;
+  }
+  .account div.pro-badge {
+    vertical-align: top;
+    margin-left: 0.5em;
+    display: inline;
+    border-radius: 1em;
+    font-size: 0.6em;
+    padding: 0em 0.5em;
+    background-color: $color-2;
+    color: white;
+    font-weight: bold;
   }
 </style>
