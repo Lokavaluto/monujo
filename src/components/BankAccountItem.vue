@@ -5,7 +5,9 @@
     @click="isSub || isAccountSelected || $emit('accountSelected', account)"
   >
     <div class="custom-inner-card card px-5 py-2 is-flex">
-      <div class="is-size-5 is-flex-grow-1">
+      <div
+        class="is-size-6-mobile is-size-5-tablet is-flex-grow-1 account-title"
+      >
         <slot name="name">default name</slot>
         <Badge v-if="$config.disableBadges !== true" :object="account" />
         <div
@@ -14,25 +16,27 @@
         >
           {{ $gettext("Temporarily unavailable - please refresh") }}
         </div>
-        <div v-if="isMultiCurrency && !isSub" class="account-backend is-size-6">
+        <div
+          v-if="isMultiCurrency && !isSub"
+          class="account-backend is-size-7-mobile is-size-6-tablet"
+        >
           {{ account?.backend }}
         </div>
       </div>
-      <div class="is-align-items-center is-flex">
-        <span
-          class="is-size-6-mobile is-size-4-tablet account-bal"
-          v-if="account?.active"
-        >
+      <div
+        class="
+          is-align-items-center
+          is-flex
+          is-size-6-mobile
+          is-size-5-tablet
+          is-size-4-desktop
+        "
+      >
+        <span class="account-bal" v-if="account?.active">
           {{ numericFormat(parseFloat(account?.bal)) }}
         </span>
-        <span
-          class="is-size-6-mobile is-size-4-tablet account-bal inactive"
-          v-else
-          >-.---,--</span
-        >
-        <span class="is-size-6-mobile is-size-5-tablet account-curr">{{
-          account?.curr || "--"
-        }}</span>
+        <span class="account-bal inactive" v-else>-.---,--</span>
+        <span class="account-curr">{{ account?.curr || "--" }}</span>
         <span
           :class="{
             hide: !isAccountSelected || isSub || !showSubAccounts,
@@ -172,6 +176,11 @@
   }
   .error-msg {
     font-style: italic;
+  }
+  .account .account-title {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .account div.pro-badge {
     vertical-align: top;
