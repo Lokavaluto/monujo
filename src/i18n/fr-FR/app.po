@@ -1178,8 +1178,8 @@ msgstr "Destination"
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
-#: src/components/BankAccountItem.vue:12 src/components/BankAccountItem.vue:7
-#: src/components/BankAccountItem.vue:8
+#: src/components/BankAccountItem.vue:12 src/components/BankAccountItem.vue:14
+#: src/components/BankAccountItem.vue:7 src/components/BankAccountItem.vue:8
 msgid "Temporarily unavailable - please refresh"
 msgstr "Momentanément indisponible - veuillez rafraîchir"
 
