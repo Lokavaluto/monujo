@@ -1,7 +1,10 @@
 <template>
   <div
     class="account"
-    :class="{ active: account.active }"
+    :class="{
+      active: account.active,
+      'type-barter': account?._obj?.isBarter && account._obj.isBarter,
+    }"
     @click="isSub || isAccountSelected || $emit('accountSelected', account)"
   >
     <div class="custom-inner-card card px-5 py-2 is-flex">
@@ -23,6 +26,18 @@
           {{ account?.backend }}
         </div>
       </div>
+      <div class="barter-limits" v-if="account.isBarter">
+        <div class="max">
+          {{
+            barterLimits?.max ? numericFormat(parseFloat(barterLimits.max)) : ""
+          }}
+        </div>
+        <div class="min">
+          {{
+            barterLimits?.min ? numericFormat(parseFloat(barterLimits.min)) : ""
+          }}
+        </div>
+      </div>
       <div
         class="
           is-align-items-center
@@ -38,6 +53,7 @@
         <span class="account-bal inactive" v-else>-.---,--</span>
         <span class="account-curr">{{ account?.curr || "--" }}</span>
         <span
+          v-if="!disableDropDown"
           :class="{
             hide: !isAccountSelected || isSub || !showSubAccounts,
           }"
@@ -94,6 +110,12 @@
       isSub: Boolean,
       account: Object,
       showSubAccounts: Boolean,
+      disableDropDown: Boolean,
+    },
+    data() {
+      return {
+        barterLimits: {},
+      }
     },
     computed: {
       isTemporarilyUnavailable() {
@@ -105,6 +127,14 @@
       },
       ...mapModuleState("lokapi", ["isMultiCurrency"]),
       ...mapGetters(["numericFormat"]),
+    },
+    async mounted() {
+      if (this.account.isBarter) {
+        this.barterLimits = {
+          min: await this.account._obj.getLowLimit(),
+          max: await this.account._obj.getHighLimit(),
+        }
+      }
     },
     methods: {
       accountSelected(account: any) {
@@ -133,6 +163,10 @@
     background-color: $inner-card-label-background-color;
     border-radius: 20px;
     padding: 0 0.5em;
+  }
+  .type-barter .account-bal {
+    /* border: 0.1em solid $color-2; */
+    background-color: $barter-bg-color;
   }
   .account-backend {
     color: $inner-card-text-color-backend;
@@ -193,5 +227,18 @@
     background-color: $color-2;
     color: white;
     font-weight: bold;
+  }
+  .account div.barter-limits {
+    font-size: 1.9em;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    min-width: 5em;
+    padding: 0em 1em;
+
+    > div {
+      line-height: 1.1em;
+      text-align: right;
+    }
   }
 </style>

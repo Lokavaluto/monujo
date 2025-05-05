@@ -61,18 +61,11 @@
           <p
             v-if="$modal.args?.value[0].type != 'topup'"
             class="amount has-text-weight-bold is-size-4"
-          >
-            {{
-              ((t) =>
-                t.amount < 0
-                  ? $gettext("Sent %{amount}", {
-                      amount: `${numericFormat(-t.amount)} ${t.currency}`,
-                    })
-                  : $gettext("Received %{amount}", {
-                      amount: `${numericFormat(t.amount)} ${t.currency}`,
-                    }))($modal.args?.value[0].transaction)
-            }}
-          </p>
+            :class="{
+              cm: transactionsTags.includes('barter'),
+            }"
+            v-html="amountSentence"
+          ></p>
           <p v-else class="amount has-text-weight-bold is-size-4">
             {{
               ((t) =>
@@ -133,9 +126,7 @@
             <h2 v-else>
               <h2 class="frame3-sub-title">
                 {{
-                  $modal.args?.value[0].transaction.amount < 0
-                    ? $gettext("to")
-                    : $gettext("from")
+                  transactionTotalAmount < 0 ? $gettext("to") : $gettext("from")
                 }}
               </h2>
               <p
@@ -146,7 +137,7 @@
                   hide-overflow
                 "
               >
-                {{ $modal.args?.value[0].transaction.related }}
+                {{ transactions[0].related }}
               </p>
             </h2>
           </div>
@@ -154,6 +145,24 @@
           <p class="frame3-sub-title mb-3">
             {{ dateFormat }}
           </p>
+
+          <div v-if="transactions.length > 1">
+            <hr />
+            <div class="transaction-list-description">
+              {{
+                this.$gettext(
+                  "Payment was done in %{nbTransactions} transactions:",
+                  { nbTransactions: transactions.length }
+                )
+              }}
+            </div>
+            <TransactionItem
+              v-for="transaction in transactions"
+              :key="transaction"
+              :transaction="transaction"
+              mode="small"
+            />
+          </div>
         </div>
       </section>
       <footer
@@ -202,14 +211,30 @@
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
   import { mapGetters } from "vuex"
+  import { getCurrentInstance } from "vue"
   import moment from "moment"
   import { UIError } from "../exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
+  import TransactionItem from "./TransactionItem.vue"
+
+  function safeCentsToAmount(cents: number) {
+    let sign = ""
+    if (cents < 0) {
+      cents = -cents
+      sign = "-"
+    }
+    // garanteed >3 sized string representing uint
+    const data_str = cents.toString().padStart(3, "0")
+    return `${sign}${data_str.slice(0, -2)}.${data_str.slice(-2)}`
+  }
 
   @Options({
     name: "ConfirmPaymentModal",
+    components: {
+      TransactionItem,
+    },
     mounted() {
       this.$refs.paymentConfirmation.focus()
     },
@@ -217,11 +242,59 @@
       ...mapGetters(["numericFormat"]),
       ...mapModuleState("lokapi", ["userProfile"]),
       dateFormat() {
-        return moment(
-          this.$modal.args?.value[0].transaction.date.toString()
-        ).format("YYYY-MM-DD HH:mm:ssZ")
+        return moment(this.transactionDate.toString()).format(
+          "YYYY-MM-DD HH:mm:ssZ"
+        )
+      },
+      transactionsTags() {
+        return Array.from(
+          new Set(this.transactions.map((t: any) => t.tags).flat())
+        )
+      },
+      amountSentence() {
+        const amount = this.transactionTotalAmount
+        const currency = this.transactionCurrency
+
+        let translatedFullSentence
+        if (amount < 0) {
+          // Using brackets to find our amount and add <span> around afterwards
+          const amountPreGettext = `[${this.numericFormat(
+            -amount
+          )}] ${currency}`
+          translatedFullSentence = this.$gettext("Sent %{amount}", {
+            amount: amountPreGettext,
+          })
+        } else {
+          // Using brackets to find our amount and add <span> around afterwards
+          const amountPreGettext = `[${this.numericFormat(amount)}] ${currency}`
+          translatedFullSentence = this.$gettext("Received %{amount}", {
+            amount: amountPreGettext,
+          })
+        }
+        const instance = getCurrentInstance()
+        const scopeId = (instance?.type as any).__scopeId || ""
+        return translatedFullSentence.replace(
+          /\[(.*?)\]/,
+          `<span class="amount" ${scopeId}>$1</span>`
+        )
+      },
+      transactionDate() {
+        const transaction = this.$modal.args?.value[0].transaction
+
+        const transactions = Array.isArray(transaction)
+          ? transaction
+          : [transaction]
+
+        return transactions[0].date
       },
 
+      transactions() {
+        const transaction = this.$modal.args?.value[0].transaction
+        return Array.isArray(transaction) ? transaction : [transaction]
+      },
+      transactionCurrency() {
+        return this.transactions[0].currency
+      },
       transactionType() {
         const transaction = this.$modal.args?.value[0].transaction
         let transactionType = ""
@@ -238,6 +311,12 @@
           transactionType = "transactionDetail"
         }
         return transactionType
+      },
+      transactionTotalAmount() {
+        let totalCents = this.transactions
+          .map((t: any) => parseFloat(t.amount) * 100)
+          .reduce((acc: number, val: number) => acc + val, 0)
+        return safeCentsToAmount(totalCents)
       },
       reconversionStatus(): string {
         const transaction = this.$modal.args?.value[0].transaction
@@ -388,5 +467,15 @@
   }
   #delete {
     background-color: #cc0f35;
+  }
+  .transaction-list-description {
+    font-size: 0.9em;
+  }
+
+  p.amount.cm span.amount {
+    background-color: $barter-bg-color;
+    display: inline;
+    border-radius: 1em;
+    padding: 0em 0.5em;
   }
 </style>
