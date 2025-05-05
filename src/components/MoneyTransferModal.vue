@@ -347,74 +347,6 @@
         this.recipientMemo = config?.recipientMemo
         this.config = config
       },
-
-      _checkBeforeTransaction: applyDecorators(
-        [showSpinnerMethod(".modal-card-body")],
-        async function (this: any): Promise<boolean> {
-          this.errors = false
-          if (this.ownSelectedAccount._obj.getBalance) {
-            let realBal
-            try {
-              realBal = await this.ownSelectedAccount._obj.getBalance("latest")
-            } catch (err) {
-              this.$msg.error(
-                this.$gettext(
-                  "An unexpected issue occurred while checking available funds. " +
-                    "The transaction was not sent. We are sorry for the inconvenience."
-                ) +
-                  "<br/>" +
-                  this.$gettext(
-                    "You can try again. If the issue persists, " +
-                      "please contact your administrator."
-                  )
-              )
-              console.error("getBalance failed:", err)
-              return false
-            }
-            // ensure realBal is the correct format
-            if (
-              !(realBal.includes(".") && realBal.split(".")[1].length === 2)
-            ) {
-              throw new Error("Invalid amount returned by getBalance", realBal)
-            }
-            const amount_cents = parseInt(this.amount.replace(".", ""))
-            const realBal_cents = parseInt(realBal.replace(".", ""))
-            const bal_cents = parseInt(
-              this.ownSelectedAccount.bal.replace(".", "")
-            )
-            // ensure we are in safe limits (we could use BigInt if needed)
-            Object.entries({ amount_cents, realBal_cents, bal_cents }).forEach(
-              ([label, value]) => {
-                if (value > Number.MAX_SAFE_INTEGER)
-                  throw new Error(
-                    `Amount '${label.split("_")[0]}' exceeds safe max values ` +
-                      `for current internal representation (value: ${value})`
-                  )
-              }
-            )
-            if (amount_cents > bal_cents) {
-              this.errors = this.$gettext("Insufficient balance")
-              return false
-            }
-            if (amount_cents > realBal_cents) {
-              this.errors = this.$gettext(
-                "The last transactions were not yet all processed. " +
-                  "To ensure that this payment can be sent, you need " +
-                  "to wait for these pending transactions to be processed. " +
-                  "This can take a few minutes. You can also lower your " +
-                  "transaction amount underneath %{ realBal } %{ currency }. " +
-                  "If the problem persists, please contact an administrator.",
-                {
-                  realBal,
-                  currency: this.ownSelectedAccount.curr,
-                }
-              )
-              return false
-            }
-          }
-          return true
-        }
-      ),
       _executeTransaction: applyDecorators(
         [showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<boolean | any> {
@@ -426,6 +358,44 @@
               this.recipientMemo
             )
           } catch (err: any) {
+            if (err instanceof LokapiExc.PrepareTransferError) {
+              if (err instanceof LokapiExc.PrepareTransferException) {
+                this.$msg.error(
+                  this.$gettext(
+                    "An unexpected issue occurred while checking available funds. " +
+                      "The transaction was not sent. We are sorry for the inconvenience."
+                  ) +
+                    "<br/>" +
+                    this.$gettext(
+                      "You can try again. If the issue persists, " +
+                        "please contact your administrator."
+                    )
+                )
+                if (err.origException) {
+                  console.error("Backend exception:", err.origException)
+                }
+                return false
+              }
+              if (err instanceof LokapiExc.PrepareTransferInsufficientBalance) {
+                this.errors = this.$gettext("Insufficient balance")
+                return false
+              }
+              if (err instanceof LokapiExc.PrepareTransferUnsafeBalance) {
+                this.errors = this.$gettext(
+                  "The last transactions were not yet all processed. " +
+                    "To ensure that this payment can be sent, you need " +
+                    "to wait for these pending transactions to be processed. " +
+                    "This can take a few minutes. You can also lower your " +
+                    "transaction amount underneath %{ realBal } %{ currency }. " +
+                    "If the problem persists, please contact an administrator.",
+                  {
+                    realBal: err.realBal,
+                    currency: this.ownSelectedAccount.curr,
+                  }
+                )
+                return false
+              }
+            }
             if (err instanceof LokapiExc.PaymentConfirmationMissing) {
               this.$modal.args.value[0].refreshTransaction()
               this.close()
@@ -486,8 +456,6 @@
       sendTransaction: applyDecorators(
         [debounceMethod],
         async function (this: any): Promise<void> {
-          if (!(await this._checkBeforeTransaction())) return
-
           const payment = await this._executeTransaction()
           if (payment === false) return
 

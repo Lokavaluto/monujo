@@ -171,6 +171,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
                 userAccountData.isBusinessForFinanceBackend
                   ? false
                   : isBusinessForFinanceBackend,
+              isBarter: account.isBarter,
             }
             allMoneyAccounts.push(accountData)
             if (moneyAccounts.length === 1) {
