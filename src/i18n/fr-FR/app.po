@@ -45,7 +45,7 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "About %{ appName }"
 msgstr "À propos de %{ appName }"
 
-#: src/components/TransactionListModal.vue:459
+#: src/components/TransactionListModal.vue:458
 msgid "Account"
 msgstr "Compte"
 
@@ -124,7 +124,7 @@ msgstr "Avez-vous déjà créé un compte ?"
 #: src/components/MoneyTransaction.vue:21
 #: src/components/MoneyTransaction.vue:22
 #: src/components/MoneyTransaction.vue:27
-#: src/components/TransactionListModal.vue:455
+#: src/components/TransactionListModal.vue:454
 #: src/views/admin/PendingCredits.vue:39 src/views/admin/PendingCredits.vue:40
 #: src/views/admin/PendingCredits.vue:43
 msgid "Amount"
@@ -146,7 +146,7 @@ msgstr "Le montant envoyé doit être un nombre positif"
 msgid "Amount to send must be a number with not more than 2 decimals"
 msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales"
 
-#: src/components/TransactionListModal.vue:509
+#: src/components/TransactionListModal.vue:507
 msgid "An error occured while creating the CSV file"
 msgstr "Une erreur est survenue lors de la creation du ficher CSV"
 
@@ -177,14 +177,14 @@ msgstr ""
 "crédit de %{ name }"
 
 #: src/components/MoneyTransferModal.vue:248
-#: src/components/TransactionListModal.vue:342
+#: src/components/TransactionListModal.vue:341
 msgid "An unexpected issue occured while downloading recipient list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "destinataires"
 
-#: src/components/TransactionListModal.vue:357
-#: src/components/TransactionListModal.vue:423
+#: src/components/TransactionListModal.vue:356
+#: src/components/TransactionListModal.vue:422
 #: src/components/TransactionListRecent.vue:119
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
@@ -433,13 +433,13 @@ msgstr "Demandes de crédit"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TransactionListModal.vue:456
+#: src/components/TransactionListModal.vue:455
 #: src/views/admin/PendingCredits.vue:42 src/views/admin/PendingCredits.vue:43
 #: src/views/admin/PendingCredits.vue:46
 msgid "Date"
 msgstr "Date"
 
-#: src/components/TransactionListModal.vue:310
+#: src/components/TransactionListModal.vue:309
 msgid "day"
 msgstr "jour"
 
@@ -452,7 +452,7 @@ msgstr "jour"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/components/TransactionListModal.vue:457
+#: src/components/TransactionListModal.vue:456
 msgid "Description"
 msgstr "Description"
 
@@ -676,11 +676,11 @@ msgstr "Montant minimum à créditer : "
 msgid "Money reconversion"
 msgstr "Reconversion"
 
-#: src/components/TransactionListModal.vue:312
+#: src/components/TransactionListModal.vue:311
 msgid "month"
 msgstr "mois"
 
-#: src/components/TransactionListModal.vue:470
+#: src/components/TransactionListModal.vue:469
 msgid "mutual"
 msgstr "mutuel"
 
@@ -1001,7 +1001,7 @@ msgstr "Reconversion reçue"
 msgid "Reconversion sent"
 msgstr "Reconversion envoyée"
 
-#: src/components/TransactionListModal.vue:471
+#: src/components/TransactionListModal.vue:470
 msgid "reconvertible"
 msgstr "reconvertible"
 
@@ -1179,11 +1179,11 @@ msgstr "Créer un compte"
 msgid "Simplified authentication for this device"
 msgstr "Authentification simplifiée sur ce périphérique"
 
-#: src/components/TransactionListModal.vue:453
+#: src/components/TransactionListModal.vue:452
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TransactionListModal.vue:454
+#: src/components/TransactionListModal.vue:453
 msgid "Target"
 msgstr "Destination"
 
@@ -1396,24 +1396,24 @@ msgstr "Rechargement demandé"
 msgid "Transaction details"
 msgstr "Détails de l'opération"
 
-#: src/components/TransactionListModal.vue:548
+#: src/components/TransactionListModal.vue:545
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TransactionListModal.vue:519
-#: src/components/TransactionListModal.vue:554
+#: src/components/TransactionListModal.vue:517
+#: src/components/TransactionListModal.vue:551
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TransactionListModal.vue:524
+#: src/components/TransactionListModal.vue:522
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/components/TransactionListModal.vue:541
+#: src/components/TransactionListModal.vue:538
 msgid "Transaction list from %{ dateBeginStr } to %{ dateEndStr }"
 msgstr "Liste des transactions du %{ dateBeginStr } au %{ dateEndStr }"
 
-#: src/components/TransactionListModal.vue:559
+#: src/components/TransactionListModal.vue:556
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
@@ -1555,7 +1555,7 @@ msgstr "Export du portefeuille"
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/TransactionListModal.vue:311
+#: src/components/TransactionListModal.vue:310
 msgid "week"
 msgstr "semaine"
 
@@ -1567,7 +1567,7 @@ msgstr ""
 "Souhaitez-vous vous logger en utilisant les capacités biométriques de votre "
 "périphérique (empreinte digitale, reconnaissance faciale, ...)"
 
-#: src/components/TransactionListModal.vue:313
+#: src/components/TransactionListModal.vue:312
 msgid "year"
 msgstr "année"
 

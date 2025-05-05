@@ -303,7 +303,6 @@
 
     data(this: any) {
       return {
-        selectExportLoader: null,
         exportDate: ["", ""],
         datePickerShow: false,
         selectorLabels: {
@@ -500,7 +499,6 @@
       downloadCsvFile: applyDecorators(
         [debounceMethod, showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<void> {
-          //this.selectExportLoader = 1
           let csvComponents
           try {
             csvComponents = await this.createCsvFile()
@@ -525,7 +523,6 @@
         }
       ),
       async shareCsvFile() {
-        this.selectExportLoader = 2
         const { csvContent, exportFileName } = await this.createCsvFile()
         let dateBeginStr, dateEndStr
         if (this.exportDate[0] && this.exportDate[1]) {
