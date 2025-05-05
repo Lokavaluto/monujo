@@ -403,6 +403,11 @@
       setFocus() {
         this.$refs.transactions.focus()
       },
+      getSubAccounts() {
+        const [opts] = this.$modal.args.value
+        const { account } = opts
+        return account.subAccounts
+      },
       async createCsvFile() {
         const transactions = []
         const [dateBegin, dateEnd] = this.exportDate
@@ -433,13 +438,16 @@
           exportFileName = "transactions.csv"
         }
 
+        const hasMoreThanOneSubAccount = this.getSubAccounts().length > 1
         const columnOrder = [
           "sender",
           "receiver",
           "amount",
           "date",
           "description",
+          ...(hasMoreThanOneSubAccount ? ["account"] : []),
         ]
+
         const csvDataLine: { [key: string]: string }[] = [
           {
             sender: this.$gettext("Source"),
@@ -447,6 +455,9 @@
             amount: this.$gettext("Amount"),
             date: this.$gettext("Date"),
             description: this.$gettext("Description"),
+            ...(hasMoreThanOneSubAccount && {
+              account: this.$gettext("Account"),
+            }),
           },
         ]
 
@@ -455,12 +466,18 @@
           const [sender, receiver] = e.amount.startsWith("-")
             ? [this.userProfile.name, name]
             : [name, this.userProfile.name]
+          const accountType = e.tags.includes("barter")
+            ? this.$gettext("mutual")
+            : this.$gettext("reconvertible")
           const data: { [key: string]: string } = {
             sender,
             receiver,
             amount: this.numericFormat(e.amount),
             date: moment(e.date).format("YYYY-MM-DD HH:mm:ss"),
             description: e.description || "",
+            ...(hasMoreThanOneSubAccount && {
+              account: accountType,
+            }),
           }
 
           for (const s of columnOrder) {

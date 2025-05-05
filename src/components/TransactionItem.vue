@@ -1,7 +1,11 @@
 <template>
   <div
     class="p-3 shadow-bottom cursor-pointer tx-item"
-    :class="{ highlight: transaction.isReconversion || transaction.isTopUp }"
+    :class="{
+      highlight: transaction.isReconversion || transaction.isTopUp,
+      cm: transaction.tags && transaction.tags.includes('barter'),
+      'mode-small': mode === 'small',
+    }"
   >
     <div class="is-flex-direction-column left">
       <h3
@@ -11,31 +15,38 @@
             : 'custom-card-related has-text-success',
         ]"
       >
-        {{ numericFormat(parseFloat(transaction.amount)) }}
-        {{ transaction.currency }}
+        <div class="amount">
+          <span class="amount">
+            {{ numericFormat(parseFloat(transaction.amount)) }}
+          </span>
+        </div>
+        <div class="currency">{{ transaction.currency }}</div>
       </h3>
 
-      <h5
-        v-if="transaction.isTopUp || transaction.isReconversion"
-        class="custom-card-type"
-      >
-        {{
-          transaction.isTopUp ? $gettext("Top-up") : $gettext("Reconversion")
-        }}
-      </h5>
-      <h4 v-else class="custom-card-related">
-        {{ transaction.related }}
-      </h4>
+      <template v-if="mode !== 'small'">
+        <h5
+          v-if="transaction.isTopUp || transaction.isReconversion"
+          class="custom-card-type"
+        >
+          {{
+            transaction.isTopUp ? $gettext("Top-up") : $gettext("Reconversion")
+          }}
+        </h5>
+        <h4 v-else class="custom-card-related">
+          {{ transaction.related }}
+        </h4>
 
-      <h5
-        v-if="!transaction.isTopUp && !transaction.isReconversion"
-        class="has-text-grey-light transaction-desc"
-      >
-        {{ transaction.description }}
-      </h5>
+        <h5
+          v-if="!transaction.isTopUp && !transaction.isReconversion"
+          class="has-text-grey-light transaction-desc"
+        >
+          {{ transaction.description }}
+        </h5>
+      </template>
     </div>
     <div
       v-if="
+        mode !== 'small' &&
         $config.disableReconversionStatusDisplay !== true &&
         transaction.isReconversion
       "
@@ -51,11 +62,13 @@
       </div>
     </div>
     <div class="is-pulled-right right">
-      <h5 class="custom-card-related has-text-right">
+      <h5 v-if="mode !== 'small'" class="custom-card-related has-text-right">
         {{ dateFormat(transaction.date) }}
       </h5>
       <h5 class="status card-paiement-defaut-carte has-text-right mt-1">
-        {{ relativeDateFormat(transaction.date) }}
+        <span v-if="transaction.date">
+          {{ relativeDateFormat(transaction.date) }}
+        </span>
         <fa-icon
           :class="{
             hide: transaction?.pending === true,
@@ -82,6 +95,7 @@
     methods: {},
     props: {
       transaction: Object,
+      mode: Object,
     },
     created() {
       this.reconversionStatusTranslations = {
@@ -145,6 +159,11 @@
   .status .fa-check {
     color: $color-2;
   }
+
+  .mode-small .status {
+    font-size: 0.8em;
+    padding-bottom: 0.2em;
+  }
   .shadow-bottom {
     box-shadow: 0 3px 6px -6px black;
   }
@@ -170,6 +189,16 @@
       overflow: hidden;
       text-overflow: ellipsis;
       flex-grow: 1;
+
+      div.amount {
+        display: inline;
+        border-radius: 1em;
+        padding: 0em 0.5em;
+      }
+      .currency {
+        display: inline;
+        padding-left: 0.2em;
+      }
     }
 
     .center {
@@ -195,5 +224,16 @@
       margin-left: auto;
       flex-grow: 0;
     }
+  }
+
+  h3.custom-card-related {
+    text-align: left;
+  }
+  .tx-item.mode-small {
+    padding: 0.2em !important;
+  }
+
+  .tx-item.cm .left div.amount {
+    background-color: $barter-bg-color;
   }
 </style>

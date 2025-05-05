@@ -12,6 +12,7 @@
           class="mb-4"
           :account="account"
           :showSubAccounts="false"
+          :disableDropDown="true"
         >
           <template v-slot:name>{{ account.name() }}</template>
         </BankAccountItem>
