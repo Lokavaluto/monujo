@@ -181,7 +181,10 @@
       },
 
       isValid() {
-        return Object.values(this.errors).every((value) => value === false)
+        return (
+          Object.values(this.errors).every((value) => value === false) &&
+          !this.parentErrors
+        )
       },
       ...mapModuleState("lokapi", ["userProfile"]),
     },
