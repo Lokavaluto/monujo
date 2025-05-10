@@ -1,6 +1,6 @@
 {
   "name": "Monujo",
-  "version": "%%version%%",
+  "version": "1.1.0-rc.1.202504241611",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,9 +18,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.5",
     "@lokavaluto/barcode-scanner": "^4.0.3",
-    "@lokavaluto/lokapi-backend-comchain": "0.1.0 || >=0.1.1-alpha",
-    "@lokavaluto/lokapi-backend-cyclos": "0.1.0 || >=0.1.1-alpha",
-    "@lokavaluto/lokapi-browser": "0.1.0 || >=0.1.1-alpha",
+    "@lokavaluto/lokapi-backend-comchain": "../lokapi-backend-comchain",
+    "@lokavaluto/lokapi-backend-cyclos": "../lokapi-backend-cyclos",
+    "@lokavaluto/lokapi-browser": "../lokapi-browser",
     "@meforma/vue-toaster": "^1.3.0",
     "babel-loader": "^8.3.0",
     "bulma": "^0.9.4",
