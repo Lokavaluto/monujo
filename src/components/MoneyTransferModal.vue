@@ -122,7 +122,7 @@
       <div
         class="modal-card"
         tabindex="0"
-        @keyup.enter="isValid ? sendTransaction() : null"
+        @keyup.enter="isReady ? sendTransaction() : null"
       >
         <header class="modal-card-head">
           <span v-if="!transactionType" class="is-flex is-flex-shrink-0">
@@ -152,12 +152,29 @@
             :config="config"
             :parentErrors="errors"
             :transactionType="transactionType"
-            @update:amount="(x) => (amount = x)"
+            @update:amount="(x) => ((amount = x), checkTransaction(true))"
             @update:senderMemo="(x) => (senderMemo = x)"
             @update:recipientMemo="(x) => (recipientMemo = x)"
-            @update:isValid="(x) => (isValid = x)"
+            @update:isValid="checkTransaction"
             @change="errors = false"
           />
+          <div v-if="plannedTransactions.length > 1">
+            <hr class="transaction-list-separator" />
+            <h2 class="frame3-sub-title mt-3 mb-3">
+              {{
+                this.$gettext(
+                  "Payment will be done in %{nbTransactions} transactions:",
+                  { nbTransactions: plannedTransactions.length }
+                )
+              }}
+            </h2>
+            <TransactionItem
+              v-for="transaction in plannedTransactions"
+              :key="transaction"
+              :transaction="transaction"
+              mode="small"
+            />
+          </div>
         </section>
         <footer
           class="
@@ -170,13 +187,21 @@
             class="button custom-button-modal has-text-weight-medium"
             id="send-money-button"
             @click="sendTransaction()"
-            :disabled="!isValid"
+            :disabled="!isReady"
           >
-            {{
-              transactionType === "reconversion"
-                ? $gettext("Reconversion")
-                : $gettext("Send")
-            }}
+            <span class="icon" v-if="checkOngoing > 0">
+              <fa-icon icon="arrows-rotate" class="fa-lg refreshing" />
+            </span>
+            <span class="icon" v-else>
+              <fa-icon icon="arrow-circle-up" class="fa-lg" />
+            </span>
+            <span>
+              {{
+                transactionType === "reconversion"
+                  ? $gettext("Reconversion")
+                  : $gettext("Send")
+              }}
+            </span>
           </button>
         </footer>
       </div>
@@ -194,6 +219,8 @@
   import { UIError } from "../exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
   import MoneyTransaction from "./MoneyTransaction.vue"
+  import TransactionItem from "./TransactionItem.vue"
+
   import UseBatchLoading from "@/services/UseBatchLoading"
   import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
@@ -204,6 +231,7 @@
     components: {
       RecipientItem,
       MoneyTransaction,
+      TransactionItem,
       Loading,
     },
     data() {
@@ -219,7 +247,10 @@
         errors: false,
         account: null,
         isValid: false,
+        isReady: false,
         transactionType: null,
+        plannedTransactions: [],
+        checkOngoing: 0,
       }
     },
     created() {
@@ -341,61 +372,161 @@
             (va: any) => va.currencyId === config.recipient.backendId
           )
         this.$modal.next()
+        this.operations = []
         this.errors = false
         this.amount = config?.amount || null
         this.sendermemo = config?.senderMemo
         this.recipientMemo = config?.recipientMemo
         this.config = config
       },
-      _executeTransaction: applyDecorators(
-        [showSpinnerMethod(".modal-card-body")],
-        async function (this: any): Promise<boolean | any> {
-          let payment
+      checkTransaction(isValid: boolean) {
+        // No debounce, as here, the last check should superseed the formers, and
+        // this is only a check.
+        this.isReady = false
+        if (!isValid || this.errors) {
+          this.isValid = false
+          this.plannedTransactions = []
+          return false
+        }
+        this.isValid = true
+        this.plannedTransactions = []
+        this._checkTransaction(this.amount)
+      },
+      _checkTransaction: applyDecorators(
+        [
+          showSpinnerMethod(function (this: any, isLoading: boolean) {
+            if (isLoading) {
+              this.checkOngoing++
+            } else {
+              this.checkOngoing--
+            }
+          }),
+        ],
+        async function (this: any, amount: any): Promise<boolean | any> {
+          let txs
           try {
-            payment = await this.selectedRecipient.transfer(
-              this.amount.toString(),
+            txs = await this.selectedRecipient.prepareTransfer(
+              amount.toString(),
               this.senderMemo,
               this.recipientMemo
             )
           } catch (err: any) {
-            if (err instanceof LokapiExc.PrepareTransferError) {
-              if (err instanceof LokapiExc.PrepareTransferException) {
-                this.$msg.error(
+            if (this.amount != amount) {
+              return null
+            }
+
+            if (err instanceof LokapiExc.PrepareTransferException) {
+              this.$msg.error(
+                this.$gettext(
+                  "An unexpected issue occurred while checking available funds. " +
+                    "The transaction was not sent. We are sorry for the inconvenience."
+                ) +
+                  "<br/>" +
                   this.$gettext(
-                    "An unexpected issue occurred while checking available funds. " +
-                      "The transaction was not sent. We are sorry for the inconvenience."
-                  ) +
-                    "<br/>" +
-                    this.$gettext(
-                      "You can try again. If the issue persists, " +
-                        "please contact your administrator."
-                    )
-                )
-                if (err.origException) {
-                  console.error("Backend exception:", err.origException)
+                    "You can try again. If the issue persists, " +
+                      "please contact your administrator."
+                  )
+              )
+              if (err.origException) {
+                console.error("Backend exception:", err.origException)
+              }
+              return false
+            }
+            if (err instanceof LokapiExc.PrepareTransferInsufficientBalance) {
+              this.errors = this.$gettext(
+                "Insufficient balance. " +
+                  "You only have %{ safeAmount } %{ currency } available to spend.",
+                {
+                  safeAmount: err.safeAmount,
+                  currency: this.ownSelectedAccount.curr,
                 }
+              )
+              return false
+            }
+            if (err instanceof LokapiExc.PrepareTransferUnsafeBalance) {
+              this.errors = this.$gettext(
+                "The last transactions were not yet all processed. " +
+                  "To ensure that this payment can be sent, you need " +
+                  "to wait for these pending transactions to be processed. " +
+                  "This can take a few minutes. You can also lower your " +
+                  "transaction amount underneath %{ realBal } %{ currency }. " +
+                  "If the problem persists, please contact an administrator.",
+                {
+                  realBal: err.realBal,
+                  currency: this.ownSelectedAccount.curr,
+                }
+              )
+              return false
+            }
+            if (err instanceof LokapiExc.PrepareTransferUnsafeSplit) {
+              if (err.origException === null) {
+                this.errors = this.$gettext(
+                  "The last transactions were not yet all processed. " +
+                    "To ensure that this payment can be sent, you need " +
+                    "to wait for these pending transactions to be processed. ",
+                  {
+                    safeAmount: err.safeAmount,
+                    currency: this.ownSelectedAccount.curr,
+                  }
+                )
                 return false
-              }
-              if (err instanceof LokapiExc.PrepareTransferInsufficientBalance) {
-                this.errors = this.$gettext("Insufficient balance")
-                return false
-              }
-              if (err instanceof LokapiExc.PrepareTransferUnsafeBalance) {
+              } else {
                 this.errors = this.$gettext(
                   "The last transactions were not yet all processed. " +
                     "To ensure that this payment can be sent, you need " +
                     "to wait for these pending transactions to be processed. " +
                     "This can take a few minutes. You can also lower your " +
-                    "transaction amount underneath %{ realBal } %{ currency }. " +
+                    "transaction amount underneath %{ safeAmount } %{ currency }. " +
                     "If the problem persists, please contact an administrator.",
                   {
-                    realBal: err.realBal,
+                    safeAmount: err.safeAmount,
                     currency: this.ownSelectedAccount.curr,
                   }
                 )
                 return false
               }
             }
+            if (err instanceof LokapiExc.RecipientWouldHitCmHighLimit) {
+              this.errors = this.$gettext(
+                "Recipient can not receive this much mutual currency unit. " +
+                  "You can lower your transaction amount underneath " +
+                  "%{ safeAmount } %{ currency } so-as to avoid recipient " +
+                  "to reach its mutual currency unit limit. Otherwise, you'll " +
+                  "need to get more reconvertible currency units to avoid relying " +
+                  "on mutual currency units with this recipient.",
+                {
+                  safeAmount: err.safeAmount,
+                  currency: this.ownSelectedAccount.curr,
+                }
+              )
+              return false
+            }
+            this.errors = this.$gettext(
+              "Unexpected error while checking transfer, " +
+                "pleace contact your administrator."
+            )
+            throw err
+          }
+          if (this.amount != amount) {
+            return null
+          }
+          if (!txs) {
+            this.isReady = false
+            return false
+          }
+          this.plannedTransactions = txs
+          this.isReady = true
+        }
+      ),
+      _executeTransaction: applyDecorators(
+        [showSpinnerMethod(".modal-card-body")],
+        async function (this: any): Promise<boolean | any> {
+          let payments = []
+          try {
+            for (const tx of this.plannedTransactions) {
+              payments.push(await tx.execute())
+            }
+          } catch (err: any) {
             if (err instanceof LokapiExc.PaymentConfirmationMissing) {
               this.$modal.args.value[0].refreshTransaction()
               this.close()
@@ -449,10 +580,9 @@
             console.error("Payment failed:", err)
             return false
           }
-          return payment
+          return payments
         }
       ),
-
       sendTransaction: applyDecorators(
         [debounceMethod],
         async function (this: any): Promise<void> {
@@ -600,5 +730,13 @@
     background-color: inherit !important;
     border: none;
     cursor: pointer;
+  }
+
+  hr.transaction-list-separator {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+  }
+  h2 {
+    font-weight: 500;
   }
 </style>
