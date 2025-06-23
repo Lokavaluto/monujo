@@ -129,12 +129,18 @@ fetchConfig("config.json").then(async (config: any) => {
       return await bankAccount.getDisplayName()
     }
     const backend = bankAccount.internalId.split(":")[0]
-    if (backend === "comchain" && bankAccount.type) {
-      return bankAccount.type === "Nant"
-        ? () => $gettext("Pledged account")
-        : () => $gettext("Mutual credit")
+    if (backend === "comchain") {
+      if (bankAccount.type) {
+        const siblingAccounts = await bankAccount.parent.getAccounts()
+        if (siblingAccounts.length == 1) {
+          return () => $gettext("Main")
+        }
+        return bankAccount.type === "Nant"
+          ? () => $gettext("Converted")
+          : () => $gettext("Mutual")
+      }
     }
-    return () => $gettext("Main account")
+    return () => $gettext("Main")
   }
 
   const root = document.querySelector(":root") as HTMLElement
