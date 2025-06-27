@@ -700,7 +700,7 @@ msgstr "mutuel"
 
 #: src/main.ts:140
 msgid "Mutual"
-msgstr "mutuel"
+msgstr "Mutuel"
 
 #: src/components/PendingTopUp.vue:4 src/components/PendingTopUp.vue:5
 #: src/components/PendingTopUp.vue:9
