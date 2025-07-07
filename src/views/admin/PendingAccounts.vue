@@ -37,7 +37,8 @@
                 <h2 class="custom-card-title">
                   {{ $gettext("Accounts waiting for approval") }}
                 </h2>
-                <table class="table is-striped is-fullwidth">
+
+                <table class="table is-striped responsive-table">
                   <thead>
                     <tr>
                       <th class="row-user-header">
@@ -48,48 +49,63 @@
                       </th>
                     </tr>
                   </thead>
+
                   <tbody>
                     <tr
                       v-for="account in pendingUserAccounts"
                       :key="account.id"
                     >
                       <td class="row-user">
-                        {{ account.name }}
-                        {{
-                          account.markBackend
-                            ? `(via ${account.backendId})`
-                            : ""
-                        }}
+                        <span class="user-label">
+                          {{ account.name }}
+                          {{
+                            account.markBackend
+                              ? `(via ${account.backendId})`
+                              : ""
+                          }}
+                        </span>
                       </td>
-                      <td class="has-text-right">
-                        <a
-                          class="
-                            button
-                            is-primary
-                            custom-button custom-inverted
-                            is-small is-pulled-right
-                            ml-2
-                            mb-1
-                            discard-account
-                          "
-                          :id="`discard-${account.id}`"
-                          v-on:click="discardUserAccount(account)"
-                        >
-                          {{ $gettext("Discard") }}
-                        </a>
-                        <a
-                          class="
-                            button
-                            is-primary
-                            custom-button custom-inverted
-                            is-small is-pulled-right
-                            validate-account
-                          "
-                          :id="`validate-${account.id}`"
-                          v-on:click="validateUserAccount(account)"
-                        >
-                          {{ $gettext("Approve") }}
-                        </a>
+                      <td class="row-actions">
+                        <div class="buttons is-right">
+                          <a
+                            class="
+                              button
+                              is-primary
+                              custom-button custom-inverted
+                              is-small
+                              discard-account
+                              icon-btn
+                            "
+                            :id="`discard-${account.id}`"
+                            @click="discardUserAccount(account)"
+                          >
+                            <span class="icon">
+                              <fa-icon class="fa-thick" icon="xmark" />
+                            </span>
+                            <span class="button-label">
+                              {{ $gettext("Discard") }}
+                            </span>
+                          </a>
+                          <a
+                            class="
+                              button
+                              is-primary
+                              custom-button custom-inverted
+                              is-small
+                              validate-account
+                              icon-btn
+                            "
+                            :id="`validate-${account.id}`"
+                            @click="qvalidateUserAccount(account)"
+                          >
+                            <span class="icon">
+                              <fa-icon class="fa-thick" icon="check" />
+                            </span>
+                            <span class="button-label">
+                              {{ $gettext("Approve") }}
+                            </span>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -163,9 +179,7 @@
               this.$gettext(
                 "An unexpected issue occurred while approving " +
                   "the wallet account creation of user %{ name }",
-                {
-                  name: account.name,
-                }
+                { name: account.name }
               ),
               err
             )
@@ -210,9 +224,7 @@
               this.$gettext(
                 "An unexpected issue occurred while discarding " +
                   "the wallet account creation of user %{ name }",
-                {
-                  name: account.name,
-                }
+                { name: account.name }
               ),
               err
             )
@@ -244,20 +256,76 @@
       ),
     },
   })
-  export default class Admin extends Vue {}
+  export default class PendingAccounts extends Vue {}
 </script>
 <style scoped lang="sass">
+  .responsive-table
+    table-layout: auto
+    width: 100%
 
-  .row-user-header
-    width: 80%
-  .row-validate-header
-    width: 20%
-  .row-user
+  @media (min-width: 480px)
+    .row-user
+      max-width: 15em
+
+  .user-label
+    display: block
+    max-width: 100%
     overflow: hidden
     text-overflow: ellipsis
-  table
-    table-layout: fixed
+    white-space: nowrap
+
+  .row-actions
+    width: 1%
+
+    .buttons
+      display: flex
+      flex-wrap: nowrap
+      gap: 0.5rem
+
   body .discard-account
     background-color: #cc0f35
     border-color: #cc0f35
+    width: 8em
+
+  body .validate-account
+    width: 8em
+
+  @media (max-width: 480px)
+    .responsive-table
+      table-layout: auto
+    .row-user
+      max-width: 12em
+    .user-label
+      margin-top: 0.2em
+
+    .row-actions
+      white-space: nowrap
+      padding-left: 0
+      text-align: right
+
+      .buttons
+        display: inline-flex
+        gap: .25rem
+        justify-content: flex-end
+
+    .discard-account,
+    .validate-account
+      width: 3em
+
+    .buttons .button
+      width: 3em
+      height: 3em
+      border-radius: 50%
+      display: flex
+      justify-content: center
+      align-items: center
+
+      .icon
+        svg
+          width: 1.8em
+          height: 1.8em
+      .button-label
+        display: none
+    .button .icon:first-child:not(:last-child)
+      margin-left: 0em
 </style>

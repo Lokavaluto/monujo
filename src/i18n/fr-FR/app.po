@@ -62,9 +62,9 @@ msgstr "Demandes de comptes"
 msgid "Accounts waiting for approval"
 msgstr "Comptes en attente de validation"
 
-#: src/views/admin/PendingAccounts.vue:40
 #: src/views/admin/PendingAccounts.vue:41
-#: src/views/admin/PendingAccounts.vue:47
+#: src/views/admin/PendingAccounts.vue:42
+#: src/views/admin/PendingAccounts.vue:48
 msgid "Action"
 msgstr "Action"
 
@@ -205,7 +205,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le transfert d'argent. Veuillez "
 "nous excuser pour la gêne occasionnée."
 
-#: src/views/admin/PendingAccounts.vue:163
+#: src/views/admin/PendingAccounts.vue:179
 msgid ""
 "An unexpected issue occurred while approving the wallet account creation of "
 "user %{ name }"
@@ -228,7 +228,7 @@ msgstr ""
 "disponibles. votre transaction n'a pas été envoyée. Veuillez nous excuser "
 "pour le désagrément."
 
-#: src/views/admin/PendingAccounts.vue:210
+#: src/views/admin/PendingAccounts.vue:224
 msgid ""
 "An unexpected issue occurred while discarding the wallet account creation of "
 "user %{ name }"
@@ -295,7 +295,7 @@ msgstr ""
 "Il y a eu un problème lors de la bascule du status de favoris sur ce "
 "destinataire"
 
-#: src/views/admin/PendingAccounts.vue:237
+#: src/views/admin/PendingAccounts.vue:249
 #: src/views/admin/PendingCredits.vue:205
 msgid "An unexpected issue occurred while updating the pending accounts list"
 msgstr ""
@@ -329,11 +329,11 @@ msgstr "Validation des comptes en attente de création"
 msgid "Approval of top-up requests"
 msgstr "Validation des demandes de crédit"
 
-#: src/views/admin/PendingAccounts.vue:73
-#: src/views/admin/PendingAccounts.vue:74
-#: src/views/admin/PendingAccounts.vue:80
-#: src/views/admin/PendingAccounts.vue:81
-#: src/views/admin/PendingAccounts.vue:83 src/views/admin/PendingCredits.vue:45
+#: src/views/admin/PendingAccounts.vue:105
+#: src/views/admin/PendingAccounts.vue:87
+#: src/views/admin/PendingAccounts.vue:88
+#: src/views/admin/PendingAccounts.vue:94
+#: src/views/admin/PendingAccounts.vue:97 src/views/admin/PendingCredits.vue:45
 #: src/views/admin/PendingCredits.vue:46 src/views/admin/PendingCredits.vue:49
 #: src/views/admin/PendingCredits.vue:76 src/views/admin/PendingCredits.vue:77
 #: src/views/admin/PendingCredits.vue:78 src/views/admin/PendingCredits.vue:80
@@ -479,11 +479,12 @@ msgid_plural "digits"
 msgstr[0] "chiffre"
 msgstr[1] "chiffres"
 
-#: src/views/admin/PendingAccounts.vue:64
-#: src/views/admin/PendingAccounts.vue:65
-#: src/views/admin/PendingAccounts.vue:66
-#: src/views/admin/PendingAccounts.vue:71
-#: src/views/admin/PendingAccounts.vue:74
+#: src/views/admin/PendingAccounts.vue:72
+#: src/views/admin/PendingAccounts.vue:73
+#: src/views/admin/PendingAccounts.vue:75
+#: src/views/admin/PendingAccounts.vue:79
+#: src/views/admin/PendingAccounts.vue:82
+#: src/views/admin/PendingAccounts.vue:86
 msgid "Discard"
 msgstr "Annuler"
 
@@ -1580,18 +1581,18 @@ msgstr "Utiliser le même mémo pour le destinataire"
 
 #: src/components/TheNavBar.vue:36 src/components/TheNavBar.vue:37
 #: src/components/TheNavBar.vue:54 src/components/TheNavBar.vue:59
-#: src/components/TheNavBar.vue:64 src/views/admin/PendingAccounts.vue:37
-#: src/views/admin/PendingAccounts.vue:38
-#: src/views/admin/PendingAccounts.vue:44 src/views/admin/PendingCredits.vue:36
+#: src/components/TheNavBar.vue:64 src/views/admin/PendingAccounts.vue:38
+#: src/views/admin/PendingAccounts.vue:39
+#: src/views/admin/PendingAccounts.vue:45 src/views/admin/PendingCredits.vue:36
 #: src/views/admin/PendingCredits.vue:37 src/views/admin/PendingCredits.vue:40
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/views/admin/PendingAccounts.vue:174
+#: src/views/admin/PendingAccounts.vue:188
 msgid "User %{ name }'s account creation was approved"
 msgstr "Le compte de l'utilisateur %{ name } a été validé"
 
-#: src/views/admin/PendingAccounts.vue:221
+#: src/views/admin/PendingAccounts.vue:233
 msgid "User %{ name }'s account creation was discarded"
 msgstr ""
 "La demande d'activation de portefeuille de l'utilisateur %{ name } a été "
