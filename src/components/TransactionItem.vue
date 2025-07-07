@@ -83,7 +83,7 @@
               transaction?.pending === true || transaction?.pending === null,
           }"
           icon="check"
-          class="fa-thin"
+          class="fa-thin ml-1"
         />
       </h5>
     </div>
