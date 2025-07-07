@@ -538,6 +538,10 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
+#: src/main.ts:320
+msgid "Export wallet"
+msgstr "Exporter le portefeuille"
+
 #: src/components/AuthChallenge.vue:13 src/components/AuthChallenge.vue:14
 #: src/components/AuthChallenge.vue:18
 msgid "Failed authentication. Please try again."

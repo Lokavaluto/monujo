@@ -317,7 +317,7 @@ fetchConfig("config.json").then(async (config: any) => {
     }
     if (obj.walletData && store.state.lokapi.virtualAccountTree.includes(obj)) {
       items.push({
-        label: "Export wallet",
+        label: $gettext("Export wallet"),
         icon: "wallet",
         action: async () => {
           const wallet = obj.walletData
