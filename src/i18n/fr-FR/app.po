@@ -158,7 +158,7 @@ msgstr "Il y a eu un problème lors de la recherche du destinataire"
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
-#: src/components/ConfirmPaymentModal.vue:437
+#: src/components/ConfirmPaymentModal.vue:471
 msgid ""
 "An error occurred while deleting top-up request, please try again or contact "
 "an administrator"
@@ -309,7 +309,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/components/ConfirmPaymentModal.vue:366
+#: src/components/ConfirmPaymentModal.vue:400
 msgid "An unexpected server error occurred while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -357,12 +357,12 @@ msgstr "Identification biométrique désactivée"
 msgid "Biometric login successfully set up"
 msgstr "Identification biométrique mise en place"
 
-#: src/components/ConfirmPaymentModal.vue:107
-#: src/components/ConfirmPaymentModal.vue:108
-#: src/components/ConfirmPaymentModal.vue:113
-#: src/components/ConfirmPaymentModal.vue:92
-#: src/components/ConfirmPaymentModal.vue:93
-#: src/components/ConfirmPaymentModal.vue:97
+#: src/components/ConfirmPaymentModal.vue:109
+#: src/components/ConfirmPaymentModal.vue:110
+#: src/components/ConfirmPaymentModal.vue:115
+#: src/components/ConfirmPaymentModal.vue:94
+#: src/components/ConfirmPaymentModal.vue:95
+#: src/components/ConfirmPaymentModal.vue:99
 msgid "by"
 msgstr "par"
 
@@ -460,12 +460,12 @@ msgstr "Date"
 msgid "day"
 msgstr "jour"
 
-#: src/components/ConfirmPaymentModal.vue:154
-#: src/components/ConfirmPaymentModal.vue:155
-#: src/components/ConfirmPaymentModal.vue:179
-#: src/components/ConfirmPaymentModal.vue:180
-#: src/components/ConfirmPaymentModal.vue:189
-#: src/components/ConfirmPaymentModal.vue:193
+#: src/components/ConfirmPaymentModal.vue:165
+#: src/components/ConfirmPaymentModal.vue:166
+#: src/components/ConfirmPaymentModal.vue:199
+#: src/components/ConfirmPaymentModal.vue:200
+#: src/components/ConfirmPaymentModal.vue:209
+#: src/components/ConfirmPaymentModal.vue:213
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -574,11 +574,11 @@ msgstr "pour le compte %{ name }"
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
-#: src/components/ConfirmPaymentModal.vue:108
-#: src/components/ConfirmPaymentModal.vue:109
-#: src/components/ConfirmPaymentModal.vue:113
-#: src/components/ConfirmPaymentModal.vue:124
-#: src/components/ConfirmPaymentModal.vue:131
+#: src/components/ConfirmPaymentModal.vue:110
+#: src/components/ConfirmPaymentModal.vue:111
+#: src/components/ConfirmPaymentModal.vue:115
+#: src/components/ConfirmPaymentModal.vue:126
+#: src/components/ConfirmPaymentModal.vue:133
 msgid "from"
 msgstr "De"
 
@@ -636,6 +636,8 @@ msgstr "E-mail invalide."
 msgid "Invalid QR code content format"
 msgstr "Format du code QR invalide"
 
+#: src/components/ConfirmPaymentModal.vue:273
+#: src/components/ConfirmPaymentModal.vue:371
 #: src/components/TransactionItem.vue:113
 msgid "invoiced"
 msgstr "facturée"
@@ -783,11 +785,11 @@ msgstr "Aucune transaction à afficher"
 msgid "Not a member yet ?"
 msgstr "Pas encore adhérent ?"
 
-#: src/components/ConfirmPaymentModal.vue:161
-#: src/components/ConfirmPaymentModal.vue:162
-#: src/components/ConfirmPaymentModal.vue:187
-#: src/components/ConfirmPaymentModal.vue:203
-#: src/components/ConfirmPaymentModal.vue:206
+#: src/components/ConfirmPaymentModal.vue:172
+#: src/components/ConfirmPaymentModal.vue:173
+#: src/components/ConfirmPaymentModal.vue:207
+#: src/components/ConfirmPaymentModal.vue:223
+#: src/components/ConfirmPaymentModal.vue:226
 msgid "Ok"
 msgstr "Ok"
 
@@ -840,12 +842,12 @@ msgstr "Le mot de passe doit contenir au moins une lettre majuscule"
 msgid "Passwords do not match"
 msgstr "Le mot de passe entré n'est pas identique"
 
-#: src/components/ConfirmPaymentModal.vue:157
-#: src/components/ConfirmPaymentModal.vue:158
-#: src/components/ConfirmPaymentModal.vue:182
-#: src/components/ConfirmPaymentModal.vue:183
-#: src/components/ConfirmPaymentModal.vue:196
-#: src/components/ConfirmPaymentModal.vue:199
+#: src/components/ConfirmPaymentModal.vue:168
+#: src/components/ConfirmPaymentModal.vue:169
+#: src/components/ConfirmPaymentModal.vue:202
+#: src/components/ConfirmPaymentModal.vue:203
+#: src/components/ConfirmPaymentModal.vue:216
+#: src/components/ConfirmPaymentModal.vue:219
 #: src/components/TheDashboardFooter.vue:11
 #: src/components/TheDashboardFooter.vue:17
 #: src/components/TheDashboardFooter.vue:18
@@ -865,10 +867,10 @@ msgstr "Confirmation de paiement"
 msgid "Payment sent"
 msgstr "Paiement envoyé"
 
-#: src/components/ConfirmPaymentModal.vue:130
-#: src/components/ConfirmPaymentModal.vue:131
-#: src/components/ConfirmPaymentModal.vue:135
-#: src/components/ConfirmPaymentModal.vue:155
+#: src/components/ConfirmPaymentModal.vue:141
+#: src/components/ConfirmPaymentModal.vue:142
+#: src/components/ConfirmPaymentModal.vue:146
+#: src/components/ConfirmPaymentModal.vue:175
 msgid "Payment was done in %{nbTransactions} transactions:"
 msgstr "Le paiement a été effectué en %{nbTransactions} opérations :"
 
@@ -960,6 +962,8 @@ msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 msgid "Preferences"
 msgstr "Préférences"
 
+#: src/components/ConfirmPaymentModal.vue:274
+#: src/components/ConfirmPaymentModal.vue:372
 #: src/components/TransactionItem.vue:114
 msgid "processed"
 msgstr "traitée"
@@ -982,15 +986,17 @@ msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
 msgid "QR code wallet - %{name}"
 msgstr "Code QR portefeuille - %{ name }"
 
+#: src/components/ConfirmPaymentModal.vue:272
+#: src/components/ConfirmPaymentModal.vue:370
 #: src/components/TransactionItem.vue:112
 msgid "received"
 msgstr "reçue"
 
-#: src/components/ConfirmPaymentModal.vue:279
-#: src/components/ConfirmPaymentModal.vue:60
-#: src/components/ConfirmPaymentModal.vue:61
-#: src/components/ConfirmPaymentModal.vue:65
-#: src/components/ConfirmPaymentModal.vue:76
+#: src/components/ConfirmPaymentModal.vue:313
+#: src/components/ConfirmPaymentModal.vue:62
+#: src/components/ConfirmPaymentModal.vue:63
+#: src/components/ConfirmPaymentModal.vue:67
+#: src/components/ConfirmPaymentModal.vue:78
 msgid "Received %{amount}"
 msgstr "%{amount} reçu"
 
@@ -1023,26 +1029,17 @@ msgstr ""
 msgid "Reconversion"
 msgstr "Reconversion"
 
+#: src/components/ConfirmPaymentModal.vue:39
+#: src/components/ConfirmPaymentModal.vue:40
+#: src/components/ConfirmPaymentModal.vue:44
+#: src/components/ConfirmPaymentModal.vue:47
+msgid "Reconversion %{ reconversionStatus }"
+msgstr "Reconversion %{ reconversionStatus }"
+
 #: src/components/ConfirmPaymentModal.vue:11
 #: src/components/ConfirmPaymentModal.vue:12
 msgid "Reconversion details"
 msgstr "Détails de la reconversion"
-
-#: src/components/ConfirmPaymentModal.vue:337
-msgid "Reconversion invoiced"
-msgstr "Reconversion facturée"
-
-#: src/components/ConfirmPaymentModal.vue:338
-msgid "Reconversion processed"
-msgstr "Reconversion traitée"
-
-#: src/components/ConfirmPaymentModal.vue:336
-msgid "Reconversion received"
-msgstr "Reconversion reçue"
-
-#: src/components/ConfirmPaymentModal.vue:334
-msgid "Reconversion sent"
-msgstr "Reconversion envoyée"
 
 #: src/components/TransactionListModal.vue:470
 msgid "reconvertible"
@@ -1085,10 +1082,10 @@ msgstr "Recevoir"
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
 
-#: src/components/ConfirmPaymentModal.vue:57
-#: src/components/ConfirmPaymentModal.vue:58
-#: src/components/ConfirmPaymentModal.vue:62
-#: src/components/ConfirmPaymentModal.vue:73
+#: src/components/ConfirmPaymentModal.vue:59
+#: src/components/ConfirmPaymentModal.vue:60
+#: src/components/ConfirmPaymentModal.vue:64
+#: src/components/ConfirmPaymentModal.vue:75
 msgid "Requested %{amount}"
 msgstr "%{amount} demandé"
 
@@ -1159,11 +1156,13 @@ msgstr "Envoyer"
 msgid "Send money"
 msgstr "Envoyer de l'argent"
 
+#: src/components/ConfirmPaymentModal.vue:271
+#: src/components/ConfirmPaymentModal.vue:368
 #: src/components/TransactionItem.vue:111
 msgid "sent"
 msgstr "envoyée"
 
-#: src/components/ConfirmPaymentModal.vue:273
+#: src/components/ConfirmPaymentModal.vue:307
 msgid "Sent %{amount}"
 msgstr "%{amount} envoyé"
 
@@ -1339,11 +1338,11 @@ msgid "The password and the password confirmation must be equal."
 msgstr ""
 "Le mot de passe et la confirmation du mot de passe doivent être identiques."
 
-#: src/components/ConfirmPaymentModal.vue:445
+#: src/components/ConfirmPaymentModal.vue:479
 msgid "The top-up request has been successfully deleted"
 msgstr "Votre demande de rechargement a été supprimée"
 
-#: src/components/ConfirmPaymentModal.vue:385
+#: src/components/ConfirmPaymentModal.vue:419
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 
@@ -1355,10 +1354,10 @@ msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçu
 msgid "This fiels can not be empty."
 msgstr "Ce champs est obligatoire."
 
-#: src/components/ConfirmPaymentModal.vue:70
-#: src/components/ConfirmPaymentModal.vue:71
-#: src/components/ConfirmPaymentModal.vue:75
-#: src/components/ConfirmPaymentModal.vue:86
+#: src/components/ConfirmPaymentModal.vue:72
+#: src/components/ConfirmPaymentModal.vue:73
+#: src/components/ConfirmPaymentModal.vue:77
+#: src/components/ConfirmPaymentModal.vue:88
 msgid ""
 "This top-up request is waiting for an administrator of your local currency "
 "to validate it"
@@ -1366,11 +1365,11 @@ msgstr ""
 "Cette demande de recharge est en attente de validation par un administrateur "
 "de votre monnaie locale"
 
-#: src/components/ConfirmPaymentModal.vue:108
-#: src/components/ConfirmPaymentModal.vue:109
-#: src/components/ConfirmPaymentModal.vue:113
-#: src/components/ConfirmPaymentModal.vue:124
-#: src/components/ConfirmPaymentModal.vue:131
+#: src/components/ConfirmPaymentModal.vue:110
+#: src/components/ConfirmPaymentModal.vue:111
+#: src/components/ConfirmPaymentModal.vue:115
+#: src/components/ConfirmPaymentModal.vue:126
+#: src/components/ConfirmPaymentModal.vue:133
 msgid "to"
 msgstr "à"
 
@@ -1722,10 +1721,10 @@ msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
 
-#: src/components/ConfirmPaymentModal.vue:81
-#: src/components/ConfirmPaymentModal.vue:82
-#: src/components/ConfirmPaymentModal.vue:86
-#: src/components/ConfirmPaymentModal.vue:97
+#: src/components/ConfirmPaymentModal.vue:83
+#: src/components/ConfirmPaymentModal.vue:84
+#: src/components/ConfirmPaymentModal.vue:88
+#: src/components/ConfirmPaymentModal.vue:99
 msgid "Your top-up request is waiting for you to pay it or delete it"
 msgstr ""
 "Votre demande de rechargement est en attente d'être payée ou supprimée par "
