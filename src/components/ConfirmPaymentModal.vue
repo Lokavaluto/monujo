@@ -149,7 +149,8 @@
           <div
             v-if="
               $config.disableReconversionStatusDisplay !== true &&
-              transactions[0].isReconversion
+              transactions[0].isReconversion &&
+              reconversionStatuses.indexOf(reconversionStatus) !== -1
             "
             class="center mb-2 mt-2"
           >
@@ -520,5 +521,11 @@
     display: inline;
     border-radius: 1em;
     padding: 0em 0.5em;
+  }
+  .status-indicator {
+    width: fit-content;
+    margin: auto;
+    padding-left: 2.5em;
+    margin-top: 0.8em;
   }
 </style>

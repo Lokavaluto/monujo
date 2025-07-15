@@ -50,11 +50,13 @@
       v-if="
         mode !== 'small' &&
         $config.disableReconversionStatusDisplay !== true &&
-        transaction.isReconversion
+        transaction.isReconversion &&
+        Object.keys(reconversionStatusTranslations).indexOf(
+          transaction.isReconversion.toString()
+        ) !== -1
       "
       class="center"
     >
-      <div class="status-label">{{ reconversionStatus }}</div>
       <div class="status-indicator">
         <WorkflowIndicator
           format="small"
@@ -116,6 +118,21 @@
       this.reconversionStatuses = [true, "received", "invoiced", "paid"]
         .map((v) => this.reconversionStatusTranslations[v.toString()])
         .join("|")
+
+      if (this.transaction.isReconversion) {
+        const reconversionIdent = this.transaction.isReconversion.toString()
+        const reconversionIdents = Object.keys(
+          this.reconversionStatusTranslations
+        )
+        if (
+          reconversionIdent &&
+          !reconversionIdents.includes(reconversionIdent)
+        ) {
+          console.error(
+            `Unexpected current step '${reconversionIdent}' is not in list of stages of workflow '${reconversionIdents}'.`
+          )
+        }
+      }
     },
     computed: {
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
@@ -223,12 +240,6 @@
       left: 50%;
       transform: translateX(-50%);
 
-      .status-label {
-        line-height: 1.2em;
-        text-weight: bold;
-        text-align: center;
-        color: $color-2;
-      }
       .status-indicator {
         line-height: 1.5em;
         text-align: center;
