@@ -188,6 +188,7 @@ body {
   max-width: 400px;
   overflow-y: auto;
   margin: 0;
+  min-width: 23em;
 
   @media screen and (max-width: 480px) {
     width: 95%;
