@@ -151,7 +151,6 @@
   @import "../assets/custom-variables.scss";
   h4.custom-card-related {
     min-height: 1rem;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -170,6 +169,7 @@
     font-size: 1.2rem;
     line-height: 1.5rem;
     width: auto !important;
+    white-space: nowrap;
   }
   .custom-card-type {
     font-size: 1.2rem;
