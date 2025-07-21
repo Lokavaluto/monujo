@@ -8,21 +8,13 @@
     @click="isSub || isAccountSelected || $emit('accountSelected', account)"
   >
     <div class="custom-inner-card card px-5 py-2 is-flex">
-      <div
-        class="is-size-6-mobile is-size-5-tablet is-flex-grow-1 account-title"
-      >
+      <div class="is-flex-grow-1 account-title">
         <slot name="name">default name</slot>
         <Badge v-if="$config.disableBadges !== true" :object="account" />
-        <div
-          v-if="isTemporarilyUnavailable"
-          class="account-backend is-size-6 error-msg"
-        >
+        <div v-if="isTemporarilyUnavailable" class="account-backend error-msg">
           {{ $gettext("Temporarily unavailable - please refresh") }}
         </div>
-        <div
-          v-if="isMultiCurrency && !isSub"
-          class="account-backend is-size-7-mobile is-size-6-tablet"
-        >
+        <div v-if="isMultiCurrency && !isSub" class="account-backend">
           {{ account?.backend }}
         </div>
       </div>
@@ -38,15 +30,7 @@
           }}
         </div>
       </div>
-      <div
-        class="
-          is-align-items-center
-          is-flex
-          is-size-6-mobile
-          is-size-5-tablet
-          is-size-4-desktop
-        "
-      >
+      <div class="is-align-items-center is-flex bal">
         <span class="account-bal" v-if="account?.active">
           {{ numericFormat(parseFloat(account?.bal)) }}
         </span>
@@ -59,7 +43,6 @@
           }"
         >
           <DropdownMenu
-            class="is-size-8-mobile is-size-7-tablet is-size-6-desktop"
             :object="account"
             @refreshTransaction="refreshTransaction"
             @refreshAccounts="refreshAccounts"
@@ -152,6 +135,34 @@
 </script>
 <style lang="scss" scoped>
   @import "../assets/custom-variables";
+  .account {
+    font-size: 1.2rem;
+  }
+  .custom-inner-card {
+    container-type: inline-size;
+    container-name: card;
+  }
+
+  @container card (max-width: 245px) {
+    .account div.barter-limits {
+      font-size: 0.5em;
+    }
+    .account-title,
+    .bal {
+      font-size: 1rem;
+    }
+  }
+  @container card (max-width: 270px) {
+    .account-title,
+    .bal {
+      font-size: 1.1rem;
+    }
+  }
+  @container card (max-width: 300px) {
+    .hide {
+      width: 0em;
+    }
+  }
 
   .account-name,
   .account-bal,
@@ -216,6 +227,8 @@
     text-wrap: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
   }
   .account div.pro-badge {
     vertical-align: top;
@@ -229,12 +242,12 @@
     font-weight: bold;
   }
   .account div.barter-limits {
-    font-size: 1.9em;
+    font-size: 0.7em;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
     min-width: 5em;
     padding: 0em 1em;
+    margin: auto;
 
     > div {
       line-height: 1.1em;
