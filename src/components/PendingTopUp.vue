@@ -18,7 +18,10 @@
         :key="topup"
         class="pending-top-up-item"
         :transaction="topup"
-        @click="openModal(topup)"
+        type="topup"
+        :account="account"
+        @refreshTransaction="refreshTransaction"
+        @refreshAccounts="refreshAccounts"
       />
     </div>
     <div
@@ -39,7 +42,10 @@
         :key="topup"
         class="pending-top-up-item"
         :transaction="topup"
-        @click="openModal(topup)"
+        type="topup"
+        :account="account"
+        @refreshTransaction="refreshTransaction"
+        @refreshAccounts="refreshAccounts"
       />
     </div>
     <div class="section-card" v-if="pendingPaidTopUpList.length">
@@ -57,7 +63,10 @@
         v-for="topup in pendingPaidTopUpList"
         :key="topup"
         :transaction="topup"
-        @click="openModal(topup)"
+        type="topup"
+        :account="account"
+        @refreshTransaction="refreshTransaction"
+        @refreshAccounts="refreshAccounts"
       />
     </div>
   </div>
@@ -150,15 +159,6 @@
           }
         }
       ),
-      async openModal(transactionObject: any) {
-        await this.$modal.open("ConfirmPaymentModal", {
-          transaction: transactionObject,
-          type: "topup",
-          account: this.account,
-          refreshTransaction: this.refreshTransaction,
-          refreshAccounts: this.refreshAccounts,
-        })
-      },
       refreshTransaction() {
         this.$emit("refreshTransaction")
       },
