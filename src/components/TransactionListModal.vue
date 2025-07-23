@@ -177,17 +177,7 @@
             v-for="transaction in transactionBatchLoader.elements.value"
             :key="transaction"
             :transaction="transaction"
-            @click="
-              $modal.open('ConfirmPaymentModal', {
-                transaction,
-                type: transaction.isReconversion
-                  ? 'reconversion'
-                  : transaction.isTopUp
-                  ? 'topup'
-                  : 'transactionDetail',
-                account: this.$modal.args.value[0].account,
-              })
-            "
+            :account="$modal.args.value[0].account"
           />
           <div
             v-if="
