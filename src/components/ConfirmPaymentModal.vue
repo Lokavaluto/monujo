@@ -319,7 +319,7 @@
         return safeCentsToAmount(totalCents)
       },
       reconversionStatus(): string {
-        const transaction = this.$modal.args?.value[0].transaction
+        const transaction = this.transactions[0]
         if (!transaction.isReconversion) return ""
         return {
           true: this.$gettext("Reconversion sent"),
