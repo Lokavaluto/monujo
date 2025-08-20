@@ -7,6 +7,7 @@ import { UIError } from "../exception"
 const isFulfilled = <T>(
   p: PromiseSettledResult<T>
 ): p is PromiseFulfilledResult<T> => p.status === "fulfilled"
+
 export class LokAPI extends LokAPIBrowserAbstract {
   BackendFactories = {
     comchain,
@@ -61,7 +62,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
         let vals: any[] = await Promise.allSettled([
           this.getBankAccountName(userAccount),
           userAccount.getBalance
-            ? userAccount.getBalance().catch((e: any) => e)
+            ? userAccount.getBalance("pending").catch((e: any) => e)
             : "-.---,--",
           userAccount.getSymbol
             ? userAccount.getSymbol().catch((e: any) => e)
@@ -142,7 +143,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
           (moneyAccounts || []).map(async (account: any) => {
             const vals = await Promise.allSettled([
               this.getBankAccountName(account),
-              account.getBalance(),
+              account.getBalance("pending"),
               account.getSymbol(),
               account.isBusinessForFinanceBackend(),
             ])
@@ -256,9 +257,17 @@ export function replaceOrInsertElt<T>(
   array.splice(idx, replace, elt)
 }
 
+const proxyRecipientMap = new WeakMap()
+
 function makeUIProxyRecipient(recipient: t.IRecipient, $gettext: any) {
-  return new Proxy(recipient, {
+  if (proxyRecipientMap.has(recipient)) {
+    return proxyRecipientMap.get(recipient)
+  }
+  const proxy = new Proxy(recipient, {
     get: (target, prop, receiver) => {
+      if (prop == "__v_raw") {
+        return recipient
+      }
       if (prop == "toggleFavorite") {
         return async function toggleFavorite(this: any): Promise<void> {
           try {
@@ -285,6 +294,8 @@ function makeUIProxyRecipient(recipient: t.IRecipient, $gettext: any) {
       return Reflect.get(target, prop, receiver)
     },
   })
+  proxyRecipientMap.set(recipient, proxy)
+  return proxy
 }
 
 export function makeUIProxyBackend(backend: t.IBackend, $gettext: any) {

@@ -2,6 +2,7 @@ import { LocalStore } from "@lokavaluto/lokapi-browser"
 import { createApp } from "vue"
 import { Capacitor } from "@capacitor/core"
 import "vue-loading-overlay/dist/css/index.css"
+import { addUnwrapFn } from "@0k/cache"
 
 import { UIError } from "./exception"
 import App from "./App.vue"
@@ -59,6 +60,8 @@ require("@/assets/main.scss")
 require("@/assets/native.scss")
 
 // Code
+
+addUnwrapFn((o: any) => (o.__v_raw ? o.__v_raw : o))
 
 async function fetchConfig(path: string) {
   let response: Response

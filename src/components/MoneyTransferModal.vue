@@ -153,10 +153,14 @@
             :parentErrors="errors"
             :transactionType="transactionType"
             @update:amount="(x) => ((amount = x), checkTransaction(true))"
-            @update:senderMemo="(x) => (senderMemo = x)"
-            @update:recipientMemo="(x) => (recipientMemo = x)"
+            @update:senderMemo="(x) => ((senderMemo = x), checkTransaction(x))"
+            @update:recipientMemo="
+              (x) => ((recipientMemo = x), checkTransaction(x))
+            "
             @update:isValid="checkTransaction"
-            @change="errors = false"
+            @change="
+              (ev) => (ev ? null : ((isReady = false), (errors = false)))
+            "
           />
           <div v-if="plannedTransactions.length > 1">
             <hr class="transaction-list-separator" />
@@ -187,7 +191,7 @@
             class="button custom-button-modal has-text-weight-medium"
             id="send-money-button"
             @click="sendTransaction()"
-            :disabled="!isReady"
+            :disabled="!isReady || checkOngoing > 0"
           >
             <span class="icon" v-if="checkOngoing > 0">
               <fa-icon icon="arrows-rotate" class="fa-lg refreshing" />
@@ -283,6 +287,7 @@
           console.error(e)
         },
       })
+      this.prepareTransactionSignalHandler = null
     },
     mounted() {
       if (this.$modal.args.value[0]?.transactionType === "reconversion") {
@@ -408,6 +413,10 @@
         // No debounce, as here, the last check should superseed the formers, and
         // this is only a check.
         this.isReady = false
+        if (this.prepareTransactionSignalHandler) {
+          this.prepareTransactionSignalHandler.abort()
+          this.prepareTransactionSignalHandler = null
+        }
         if (!isValid || this.errors) {
           this.isValid = false
           this.plannedTransactions = []
@@ -415,7 +424,13 @@
         }
         this.isValid = true
         this.plannedTransactions = []
-        this._checkTransaction(this.amount)
+        this.prepareTransactionSignalHandler = new AbortController()
+        this._checkTransaction(
+          this.amount,
+          this.senderMemo,
+          this.recipientMemo,
+          this.prepareTransactionSignalHandler.signal
+        )
       },
       _checkTransaction: applyDecorators(
         [
@@ -427,19 +442,29 @@
             }
           }),
         ],
-        async function (this: any, amount: any): Promise<boolean | any> {
+        async function (
+          this: any,
+          amount: any,
+          senderMemo: string,
+          recipientMemo: string,
+          signal: AbortSignal
+        ): Promise<boolean | any> {
           let txs
           try {
             txs = await this.selectedRecipient.prepareTransfer(
               amount.toString(),
-              this.senderMemo,
-              this.recipientMemo
+              senderMemo,
+              recipientMemo,
+              signal
             )
           } catch (err: any) {
-            if (this.amount != amount) {
+            if (signal.aborted) return null
+            if (err instanceof DOMException) {
+              console.warn(
+                `Recipient: Signal was not aborted but we got the exception`
+              )
               return null
             }
-
             if (err instanceof LokapiExc.PrepareTransferException) {
               this.$msg.error(
                 this.$gettext(
@@ -531,9 +556,6 @@
                 "pleace contact your administrator."
             )
             throw err
-          }
-          if (this.amount != amount) {
-            return null
           }
           if (!txs) {
             this.isReady = false

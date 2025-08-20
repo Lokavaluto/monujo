@@ -12,11 +12,6 @@ module.exports = {
     },
   },
   lintOnSave: false,
-  transpileDependencies: [
-    // can be string or regex
-    /@lokavaluto\/.*/,
-    /@0k.io\/.*/
-  ],
   configureWebpack: {
     resolve: {
       fallback: {
