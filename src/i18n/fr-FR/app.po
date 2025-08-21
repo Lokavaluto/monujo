@@ -1722,5 +1722,4 @@ msgstr "vos comptes en attente de création"
 #: src/components/ConfirmPaymentModal.vue:84
 #: src/components/ConfirmPaymentModal.vue:95
 msgid "Your top-up request is waiting for you to pay it or delete it"
-msgstr ""
-"Your demande de recharge est en attente d'être payée ou supprimée par vous"
+msgstr "Votre demande de rechargement est en attente d'être payée ou supprimée par vous"
