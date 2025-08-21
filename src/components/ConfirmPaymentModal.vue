@@ -91,6 +91,8 @@
                       )
                     : typeof $modal.args?.value[0].transaction.cancel !==
                         "undefined" &&
+                      $modal.args?.value[0].transaction.paid === false &&
+                      $modal.args?.value[0].account.isTopUpAllowed &&
                       ($modal.args?.value[0].transaction.requester ===
                         undefined ||
                         $modal.args?.value[0].transaction.requester.id ===
