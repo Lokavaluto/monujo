@@ -402,9 +402,11 @@
             (va: any) => va.currencyId === config.recipient.backendId
           )
         this.$modal.next()
-        this.operations = []
+        this.plannedTransactions = []
         this.errors = false
+        this.isReady = false
         this.amount = config?.amount || null
+        if (this.amount) this.checkTransaction()
         this.sendermemo = config?.senderMemo
         this.recipientMemo = config?.recipientMemo
         this.config = config
