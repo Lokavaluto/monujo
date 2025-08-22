@@ -78,7 +78,7 @@ compatible with:
 To build the packages from these current sources, you'll need:
 
   - for iOS: Xcode 15.4 or better (requires Sonoma)
-  - for Android: android SDK 22+ (requires Java 17+)
+  - for Android: android SDK 22+ (requires Java 21+)
 
 ### Web-app
 
