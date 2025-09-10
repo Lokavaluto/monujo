@@ -158,7 +158,7 @@ msgstr "Il y a eu un problème lors de la recherche du destinataire"
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
-#: src/components/ConfirmPaymentModal.vue:430
+#: src/components/ConfirmPaymentModal.vue:437
 msgid ""
 "An error occurred while deleting top-up request, please try again or contact "
 "an administrator"
@@ -309,7 +309,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/components/ConfirmPaymentModal.vue:359
+#: src/components/ConfirmPaymentModal.vue:366
 msgid "An unexpected server error occurred while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -981,7 +981,7 @@ msgstr "Code QR portefeuille - %{ name }"
 msgid "received"
 msgstr "reçue"
 
-#: src/components/ConfirmPaymentModal.vue:272
+#: src/components/ConfirmPaymentModal.vue:279
 #: src/components/ConfirmPaymentModal.vue:60
 #: src/components/ConfirmPaymentModal.vue:61
 #: src/components/ConfirmPaymentModal.vue:65
@@ -1023,19 +1023,19 @@ msgstr "Reconversion"
 msgid "Reconversion details"
 msgstr "Détails de la reconversion"
 
-#: src/components/ConfirmPaymentModal.vue:330
+#: src/components/ConfirmPaymentModal.vue:337
 msgid "Reconversion invoiced"
 msgstr "Reconversion facturée"
 
-#: src/components/ConfirmPaymentModal.vue:331
+#: src/components/ConfirmPaymentModal.vue:338
 msgid "Reconversion processed"
 msgstr "Reconversion traitée"
 
-#: src/components/ConfirmPaymentModal.vue:329
+#: src/components/ConfirmPaymentModal.vue:336
 msgid "Reconversion received"
 msgstr "Reconversion reçue"
 
-#: src/components/ConfirmPaymentModal.vue:327
+#: src/components/ConfirmPaymentModal.vue:334
 msgid "Reconversion sent"
 msgstr "Reconversion envoyée"
 
@@ -1158,7 +1158,7 @@ msgstr "Envoyer de l'argent"
 msgid "sent"
 msgstr "envoyée"
 
-#: src/components/ConfirmPaymentModal.vue:266
+#: src/components/ConfirmPaymentModal.vue:273
 msgid "Sent %{amount}"
 msgstr "%{amount} envoyé"
 
@@ -1334,11 +1334,11 @@ msgid "The password and the password confirmation must be equal."
 msgstr ""
 "Le mot de passe et la confirmation du mot de passe doivent être identiques."
 
-#: src/components/ConfirmPaymentModal.vue:438
+#: src/components/ConfirmPaymentModal.vue:445
 msgid "The top-up request has been successfully deleted"
 msgstr "Votre demande de rechargement a été supprimée"
 
-#: src/components/ConfirmPaymentModal.vue:378
+#: src/components/ConfirmPaymentModal.vue:385
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 

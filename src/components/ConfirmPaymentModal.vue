@@ -221,15 +221,22 @@
   import applyDecorators from "@/utils/applyDecorators"
   import TransactionItem from "./TransactionItem.vue"
 
-  function safeCentsToAmount(cents: number) {
+  let intCents2strAmount = (dataIntCents: bigint): string => {
     let sign = ""
-    if (cents < 0) {
-      cents = -cents
+    if (dataIntCents < 0n) {
+      dataIntCents = -dataIntCents
       sign = "-"
     }
-    // garanteed >3 sized string representing uint
-    const data_str = cents.toString().padStart(3, "0")
-    return `${sign}${data_str.slice(0, -2)}.${data_str.slice(-2)}`
+    let dataStr = dataIntCents.toString().padStart(3, "0")
+    return `${sign}${dataStr.slice(0, -2)}.${dataStr.slice(-2)}`
+  }
+
+  let strAmount2intCents = (dataStrAmount: string): bigint => {
+    // Check format XX...XX.YY
+    if (!/^-?[0-9]+\.[0-9]{2}$/.test(dataStrAmount)) {
+      throw Error(`Unexpected amount string: ${JSON.stringify(dataStrAmount)}`)
+    }
+    return BigInt(dataStrAmount.replace(".", ""))
   }
 
   @Options({
@@ -316,9 +323,9 @@
       },
       transactionTotalAmount() {
         let totalCents = this.transactions
-          .map((t: any) => parseFloat(t.amount) * 100)
-          .reduce((acc: number, val: number) => acc + val, 0)
-        return safeCentsToAmount(totalCents)
+          .map((t: any) => strAmount2intCents(parseFloat(t.amount).toFixed(2)))
+          .reduce((acc: bigint, val: bigint) => acc + val, 0n)
+        return intCents2strAmount(totalCents)
       },
       reconversionStatus(): string {
         const transaction = this.transactions[0]
