@@ -625,6 +625,9 @@
 <style lang="scss">
   @import "@/assets/custom-variables";
 
+  section.modal-card-body {
+    padding: 0.5em;
+  }
   div.selected {
     background-color: $color-1;
   }
