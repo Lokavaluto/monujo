@@ -631,7 +631,7 @@ msgstr "E-mail invalide."
 msgid "Invalid QR code content format"
 msgstr "Format du code QR invalide"
 
-#: src/components/TransactionItem.vue:112
+#: src/components/TransactionItem.vue:113
 msgid "invoiced"
 msgstr "facturée"
 
@@ -955,7 +955,7 @@ msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/components/TransactionItem.vue:113
+#: src/components/TransactionItem.vue:114
 msgid "processed"
 msgstr "traitée"
 
@@ -977,7 +977,7 @@ msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
 msgid "QR code wallet - %{name}"
 msgstr "Code QR portefeuille - %{ name }"
 
-#: src/components/TransactionItem.vue:111
+#: src/components/TransactionItem.vue:112
 msgid "received"
 msgstr "reçue"
 
@@ -1013,8 +1013,8 @@ msgstr ""
 #: src/components/MoneyTransferModal.vue:194
 #: src/components/MoneyTransferModal.vue:200
 #: src/components/MoneyTransferModal.vue:205
-#: src/components/TransactionItem.vue:20 src/components/TransactionItem.vue:24
-#: src/components/TransactionItem.vue:28 src/components/TransactionItem.vue:30
+#: src/components/TransactionItem.vue:20 src/components/TransactionItem.vue:25
+#: src/components/TransactionItem.vue:29 src/components/TransactionItem.vue:31
 msgid "Reconversion"
 msgstr "Reconversion"
 
@@ -1154,7 +1154,7 @@ msgstr "Envoyer"
 msgid "Send money"
 msgstr "Envoyer de l'argent"
 
-#: src/components/TransactionItem.vue:110
+#: src/components/TransactionItem.vue:111
 msgid "sent"
 msgstr "envoyée"
 
@@ -1418,8 +1418,8 @@ msgstr "Opérations de crédit en attente de validation"
 msgid "Top up waiting admin validation"
 msgstr "Rechargement en attente de validation de la part d'un administrateur"
 
-#: src/components/TransactionItem.vue:20 src/components/TransactionItem.vue:24
-#: src/components/TransactionItem.vue:28 src/components/TransactionItem.vue:30
+#: src/components/TransactionItem.vue:20 src/components/TransactionItem.vue:25
+#: src/components/TransactionItem.vue:29 src/components/TransactionItem.vue:31
 msgid "Top-up"
 msgstr "Rechargement"
 

@@ -2,7 +2,8 @@
   <div
     class="p-3 shadow-bottom tx-item"
     :class="{
-      highlight: transaction.isReconversion || transaction.isTopUp,
+      topup: transaction.isTopUp,
+      reconversion: transaction.isReconversion,
       cm: transaction.tags && transaction.tags.includes('barter'),
       'mode-small': mode === 'small',
       'cursor-pointer': mode !== 'small',
@@ -178,17 +179,23 @@
   .cursor-pointer {
     cursor: pointer;
   }
-  .highlight {
-    background-color: $inner-card-background-color;
-    margin-top: 3px;
-    border-radius: 1em;
-  }
 
   .tx-item {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+
+    &.topup {
+      background-color: $tx-topup-bg-color;
+      margin-top: 3px;
+      border-radius: 1em;
+    }
+    &.reconversion {
+      background-color: $tx-reconversion-bg-color;
+      margin-top: 3px;
+      border-radius: 1em;
+    }
 
     .left {
       margin-right: auto;

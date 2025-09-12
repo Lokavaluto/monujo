@@ -128,3 +128,13 @@ $input-amount-text-color: var(--input-amount-text-color, #4a4a4a) !default;
 
 // barter
 $barter-bg-color: var(--barter-bg-color, #cceae7) !default;
+
+// transaction
+$tx-topup-bg-color: var(
+  --tx-topup-bg-color,
+  $inner-card-background-color
+) !default;
+$tx-reconversion-bg-color: var(
+  --tx-reconversion-bg-color,
+  $inner-card-background-color
+) !default;
