@@ -45,6 +45,6 @@
     margin: auto;
   }
   .prefs-group + .prefs-group {
-    margin-top: 3em;
+    margin-top: 2em;
   }
 </style>
