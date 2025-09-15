@@ -1,7 +1,7 @@
 <template>
   <div id="transaction-list-recent">
     <div
-      class="section-card"
+      class="section-card mb-1"
       id="the-transaction-list"
       v-if="hasFinishedFirstLoading"
     >
@@ -47,7 +47,7 @@
             })
           "
         />
-        <div v-if="transactions.length" class="has-text-centered mt-5">
+        <div v-if="transactions.length" class="has-text-centered mt-4">
           <button
             @click="
               () => {

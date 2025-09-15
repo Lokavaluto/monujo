@@ -94,12 +94,12 @@
           {{ $gettext("your accounts") }}
         </h2>
         <BankAccountItem
-          v-for="a in activeVirtualAccountsMiddleware"
-          class="mb-5"
+          v-for="(a, idx) in activeVirtualAccountsMiddleware"
           :class="{
             selected:
               a?.active && a?._obj?.internalId === account?._obj?.internalId,
-          }"
+            'mb-5': idx !== activeVirtualAccountsMiddleware.length - 1
+            }"
           @accountSelected="$emit('accountSelected', a)"
           :isAccountSelected="
             a?.active && a._obj.internalId === account?._obj?.internalId
@@ -301,4 +301,8 @@
     justify-content: center;
     display: flex;
   }
+  .section-card {
+      margin-bottom: 0px !important;
+  }
+
 </style>

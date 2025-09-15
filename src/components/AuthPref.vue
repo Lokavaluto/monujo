@@ -1,7 +1,7 @@
 <template>
   <div class="main" id="simplified-auth">
-    <div class="mb-5">
-      <div class="mb-5 is-flex">
+    <div class="mb-1">
+      <div class="mb-1 is-flex">
         <div class="is-flex">
           <div class="switch-centered">
             <label class="switch">
