@@ -107,7 +107,7 @@
           :account="a"
           showSubAccounts="true"
           @refreshTransaction="refreshTransactions()"
-          @refreshAccounts="refreshBalance"
+          @refreshAccounts="refreshBalance(true)"
         >
           <template v-slot:name>{{
             a.name ? a.name() : $gettext("Unavailable")
