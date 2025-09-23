@@ -73,7 +73,8 @@
     "modal-btn-text-color": "#ffffff",
     "modal-btn-border-color": "$color-2",
     "tx-topup-bg-color": "$inner-card-background-color",
-    "tx-reconversion-bg-color": "$inner-card-background-color"
+    "tx-reconversion-bg-color": "$inner-card-background-color",
+    "switch-bg-color": "$color-2"
   },
   "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}",
   "accountsRefreshInterval": 90,
