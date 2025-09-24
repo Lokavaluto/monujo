@@ -28,10 +28,26 @@ module Fastlane
         ##
 
         uri = URI.parse(url)
-        response = Net::HTTP.get_response(uri)
+        response = nil
+        limit = 5
 
-        if response.code != "200"
-          UI.user_error!("Could not load application information.")
+        limit.times do
+          response = Net::HTTP.get_response(uri)
+
+          case response
+          when Net::HTTPSuccess then
+            break
+          when Net::HTTPRedirection then
+            location = response['location']
+            UI.message("Redirected to #{location}")
+            uri = URI.parse(location)
+          else
+            UI.user_error!("Could not load application information. Response code: #{response.code}")
+          end
+        end
+
+        if response.nil? || !response.is_a?(Net::HTTPSuccess)
+          UI.user_error!("Exceeded maximum number of redirects.")
         end
 
         FileUtils.mkdir_p(dest)
