@@ -84,12 +84,12 @@
           {{ $gettext("your accounts") }}
         </h2>
         <BankAccountItem
-          v-for="a in activeVirtualAccountsMiddleware"
-          class="mb-5"
+          v-for="(a, idx) in activeVirtualAccountsMiddleware"
           :class="{
             selected:
               a?.active && a?._obj?.internalId === account?._obj?.internalId,
-          }"
+            'mb-5': idx !== activeVirtualAccountsMiddleware.length - 1
+            }"
           @accountSelected="$emit('accountSelected', a)"
           :isAccountSelected="
             a?.active && a._obj.internalId === account?._obj?.internalId
@@ -97,7 +97,7 @@
           :account="a"
           showSubAccounts="true"
           @refreshTransaction="refreshTransactions()"
-          @refreshAccounts="refreshBalance"
+          @refreshAccounts="refreshBalance(true)"
         >
           <template v-slot:name>{{
             a.name ? a.name() : $gettext("Unavailable")
@@ -348,4 +348,8 @@
     position: relative;
     bottom: 0.4em;
   }
+  .section-card {
+      margin-bottom: 0px !important;
+  }
+
 </style>
