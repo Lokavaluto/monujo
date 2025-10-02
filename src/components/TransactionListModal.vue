@@ -405,7 +405,7 @@
       getSubAccounts() {
         const [opts] = this.$modal.args.value
         const { account } = opts
-        return account.subAccounts
+        return account.subAccounts || []
       },
       async createCsvFile() {
         const transactions = []
