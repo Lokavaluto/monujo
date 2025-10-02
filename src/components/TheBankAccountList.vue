@@ -218,7 +218,7 @@
     },
     methods: {
       async refreshBalance(retryUntilChange = false) {
-        const balanceOrig = this.account.bal
+        const balanceOrig = this.account?.bal
         const startTime = Date.now()
         let maxDuration = 0
         if (retryUntilChange) {
@@ -241,7 +241,7 @@
             (a: any) =>
               a?.active && a?._obj.internalId === this.account?._obj.internalId
           )
-          const balance = account.bal
+          const balance = account?.bal
 
           if (balanceOrig === balance) {
             if (Date.now() - startTime < maxDuration) {
