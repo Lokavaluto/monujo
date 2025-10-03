@@ -24,7 +24,10 @@
     <div
       class="section-card"
       id="pending-top-up-list"
-      v-if="pendingOthersUnpaidTopUpList.length"
+      v-if="
+        !$config.disableDisplayOtherUnpaidTopup &&
+        pendingOthersUnpaidTopUpList.length
+      "
     >
       <h2 class="custom-card-title title-card">
         {{ $gettext("Pending top-up requests") }}
