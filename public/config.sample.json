@@ -81,5 +81,6 @@
   "disableReconversion": false,
   "disableTopUp": false,
   "disableSplitMemo": false,
-  "disableBadges": false
+  "disableBadges": false,
+  "disableDisplayOtherUnpaidTopup": false
 }
