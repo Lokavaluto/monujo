@@ -44,7 +44,9 @@
                   "undefined"
                     ? $gettext("Top-up requested")
                     : $gettext("Top-up received"),
-                reconversion: reconversionStatus,
+                reconversion: $gettext("Reconversion %{ reconversionStatus }", {
+                  reconversionStatus,
+                }),
               }[$modal.args?.value[0].type]
             }}
           </p>
@@ -144,6 +146,25 @@
             </h2>
           </div>
 
+          <div
+            v-if="
+              $config.disableReconversionStatusDisplay !== true &&
+              transactions[0].isReconversion &&
+              reconversionStatuses.indexOf(reconversionStatus) !== -1
+            "
+            class="center mb-2 mt-2"
+          >
+            <div class="status-indicator">
+              <WorkflowIndicator
+                format="large"
+                :stages="reconversionStatuses"
+                :current="reconversionStatus"
+                :size="17"
+                :spacing="25"
+              />
+            </div>
+          </div>
+
           <p class="frame3-sub-title mb-3">
             {{ dateFormat }}
           </p>
@@ -220,6 +241,7 @@
   import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
   import TransactionItem from "./TransactionItem.vue"
+  import WorkflowIndicator from "./WorkflowIndicator.vue"
 
   let intCents2strAmount = (dataIntCents: bigint): string => {
     let sign = ""
@@ -243,6 +265,19 @@
     name: "ConfirmPaymentModal",
     components: {
       TransactionItem,
+      WorkflowIndicator,
+    },
+    created() {
+      this.reconversionStatusTranslations = {
+        true: this.$gettext("sent"),
+        received: this.$gettext("received"),
+        invoiced: this.$gettext("invoiced"),
+        paid: this.$gettext("processed"),
+      }
+
+      this.reconversionStatuses = [true, "received", "invoiced", "paid"]
+        .map((v) => this.reconversionStatusTranslations[v.toString()])
+        .join("|")
     },
     mounted() {
       this.$refs.paymentConfirmation.focus()
@@ -331,11 +366,11 @@
         const transaction = this.transactions[0]
         if (!transaction.isReconversion) return ""
         return {
-          true: this.$gettext("Reconversion sent"),
+          true: this.$gettext("sent"),
           false: null, // This should not happen
-          received: this.$gettext("Reconversion received"),
-          invoiced: this.$gettext("Reconversion invoiced"),
-          paid: this.$gettext("Reconversion processed"),
+          received: this.$gettext("received"),
+          invoiced: this.$gettext("invoiced"),
+          paid: this.$gettext("processed"),
         }[transaction.isReconversion.toString() as string]
       },
     },
@@ -486,5 +521,11 @@
     display: inline;
     border-radius: 1em;
     padding: 0em 0.5em;
+  }
+  .status-indicator {
+    width: fit-content;
+    margin: auto;
+    padding-left: 2.5em;
+    margin-top: 0.8em;
   }
 </style>
