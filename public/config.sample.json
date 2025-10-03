@@ -82,5 +82,6 @@
   "disableTopUp": false,
   "disableSplitMemo": false,
   "disableBadges": false,
-  "disableImportWallet": false
+  "disableImportWallet": false,
+  "disableDisplayOtherUnpaidTopup": false
 }

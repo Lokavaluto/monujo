@@ -302,7 +302,7 @@ msgstr ""
 "Il y a eu un problème lors du rafraichissement de la liste des demandes de "
 "validation de portefeuilles"
 
-#: src/components/MoneyCreditModal.vue:177 src/components/PendingTopUp.vue:145
+#: src/components/MoneyCreditModal.vue:177 src/components/PendingTopUp.vue:148
 #: src/components/TheDashboardFooter.vue:114
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
@@ -887,8 +887,8 @@ msgstr "Le paiement a été effectué en %{nbTransactions} opérations :"
 msgid "Payment will be done in %{nbTransactions} transactions:"
 msgstr "Le paiement sera effectué en %{nbTransactions} opérations :"
 
-#: src/components/PendingTopUp.vue:15 src/components/PendingTopUp.vue:16
-#: src/components/PendingTopUp.vue:26 src/components/PendingTopUp.vue:30
+#: src/components/PendingTopUp.vue:18 src/components/PendingTopUp.vue:19
+#: src/components/PendingTopUp.vue:26 src/components/PendingTopUp.vue:33
 msgid "Pending top-up requests"
 msgstr "Demandes de crédit en cours"
 
@@ -1265,8 +1265,8 @@ msgstr ""
 "Une fois la demande de création approuvée, ces comptes deviendront "
 "utilisables."
 
-#: src/components/PendingTopUp.vue:30 src/components/PendingTopUp.vue:31
-#: src/components/PendingTopUp.vue:51
+#: src/components/PendingTopUp.vue:33 src/components/PendingTopUp.vue:34
+#: src/components/PendingTopUp.vue:54
 msgid ""
 "The following top up have been paid and are waiting for an administrator of "
 "your local currency to validate them."
@@ -1274,8 +1274,8 @@ msgstr ""
 "Les rechargements suivants ont été payés et attendent qu'un administrateur "
 "de votre monnaie locale les valide."
 
-#: src/components/PendingTopUp.vue:19 src/components/PendingTopUp.vue:20
-#: src/components/PendingTopUp.vue:30 src/components/PendingTopUp.vue:34
+#: src/components/PendingTopUp.vue:22 src/components/PendingTopUp.vue:23
+#: src/components/PendingTopUp.vue:30 src/components/PendingTopUp.vue:37
 msgid "The following top up requests await payment by third party"
 msgstr ""
 "Les demandes de rechargement suivantes attendent d'être réglées par un tiers"
@@ -1415,8 +1415,8 @@ msgstr ""
 msgid "Top up requests await approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/components/PendingTopUp.vue:26 src/components/PendingTopUp.vue:27
-#: src/components/PendingTopUp.vue:47
+#: src/components/PendingTopUp.vue:29 src/components/PendingTopUp.vue:30
+#: src/components/PendingTopUp.vue:50
 msgid "Top up waiting admin validation"
 msgstr "Rechargement en attente de validation de la part d'un administrateur"
 
