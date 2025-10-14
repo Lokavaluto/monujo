@@ -9,109 +9,12 @@
           </p>
           <button class="delete" aria-label="close" @click="close()"></button>
         </header>
-        <div class="search-area">
-          <div
-            class="
-              mt-4
-              is-flex is-justify-content-space-evenly is-align-items-center
-              custom-search-bar
-            "
-          >
-            <span class="search-bar-container">
-              <p class="control has-icons-left custom-search-bar">
-                <input
-                  v-model="recipientsSearchString"
-                  @input="
-                    (e) => {
-                      ;(recipientsSearchString = e.target.value),
-                        recipientsSearchString.length === 0 ||
-                        recipientsSearchString.length >= 3
-                          ? recipientBatchLoader.newGen(recipientsSearchString)
-                          : null
-                    }
-                  "
-                  class="input"
-                  type="text"
-                  :placeholder="$gettext('Name, email address or phone number')"
-                  ref="searchRecipient"
-                />
-                <span class="icon is-small is-left">
-                  <fa-icon icon="search" />
-                </span>
-              </p>
-            </span>
-            <span class="icon is-small" @click="startScan"
-              ><fa-icon class="qrcode-icon" icon="qrcode" />
-            </span>
-          </div>
-          <div
-            class="
-              is-flex is-justify-content-space-evenly is-align-items-center
-              mt-3
-            "
-          ></div>
-          <div class="container is-fluid custom-heavy-line-separator"></div>
-        </div>
-        <section
-          class="modal-card-body"
-          ref="recipientsContainer"
-          @scroll="recipientBatchLoader.getNextElements"
-        >
-          <div
-            v-if="recipientsSearchError"
-            class="notification is-light is-danger"
-          >
-            {{
-              $gettext(
-                "An unexpected issue occurred while performing recipient lookup. " +
-                  "We apologise for the inconvenience."
-              )
-            }}
-          </div>
-          <div
-            v-else
-            class="
-              custom-card
-              is-flex-direction-column
-              is-align-items-center
-              is-justify-content-space-between
-            "
-          >
-            <template v-if="ownCurrenciesRecipients">
-              <div
-                class="is-clickable py-2"
-                v-for="(recipient, index) in ownCurrenciesRecipients"
-              >
-                <RecipientItem
-                  :recipient="recipient"
-                  :key="index"
-                  @mousedown.prevent="
-                    &quot;// on some android, input gets a change event&quot;
-                  "
-                  @select="handleClickRecipient(recipient)"
-                />
-              </div>
-            </template>
-            <loading
-              v-if="recipientBatchLoader.isNewBatchLoading.value"
-              v-model:active="recipientBatchLoader.isNewBatchLoading.value"
-              :can-cancel="false"
-              :is-full-page="false"
-              :width="30"
-              :height="30"
-              class="loader-container"
-            />
-            <div
-              v-if="
-                recipientBatchLoader.hasNoMoreElements.value &&
-                ownCurrenciesRecipients.length === 0
-              "
-              class="is-flex is-align-items-center is-justify-content-center"
-            >
-              {{ $gettext("No recipients found") }}
-            </div>
-          </div>
-        </section>
+
+        <RecipientSelector
+          :account="account"
+          @clickRecipient="handleClickRecipient"
+        />
+
         <footer class="modal-card-foot is-justify-content-flex-end">
           <!--  <button class="button is-success">Save changes</button>
         <button class="button">Cancel</button> -->
@@ -126,10 +29,7 @@
       >
         <header class="modal-card-head">
           <span v-if="!transactionType" class="is-flex is-flex-shrink-0">
-            <a
-              class="mr-3 is-flex"
-              @click="$modal.back(), setFocus('searchRecipient')"
-            >
+            <a class="mr-3 is-flex" @click="$modal.back()">
               <span class="icon has-text-white">
                 <fa-icon icon="arrow-left" class="fa-lg" />
               </span>
@@ -229,6 +129,7 @@
   import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
   import { showSpinnerMethod } from "@/utils/showSpinner"
+  import RecipientSelector from "@/components/RecipientSelector.vue"
 
   @Options({
     name: "MoneyTransferModal",
@@ -237,11 +138,10 @@
       MoneyTransaction,
       TransactionItem,
       Loading,
+      RecipientSelector,
     },
     data() {
       return {
-        recipientsSearchString: "",
-        recipientsSearchError: false,
         selectedRecipient: null,
         ownSelectedAccount: null,
         amount: null,
@@ -268,25 +168,6 @@
       this.account = account
       // No need to declare in data, no live mechanism required here
       this.selectedBackend = makeUIProxyBackend(account.parent, this.$gettext)
-
-      this.recipientBatchLoader = UseBatchLoading({
-        genFactory: this.selectedBackend.searchRecipients.bind(
-          this.selectedBackend
-        ),
-        needMorePredicate: () =>
-          this.$refs.recipientsContainer.scrollHeight -
-            (this.$refs.recipientsContainer.scrollTop +
-              this.$refs.recipientsContainer.offsetHeight) <=
-          50,
-        onError: (e) => {
-          this.$msg.error(
-            this.$gettext(
-              "An unexpected issue occured while downloading recipient list"
-            )
-          )
-          console.error(e)
-        },
-      })
       this.prepareTransactionSignalHandler = null
     },
     mounted() {
@@ -295,103 +176,11 @@
         this.toPaymentStage({
           recipient: this.$modal.args.value[0].account.safeWalletRecipient,
         })
-      } else {
-        this.setFocus("searchRecipient")
-        this.recipientBatchLoader.newGen("")
       }
-      ;(this.$el as HTMLElement).focus()
-    },
-    computed: {
-      ...mapModuleState("lokapi", ["userProfile"]),
-      ownCurrenciesRecipients(): Array<any> {
-        let currencyIds = this.$store.getters.activeVirtualAccounts.map(
-          (a: any) => a.currencyId
-        )
-        return this.recipientBatchLoader.elements.value.filter((p: any) => {
-          return currencyIds.indexOf(p.backendId) > -1
-        })
-      },
     },
     methods: {
-      startScan: applyDecorators(
-        [showSpinnerMethod(".modal-card-body")],
-        async function (this: any) {
-          const scanPermission = await this.$qrCode.isPermissionGranted()
-          if (!scanPermission) {
-            this.$qrCode.stopScan()
-            return
-          }
-          await this.$qrCode.prepare()
-          const result = await this.$qrCode.read()
-          let resultData
-          try {
-            resultData = JSON.parse(result.content)
-          } catch (err) {
-            throw new UIError(
-              this.$gettext("Invalid QR code content format"),
-              err
-            )
-          }
-          const { rp, rpb } = resultData
-          if (rp === this.userProfile.id) {
-            this.$msg.error(
-              this.$gettext("You can not transfer money to your own account")
-            )
-            return
-          }
-          if (!result.hasContent) {
-            this.$msg.error(this.$gettext("Unable to read QR code"))
-            return
-          }
-          this.transactionType = "requestPay"
-          let recipient
-          try {
-            recipient = await this.selectedBackend.searchRecipientByUri({
-              rp,
-              rpb,
-            })
-          } catch (err) {
-            this.$msg.error(
-              this.$gettext("An error occured while searching recipient")
-            )
-            throw err
-          }
-          let isTransactionAllowed = null
-          try {
-            isTransactionAllowed =
-              await recipient.isTransferAllowedByAdministrativeBackend()
-          } catch (err) {
-            this.$msg.error(
-              this.$gettext(
-                "An unexpected error occured while verifying transaction authorizations."
-              )
-            )
-            console.log(
-              "Exception while verifying transaction authorizations:",
-              err
-            )
-            return
-          }
-          if (!isTransactionAllowed) {
-            this.$msg.error(
-              this.$gettext(
-                "You are not allowed to send money to %{ recipientName }",
-                { recipientName: recipient.name }
-              )
-            )
-            return
-          }
-          await this.toPaymentStage({
-            recipient,
-            amount: resultData.amount,
-            senderMemo: resultData.senderMemo,
-            recipientMemo: resultData.recipientMemo,
-          })
-        }
-      ),
-
-      handleClickRecipient(recipient: any): void {
-        return this.toPaymentStage({ recipient })
+      handleClickRecipient(config: any): void {
+        return this.toPaymentStage(config)
       },
       async toPaymentStage(config: any): Promise<void> {
         this.selectedRecipient = config.recipient
@@ -711,18 +500,9 @@
 <style lang="scss" scoped>
   @import "@/assets/custom-variables";
 
-  .search-area {
-    background: #f0faf9;
-  }
   .button.action {
     white-space: normal;
     height: auto;
-  }
-  .card-recipient-wrapper {
-    width: 90%;
-  }
-  .favorit-icon-wrapper {
-    width: 10%;
   }
   .modal-card-body {
     min-height: 120px;
@@ -741,46 +521,6 @@
     padding-right: calc(0.75em - 1px);
     padding-top: calc(0.5em - 1px);
   }
-  .w-100 {
-    width: 100%;
-  }
-  .custom-search-bar {
-    margin: auto;
-  }
-  .search-bar-container {
-    width: 75%;
-  }
-  .qrcode-icon {
-    font-size: 1.5em;
-    opacity: 0.8;
-    padding: 0.1em;
-    border: 0.2em solid #e8e8e8;
-    border-radius: 5px;
-  }
-  .custom-search-bar input {
-    background: #ffffff;
-    border: 1px solid #e8e8e8;
-    border-radius: 24px;
-    width: 100% !important;
-  }
-
-  .custom-pictogram-search svg {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .custom-pictogram-search path,
-  rect {
-    fill: $color-2 !important;
-    background: $color-2 !important;
-  }
-
-  .custom-button-pictogram {
-    background-color: inherit !important;
-    border: none;
-    cursor: pointer;
-  }
-
   hr.transaction-list-separator {
     margin-top: 0.2em;
     margin-bottom: 0.2em;
