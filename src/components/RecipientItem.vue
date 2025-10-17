@@ -1,4 +1,15 @@
 <template>
+  <span
+    v-if="
+      showAdminButton &&
+      hasCreditRequestValidationRights &&
+      hasUserAccountValidationRights
+    "
+    class="icon is-small is-default is-pulled-right is-rounded refresh"
+    @click="handleRedirection"
+  >
+    <fa-icon icon="arrow-circle-up" class="fa-lg" />
+  </span>
   <div class="is-flex is-justify-content-flex-start" v-if="recipient">
     <div
       class="mr-2 is-clickable is-align-items-center is-flex recipient-icon"
@@ -15,10 +26,14 @@
     </div>
     <div class="recipient-name is-size-5" @click="$emit('select', recipient)">
       {{ recipient.name }}
-      <div v-if="recipient.markBackend" class="is-size-6 has-text-grey-light">
+      <Badge v-if="$config.disableBadges !== true" :object="recipient" />
+
+      <div
+        v-if="!hideBackendId && recipient.markBackend"
+        class="is-size-6 has-text-grey-light"
+      >
         {{ `${recipient.backendId}` }}
       </div>
-      <Badge v-if="$config.disableBadges !== true" :object="recipient" />
     </div>
   </div>
 </template>
@@ -31,6 +46,9 @@
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
   import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
+  import { mapModuleState } from "@/utils/vuex"
+  import { useRouter } from "vue-router"
+
   import { UIError } from "@/exception"
 
   @Options({
@@ -40,6 +58,16 @@
     },
     props: {
       recipient: Object,
+      hideBackendId: Boolean,
+      showAdminButton: Boolean,
+    },
+    computed: {
+      ...mapModuleState("lokapi", [
+        "isLog",
+        "hasUserAccountValidationRights",
+        "hasCreditRequestValidationRights",
+        "userProfile",
+      ]),
     },
     methods: {
       toggleFavorite: applyDecorators(
@@ -67,6 +95,12 @@
           }
         }
       ),
+      handleRedirection() {
+        this.$modal.open("AdminModal", {
+          administrativeBackendId: this.recipient.id,
+          financialBackendId: this.recipient.internalId,
+        })
+      },
     },
   })
   export default class RecipientItem extends Vue {}

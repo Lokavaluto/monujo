@@ -13,6 +13,7 @@
         <RecipientSelector
           :account="account"
           @clickRecipient="handleClickRecipient"
+          :hideBackendId="true"
         />
 
         <footer class="modal-card-foot is-justify-content-flex-end">

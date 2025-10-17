@@ -74,6 +74,7 @@
               :recipient="recipient"
               :key="index"
               :showAdminButton="true"
+              :hideBackendId="hideBackendId"
               @mousedown.prevent="
                 &quot;// on some android, input gets a change event&quot;
               "
@@ -129,6 +130,7 @@
     },
     props: {
       account: Object,
+      hideBackendId: Boolean,
       showAll: Boolean,
     },
     data() {

@@ -1,4 +1,5 @@
 import { LocalStore } from "@lokavaluto/lokapi-browser"
+
 import { createApp } from "vue"
 import { Capacitor } from "@capacitor/core"
 import "vue-loading-overlay/dist/css/index.css"
@@ -15,7 +16,6 @@ import mkStore from "./store"
 import { lokapiStoreFactory } from "./store/lokapi"
 import { prefsStoreFactory } from "./store/prefs"
 import PasswordUtilsFactory from "./utils/password"
-
 // Services
 
 import {
@@ -284,15 +284,19 @@ fetchConfig("config.json").then(async (config: any) => {
   const dropdown = useDropdownMenu()
   dropdown.register((obj: any) => {
     let items = []
-    if (store.state.lokapi.virtualAccountTree.includes(obj)) {
+    if (obj.isVirtualRoot) {
       items.push({
         label: $gettext("QR code"),
         icon: "qrcode",
-        action: () => modal.open("QrCodeModal", { accountId: obj.id }),
+        action: () =>
+          modal.open("QrCodeModal", {
+            accountId: obj.id,
+            administrativeBackendId: obj.administrativeBackendId,
+          }),
       })
     }
     if (
-      store.state.lokapi.virtualAccountTree.includes(obj) &&
+      obj.isVirtualRoot &&
       obj?.safeWalletRecipient &&
       config?.disableReconversion !== true
     ) {
@@ -315,7 +319,7 @@ fetchConfig("config.json").then(async (config: any) => {
         },
       })
     }
-    if (obj.walletData && store.state.lokapi.virtualAccountTree.includes(obj)) {
+    if (obj.walletData && obj.isVirtualRoot) {
       items.push({
         label: $gettext("Export wallet"),
         icon: "wallet",
