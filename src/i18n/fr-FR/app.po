@@ -416,7 +416,7 @@ msgstr "Connection réussie"
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
-#: src/main.ts:142
+#: src/main.ts:196
 msgid "Converted"
 msgstr "Converti"
 
@@ -555,7 +555,7 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: src/main.ts:320
+#: src/main.ts:374
 msgid "Export wallet"
 msgstr "Exporter le portefeuille"
 
@@ -656,7 +656,7 @@ msgstr "Format du code QR invalide"
 msgid "invoiced"
 msgstr "facturée"
 
-#: src/main.ts:236
+#: src/main.ts:290
 msgid "Language settings"
 msgstr "Préférences de langue"
 
@@ -669,7 +669,7 @@ msgstr "Nom"
 msgid "Later"
 msgstr "Plus tard"
 
-#: src/main.ts:112
+#: src/main.ts:166
 msgid "Log in"
 msgstr "Se connecter"
 
@@ -677,11 +677,11 @@ msgstr "Se connecter"
 msgid "Login"
 msgstr "Connection"
 
-#: src/main.ts:111
+#: src/main.ts:165
 msgid "Login into Monujo"
 msgstr "S'authentifier pour accéder à Monujo"
 
-#: src/main.ts:139 src/main.ts:146
+#: src/main.ts:193 src/main.ts:200
 msgid "Main"
 msgstr "Principal"
 
@@ -719,7 +719,7 @@ msgstr "mois"
 msgid "mutual"
 msgstr "mutuel"
 
-#: src/main.ts:143
+#: src/main.ts:197
 msgid "Mutual"
 msgstr "Mutuel"
 
@@ -979,7 +979,7 @@ msgstr "traitée"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/main.ts:289
+#: src/main.ts:343
 msgid "QR code"
 msgstr "Code QR"
 
@@ -1108,7 +1108,7 @@ msgstr "Ré-initialiser le mot de passe"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/main.ts:207
+#: src/main.ts:261
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
@@ -1628,7 +1628,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/main.ts:332
+#: src/main.ts:386
 msgid "Wallet export"
 msgstr "Export du portefeuille"
 

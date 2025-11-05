@@ -77,14 +77,15 @@
   export default class Core extends Vue {}
 </script>
 <style lang="scss" scoped>
+  @import "@/assets/safe-area";
   .action-footer-container {
     position: fixed !important;
     z-index: 20;
-    bottom: 0 !important;
-    width: 100%;
+    bottom: #{$sa-bottom} !important;
+    width: calc(100vw - #{$sa-left} - #{$sa-right});
 
     @media screen and (min-width: 1024px) {
-      bottom: 20px !important;
+      bottom: calc(20px + #{$sa-bottom}) !important;
     }
   }
   :deep(div.card div.section-card > p) {

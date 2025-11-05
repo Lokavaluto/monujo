@@ -211,10 +211,12 @@
 </script>
 <style lang="scss" scoped>
   @import "../assets/custom-variables";
+  @import "@/assets/safe-area";
 
   .navbar {
     background-color: $top-menu-background-color;
 
+    .navbar-brand,
     .navbar-item,
     .navbar-item:visited,
     .navbar-link,
@@ -251,6 +253,11 @@
         background-color: $top-menu-link-background-color-bg;
       }
     }
+  }
+
+  .burger-menu-overlay {
+    margin-left: $sa-left;
+    margin-right: $sa-right;
   }
 
   @media screen and (max-width: 1023px) {
@@ -304,18 +311,45 @@
         > img {
           max-height: 42px;
         }
+        > .navbar-burger {
+          height: 42px;
+          max-height: 42px;
+        }
+      }
+      > .navbar-menu > .burger-menu-overlay {
+        top: calc(42px + #{$sa-top});
       }
     }
     @media only screen and (min-width: 701px) and (max-width: 899px) {
       min-height: 49px;
-      > .navbar-brand > .img {
+      > .navbar-brand {
+        min-height: 49px;
         max-height: 49px;
+        > .img {
+          max-height: 49px;
+        }
+        > .navbar-burger {
+          height: 49px;
+          max-height: 49px;
+        }
+      }
+      > .navbar-menu > .burger-menu-overlay {
+        top: calc(49px + #{$sa-top});
       }
     }
     @media only screen and (min-width: 900px) {
       min-height: 50.75px;
-      > .navbar-brand > .img {
-        max-height: 50.75px;
+      > .navbar-brand {
+        > .img {
+          max-height: 50.75px;
+        }
+        > .navbar-burger {
+          height: 50.75px;
+          max-height: 50.75px;
+        }
+      }
+      > .navbar-menu > .burger-menu-overlay {
+        top: calc(50.75px + #{$sa-top});
       }
     }
   }

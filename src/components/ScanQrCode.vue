@@ -32,6 +32,7 @@
   export default class ScanQrCode extends Vue {}
 </script>
 <style lang="scss" scoped>
+  @import "@/assets/safe-area";
   #scan-rectangle {
     width: fit-content;
     height: fit-content;
@@ -56,7 +57,7 @@
   }
   #back-button {
     position: absolute;
-    top: env(safe-area-inset-top, 0);
+    top: #{$sa-top};
     right: 0;
     margin: 0.5em;
     border-radius: 5px;

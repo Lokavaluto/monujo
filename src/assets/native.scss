@@ -1,13 +1,15 @@
-@media screen and (max-width: 430px) and (max-height: 1000px) and ((-webkit-device-pixel-ratio: 3) or (-webkit-device-pixel-ratio: 2)) {
+@import "./safe-area";
+
+@media screen {
   body,
   .navbar,
   #iframe,
   .c-toast-container {
-    padding-top: env(safe-area-inset-top, 0);
-    padding-right: env(safe-area-inset-right, 0);
-    padding-left: env(safe-area-inset-left, 0);
+    padding-top: #{$sa-top};
+    padding-right: #{$sa-right};
+    padding-left: #{$sa-left};
   }
   .modal-card {
-    top: calc(env(safe-area-inset-top, 0) + 60px);
+    top: calc(#{$sa-top} + 60px);
   }
 }

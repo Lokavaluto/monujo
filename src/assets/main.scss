@@ -8,6 +8,8 @@
 // Roboto
 @import "./fonts/roboto/style.css";
 
+@import "./safe-area";
+
 html {
   height: 100%;
 }
@@ -15,6 +17,8 @@ html {
 body {
   min-height: 100%;
   font-family: Roboto;
+  padding-top: #{$sa-top};
+  padding-bottom: #{$sa-bottom};
 }
 
 .is-clipped {
@@ -22,7 +26,7 @@ body {
   overflow-y: hidden;
 }
 #app {
-  min-height: calc(100vh - env(safe-area-inset-top, 0));
+  min-height: calc(100vh - #{$sa-top});
   background-color: $color-1;
   padding-top: 40px;
   padding-bottom: 80px;

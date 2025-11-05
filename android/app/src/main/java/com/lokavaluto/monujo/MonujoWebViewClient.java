@@ -22,6 +22,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.TrustManager;
 
+import androidx.core.view.ViewCompat;
+
 
 public class MonujoWebViewClient extends BridgeWebViewClient {
 
@@ -130,5 +132,11 @@ public class MonujoWebViewClient extends BridgeWebViewClient {
             Log.e("MonujoWebViewClient", "SSL error on Android > 7.1.1: " + error.toString());
             super.onReceivedSslError(view, handler, error);
         }
+    }
+
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+        ViewCompat.requestApplyInsets(view);
     }
 }

@@ -19,7 +19,10 @@
   @Options({
     components: { TheNavBar, AuthChallenge, Dialog, Modal },
     async mounted() {
-      if (Capacitor.getPlatform() === "ios") {
+      const platform = Capacitor.getPlatform()
+      if (platform === "ios") {
+        await StatusBar.setStyle({ style: Style.Light })
+      } else if (platform === "android") {
         await StatusBar.setStyle({ style: Style.Light })
       }
       CapacitorApp.addListener("backButton", ({ canGoBack }) => {

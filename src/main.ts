@@ -9,6 +9,60 @@ import App from "./App.vue"
 import { mkRouter } from "./router"
 import "./polyfill"
 
+type SafeAreaInsets = {
+  top: number
+  right: number
+  bottom: number
+  left: number
+}
+
+function applySafeArea(detail?: SafeAreaInsets) {
+  if (!detail) return
+
+  const ratio = window.devicePixelRatio || 1
+  const toCss = (value: number) => `${value / ratio}px`
+
+  const cssValues = {
+    top: toCss(detail.top),
+    right: toCss(detail.right),
+    bottom: toCss(detail.bottom),
+    left: toCss(detail.left),
+  }
+
+  const anyWindow = window as any
+  anyWindow.__monujoSafeArea = anyWindow.__monujoSafeArea || {}
+  anyWindow.__monujoSafeArea.values = detail
+  anyWindow.__monujoSafeArea.css = cssValues
+
+  const root = document.documentElement
+  root.style.setProperty("--safe-area-inset-top", cssValues.top)
+  root.style.setProperty("--safe-area-inset-right", cssValues.right)
+  root.style.setProperty("--safe-area-inset-bottom", cssValues.bottom)
+  root.style.setProperty("--safe-area-inset-left", cssValues.left)
+  root.style.setProperty("--cap-safe-area-inset-top", cssValues.top)
+  root.style.setProperty("--cap-safe-area-inset-right", cssValues.right)
+  root.style.setProperty("--cap-safe-area-inset-bottom", cssValues.bottom)
+  root.style.setProperty("--cap-safe-area-inset-left", cssValues.left)
+}
+
+if (typeof window !== "undefined") {
+  const anyWindow = window as any
+  const state = (anyWindow.__monujoSafeArea = anyWindow.__monujoSafeArea || {})
+  if (state.values) {
+    applySafeArea(state.values as SafeAreaInsets)
+  }
+
+  window.addEventListener(
+    "monujoSafeAreaApplied",
+    (event: Event) => {
+      const detail = (event as CustomEvent<SafeAreaInsets>).detail
+      state.values = detail
+      applySafeArea(detail)
+    },
+    { passive: true }
+  )
+}
+
 // Store
 
 import mkStore from "./store"
