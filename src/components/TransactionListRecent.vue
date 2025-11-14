@@ -51,7 +51,7 @@
           <button
             @click="
               () => {
-                $modal.open('TransactionListModal', { account })
+                $modal.open('TransactionListModal', { params: { account } })
               }
             "
             class="button custom-button custom-inverted"

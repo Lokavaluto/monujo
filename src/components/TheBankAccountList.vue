@@ -6,28 +6,33 @@
       :can-cancel="false"
       :is-full-page="false"
     />
-
-    <div class="active" v-if="!accountsLoading || activeVirtualAccounts.length">
-      <a
-        @click="refreshBalance(), refreshTransactions()"
-        :title="$gettext('Refresh balance and transaction list')"
-        class="button is-default is-pulled-right is-rounded refresh"
-        :class="{
-          'active-refresh-button': accountsLoading || isAccountsLoadingRetrying,
-        }"
-      >
-        <span :class="{ hide: accountsLoading || isAccountsLoadingRetrying }">
-          {{ $gettext("Refresh") }}
-        </span>
-        <span class="icon is-small">
-          <fa-icon
-            :class="{
-              refreshing: accountsLoading || isAccountsLoadingRetrying,
-            }"
-            icon="sync"
-          />
-        </span>
-      </a>
+    <div
+      class="active flex"
+      v-if="!accountsLoading || activeVirtualAccounts.length"
+    >
+      <span
+        ><a
+          @click="refreshBalance(), refreshTransactions()"
+          :title="$gettext('Refresh balance and transaction list')"
+          class="button is-default is-pulled-right is-rounded refresh"
+          :class="{
+            'active-refresh-button':
+              accountsLoading || isAccountsLoadingRetrying,
+          }"
+        >
+          <span :class="{ hide: accountsLoading || isAccountsLoadingRetrying }">
+            {{ $gettext("Refresh") }}
+          </span>
+          <span class="icon is-small">
+            <fa-icon
+              :class="{
+                refreshing: accountsLoading || isAccountsLoadingRetrying,
+              }"
+              icon="sync"
+            />
+          </span>
+        </a>
+      </span>
       <div
         class="notification is-danger is-light"
         v-if="accountsLoadingErrors.length > 0"
@@ -206,7 +211,12 @@
         "getBackends",
         "getUnconfiguredBackends",
       ]),
-      ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingErrors"]),
+      ...mapModuleState("lokapi", [
+        "accountsLoading",
+        "accountsLoadingErrors",
+        "hasUserAccountValidationRights",
+        "hasCreditRequestValidationRights",
+      ]),
     },
     watch: {
       async refreshToggle(newval, oldVal): Promise<void> {

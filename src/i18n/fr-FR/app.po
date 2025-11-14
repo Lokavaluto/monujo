@@ -22,7 +22,7 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
-#: src/components/MoneyTransferModal.vue:679
+#: src/components/MoneyTransferModal.vue:469
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -38,21 +38,21 @@ msgid_plural "%{ pinLength } digits"
 msgstr[0] "%{ pinLength } chiffre"
 msgstr[1] "%{ pinLength } chiffres"
 
-#: src/components/AboutModal.vue:85 src/components/TheNavBar.vue:102
-#: src/components/TheNavBar.vue:107 src/components/TheNavBar.vue:112
-#: src/components/TheNavBar.vue:144 src/components/TheNavBar.vue:84
-#: src/components/TheNavBar.vue:85
+#: src/components/AboutModal.vue:85 src/components/TheNavBar.vue:105
+#: src/components/TheNavBar.vue:110 src/components/TheNavBar.vue:115
+#: src/components/TheNavBar.vue:147 src/components/TheNavBar.vue:87
+#: src/components/TheNavBar.vue:88
 msgid "About %{ appName }"
 msgstr "À propos de %{ appName }"
 
-#: src/components/TransactionListModal.vue:458
+#: src/components/TransactionList.vue:434
 msgid "Account"
 msgstr "Compte"
 
-#: src/components/TheNavBar.vue:101 src/components/TheNavBar.vue:107
-#: src/components/TheNavBar.vue:63 src/components/TheNavBar.vue:64
-#: src/components/TheNavBar.vue:81 src/components/TheNavBar.vue:86
-#: src/components/TheNavBar.vue:91
+#: src/components/TheNavBar.vue:104 src/components/TheNavBar.vue:110
+#: src/components/TheNavBar.vue:66 src/components/TheNavBar.vue:67
+#: src/components/TheNavBar.vue:84 src/components/TheNavBar.vue:89
+#: src/components/TheNavBar.vue:94
 msgid "Account requests"
 msgstr "Demandes de comptes"
 
@@ -68,7 +68,7 @@ msgstr "Comptes en attente de validation"
 msgid "Action"
 msgstr "Action"
 
-#: src/components/MoneyTransferModal.vue:665
+#: src/components/MoneyTransferModal.vue:455
 msgid "Add"
 msgstr "Ajouter"
 
@@ -88,29 +88,41 @@ msgstr "Ajouter un motif de paiement (optionnel)"
 msgid "Add a reference for the recipient (optional)"
 msgstr "Ajouter une référence du paiement pour le destinataire"
 
-#: src/components/MoneyTransferModal.vue:659
+#: src/components/MoneyTransferModal.vue:449
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
-#: src/components/TheNavBar.vue:100 src/components/TheNavBar.vue:110
-#: src/components/TheNavBar.vue:121 src/components/TheNavBar.vue:72
-#: src/components/TheNavBar.vue:73 src/components/TheNavBar.vue:90
-#: src/components/TheNavBar.vue:95
+#: src/views/AdminDashboard.vue:3 src/views/AdminDashboard.vue:4
+msgid "Admin"
+msgstr "Admin"
+
+#: src/components/TheNavBar.vue:103 src/components/TheNavBar.vue:113
+#: src/components/TheNavBar.vue:124 src/components/TheNavBar.vue:75
+#: src/components/TheNavBar.vue:76 src/components/TheNavBar.vue:93
+#: src/components/TheNavBar.vue:98
 msgid "Admin Comchain"
 msgstr "Administrateur Comchain"
 
-#: src/components/TransactionListModal.vue:121
-#: src/components/TransactionListModal.vue:126
-#: src/components/TransactionListModal.vue:81
-#: src/components/TransactionListModal.vue:82
-#: src/components/TransactionListModal.vue:85
-#: src/components/TransactionListModal.vue:86
-#: src/components/TransactionListModal.vue:90
+#: src/components/TheNavBar.vue:101 src/components/TheNavBar.vue:107
+#: src/components/TheNavBar.vue:63 src/components/TheNavBar.vue:64
+#: src/components/TheNavBar.vue:81 src/components/TheNavBar.vue:86
+#: src/components/TheNavBar.vue:91
+msgid "Admin dasboard"
+msgstr "Tableau de bord Administrateur"
+
+#: src/components/RecipientTechnicalDetails.vue:8
+#: src/components/RecipientTechnicalDetails.vue:9
+msgid "Administrative backend id:"
+msgstr "Idendentifiant du backend administratif:"
+
+#: src/components/TransactionList.vue:106
+#: src/components/TransactionList.vue:111 src/components/TransactionList.vue:70
+#: src/components/TransactionList.vue:74 src/components/TransactionList.vue:75
 msgid "All recipient"
 msgstr "Tous les destinataires"
 
+#: src/components/TransactionList.vue:23
 #: src/components/TransactionListModal.vue:11
-#: src/components/TransactionListModal.vue:39
 #: src/components/TransactionListModal.vue:6
 #: src/components/TransactionListModal.vue:7
 msgid "All transactions"
@@ -124,9 +136,8 @@ msgstr "Avez-vous déjà créé un compte ?"
 #: src/components/MoneyTransaction.vue:21
 #: src/components/MoneyTransaction.vue:22
 #: src/components/MoneyTransaction.vue:30
-#: src/components/TransactionListModal.vue:454
-#: src/views/admin/PendingCredits.vue:39 src/views/admin/PendingCredits.vue:40
-#: src/views/admin/PendingCredits.vue:43
+#: src/components/TransactionList.vue:430 src/views/admin/PendingCredits.vue:39
+#: src/views/admin/PendingCredits.vue:40 src/views/admin/PendingCredits.vue:43
 msgid "Amount"
 msgstr "Montant"
 
@@ -146,15 +157,33 @@ msgstr "Le montant envoyé doit être un nombre positif"
 msgid "Amount to send must be a number with not more than 2 decimals"
 msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales"
 
-#: src/components/TransactionListModal.vue:507
+#: src/components/RecipientSelector.vue:209
+#: src/components/RecipientSelector.vue:219
+msgid "An error occured during the scan process"
+msgstr "Une erreur est survenue lors du processus de scan"
+
+#: src/components/TransactionList.vue:483
 msgid "An error occured while creating the CSV file"
 msgstr "Une erreur est survenue lors de la creation du ficher CSV"
 
-#: src/components/MoneyTransferModal.vue:355
+#: src/components/AdminBackend.vue:121
+msgid "An error occured while retrieving account information"
+msgstr ""
+"Une erreur est survenue lors de récuperation des informations du compte."
+
+#: src/components/AdminBackend.vue:111
+msgid "An error occured while retrieving recipient information"
+msgstr ""
+"Il y a eu un problème lors de la récuperation des informations du "
+"destinataire"
+
+#: src/components/AdminBackend.vue:149
+#: src/components/AdminBackendComchain.vue:148
+#: src/components/RecipientSelector.vue:252
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
-#: src/services/lokapiService.ts:278
+#: src/services/lokapiService.ts:282
 msgid "An error occurred while adding to favorites."
 msgstr "Une erreur est survenue lors de la mise en favoris."
 
@@ -166,7 +195,7 @@ msgstr ""
 "Une erreur s'est produite lors de la suppression de la demande de "
 "rechargement, veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/services/lokapiService.ts:282
+#: src/services/lokapiService.ts:286
 msgid "An error occurred while removing from favorites."
 msgstr "Une erreur est survenue lors de la suppression du favori."
 
@@ -176,28 +205,28 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/MoneyTransferModal.vue:365
+#: src/components/RecipientSelector.vue:263
 msgid "An unexpected error occured while verifying transaction authorizations."
 msgstr ""
 "Une erreur inattendue est survenue lors de la vérification des autorisations "
 "de transaction"
 
-#: src/components/MoneyTransferModal.vue:283
-#: src/components/TransactionListModal.vue:341
+#: src/components/RecipientSelector.vue:166
+#: src/components/TransactionList.vue:283
 msgid "An unexpected issue occured while downloading recipient list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "destinataires"
 
-#: src/components/TransactionListModal.vue:356
-#: src/components/TransactionListModal.vue:422
+#: src/components/TransactionList.vue:299
+#: src/components/TransactionList.vue:399
 #: src/components/TransactionListRecent.vue:119
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "transactions"
 
-#: src/components/MoneyTransferModal.vue:618
+#: src/components/MoneyTransferModal.vue:408
 msgid ""
 "An unexpected issue occurred during the money transfer. We are sorry for the "
 "inconvenience."
@@ -219,7 +248,7 @@ msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/components/MoneyTransferModal.vue:472
+#: src/components/MoneyTransferModal.vue:262
 msgid ""
 "An unexpected issue occurred while checking available funds. The transaction "
 "was not sent. We are sorry for the inconvenience."
@@ -265,11 +294,11 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste de "
 "demandes de crédits. Veuillez nous excuser pour le désagrément."
 
-#: src/components/TheBankAccountList.vue:20
 #: src/components/TheBankAccountList.vue:21
-#: src/components/TheBankAccountList.vue:26
-#: src/components/TheBankAccountList.vue:34
-#: src/components/TheBankAccountList.vue:37
+#: src/components/TheBankAccountList.vue:22
+#: src/components/TheBankAccountList.vue:27
+#: src/components/TheBankAccountList.vue:39
+#: src/components/TheBankAccountList.vue:42
 msgid ""
 "An unexpected issue occurred while loading your wallet information. Sorry "
 "for the inconvenience."
@@ -277,10 +306,10 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement des portefeuilles. "
 "Veuillez nous excuser pour le désagrément."
 
-#: src/components/MoneyTransferModal.vue:45
-#: src/components/MoneyTransferModal.vue:46
-#: src/components/MoneyTransferModal.vue:58
-#: src/components/MoneyTransferModal.vue:62
+#: src/components/RecipientSelector.vue:36
+#: src/components/RecipientSelector.vue:37
+#: src/components/RecipientSelector.vue:49
+#: src/components/RecipientSelector.vue:53
 msgid ""
 "An unexpected issue occurred while performing recipient lookup. We apologise "
 "for the inconvenience."
@@ -288,7 +317,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement de la liste des "
 "comptes. Veuillez nous excuser pour le désagrément."
 
-#: src/components/RecipientItem.vue:62
+#: src/components/RecipientItem.vue:86
 msgid ""
 "An unexpected issue occurred while switching this recipient favorite status"
 msgstr ""
@@ -303,7 +332,7 @@ msgstr ""
 "validation de portefeuilles"
 
 #: src/components/MoneyCreditModal.vue:177 src/components/PendingTopUp.vue:148
-#: src/components/TheDashboardFooter.vue:114
+#: src/components/TheDashboardFooter.vue:139
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -321,11 +350,11 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/router/index.ts:62
+#: src/router/index.ts:69
 msgid "Approval of account creation"
 msgstr "Validation des comptes en attente de création"
 
-#: src/router/index.ts:68
+#: src/router/index.ts:75
 msgid "Approval of top-up requests"
 msgstr "Validation des demandes de crédit"
 
@@ -348,6 +377,11 @@ msgstr "Plus tard"
 #: src/components/AuthChallenge.vue:7 src/components/AuthChallenge.vue:8
 msgid "Authentication"
 msgstr "Authentification"
+
+#: src/components/RecipientTechnicalDetails.vue:6
+#: src/components/RecipientTechnicalDetails.vue:7
+msgid "Backend:"
+msgstr "Backend:"
 
 #: src/components/BiometryPrefs.vue:87
 msgid "Biometric login successfully disabled"
@@ -380,9 +414,9 @@ msgstr ""
 #: src/components/MoneyRequestModal.vue:68
 #: src/components/MoneyRequestModal.vue:89
 #: src/components/MoneyRequestModal.vue:93
-#: src/components/MoneyRequestModal.vue:99 src/components/QrCodeModal.vue:32
-#: src/components/QrCodeModal.vue:33 src/components/QrCodeModal.vue:40
-#: src/components/QrCodeModal.vue:46 src/components/QrCodeModal.vue:49
+#: src/components/MoneyRequestModal.vue:99 src/components/QrCodeModal.vue:34
+#: src/components/QrCodeModal.vue:35 src/components/QrCodeModal.vue:42
+#: src/components/QrCodeModal.vue:48 src/components/QrCodeModal.vue:51
 msgid "Close"
 msgstr "Fermer"
 
@@ -390,16 +424,10 @@ msgstr "Fermer"
 msgid "configure PIN code"
 msgstr "Configurer le code PIN"
 
-#: src/components/TransactionListModal.vue:100
-#: src/components/TransactionListModal.vue:64
-#: src/components/TransactionListModal.vue:65
-#: src/components/TransactionListModal.vue:68
-#: src/components/TransactionListModal.vue:69
-#: src/components/TransactionListModal.vue:70
-#: src/components/TransactionListModal.vue:73
-#: src/components/TransactionListModal.vue:75
-#: src/components/TransactionListModal.vue:84
-#: src/components/TransactionListModal.vue:86
+#: src/components/TransactionList.vue:52 src/components/TransactionList.vue:54
+#: src/components/TransactionList.vue:56 src/components/TransactionList.vue:57
+#: src/components/TransactionList.vue:59 src/components/TransactionList.vue:68
+#: src/components/TransactionList.vue:70 src/components/TransactionList.vue:84
 msgid "confirm"
 msgstr "valider"
 
@@ -412,7 +440,7 @@ msgstr "Confirmez votre mot de passe"
 msgid "Connection successful"
 msgstr "Connection réussie"
 
-#: src/components/MoneyTransferModal.vue:592
+#: src/components/MoneyTransferModal.vue:382
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
@@ -427,53 +455,56 @@ msgstr "Converti"
 #: src/components/CreateAccount.vue:45 src/components/CreateAccount.vue:51
 #: src/components/CreateAccount.vue:52 src/components/CreateAccount.vue:53
 #: src/components/CreateAccount.vue:56 src/components/CreateAccount.vue:58
-#: src/components/CreateAccount.vue:64 src/components/TheBankAccountList.vue:58
-#: src/components/TheBankAccountList.vue:59
-#: src/components/TheBankAccountList.vue:64
-#: src/components/TheBankAccountList.vue:74
-#: src/components/TheBankAccountList.vue:81
-#: src/components/TheBankAccountList.vue:84
-#: src/components/TheBankAccountList.vue:86 src/components/TheNavBar.vue:51
+#: src/components/CreateAccount.vue:64 src/components/TheBankAccountList.vue:59
+#: src/components/TheBankAccountList.vue:60
+#: src/components/TheBankAccountList.vue:65
+#: src/components/TheBankAccountList.vue:79
+#: src/components/TheBankAccountList.vue:86
+#: src/components/TheBankAccountList.vue:89
+#: src/components/TheBankAccountList.vue:91 src/components/TheNavBar.vue:51
 #: src/components/TheNavBar.vue:52 src/components/TheNavBar.vue:69
 #: src/components/TheNavBar.vue:74 src/components/TheNavBar.vue:79
-#: src/components/TheNavBar.vue:89 src/router/index.ts:50
+#: src/components/TheNavBar.vue:89 src/router/index.ts:57
 msgid "Create my wallet"
 msgstr "Créer mon portefeuille"
 
 #: src/components/CreateAccount.vue:39 src/components/CreateAccount.vue:40
-#: src/components/CreateAccount.vue:44 src/components/TheBankAccountList.vue:55
-#: src/components/TheBankAccountList.vue:56
-#: src/components/TheBankAccountList.vue:61
-#: src/components/TheBankAccountList.vue:71
-#: src/components/TheBankAccountList.vue:78
-#: src/components/TheBankAccountList.vue:81
-#: src/components/TheBankAccountList.vue:83 src/components/TheNavBar.vue:50
+#: src/components/CreateAccount.vue:44 src/components/TheBankAccountList.vue:56
+#: src/components/TheBankAccountList.vue:57
+#: src/components/TheBankAccountList.vue:62
+#: src/components/TheBankAccountList.vue:76
+#: src/components/TheBankAccountList.vue:83
+#: src/components/TheBankAccountList.vue:86
+#: src/components/TheBankAccountList.vue:88 src/components/TheNavBar.vue:50
 #: src/components/TheNavBar.vue:51 src/components/TheNavBar.vue:68
 #: src/components/TheNavBar.vue:73 src/components/TheNavBar.vue:78
 #: src/components/TheNavBar.vue:88
 msgid "Create or import my wallet"
 msgstr "Créer ou importer mon portefeuille"
 
-#: src/components/TheNavBar.vue:104 src/components/TheNavBar.vue:114
-#: src/components/TheNavBar.vue:66 src/components/TheNavBar.vue:67
-#: src/components/TheNavBar.vue:84 src/components/TheNavBar.vue:89
-#: src/components/TheNavBar.vue:94
+#: src/components/TheNavBar.vue:107 src/components/TheNavBar.vue:117
+#: src/components/TheNavBar.vue:69 src/components/TheNavBar.vue:70
+#: src/components/TheNavBar.vue:87 src/components/TheNavBar.vue:92
+#: src/components/TheNavBar.vue:97
 msgid "Credit requests"
 msgstr "Demandes de crédit"
 
 #: src/components/TheNavBar.vue:32 src/components/TheNavBar.vue:33
 #: src/components/TheNavBar.vue:50 src/components/TheNavBar.vue:55
-#: src/components/TheNavBar.vue:60 src/router/index.ts:20
+#: src/components/TheNavBar.vue:60 src/router/index.ts:21
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/components/TransactionListModal.vue:455
-#: src/views/admin/PendingCredits.vue:42 src/views/admin/PendingCredits.vue:43
-#: src/views/admin/PendingCredits.vue:46
+#: src/router/index.ts:27
+msgid "Dashboard admin"
+msgstr "Tableau de bord Administrateur"
+
+#: src/components/TransactionList.vue:431 src/views/admin/PendingCredits.vue:42
+#: src/views/admin/PendingCredits.vue:43 src/views/admin/PendingCredits.vue:46
 msgid "Date"
 msgstr "Date"
 
-#: src/components/TransactionListModal.vue:309
+#: src/components/TransactionList.vue:248
 msgid "day"
 msgstr "jour"
 
@@ -486,7 +517,7 @@ msgstr "jour"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/components/TransactionListModal.vue:456
+#: src/components/TransactionList.vue:432
 msgid "Description"
 msgstr "Description"
 
@@ -505,21 +536,22 @@ msgstr[1] "chiffres"
 msgid "Discard"
 msgstr "Annuler"
 
-#: src/components/MoneyTransferModal.vue:660
+#: src/components/MoneyTransferModal.vue:450
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
-#: src/components/TransactionListModal.vue:143
-#: src/components/TransactionListModal.vue:144
-#: src/components/TransactionListModal.vue:148
-#: src/components/TransactionListModal.vue:229
-#: src/components/TransactionListModal.vue:231
-#: src/components/TransactionListModal.vue:232
-#: src/components/TransactionListModal.vue:241
+#: src/components/TransactionListModal.vue:19
+#: src/components/TransactionListModal.vue:20
+#: src/components/TransactionListModal.vue:24
+#: src/components/TransactionListModal.vue:28
+#: src/components/TransactionListModal.vue:32
+#: src/components/TransactionListModal.vue:34
+#: src/components/TransactionListModal.vue:35
+#: src/components/TransactionListModal.vue:44
 msgid "Download"
 msgstr "Télécharger"
 
-#: src/components/TransactionListModal.vue:227
+#: src/components/TransactionListModal.vue:30
 msgid "Download transactions"
 msgstr "Télécharger les opérations"
 
@@ -555,7 +587,7 @@ msgstr "Activer le login biométrique"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: src/main.ts:374
+#: src/main.ts:378
 msgid "Export wallet"
 msgstr "Exporter le portefeuille"
 
@@ -572,7 +604,7 @@ msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
 msgid "Failed to read the file contents"
 msgstr "Le contenu du fichier n'a pas pu être lu"
 
-#: src/components/TheBankAccountList.vue:235
+#: src/components/TheBankAccountList.vue:245
 msgid "Failed to refresh account informations"
 msgstr "Échec de la mise à jour des informations du compte"
 
@@ -603,6 +635,12 @@ msgstr "De"
 msgid "From"
 msgstr "Depuis"
 
+#: src/components/AdminBackend.vue:5 src/components/AdminBackend.vue:6
+#: src/components/AdminBackendComchain.vue:5
+#: src/components/AdminBackendComchain.vue:6
+msgid "General user account info"
+msgstr "Informations generales du compte"
+
 #: src/components/MoneyRequestModal.vue:20
 #: src/components/MoneyRequestModal.vue:21
 #: src/components/MoneyRequestModal.vue:25
@@ -615,12 +653,12 @@ msgstr "Générer le code QR"
 msgid "Given PINs are different"
 msgstr "Les codes PINs entrés ne sont pas identiques"
 
-#: src/components/TheNavBar.vue:101 src/components/TheNavBar.vue:106
-#: src/components/TheNavBar.vue:135 src/components/TheNavBar.vue:21
+#: src/components/TheNavBar.vue:104 src/components/TheNavBar.vue:109
+#: src/components/TheNavBar.vue:138 src/components/TheNavBar.vue:21
 #: src/components/TheNavBar.vue:22 src/components/TheNavBar.vue:39
 #: src/components/TheNavBar.vue:44 src/components/TheNavBar.vue:49
-#: src/components/TheNavBar.vue:78 src/components/TheNavBar.vue:79
-#: src/components/TheNavBar.vue:96
+#: src/components/TheNavBar.vue:81 src/components/TheNavBar.vue:82
+#: src/components/TheNavBar.vue:99
 msgid "Help"
 msgstr "Aide"
 
@@ -630,7 +668,14 @@ msgstr "Aide"
 msgid "Import an existing wallet"
 msgstr "Importer un portefeuille existant"
 
-#: src/components/MoneyTransferModal.vue:488
+#: src/components/TheDashboardFooter.vue:11
+#: src/components/TheDashboardFooter.vue:17
+#: src/components/TheDashboardFooter.vue:18
+#: src/components/TheDashboardFooter.vue:22
+msgid "Inspect"
+msgstr "Inspecter"
+
+#: src/components/MoneyTransferModal.vue:278
 msgid ""
 "Insufficient balance. You only have %{ safeAmount } %{ currency } available "
 "to spend."
@@ -646,7 +691,7 @@ msgstr "Identifiant ou mot de passe incorrect"
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
-#: src/components/MoneyTransferModal.vue:331
+#: src/components/RecipientSelector.vue:228
 msgid "Invalid QR code content format"
 msgstr "Format du code QR invalide"
 
@@ -665,7 +710,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:666
+#: src/components/MoneyTransferModal.vue:456
 msgid "Later"
 msgstr "Plus tard"
 
@@ -673,7 +718,7 @@ msgstr "Plus tard"
 msgid "Log in"
 msgstr "Se connecter"
 
-#: src/router/index.ts:32
+#: src/router/index.ts:39
 msgid "Login"
 msgstr "Connection"
 
@@ -687,7 +732,7 @@ msgstr "Principal"
 
 #: src/components/TheNavBar.vue:17 src/components/TheNavBar.vue:18
 #: src/components/TheNavBar.vue:35 src/components/TheNavBar.vue:40
-#: src/router/index.ts:26
+#: src/router/index.ts:33
 msgid "Map"
 msgstr "Carte"
 
@@ -703,19 +748,18 @@ msgstr "Montant maximum à créditer : "
 msgid "Minimum credit amount: "
 msgstr "Montant minimum à créditer : "
 
-#: src/components/MoneyTransferModal.vue:134
-#: src/components/MoneyTransferModal.vue:138
-#: src/components/MoneyTransferModal.vue:141
-#: src/components/MoneyTransferModal.vue:92
-#: src/components/MoneyTransferModal.vue:93
+#: src/components/MoneyTransferModal.vue:33
+#: src/components/MoneyTransferModal.vue:34
+#: src/components/MoneyTransferModal.vue:38
+#: src/components/MoneyTransferModal.vue:42
 msgid "Money reconversion"
 msgstr "Reconversion"
 
-#: src/components/TransactionListModal.vue:311
+#: src/components/TransactionList.vue:250
 msgid "month"
 msgstr "mois"
 
-#: src/components/TransactionListModal.vue:469
+#: src/components/TransactionList.vue:445
 msgid "mutual"
 msgstr "mutuel"
 
@@ -728,11 +772,11 @@ msgstr "Mutuel"
 msgid "My unpaid top-up requests"
 msgstr "Mes demandes de crédit non payées"
 
-#: src/components/MoneyTransferModal.vue:24
-#: src/components/MoneyTransferModal.vue:27
-#: src/components/MoneyTransferModal.vue:28
-#: src/components/MoneyTransferModal.vue:30
-#: src/components/MoneyTransferModal.vue:35
+#: src/components/RecipientSelector.vue:15
+#: src/components/RecipientSelector.vue:18
+#: src/components/RecipientSelector.vue:19
+#: src/components/RecipientSelector.vue:21
+#: src/components/RecipientSelector.vue:26
 msgid "Name, email address or phone number"
 msgstr "Nom, adresse email ou téléphone"
 
@@ -760,12 +804,12 @@ msgstr "Aucun compte en attente de validation"
 msgid "No previous transactions in your history."
 msgstr "Aucune opération dans votre historique"
 
-#: src/components/MoneyTransferModal.vue:100
-#: src/components/MoneyTransferModal.vue:105
-#: src/components/MoneyTransferModal.vue:69
-#: src/components/MoneyTransferModal.vue:70
-#: src/components/MoneyTransferModal.vue:82
-#: src/components/MoneyTransferModal.vue:84
+#: src/components/RecipientSelector.vue:60
+#: src/components/RecipientSelector.vue:61
+#: src/components/RecipientSelector.vue:72
+#: src/components/RecipientSelector.vue:73
+#: src/components/RecipientSelector.vue:91
+#: src/components/RecipientSelector.vue:96
 msgid "No recipients found"
 msgstr "Aucun destinataire de paiement à afficher"
 
@@ -773,24 +817,24 @@ msgstr "Aucun destinataire de paiement à afficher"
 msgid "No top up request awaiting approval"
 msgstr "Aucune demande de crédit en attente de validation"
 
-#: src/components/TransactionListModal.vue:124
-#: src/components/TransactionListModal.vue:125
-#: src/components/TransactionListModal.vue:129
-#: src/components/TransactionListModal.vue:181
-#: src/components/TransactionListModal.vue:183
-#: src/components/TransactionListModal.vue:185
-#: src/components/TransactionListModal.vue:193
+#: src/components/TransactionList.vue:108
+#: src/components/TransactionList.vue:109
+#: src/components/TransactionList.vue:159
+#: src/components/TransactionList.vue:161
+#: src/components/TransactionList.vue:165
+#: src/components/TransactionList.vue:167
+#: src/components/TransactionList.vue:169
 msgid "No transaction found"
 msgstr "Aucune transaction à afficher"
 
-#: src/components/TransactionListModal.vue:131
-#: src/components/TransactionListModal.vue:132
-#: src/components/TransactionListModal.vue:136
-#: src/components/TransactionListModal.vue:188
-#: src/components/TransactionListModal.vue:190
-#: src/components/TransactionListModal.vue:192
-#: src/components/TransactionListModal.vue:206
-#: src/components/TransactionListModal.vue:211
+#: src/components/TransactionList.vue:115
+#: src/components/TransactionList.vue:116
+#: src/components/TransactionList.vue:166
+#: src/components/TransactionList.vue:168
+#: src/components/TransactionList.vue:172
+#: src/components/TransactionList.vue:174
+#: src/components/TransactionList.vue:182
+#: src/components/TransactionList.vue:187
 msgid "No transactions found"
 msgstr "Aucune transaction à afficher"
 
@@ -852,10 +896,11 @@ msgstr "Le mot de passe entré n'est pas identique"
 #: src/components/ConfirmPaymentModal.vue:204
 #: src/components/ConfirmPaymentModal.vue:217
 #: src/components/ConfirmPaymentModal.vue:220
-#: src/components/TheDashboardFooter.vue:11
-#: src/components/TheDashboardFooter.vue:17
-#: src/components/TheDashboardFooter.vue:18
-#: src/components/TheDashboardFooter.vue:22
+#: src/components/TheDashboardFooter.vue:34
+#: src/components/TheDashboardFooter.vue:36
+#: src/components/TheDashboardFooter.vue:37
+#: src/components/TheDashboardFooter.vue:41
+#: src/components/TheDashboardFooter.vue:45
 msgid "Pay"
 msgstr "Payer"
 
@@ -878,12 +923,11 @@ msgstr "Paiement envoyé"
 msgid "Payment was done in %{nbTransactions} transactions:"
 msgstr "Le paiement a été effectué en %{nbTransactions} opérations :"
 
-#: src/components/MoneyTransferModal.vue:108
-#: src/components/MoneyTransferModal.vue:109
-#: src/components/MoneyTransferModal.vue:150
-#: src/components/MoneyTransferModal.vue:153
-#: src/components/MoneyTransferModal.vue:157
-#: src/components/MoneyTransferModal.vue:169
+#: src/components/MoneyTransferModal.vue:49
+#: src/components/MoneyTransferModal.vue:50
+#: src/components/MoneyTransferModal.vue:54
+#: src/components/MoneyTransferModal.vue:58
+#: src/components/MoneyTransferModal.vue:70
 msgid "Payment will be done in %{nbTransactions} transactions:"
 msgstr "Le paiement sera effectué en %{nbTransactions} opérations :"
 
@@ -930,7 +974,7 @@ msgstr ""
 "Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
 "pour créer votre compte."
 
-#: src/components/MoneyTransferModal.vue:587
+#: src/components/MoneyTransferModal.vue:377
 msgid ""
 "Please make sure to double check in the transaction list if this transaction "
 "appears in the near future. "
@@ -952,18 +996,18 @@ msgstr ""
 #: src/components/MoneyRequestModal.vue:59
 #: src/components/MoneyRequestModal.vue:80
 #: src/components/MoneyRequestModal.vue:84
-#: src/components/MoneyRequestModal.vue:88 src/components/QrCodeModal.vue:23
-#: src/components/QrCodeModal.vue:24 src/components/QrCodeModal.vue:31
-#: src/components/QrCodeModal.vue:35
+#: src/components/MoneyRequestModal.vue:88 src/components/QrCodeModal.vue:25
+#: src/components/QrCodeModal.vue:26 src/components/QrCodeModal.vue:33
+#: src/components/QrCodeModal.vue:37
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
 #: src/components/CreateAccount.vue:414 src/components/CreateAccount.vue:462
-#: src/services/lokapiService.ts:288
+#: src/services/lokapiService.ts:292
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/router/index.ts:56
+#: src/router/index.ts:63
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -987,7 +1031,7 @@ msgstr "Code QR"
 msgid "QR code - Payment request to %{ name } of %{ amount } %{ currency }"
 msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
 
-#: src/components/QrCodeModal.vue:75
+#: src/components/QrCodeModal.vue:77
 msgid "QR code wallet - %{name}"
 msgstr "Code QR portefeuille - %{ name }"
 
@@ -1005,7 +1049,7 @@ msgstr "reçue"
 msgid "Received %{amount}"
 msgstr "%{amount} reçu"
 
-#: src/components/MoneyTransferModal.vue:542
+#: src/components/MoneyTransferModal.vue:332
 msgid ""
 "Recipient can not receive this much mutual currency unit. You can lower your "
 "transaction amount underneath %{ safeAmount } %{ currency } so-as to avoid "
@@ -1023,12 +1067,21 @@ msgstr ""
 "monnaie\n"
 "mutuelle dans cet envoi vers ce destinataire."
 
-#: src/components/MoneyTransferModal.vue:132
-#: src/components/MoneyTransferModal.vue:133
-#: src/components/MoneyTransferModal.vue:174
-#: src/components/MoneyTransferModal.vue:194
-#: src/components/MoneyTransferModal.vue:200
-#: src/components/MoneyTransferModal.vue:205
+#: src/components/AdminModal.vue:26 src/components/AdminModal.vue:27
+#: src/components/AdminModal.vue:36
+msgid "Recipient Info"
+msgstr "Destinataire de paiement info"
+
+#: src/components/AdminModal.vue:7 src/components/AdminModal.vue:8
+msgid "Recipient Selector"
+msgstr "Selection du destinataire de paiement"
+
+#: src/components/MoneyTransferModal.vue:101
+#: src/components/MoneyTransferModal.vue:106
+#: src/components/MoneyTransferModal.vue:73
+#: src/components/MoneyTransferModal.vue:74
+#: src/components/MoneyTransferModal.vue:78
+#: src/components/MoneyTransferModal.vue:95
 #: src/components/TransactionItem.vue:20 src/components/TransactionItem.vue:25
 #: src/components/TransactionItem.vue:29 src/components/TransactionItem.vue:31
 msgid "Reconversion"
@@ -1046,27 +1099,33 @@ msgstr "Reconversion %{ reconversionStatus }"
 msgid "Reconversion details"
 msgstr "Détails de la reconversion"
 
-#: src/components/TransactionListModal.vue:470
+#: src/components/TransactionList.vue:446
 msgid "reconvertible"
 msgstr "reconvertible"
 
 #: src/components/TheBankAccountList.vue:10
-#: src/components/TheBankAccountList.vue:13
 #: src/components/TheBankAccountList.vue:15
-#: src/components/TheBankAccountList.vue:20
+#: src/components/TheBankAccountList.vue:16
+#: src/components/TheBankAccountList.vue:18
+#: src/components/TheBankAccountList.vue:24
 #: src/components/TheBankAccountList.vue:9
+#: src/components/TheCurrencyList.vue:10 src/components/TheCurrencyList.vue:15
+#: src/components/TheCurrencyList.vue:16 src/components/TheCurrencyList.vue:18
+#: src/components/TheCurrencyList.vue:24 src/components/TheCurrencyList.vue:9
 msgid "Refresh"
 msgstr "Rafraîchir"
 
-#: src/components/TheBankAccountList.vue:13
+#: src/components/TheBankAccountList.vue:16
+#: src/components/TheCurrencyList.vue:16
 msgid "Refresh balance and transaction list"
 msgstr "Rafraîchir le solde et les transactions"
 
-#: src/components/TheDashboardFooter.vue:32
-#: src/components/TheDashboardFooter.vue:34
-#: src/components/TheDashboardFooter.vue:35
-#: src/components/TheDashboardFooter.vue:39
-#: src/components/TheDashboardFooter.vue:43
+#: src/components/TheDashboardFooter.vue:53
+#: src/components/TheDashboardFooter.vue:54
+#: src/components/TheDashboardFooter.vue:55
+#: src/components/TheDashboardFooter.vue:58
+#: src/components/TheDashboardFooter.vue:62
+#: src/components/TheDashboardFooter.vue:66
 msgid "Request"
 msgstr "Recevoir"
 
@@ -1094,7 +1153,7 @@ msgstr "Refus du serveur distant, contactez votre administrateur"
 msgid "Requested %{amount}"
 msgstr "%{amount} demandé"
 
-#: src/router/index.ts:38
+#: src/router/index.ts:45
 msgid "Reset my password"
 msgstr "Ré-initialiser mon mot de passe"
 
@@ -1121,43 +1180,34 @@ msgstr "Préférences de sécurité"
 msgid "See more"
 msgstr "Voir tout"
 
-#: src/components/TransactionListModal.vue:112
-#: src/components/TransactionListModal.vue:72
-#: src/components/TransactionListModal.vue:73
-#: src/components/TransactionListModal.vue:76
-#: src/components/TransactionListModal.vue:77
-#: src/components/TransactionListModal.vue:81
+#: src/components/TransactionList.vue:60 src/components/TransactionList.vue:64
+#: src/components/TransactionList.vue:65 src/components/TransactionList.vue:96
 msgid "Select recipient:"
 msgstr "Sélectionnez un destinataire :"
 
-#: src/components/TransactionListModal.vue:19
-#: src/components/TransactionListModal.vue:20
-#: src/components/TransactionListModal.vue:23
-#: src/components/TransactionListModal.vue:24
-#: src/components/TransactionListModal.vue:28
-#: src/components/TransactionListModal.vue:30
+#: src/components/TransactionList.vue:11 src/components/TransactionList.vue:12
+#: src/components/TransactionList.vue:14 src/components/TransactionList.vue:7
 msgid "Select timespan:"
 msgstr "Sélectionnez un intervalle de temps :"
 
 #: src/components/AuthChallengeDirect.vue:13
 #: src/components/AuthChallengeDirect.vue:7
 #: src/components/AuthChallengeDirect.vue:8
-#: src/components/MoneyTransferModal.vue:133
-#: src/components/MoneyTransferModal.vue:134
-#: src/components/MoneyTransferModal.vue:175
-#: src/components/MoneyTransferModal.vue:195
-#: src/components/MoneyTransferModal.vue:201
-#: src/components/MoneyTransferModal.vue:206
+#: src/components/MoneyTransferModal.vue:102
+#: src/components/MoneyTransferModal.vue:107
+#: src/components/MoneyTransferModal.vue:74
+#: src/components/MoneyTransferModal.vue:75
+#: src/components/MoneyTransferModal.vue:79
+#: src/components/MoneyTransferModal.vue:96
 msgid "Send"
 msgstr "Envoyer"
 
-#: src/components/MoneyTransferModal.vue:135
-#: src/components/MoneyTransferModal.vue:139
-#: src/components/MoneyTransferModal.vue:142
+#: src/components/MoneyTransferModal.vue:34
+#: src/components/MoneyTransferModal.vue:35
+#: src/components/MoneyTransferModal.vue:39
+#: src/components/MoneyTransferModal.vue:43
 #: src/components/MoneyTransferModal.vue:7
 #: src/components/MoneyTransferModal.vue:8
-#: src/components/MoneyTransferModal.vue:93
-#: src/components/MoneyTransferModal.vue:94
 msgid "Send money"
 msgstr "Envoyer de l'argent"
 
@@ -1186,19 +1236,38 @@ msgstr ""
 "pas déroulée correctement... Veuillez ré-éssayer dans l'écran de préférences "
 "ou contacter votre administrateur"
 
-#: src/components/TransactionListModal.vue:151
-#: src/components/TransactionListModal.vue:152
-#: src/components/TransactionListModal.vue:156
-#: src/components/TransactionListModal.vue:237
-#: src/components/TransactionListModal.vue:250
-#: src/components/TransactionListModal.vue:251
-#: src/components/TransactionListModal.vue:260
+#: src/components/TransactionListModal.vue:27
+#: src/components/TransactionListModal.vue:28
+#: src/components/TransactionListModal.vue:32
+#: src/components/TransactionListModal.vue:36
+#: src/components/TransactionListModal.vue:40
+#: src/components/TransactionListModal.vue:53
+#: src/components/TransactionListModal.vue:54
+#: src/components/TransactionListModal.vue:63
 msgid "Share"
 msgstr "Partager"
 
-#: src/components/TransactionListModal.vue:246
+#: src/components/TransactionListModal.vue:49
 msgid "Share transactions"
 msgstr "Partager les opérations"
+
+#: src/components/AdminBackend.vue:13 src/components/AdminBackend.vue:17
+#: src/components/AdminBackend.vue:18 src/components/AdminBackend.vue:21
+#: src/components/AdminBackendComchain.vue:13
+#: src/components/AdminBackendComchain.vue:17
+#: src/components/AdminBackendComchain.vue:18
+#: src/components/AdminBackendComchain.vue:21
+msgid "Show more info"
+msgstr "Voir plus"
+
+#: src/components/AdminBackend.vue:27 src/components/AdminBackend.vue:28
+#: src/components/AdminBackend.vue:37
+#: src/components/AdminBackendComchain.vue:32
+#: src/components/AdminBackendComchain.vue:33
+#: src/components/AdminBackendComchain.vue:35
+#: src/components/AdminBackendComchain.vue:43
+msgid "Show transactions"
+msgstr "Voir les opérations"
 
 #: src/components/TheNavBar.vue:27 src/components/TheNavBar.vue:28
 #: src/components/TheNavBar.vue:45 src/components/TheNavBar.vue:50
@@ -1207,9 +1276,9 @@ msgstr "Partager les opérations"
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/components/TheNavBar.vue:111 src/components/TheNavBar.vue:116
-#: src/components/TheNavBar.vue:121 src/components/TheNavBar.vue:154
-#: src/components/TheNavBar.vue:93 src/components/TheNavBar.vue:94
+#: src/components/TheNavBar.vue:114 src/components/TheNavBar.vue:119
+#: src/components/TheNavBar.vue:124 src/components/TheNavBar.vue:157
+#: src/components/TheNavBar.vue:96 src/components/TheNavBar.vue:97
 msgid "Sign out"
 msgstr "Déconnexion"
 
@@ -1218,7 +1287,7 @@ msgstr "Déconnexion"
 msgid "Sign up"
 msgstr "Créer un compte"
 
-#: src/router/index.ts:44
+#: src/router/index.ts:51
 msgid "Sign-Up"
 msgstr "Créer un compte"
 
@@ -1227,15 +1296,15 @@ msgstr "Créer un compte"
 msgid "Simplified authentication for this device"
 msgstr "Authentification simplifiée sur ce périphérique"
 
-#: src/components/TransactionListModal.vue:452
+#: src/components/TransactionList.vue:428
 msgid "Source"
 msgstr "Source"
 
-#: src/components/TransactionListModal.vue:453
+#: src/components/TransactionList.vue:429
 msgid "Target"
 msgstr "Destination"
 
-#: src/components/MoneyTransferModal.vue:607
+#: src/components/MoneyTransferModal.vue:397
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
@@ -1244,19 +1313,19 @@ msgstr "Le compte destinataire du tranfert est désactivé."
 msgid "Temporarily unavailable - please refresh"
 msgstr "Momentanément indisponible - veuillez rafraîchir"
 
-#: src/components/TheNavBar.vue:104 src/components/TheNavBar.vue:109
-#: src/components/TheNavBar.vue:138 src/components/TheNavBar.vue:24
-#: src/components/TheNavBar.vue:25 src/components/TheNavBar.vue:42
-#: src/components/TheNavBar.vue:47 src/components/TheNavBar.vue:52
-#: src/components/TheNavBar.vue:81 src/components/TheNavBar.vue:82
-#: src/components/TheNavBar.vue:99
+#: src/components/TheNavBar.vue:102 src/components/TheNavBar.vue:107
+#: src/components/TheNavBar.vue:112 src/components/TheNavBar.vue:141
+#: src/components/TheNavBar.vue:24 src/components/TheNavBar.vue:25
+#: src/components/TheNavBar.vue:42 src/components/TheNavBar.vue:47
+#: src/components/TheNavBar.vue:52 src/components/TheNavBar.vue:84
+#: src/components/TheNavBar.vue:85
 msgid "Terms of Service"
 msgstr "CGU"
 
-#: src/components/TheBankAccountList.vue:124
-#: src/components/TheBankAccountList.vue:127
-#: src/components/TheBankAccountList.vue:86
+#: src/components/TheBankAccountList.vue:129
+#: src/components/TheBankAccountList.vue:132
 #: src/components/TheBankAccountList.vue:87
+#: src/components/TheBankAccountList.vue:88
 msgid ""
 "The accounts listed below have been subjected to a creation request. Once "
 "the creation request is approved, these accounts will become usable."
@@ -1285,7 +1354,7 @@ msgstr ""
 msgid "The following top up requests needs to be paid or canceled"
 msgstr "Les demandes de rechargement suivantes doivent être payées ou annulées"
 
-#: src/components/MoneyTransferModal.vue:515
+#: src/components/MoneyTransferModal.vue:305
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -1295,7 +1364,7 @@ msgstr ""
 "garantir que ce paiement puisse être envoyé, vous devez attendre le "
 "traitement de ces transactions en attente."
 
-#: src/components/MoneyTransferModal.vue:499
+#: src/components/MoneyTransferModal.vue:289
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -1310,7 +1379,7 @@ msgstr ""
 "%{ realBal } %{ currency }. Si le problème persiste, veuillez contacter un "
 "administrateur."
 
-#: src/components/MoneyTransferModal.vue:526
+#: src/components/MoneyTransferModal.vue:316
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -1351,7 +1420,7 @@ msgstr "Votre demande de rechargement a été supprimée"
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 
-#: src/components/MoneyTransferModal.vue:583
+#: src/components/MoneyTransferModal.vue:373
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
 
@@ -1391,11 +1460,12 @@ msgstr ""
 "Pour scanner un code QR, vous devez autoriser l'accès à la caméra dans la "
 "configuration de l'application."
 
-#: src/components/TheDashboardFooter.vue:51
-#: src/components/TheDashboardFooter.vue:52
-#: src/components/TheDashboardFooter.vue:56
-#: src/components/TheDashboardFooter.vue:60
-#: src/components/TheDashboardFooter.vue:67
+#: src/components/TheDashboardFooter.vue:70
+#: src/components/TheDashboardFooter.vue:71
+#: src/components/TheDashboardFooter.vue:75
+#: src/components/TheDashboardFooter.vue:79
+#: src/components/TheDashboardFooter.vue:83
+#: src/components/TheDashboardFooter.vue:90
 msgid "Top up"
 msgstr "Recharger"
 
@@ -1453,24 +1523,24 @@ msgstr "Rechargement demandé"
 msgid "Transaction details"
 msgstr "Détails de l'opération"
 
-#: src/components/TransactionListModal.vue:545
+#: src/components/TransactionList.vue:521
 msgid "Transaction list"
 msgstr "Liste des opérations"
 
-#: src/components/TransactionListModal.vue:517
-#: src/components/TransactionListModal.vue:551
+#: src/components/TransactionList.vue:493
+#: src/components/TransactionList.vue:527
 msgid "Transaction list could not be downloaded"
 msgstr "La liste des transactions n'a pas pu être téléchargée"
 
-#: src/components/TransactionListModal.vue:522
+#: src/components/TransactionList.vue:498
 msgid "Transaction list downloaded"
 msgstr "Liste des transactions téléchargée"
 
-#: src/components/TransactionListModal.vue:538
+#: src/components/TransactionList.vue:514
 msgid "Transaction list from %{ dateBeginStr } to %{ dateEndStr }"
 msgstr "Liste des transactions du %{ dateBeginStr } au %{ dateEndStr }"
 
-#: src/components/TransactionListModal.vue:556
+#: src/components/TransactionList.vue:532
 msgid "Transaction list shared"
 msgstr "Liste des transactions partagée"
 
@@ -1488,7 +1558,7 @@ msgstr "Opération traitée"
 msgid "Transaction sent"
 msgstr "Opération envoyée"
 
-#: src/components/MoneyTransferModal.vue:600
+#: src/components/MoneyTransferModal.vue:390
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -1498,16 +1568,25 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/components/MoneyTransferModal.vue:343
+#: src/components/RecipientSelector.vue:240
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le code QR."
 
+#: src/components/AdminBackend.vue:42 src/components/AdminBackend.vue:43
+#: src/components/AdminBackend.vue:52 src/components/AdminBackend.vue:54
+#: src/components/AdminBackend.vue:57 src/components/AdminBackend.vue:62
+#: src/components/AdminBackendComchain.vue:52
+#: src/components/AdminBackendComchain.vue:53
+#: src/components/AdminBackendComchain.vue:65
+#: src/components/AdminBackendComchain.vue:67
+#: src/components/AdminBackendComchain.vue:70
+#: src/components/AdminBackendComchain.vue:75
 #: src/components/TheBankAccountList.vue:103
-#: src/components/TheBankAccountList.vue:113
-#: src/components/TheBankAccountList.vue:75
+#: src/components/TheBankAccountList.vue:108
+#: src/components/TheBankAccountList.vue:118
 #: src/components/TheBankAccountList.vue:76
-#: src/components/TheBankAccountList.vue:81
-#: src/components/TheBankAccountList.vue:98
+#: src/components/TheBankAccountList.vue:77
+#: src/components/TheBankAccountList.vue:82
 msgid "Unavailable"
 msgstr "Indisponible"
 
@@ -1524,7 +1603,7 @@ msgstr ""
 msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
-#: src/components/MoneyTransferModal.vue:556
+#: src/components/MoneyTransferModal.vue:346
 msgid ""
 "Unexpected error while checking transfer, pleace contact your administrator."
 msgstr ""
@@ -1616,6 +1695,19 @@ msgstr ""
 "La demande d'activation de portefeuille de l'utilisateur %{ name } a été "
 "annulée"
 
+#: src/components/AdminBackend.vue:34 src/components/AdminBackend.vue:35
+#: src/components/AdminBackend.vue:46
+#: src/components/AdminBackendComchain.vue:44
+#: src/components/AdminBackendComchain.vue:45
+#: src/components/AdminBackendComchain.vue:59
+msgid "User account"
+msgstr "vos comptes"
+
+#: src/components/RecipientTechnicalDetails.vue:4
+#: src/components/RecipientTechnicalDetails.vue:5
+msgid "User account technical infos"
+msgstr "Informations techniques du compte"
+
 #: src/views/Signup.vue:222
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
@@ -1628,7 +1720,7 @@ msgstr "Compte déjà créé"
 msgid "Wallet creation unexpectedly failed."
 msgstr "Création de compte interrompue inopinément."
 
-#: src/main.ts:386
+#: src/main.ts:390
 msgid "Wallet export"
 msgstr "Export du portefeuille"
 
@@ -1636,7 +1728,12 @@ msgstr "Export du portefeuille"
 msgid "Wallet registration unexpectedly failed"
 msgstr "Création de compte interrompue inopinément."
 
-#: src/components/TransactionListModal.vue:310
+#: src/components/RecipientTechnicalDetails.vue:12
+#: src/components/RecipientTechnicalDetails.vue:13
+msgid "Wallet URI:"
+msgstr "URI du porte feuille"
+
+#: src/components/TransactionList.vue:249
 msgid "week"
 msgstr "semaine"
 
@@ -1648,7 +1745,7 @@ msgstr ""
 "Souhaitez-vous vous logger en utilisant les capacités biométriques de votre "
 "périphérique (empreinte digitale, reconnaissance faciale, ...)"
 
-#: src/components/TransactionListModal.vue:312
+#: src/components/TransactionList.vue:251
 msgid "year"
 msgstr "année"
 
@@ -1666,27 +1763,27 @@ msgstr ""
 "Vous avez déjà une demande de rechargement en attente. Veuillez la payer ou "
 "la supprimer avant de poursuivre"
 
-#: src/components/MoneyTransferModal.vue:377
+#: src/components/RecipientSelector.vue:275
 msgid "You are not allowed to send money to %{ recipientName }"
 msgstr "Vous n'êtes pas autorisé à envoyer de l'argent à %{recipientName}"
 
-#: src/components/MoneyTransferModal.vue:338
+#: src/components/RecipientSelector.vue:235
 msgid "You can not transfer money to your own account"
 msgstr "Vous ne pouvez pas envoyer de l'argent vers votre propre compte."
 
-#: src/components/MoneyTransferModal.vue:477
-#: src/components/MoneyTransferModal.vue:623
+#: src/components/MoneyTransferModal.vue:267
+#: src/components/MoneyTransferModal.vue:413
 msgid ""
 "You can try again. If the issue persists, please contact your administrator."
 msgstr ""
 "Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre "
 "administrateur."
 
-#: src/components/TheBankAccountList.vue:28
 #: src/components/TheBankAccountList.vue:29
-#: src/components/TheBankAccountList.vue:34
-#: src/components/TheBankAccountList.vue:42
-#: src/components/TheBankAccountList.vue:45
+#: src/components/TheBankAccountList.vue:30
+#: src/components/TheBankAccountList.vue:35
+#: src/components/TheBankAccountList.vue:47
+#: src/components/TheBankAccountList.vue:50
 #: src/components/TransactionListRecent.vue:15
 #: src/components/TransactionListRecent.vue:16
 #: src/components/TransactionListRecent.vue:20
@@ -1702,19 +1799,19 @@ msgstr ""
 "Vous pouvez essayer de recharger la page, ou contacter votre administrateur "
 "si l'erreur persiste."
 
-#: src/components/MoneyTransferModal.vue:609
+#: src/components/MoneyTransferModal.vue:399
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
-#: src/components/TheBankAccountList.vue:41
 #: src/components/TheBankAccountList.vue:42
-#: src/components/TheBankAccountList.vue:47
-#: src/components/TheBankAccountList.vue:49
+#: src/components/TheBankAccountList.vue:43
+#: src/components/TheBankAccountList.vue:48
 #: src/components/TheBankAccountList.vue:50
-#: src/components/TheBankAccountList.vue:54
-#: src/components/TheBankAccountList.vue:55
-#: src/components/TheBankAccountList.vue:65
-#: src/components/TheBankAccountList.vue:72
+#: src/components/TheBankAccountList.vue:51
+#: src/components/TheBankAccountList.vue:56
+#: src/components/TheBankAccountList.vue:59
+#: src/components/TheBankAccountList.vue:70
+#: src/components/TheBankAccountList.vue:77
 msgid "You don't have any wallet yet."
 msgstr "Vous n'avez pas encore de portefeuille."
 
@@ -1722,10 +1819,10 @@ msgstr "Vous n'avez pas encore de portefeuille."
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 
-#: src/components/TheBankAccountList.vue:66
 #: src/components/TheBankAccountList.vue:67
-#: src/components/TheBankAccountList.vue:72
-#: src/components/TheBankAccountList.vue:94
+#: src/components/TheBankAccountList.vue:68
+#: src/components/TheBankAccountList.vue:73
+#: src/components/TheBankAccountList.vue:99
 msgid "your accounts"
 msgstr "vos comptes"
 
@@ -1734,10 +1831,15 @@ msgstr "vos comptes"
 msgid "Your credentials will be saved after your next login"
 msgstr "Vos identifiants seront enregistrés après votre prochaine connexion"
 
-#: src/components/TheBankAccountList.vue:120
-#: src/components/TheBankAccountList.vue:123
-#: src/components/TheBankAccountList.vue:82
+#: src/components/TheCurrencyList.vue:20 src/components/TheCurrencyList.vue:21
+#: src/components/TheCurrencyList.vue:26 src/components/TheCurrencyList.vue:38
+msgid "your currencies"
+msgstr "vos monnaies"
+
+#: src/components/TheBankAccountList.vue:125
+#: src/components/TheBankAccountList.vue:128
 #: src/components/TheBankAccountList.vue:83
+#: src/components/TheBankAccountList.vue:84
 msgid "your pending accounts"
 msgstr "vos comptes en attente de création"
 

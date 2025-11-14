@@ -1,7 +1,30 @@
 <template>
   <div>
     <div class="action-footer">
-      <div class="columns is-mobile menu">
+      <div v-if="isAdmin === true" class="columns is-mobile menu">
+        <div class="column has-text-centered mb-2">
+          <button
+            :disabled="!currency"
+            @click="$modal.open('AdminModal', { currency: this.currency })"
+            class="
+              button
+              custom-button
+              is-pay
+              has-text-weight-medium
+              is-rounded
+              action
+            "
+          >
+            <span class="icon-text">
+              <span class="icon">
+                <fa-icon icon="arrow-circle-up" class="fa-lg" />
+              </span>
+              <span>{{ $gettext("Inspect") }}</span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div v-else class="columns is-mobile menu">
         <div class="column has-text-centered mb-2">
           <button
             :disabled="!account"
@@ -82,6 +105,8 @@
     name: "TheDashboardFooter",
     props: {
       account: Object,
+      isAdmin: Boolean,
+      currency: Object,
     },
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),

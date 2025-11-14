@@ -16,6 +16,8 @@
   import ConfirmPaymentModal from "./ConfirmPaymentModal.vue"
   import QrCodeModal from "./QrCodeModal.vue"
   import MoneyRequestModal from "./MoneyRequestModal.vue"
+  import AdminModal from "./AdminModal.vue"
+  import AdminShowDetails from "./AdminShowDetails.vue"
 
   @Options({
     name: "Modal",
@@ -27,6 +29,8 @@
       ConfirmPaymentModal,
       QrCodeModal,
       MoneyRequestModal,
+      AdminModal,
+      AdminShowDetails,
     },
     data() {
       return {

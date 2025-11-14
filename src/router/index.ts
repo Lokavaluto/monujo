@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import Dashboard from "../views/Dashboard.vue"
+import AdminDashboard from "../views/AdminDashboard.vue"
 import Carto from "../views/Carto.vue"
 import Login from "../views/Login.vue"
 import CreateMyAccount from "../views/CreateMyAccount.vue"
@@ -19,6 +20,12 @@ export function mkRouter(appName: string, store: any, gettext: any): any {
         name: "dashboard",
         meta: { title: $gettext("Dashboard") },
         component: Dashboard,
+      },
+      {
+        path: "/admin-dashboard",
+        name: "dashboard admin",
+        meta: { title: $gettext("Dashboard admin") },
+        component: AdminDashboard,
       },
       {
         path: "/carto",
