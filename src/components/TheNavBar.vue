@@ -103,6 +103,9 @@
                     hasCreditRequestValidationRights)
                 "
               >
+                <router-link to="/admin-dashboard" class="navbar-item">
+                  {{ $gettext("Admin dasboard") }}
+                </router-link>
                 <router-link
                   v-if="hasUserAccountValidationRights"
                   to="/admin/pending-accounts"

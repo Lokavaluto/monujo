@@ -68,12 +68,14 @@
         <template v-if="getRecipients">
           <div
             class="is-clickable py-2"
+            :key="index"
             v-for="(recipient, index) in getRecipients"
           >
             <RecipientItem
               :recipient="recipient"
               :key="index"
-              :showAdminButton="true"
+              :hideAdminButton="true"
+              :hideBackendId="false"
               @mousedown.prevent="
                 &quot;// on some android, input gets a change event&quot;
               "
@@ -112,8 +114,6 @@
   import RecipientItem from "@/components/RecipientItem.vue"
   import { UIError } from "../exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
-  import MoneyTransaction from "./MoneyTransaction.vue"
-  import TransactionItem from "./TransactionItem.vue"
 
   import UseBatchLoading from "@/services/UseBatchLoading"
   import applyDecorators from "@/utils/applyDecorators"
@@ -123,13 +123,13 @@
     name: "RecipientSelector",
     components: {
       RecipientItem,
-      MoneyTransaction,
-      TransactionItem,
       Loading,
     },
     props: {
       account: Object,
+      hideBackendId: Boolean,
       showAll: Boolean,
+      currency: Object,
     },
     data() {
       return {
@@ -146,6 +146,9 @@
       // the backend of the given account
       if (this.account) {
         this.base = makeUIProxyBackend(this.account.parent, this.$gettext)
+      }
+      if (this.currency) {
+        this.base = this.currency
       }
 
       const searchRecipients = this.showAll

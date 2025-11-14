@@ -25,7 +25,9 @@
             :size="200"
             :value="
               JSON.stringify({
-                rp: userProfile.id,
+                rp:
+                  $modal.args.value[0].administrativeBackendId ||
+                  userProfile.id,
                 rpb: $modal.args.value[0].accountId,
               })
             "
