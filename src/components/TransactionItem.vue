@@ -8,6 +8,7 @@
       'mode-small': mode === 'small',
       'cursor-pointer': mode !== 'small',
     }"
+    @click="openModal()"
   >
     <div class="amount-col is-flex-direction-column left">
       <h3
@@ -103,10 +104,11 @@
     components: {
       WorkflowIndicator,
     },
-    methods: {},
     props: {
       transaction: Object,
       mode: Object,
+      account: Object,
+      type: String,
     },
     created() {
       this.reconversionStatusTranslations = {
@@ -142,6 +144,31 @@
         return this.reconversionStatusTranslations[
           this.transaction?.isReconversion.toString()
         ]
+      },
+    },
+    methods: {
+      async openModal() {
+        const type =
+          this.type ||
+          (this.transaction.isReconversion
+            ? "reconversion"
+            : this.transaction.isTopUp
+            ? "topup"
+            : "transactionDetail")
+
+        await this.$modal.open("ConfirmPaymentModal", {
+          transaction: this.transaction,
+          type: type,
+          account: this.account,
+          refreshTransaction: this.refreshTransaction,
+          refreshAccounts: this.refreshAccounts,
+        })
+      },
+      refreshTransaction() {
+        this.$emit("refreshTransaction")
+      },
+      refreshAccounts() {
+        this.$emit("refreshAccounts")
       },
     },
   })
