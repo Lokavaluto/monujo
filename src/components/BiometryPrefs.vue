@@ -27,8 +27,8 @@
       </div>
     </div>
     <div
-      v-if="!hasCredentialsAvailable && useBiometry"
-      class="mb-3 mt-1 info-bubble ml-4 pb-1"
+      v-if="hasCredentialsAvailable && useBiometry"
+      class="mb-3 mt-1 info-bubble notification is-warning is-light ml-4 pb-1"
     >
       <span class="warning">
         <i class="ml-2 fas icon fa-key">
@@ -104,7 +104,6 @@
     padding-right: 0.5em;
   }
   .info-bubble {
-    background-color: var(--color-1, #e4f2f1);
     border-radius: 1em;
     padding: 0.2em;
     margin-top: 0.2em;

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <div class="mb-5 is-flex">
-      <div class="is-flex mb-5">
+    <div class="is-flex">
+      <div class="is-flex mb-1">
         <div class="switch-centered">
           <label class="switch">
             <input
@@ -17,7 +17,7 @@
           {{ $gettext("Use custom language") }}
         </div>
       </div>
-      <div v-if="useCustomLanguage" class="is-flax ml-5">
+      <div v-if="useCustomLanguage" class="is-flax ml-1">
         <span class="select center">
           <select v-model="userLanguage">
             <option

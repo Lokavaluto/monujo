@@ -1,5 +1,5 @@
 <template>
-  <div id="pending-topup-list">
+  <div class="mb-2" id="pending-topup-list">
     <div
       class="section-card"
       id="pending-top-up-list"
