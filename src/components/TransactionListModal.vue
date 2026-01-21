@@ -8,7 +8,9 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title is-title-shrink">
-          <span class="ml-2">{{ $gettext("All transactions") }}</span>
+          <span class="ml-2">{{
+            modalTitle || $gettext("All transactions")
+          }}</span>
         </p>
         <button
           class="delete"
@@ -84,12 +86,14 @@
       return {
         isTransactionsLoading: false,
         account: null,
+        modalTitle: null,
         selectedRecipient: null,
       }
     },
 
     created() {
       this.account = this.$modal.args.value[0].params.account
+      this.modalTitle = this.$modal.args.value[0].params.title
       this.selectedRecipient = this.$modal.args.value[0].params.recipient
     },
     computed: {
