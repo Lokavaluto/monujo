@@ -68,7 +68,9 @@ export class LokAPI extends LokAPIBrowserAbstract {
             ? userAccount.getSymbol().catch((e: any) => e)
             : "",
           userAccount.getAccounts().catch((e: any) => e),
-          userAccount.isBusinessForFinanceBackend().catch((e: any) => e),
+          userAccount.isBusinessForFinanceBackend
+            ? userAccount.isBusinessForFinanceBackend().catch((e: any) => e)
+            : false,
           userAccount.isActiveAccount
             ? userAccount.isActiveAccount().catch((e: any) => e)
             : true,
@@ -132,6 +134,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
           bal,
           curr,
           backend: userAccount.internalId.split(":")[0],
+          dropDownId: userAccount.internalId.split(":")[0],
           minCreditAmount: userAccount.parent.minCreditAmount,
           maxCreditAmount: userAccount.parent.maxCreditAmount,
           walletData: getWalletData(userAccount),
@@ -156,7 +159,9 @@ export class LokAPI extends LokAPIBrowserAbstract {
               this.getBankAccountName(account),
               account.getBalance("pending"),
               account.getSymbol(),
-              account.isBusinessForFinanceBackend(),
+              account.isBusinessForFinanceBackend
+                ? account.isBusinessForFinanceBackend()
+                : Promise.resolve(false),
               userAccount.isActiveAccount
                 ? userAccount.isActiveAccount()
                 : Promise.resolve(true),
@@ -173,6 +178,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
               bal,
               curr,
               backend: account.parent.internalId.split(":")[0],
+              dropDownId: account.parent.internalId.split(":")[0],
               minCreditAmount: account.parent.parent.minCreditAmount,
               maxCreditAmount: account.parent.parent.maxCreditAmount,
               walletData: getWalletData(account.parent),
@@ -233,6 +239,152 @@ export class LokAPI extends LokAPIBrowserAbstract {
     return { virtualAccountTree, allMoneyAccounts, errors }
   }
 
+  async getAccountFromRecipient(recipient: any) {
+    const virtualAccountTree: any[] = []
+    const sortOrder = (a: any, b: any) =>
+      `${a.backend}${a.name}` < `${b.backend}${b.name}` ? -1 : 1
+
+    const userAccount = await this.getUserAccountsFromWalletUri(
+      recipient.internalId
+    )
+
+    let vals: any[] = await Promise.allSettled([
+      this.getBankAccountName(userAccount),
+      userAccount.getBalance
+        ? userAccount.getBalance().catch((e: any) => e)
+        : "-.---,--",
+      userAccount.getSymbol ? userAccount.getSymbol().catch((e: any) => e) : "",
+      userAccount.getAccounts().catch((e: any) => e),
+      userAccount.isBusinessForFinanceBackend
+        ? userAccount.isBusinessForFinanceBackend().catch((e: any) => e)
+        : false,
+      userAccount.isActiveAccount
+        ? userAccount.isActiveAccount().catch((e: any) => e)
+        : true,
+    ])
+    vals = vals.filter(isFulfilled).map((v) => v.value)
+    const exceptions = vals.filter((v) => v instanceof Error)
+    const accountErrors: any[] = []
+    if (exceptions.length > 0) {
+      for (const exception of exceptions) {
+        if (accountErrors.every((e) => e !== exception)) {
+          accountErrors.push(exception)
+        }
+      }
+      for (const exception of accountErrors) {
+        console.log(`Exception: ${exception}`)
+      }
+      throw Error("Failed to retrieve bank account from user account")
+    }
+    const [
+      name,
+      bal,
+      curr,
+      moneyAccounts,
+      isBusinessForFinanceBackend,
+      isActiveAccount,
+    ] = vals
+    const userAccountData = {
+      name,
+      bal,
+      curr,
+      backend: userAccount.internalId.split(":")[0],
+      minCreditAmount: userAccount.parent.minCreditAmount,
+      maxCreditAmount: userAccount.parent.maxCreditAmount,
+      //walletData: getWalletData(userAccount),
+      //safeWalletRecipient: getSafeWalletRecipient(userAccount.parent),
+      userAccountId: userAccount.internalId,
+      currencyId: userAccount.parent.internalId,
+      isBusinessForFinanceBackend,
+      isActiveAccount,
+      active: userAccount.active, // FTM only the UserAccount is active or not
+      id: userAccount.internalId,
+      isTopUpAllowed: userAccount.isTopUpAllowed,
+      subAccounts: [],
+      _obj: userAccount,
+      creditable: false,
+      isVirtualRoot: false,
+      administrativeBackendId: recipient.id,
+    }
+
+    await Promise.allSettled(
+      (moneyAccounts || []).map(async (account: any) => {
+        const vals = await Promise.allSettled([
+          this.getBankAccountName(account),
+          account.getBalance(),
+          account.getSymbol(),
+          account.isBusinessForFinanceBackend
+            ? account.isBusinessForFinanceBackend()
+            : Promise.resolve(false),
+          userAccount.isActiveAccount
+            ? userAccount.isActiveAccount()
+            : Promise.resolve(true),
+        ])
+        const [name, bal, curr, isBusinessForFinanceBackend, isActiveAccount] =
+          vals.map((a) => (<any>a).value)
+        const accountData = {
+          name,
+          bal,
+          curr,
+          backend: account.parent.internalId.split(":")[0],
+          minCreditAmount: account.parent.parent.minCreditAmount,
+          maxCreditAmount: account.parent.parent.maxCreditAmount,
+          //walletData: getWalletData(account.parent),
+          //safeWalletRecipient: getSafeWalletRecipient(
+          //account.parent.parent
+          //),
+          userAccountId: account.parent.internalId,
+          currencyId: account.parent.parent.internalId,
+          isActiveAccount,
+          active: account.parent.active, // FTM only the UserAccount is active or not
+          id: account.internalId,
+          isTopUpAllowed: userAccount.isTopUpAllowed,
+          _obj: account,
+          creditable: account.creditable,
+          isBusinessForFinanceBackend:
+            userAccountData.isBusinessForFinanceBackend
+              ? false
+              : isBusinessForFinanceBackend,
+          isBarter: account.isBarter,
+          isVirtualRoot: false,
+          administrativeBackendId: recipient.id,
+        }
+        //allMoneyAccounts.push(accountData)
+        if (moneyAccounts.length === 1) {
+          // replace the userAccount
+          accountData.id = userAccountData.id
+          accountData.isVirtualRoot = true
+          replaceOrInsertElt(
+            virtualAccountTree,
+            accountData,
+            (a: any) => userAccountData.id === a.id,
+            sortOrder
+          )
+        } else {
+          // Add as subAccounts
+          replaceOrInsertElt(
+            userAccountData.subAccounts,
+            accountData,
+            (a: any) => account.internalId === a.id,
+            sortOrder
+          )
+        }
+      })
+    )
+
+    if (moneyAccounts && moneyAccounts.length !== 1) {
+      userAccountData.isVirtualRoot = true
+      replaceOrInsertElt(
+        virtualAccountTree,
+        userAccountData,
+        (a: any) => userAccount.internalId === a.id,
+        sortOrder
+      )
+    }
+
+    return virtualAccountTree[0]
+  }
+
   async getUserAccountsRequiringUnlock() {
     const userAccounts = await this.getUserAccounts()
     // XXXvlab: typeforcing to any as typescript doesn't seem to
@@ -288,6 +440,9 @@ function makeUIProxyRecipient(recipient: t.IRecipient, $gettext: any) {
   const proxy = new Proxy(recipient, {
     get: (target, prop, receiver) => {
       if (prop == "__v_raw") {
+        return recipient
+      }
+      if (prop == "dropDownId") {
         return recipient
       }
       if (prop == "toggleFavorite") {

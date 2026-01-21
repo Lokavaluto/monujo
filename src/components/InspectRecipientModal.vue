@@ -42,15 +42,37 @@
           ></button>
         </header>
         <section class="modal-card-body">
-          <RecipientInfo :recipient="recipient" />
+          <RecipientInfo
+            :recipient="recipient"
+            @accountFormChange="handleAccountFormChange"
+          />
         </section>
-        <footer class="modal-card-foot is-justify-content-flex-end"></footer>
+        <footer
+          class="
+            modal-card-foot
+            custom-modal-card-foot
+            is-justify-content-flex-end
+          "
+        >
+          <button
+            type="button"
+            class="button is-pay is-rounded"
+            :disabled="!isAccountFormChanged || !isFormValid"
+            @click="handleSaveAccountChanges"
+          >
+            {{ $gettext("Save changes") }}
+          </button>
+        </footer>
       </div>
     </template>
   </div>
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import { UIError } from "../exception"
+
+  import { showSpinnerMethod } from "@/utils/showSpinner"
+  import applyDecorators from "@/utils/applyDecorators"
 
   import RecipientSelector from "@/components/RecipientSelector.vue"
   import RecipientInfo from "@/components/RecipientInfo.vue"
@@ -65,6 +87,9 @@
       return {
         recipient: null,
         currency: null,
+        accountForm: null,
+        isAccountFormChanged: false,
+        isFormValid: false,
       }
     },
     created() {
@@ -76,6 +101,38 @@
         this.recipient = data.recipient
         this.$modal.next()
       },
+
+      handleAccountFormChange(payload: {
+        form: Record<string, any>
+        isChanged: boolean
+        isFormValid: boolean
+      }) {
+        this.accountForm = payload.form
+        this.isAccountFormChanged = payload.isChanged
+        this.isFormValid = payload.isFormValid
+      },
+
+      handleSaveAccountChanges: applyDecorators(
+        [showSpinnerMethod(".modal-card")],
+        async function (this: any): Promise<void> {
+          const { status, accountType, highLimit, lowLimit } = this.accountForm
+          let tx
+          try {
+            tx = await this.recipient.updateAccount(
+              status,
+              accountType,
+              lowLimit,
+              highLimit
+            )
+          } catch (err: any) {
+            throw new UIError(
+              this.$gettext("An error occured while updating account"),
+              err
+            )
+          }
+          this.$msg.success(this.$gettext("Account successfully updated"))
+        }
+      ),
     },
   })
   export default class InspectRecipientModal extends Vue {}

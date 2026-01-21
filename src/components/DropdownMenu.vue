@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$dropdownMenu.listItems(object).length > 1" class="dropdown">
+  <div v-if="menuItems.length > 1" class="dropdown">
     <div class="dropdown-trigger">
       <span
         class="
@@ -10,25 +10,26 @@
           ml-2
         "
         aria-haspopup="true"
-        :aria-controls="`dropdown-${object.backend}-menu`"
+        :aria-controls="`dropdown-${object.dropDownId}-menu`"
+        @click.stop="toggleDropdown"
       >
         <span class="icon">
-          <fa-icon class="qrcode-icon" icon="ellipsis-v" />
+          <fa-icon icon="ellipsis-v" />
         </span>
       </span>
     </div>
     <div
       class="dropdown-menu"
-      :id="`dropdown-${object.backend}-menu`"
+      :id="`dropdown-${object.dropDownId}-menu`"
       role="menu"
     >
       <div class="dropdown-content">
         <a
-          v-for="item in $dropdownMenu.listItems(object)"
+          v-for="item in menuItems"
           :key="item.label"
           href="#"
           class="dropdown-item is-flex"
-          @click="item.action(this)"
+          @click.prevent="item.action(this)"
         >
           <div class="mr-1 icon-container">
             <fa-icon :icon="item.icon" />
@@ -39,7 +40,7 @@
     </div>
   </div>
   <span
-    v-else-if="$dropdownMenu.listItems(object).length === 1"
+    v-else-if="menuItems.length === 1"
     class="
       button
       is-default
@@ -47,13 +48,10 @@
       is-pulled-right is-rounded
       ml-2
     "
-    @click="$dropdownMenu.listItems(object)[0].action(this)"
+    @click="menuItems[0].action(this)"
   >
     <span class="icon">
-      <fa-icon
-        class="qrcode-icon"
-        :icon="$dropdownMenu.listItems(object)[0].icon"
-      />
+      <fa-icon :icon="menuItems[0].icon" />
     </span>
   </span>
   <span
@@ -80,6 +78,11 @@
     props: {
       object: Object,
     },
+    computed: {
+      menuItems(): any[] {
+        return this.$dropdownMenu.listItems(this.object)
+      },
+    },
     unmounted() {
       if (this.handleCloseContextualMenu) {
         document.removeEventListener("click", this.handleCloseContextualMenu)
@@ -87,16 +90,15 @@
       }
     },
     mounted() {
-      this.$el
-        ?.querySelector(".button-contextual-menu")
-        ?.addEventListener("click", (event: any) => {
-          event.stopPropagation()
-          this.$el.classList.toggle("is-active")
-        })
       this.handleCloseContextualMenu = () => {
         this.$el.classList.remove("is-active")
       }
       document.addEventListener("click", this.handleCloseContextualMenu)
+    },
+    methods: {
+      toggleDropdown() {
+        this.$el.classList.toggle("is-active")
+      },
     },
   })
   export default class DropdownMenu extends Vue {}

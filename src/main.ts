@@ -1,4 +1,5 @@
 import { LocalStore } from "@lokavaluto/lokapi-browser"
+import Recipient from "@lokavaluto/lokapi/build/backend/odoo/recipient"
 import { createApp } from "vue"
 import { Capacitor } from "@capacitor/core"
 import "vue-loading-overlay/dist/css/index.css"
@@ -338,6 +339,30 @@ fetchConfig("config.json").then(async (config: any) => {
   const dropdown = useDropdownMenu()
   dropdown.register((obj: any) => {
     let items = []
+    if (obj.__v_raw instanceof Recipient) {
+      items.push({
+        label: $gettext("Show transactions"),
+        icon: "list",
+        action: async () => {
+          const account = await lokApiService.getAccountFromRecipient(obj)
+          modal.open("TransactionListModal", {
+            params: { account, showAll: true },
+          })
+        },
+      })
+
+      items.push({
+        label: $gettext("Show more info"),
+        icon: "circle-info",
+        action: async () => {
+          await modal.open("RecipientTechnicalDetailsModal", {
+            componentName: "RecipientTechnicalDetails",
+            params: { recipient: obj },
+          })
+        },
+      })
+    }
+
     if (obj.isVirtualRoot) {
       items.push({
         label: $gettext("QR code"),
