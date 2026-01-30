@@ -4,6 +4,8 @@
     :class="{
       topup: transaction.isTopUp,
       reconversion: transaction.isReconversion,
+      paymentrequest: transaction.isPaymentRequest,
+      refused: transaction.isPaymentRequest && transaction.state === 'refused',
       cm: transaction.tags && transaction.tags.includes('barter'),
       'unknown-currency':
         transaction.tags && transaction.tags.includes('unknown-currency'),
@@ -85,7 +87,11 @@
         <span v-if="transaction.date">
           {{ relativeDateFormat(transaction.date) }}
         </span>
+        <span v-if="transaction.isPaymentRequest" class="payment-request-state" :class="transaction.state">
+          {{ paymentRequestStateLabel }}
+        </span>
         <fa-icon
+          v-else
           :class="{
             hide:
               transaction?.pending === true || transaction?.pending === null,
@@ -111,6 +117,14 @@
     },
     methods: {
       async openConfirmationModal() {
+        if (
+          this.mode === "small" ||
+          this.transaction?.isPaymentRequest
+        ) {
+          return
+        }
+        if (!this.transaction) return
+
         const type =
           this.type ||
           (this.transaction.isReconversion
@@ -174,6 +188,16 @@
         return this.reconversionStatusTranslations[
           this.transaction?.isReconversion.toString()
         ]
+      },
+
+      paymentRequestStateLabel() {
+        const stateTranslations: { [key: string]: string } = {
+          open: this.$gettext("pending"),
+          paid: this.$gettext("paid"),
+          refused: this.$gettext("refused"),
+          cancelled: this.$gettext("cancelled"),
+        }
+        return stateTranslations[this.transaction?.state] || this.transaction?.state
       },
     },
   })
@@ -245,6 +269,15 @@
       margin-top: 3px;
       border-radius: 1em;
     }
+    &.paymentrequest {
+      background-color: $tx-topup-bg-color;
+      margin-top: 3px;
+      border-radius: 1em;
+
+      &.refused {
+        background-color: $tx-refused-bg-color;
+      }
+    }
 
     .left {
       margin-right: auto;
@@ -309,6 +342,34 @@
   .tx-item.unknown-currency .currency {
     color: #e67e22;
     font-weight: bold;
+  }
+
+  .payment-request-state {
+    margin-left: 0.5em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    font-size: 0.85em;
+
+    &.open {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    &.paid {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    &.refused {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    &.cancelled {
+      background-color: #e2e3e5;
+      color: #383d41;
+    }
   }
 
   div.related.small {

@@ -40,7 +40,8 @@
     "vue-pincode-input": "^0.4.0",
     "vue-router": "^4.2.5",
     "vue3-gettext": "github:0k/vue3-gettext#fix-template-child-node",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "@lokavaluto/lokapi": "0.1.0 || >=0.1.1-alpha"
   },
   "devDependencies": {
     "@capacitor/android": "^5.7.8",

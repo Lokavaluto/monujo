@@ -34,6 +34,12 @@ import {
   faList,
   faFilePdf,
   faFileCsv,
+  faClock,
+  faTimesCircle,
+  faCheckCircle,
+  faBan,
+  faPaperPlane,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -72,7 +78,15 @@ library.add(
   faCircleInfo,
   faList,
   faFilePdf,
-  faFileCsv
+  faFileCsv,
+  faList,
+  faEuroSign,
+  faClock,
+  faTimesCircle,
+  faCheckCircle,
+  faBan,
+  faPaperPlane,
+  faTimes
 )
 
 export default FontAwesomeIcon
