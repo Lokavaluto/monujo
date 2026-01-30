@@ -38,6 +38,7 @@ import {
   faTimesCircle,
   faCheckCircle,
   faBan,
+  faFileAlt,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"

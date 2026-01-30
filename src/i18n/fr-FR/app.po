@@ -218,8 +218,8 @@ msgstr "Le montant envoyé doit être un nombre positif"
 msgid "Amount to send must be a number with not more than 2 decimals"
 msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales"
 
-#: src/components/RecipientSelector.vue:190
-#: src/components/RecipientSelector.vue:200
+#: src/components/RecipientSelector.vue:194
+#: src/components/RecipientSelector.vue:204
 msgid "An error occured during the scan process"
 msgstr "Une erreur est survenue lors du processus de scan"
 
@@ -237,7 +237,7 @@ msgid "An error occured while retrieving account information"
 msgstr ""
 "Une erreur est survenue lors de récuperation des informations du compte."
 
-#: src/components/RecipientSelector.vue:249
+#: src/components/RecipientSelector.vue:253
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
@@ -285,14 +285,14 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de validation de la demande de "
 "crédit de %{ name }"
 
-#: src/components/RecipientSelector.vue:261
+#: src/components/RecipientSelector.vue:265
 msgid "An unexpected error occured while verifying transaction authorizations."
 msgstr ""
 "Une erreur inattendue est survenue lors de la vérification des autorisations "
 "de transaction"
 
 #: src/components/PaymentRequestListModal.vue:271
-#: src/components/RecipientSelector.vue:143
+#: src/components/RecipientSelector.vue:147
 #: src/components/TransactionList.vue:268
 msgid "An unexpected issue occured while downloading recipient list"
 msgstr ""
@@ -633,6 +633,14 @@ msgstr "Créer mon portefeuille"
 msgid "Create or import my wallet"
 msgstr "Créer ou importer mon portefeuille"
 
+#: src/components/MoneyRequestModal.vue:128
+#: src/components/MoneyRequestModal.vue:129
+#: src/components/MoneyRequestModal.vue:150
+#: src/components/MoneyRequestModal.vue:154
+#: src/components/MoneyRequestModal.vue:160
+msgid "Create request"
+msgstr "Créer la demande"
+
 #: src/components/PaymentRequestModal.vue:286
 msgid "Created by %{creator}"
 msgstr "Créée par %{creator}"
@@ -769,6 +777,12 @@ msgstr "Télécharger le fichier CSV"
 msgid "Download PDF file"
 msgstr "Télécharger le fichier PDF"
 
+#: src/components/MoneyRequestModal.vue:115
+#: src/components/MoneyRequestModal.vue:89
+#: src/components/MoneyRequestModal.vue:90
+msgid "Draft"
+msgstr "Brouillon"
+
 #: src/components/MoneyTransaction.vue:75
 msgid "e.g. 50"
 msgstr "ex: 50"
@@ -831,6 +845,14 @@ msgstr "Exporter le portefeuille"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
+#: src/components/MoneyRequestModal.vue:275
+msgid ""
+"Failed to create payment request. Please try again or contact your "
+"administrator."
+msgstr ""
+"Impossible de créer la demande de paiement. Veuillez réessayer ou contacter "
+"votre administrateur."
+
 #: src/store/index.ts:61
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
@@ -872,6 +894,9 @@ msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
 #: src/components/ConfirmPaymentModal.vue:449
+#: src/components/MoneyRequestModal.vue:102
+#: src/components/MoneyRequestModal.vue:103
+#: src/components/MoneyRequestModal.vue:128
 #: src/components/PaymentRequestModal.vue:32
 #: src/components/PaymentRequestModal.vue:33
 #: src/components/PaymentRequestModal.vue:37
@@ -893,13 +918,13 @@ msgstr "De / À"
 msgid "General user account info"
 msgstr "Informations generales du compte"
 
-#: src/components/MoneyRequestModal.vue:19
-#: src/components/MoneyRequestModal.vue:20
-#: src/components/MoneyRequestModal.vue:24
-#: src/components/MoneyRequestModal.vue:30
-#: src/components/MoneyRequestModal.vue:36
-msgid "Generate QR code"
-msgstr "Générer le code QR"
+#: src/components/MoneyRequestModal.vue:41
+#: src/components/MoneyRequestModal.vue:42
+#: src/components/MoneyRequestModal.vue:47
+#: src/components/MoneyRequestModal.vue:53
+#: src/components/MoneyRequestModal.vue:63
+msgid "Generate request"
+msgstr "Générer la demande"
 
 #: src/components/AuthPrefPin.vue:127
 msgid "Given PINs are different"
@@ -950,7 +975,7 @@ msgstr "Identifiant ou mot de passe incorrect"
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
-#: src/components/RecipientSelector.vue:214
+#: src/components/RecipientSelector.vue:218
 msgid "Invalid QR code content format"
 msgstr "Format du code QR invalide"
 
@@ -1241,6 +1266,10 @@ msgstr "Demande de paiement"
 msgid "Payment request cancelled"
 msgstr "Demande de paiement annulée."
 
+#: src/components/MoneyRequestModal.vue:285
+msgid "Payment request created successfully"
+msgstr "Demande de paiement créée avec succès."
+
 #: src/components/PaymentRequestModal.vue:10
 #: src/components/PaymentRequestModal.vue:9
 msgid "Payment request details"
@@ -1369,7 +1398,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/MoneyRequestModal.vue:93 src/main.ts:376
+#: src/components/MoneyRequestModal.vue:244 src/main.ts:376
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
@@ -1409,11 +1438,15 @@ msgstr "Profil"
 msgid "Property admin"
 msgstr "Gestionnaire des attributs"
 
-#: src/main.ts:371 src/main.ts:375
+#: src/components/MoneyRequestModal.vue:30
+#: src/components/MoneyRequestModal.vue:31
+#: src/components/MoneyRequestModal.vue:36
+#: src/components/MoneyRequestModal.vue:38
+#: src/components/MoneyRequestModal.vue:47 src/main.ts:371 src/main.ts:375
 msgid "QR code"
 msgstr "Code QR"
 
-#: src/components/MoneyRequestModal.vue:80
+#: src/components/MoneyRequestModal.vue:231
 msgid "QR code - Payment request to %{ name } of %{ amount } %{ currency }"
 msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
 
@@ -1540,10 +1573,15 @@ msgstr "Recevoir"
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/components/MoneyRequestModal.vue:11
-#: src/components/MoneyRequestModal.vue:6
-#: src/components/MoneyRequestModal.vue:7
-#: src/components/MoneyRequestModal.vue:92
+#: src/components/MoneyRequestModal.vue:104
+#: src/components/MoneyRequestModal.vue:243
+#: src/components/MoneyRequestModal.vue:58
+#: src/components/MoneyRequestModal.vue:59
+#: src/components/MoneyRequestModal.vue:78
+#: src/components/MoneyRequestModal.vue:79
+#: src/components/MoneyRequestModal.vue:8
+#: src/components/MoneyRequestModal.vue:80
+#: src/components/MoneyRequestModal.vue:9
 msgid "Request money"
 msgstr "Recevoir"
 
@@ -1968,7 +2006,7 @@ msgstr "Cette demande de paiement attend la réponse du payeur."
 msgid "This payment request is waiting for you to pay or refuse it."
 msgstr "Cette demande de paiement attend que vous la payiez ou la refusiez."
 
-#: src/components/RecipientSelector.vue:229
+#: src/components/RecipientSelector.vue:233
 msgid "This QR code is for a payment request, not a wallet identifier"
 msgstr "Ce QR code représente une demande de transfert, pas un portefeuille"
 
@@ -2015,6 +2053,9 @@ msgstr ""
 "disponible sur ce serveur."
 
 #: src/components/ConfirmPaymentModal.vue:448
+#: src/components/MoneyRequestModal.vue:106
+#: src/components/MoneyRequestModal.vue:107
+#: src/components/MoneyRequestModal.vue:132
 #: src/components/PaymentRequestModal.vue:43
 #: src/components/PaymentRequestModal.vue:44
 #: src/components/PaymentRequestModal.vue:48
@@ -2145,7 +2186,7 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
-#: src/components/RecipientSelector.vue:206
+#: src/components/RecipientSelector.vue:210
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le code QR."
 
@@ -2367,11 +2408,11 @@ msgstr ""
 "Vous avez déjà une demande de rechargement en attente. Veuillez la payer ou "
 "la supprimer avant de poursuivre"
 
-#: src/components/RecipientSelector.vue:273
+#: src/components/RecipientSelector.vue:277
 msgid "You are not allowed to send money to %{ recipientName }"
 msgstr "Vous n'êtes pas autorisé à envoyer de l'argent à %{recipientName}"
 
-#: src/components/RecipientSelector.vue:237
+#: src/components/RecipientSelector.vue:241
 msgid "You can not transfer money to your own account"
 msgstr "Vous ne pouvez pas envoyer de l'argent vers votre propre compte."
 
