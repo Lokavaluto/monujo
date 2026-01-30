@@ -179,6 +179,16 @@
           recipient: this.$modal.args.value[0].account.safeWalletRecipient,
         })
       }
+
+      if (this.$modal.args.value[0]?.transactionType === "paymentRequest") {
+        this.transactionType = "paymentRequest"
+        this.senderMemo = this.$modal.args.value[0].config.senderMemo
+        this.recipientMemo = this.$modal.args.value[0].config.recipientMemo
+        this.toPaymentStage({
+          recipient: this.$modal.args.value[0].recipient,
+          ...this.$modal.args.value[0].config,
+        })
+      }
     },
     methods: {
       handleClickRecipient(config: any): void {
@@ -455,6 +465,32 @@
         async function (this: any): Promise<void> {
           const payment = await this._executeTransaction()
           if (payment === false) return
+
+          if (this.transactionType === "paymentRequest") {
+            try {
+              const transactionIds = payment.map(
+                (transaction: any) => transaction.id
+              )
+              if (
+                !transactionIds.length ||
+                transactionIds.some((transactionId: string) => !transactionId)
+              ) {
+                throw new Error("A paid payment request requires a transaction")
+              }
+              await this.$modal.args.value[0].paymentRequest.markAsPaid(
+                transactionIds.join(",")
+              )
+              this.$msg.success(
+                this.$gettext("Payment request paid successfully")
+              )
+            } catch (err) {
+              this.$msg.warning(
+                this.$gettext(
+                  "Payment completed but failed to update the request status. Please contact your administrator."
+                )
+              )
+            }
+          }
 
           this.$modal.args.value[0]?.refreshTransaction?.()
           this.$modal.args.value[0]?.refreshAccounts?.(true)

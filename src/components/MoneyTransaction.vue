@@ -102,6 +102,7 @@
           }"
           :placeholder="$gettext('Add a payment memo (optional)')"
           ref="sendertMemo"
+          :disabled="transactionType === 'paymentRequest'"
         ></textarea>
         <div
           class="notification is-danger is-light mt-2"
@@ -111,9 +112,11 @@
         </div>
         <div
           v-if="
+            transactionType !== 'paymentRequest' &&
             !['requestPay', 'createRequestPay', 'adminCredit'].includes(
               transactionType
-            ) && hasSplitMemoSupport
+            ) &&
+            hasSplitMemoSupport
           "
         >
           <div class="is-flex mt-3">

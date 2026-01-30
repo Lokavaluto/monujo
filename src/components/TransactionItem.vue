@@ -4,6 +4,8 @@
     :class="{
       topup: transaction.isTopUp,
       reconversion: transaction.isReconversion,
+      paymentrequest: transaction.isPaymentRequest,
+      refused: transaction.isPaymentRequest && transaction.state === 'refused',
       cm: transaction.tags && transaction.tags.includes('barter'),
       'unknown-currency':
         transaction.tags && transaction.tags.includes('unknown-currency'),
@@ -13,19 +15,14 @@
     @click="openConfirmationModal()"
   >
     <div class="amount-col is-flex-direction-column left">
-      <h3
-        :class="[
-          transaction.amount.toString().charAt(0) == '-'
-            ? 'custom-card-related has-text-danger'
-            : 'custom-card-related has-text-success',
-        ]"
-      >
+      <h3 :class="amountClass">
         <div class="amount">
           <span class="amount">
+            <template v-if="shouldPrefixDebitSign">-</template>
             {{ numericFormat(parseFloat(transaction.amount)) }}
           </span>
         </div>
-        <div class="currency">{{ transaction.currency }}</div>
+        <span class="currency">{{ transaction.currency }}</span>
       </h3>
 
       <template v-if="mode !== 'small'">
@@ -41,11 +38,15 @@
           }}
         </h5>
         <h4 v-else class="custom-card-related">
-          {{ transaction.related }}
+          {{ relatedLabel }}
         </h4>
 
         <h5
-          v-if="!transaction.isTopUp && !transaction.isReconversion"
+          v-if="
+            !transaction.isTopUp &&
+            !transaction.isReconversion &&
+            transaction.description
+          "
           class="has-text-grey-light transaction-desc"
         >
           {{ transaction.description }}
@@ -72,7 +73,7 @@
       </div>
     </div>
     <div v-if="mode === 'small'" class="custom-card-related related small">
-      {{ transaction.related }}
+      {{ relatedLabel }}
     </div>
     <div
       v-if="transaction?.pending !== null || transaction?.date !== null"
@@ -85,7 +86,15 @@
         <span v-if="transaction.date">
           {{ relativeDateFormat(transaction.date) }}
         </span>
+        <span
+          v-if="transaction.isPaymentRequest"
+          class="payment-request-state"
+          :class="transaction.state"
+        >
+          {{ paymentRequestStateLabel }}
+        </span>
         <fa-icon
+          v-else
           :class="{
             hide:
               transaction?.pending === true || transaction?.pending === null,
@@ -111,6 +120,11 @@
     },
     methods: {
       async openConfirmationModal() {
+        if (this.mode === "small" || this.transaction?.isPaymentRequest) {
+          return
+        }
+        if (!this.transaction) return
+
         const type =
           this.type ||
           (this.transaction.isReconversion
@@ -174,6 +188,60 @@
         return this.reconversionStatusTranslations[
           this.transaction?.isReconversion.toString()
         ]
+      },
+
+      amountClass() {
+        const isRefusedPaymentRequest =
+          this.transaction.isPaymentRequest &&
+          this.transaction.state === "refused"
+        if (isRefusedPaymentRequest) {
+          return ["custom-card-related", "has-text-grey"]
+        }
+
+        const isOutgoingPaymentRequest =
+          this.transaction.isPaymentRequest && this.transaction.isSender
+        const hasNegativeAmount = this.transaction.amount
+          .toString()
+          .startsWith("-")
+
+        return [
+          "custom-card-related",
+          isOutgoingPaymentRequest || hasNegativeAmount
+            ? "has-text-danger"
+            : "has-text-success",
+        ]
+      },
+
+      shouldPrefixDebitSign() {
+        return (
+          this.transaction.isPaymentRequest &&
+          this.transaction.isSender &&
+          !this.transaction.amount.toString().startsWith("-")
+        )
+      },
+
+      relatedLabel() {
+        if (!this.transaction?.isPaymentRequest) {
+          return this.transaction?.related
+        }
+
+        const direction = this.transaction.isSender
+          ? this.$gettext("to")
+          : this.$gettext("from")
+
+        return direction + " " + this.transaction.related
+      },
+
+      paymentRequestStateLabel() {
+        const stateTranslations: { [key: string]: string } = {
+          open: this.$gettext("pending"),
+          paid: this.$gettext("paid"),
+          refused: this.$gettext("refused"),
+          cancelled: this.$gettext("cancelled"),
+        }
+        return (
+          stateTranslations[this.transaction?.state] || this.transaction?.state
+        )
       },
     },
   })
@@ -245,6 +313,16 @@
       margin-top: 3px;
       border-radius: 1em;
     }
+    &.paymentrequest {
+      background-color: $tx-topup-bg-color;
+      margin-top: 3px;
+      border-radius: 1em;
+
+      &.refused {
+        background-color: $tx-refused-bg-color;
+        opacity: 0.65;
+      }
+    }
 
     .left {
       margin-right: auto;
@@ -309,6 +387,34 @@
   .tx-item.unknown-currency .currency {
     color: #e67e22;
     font-weight: bold;
+  }
+
+  .payment-request-state {
+    margin-left: 0.5em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    font-size: 0.85em;
+
+    &.open {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    &.paid {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    &.refused {
+      background-color: #e2e3e5;
+      color: #383d41;
+    }
+
+    &.cancelled {
+      background-color: #e2e3e5;
+      color: #383d41;
+    }
   }
 
   div.related.small {

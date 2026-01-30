@@ -11,6 +11,13 @@
         icon="sync"
       />
     </span>
+    <PaymentRequests
+      :account="account"
+      :refreshToggle="subRefreshToggle"
+      @triggerTransactionRefresh="trigger"
+      @refreshTransaction="$emit('refreshTransaction')"
+      @refreshAccounts="$emit('refreshAccounts')"
+    />
     <PendingTopUp
       :account="account"
       :refreshToggle="subRefreshToggle"
@@ -31,6 +38,7 @@
 
   import TransactionListRecent from "./TransactionListRecent.vue"
   import PendingTopUp from "./PendingTopUp.vue"
+  import PaymentRequests from "./PaymentRequests.vue"
 
   import { mapModuleState } from "@/utils/vuex"
 
@@ -53,6 +61,7 @@
     components: {
       TransactionListRecent,
       PendingTopUp,
+      PaymentRequests,
     },
     props: {
       refreshToggle: Boolean,
