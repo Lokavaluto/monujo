@@ -31,7 +31,7 @@
             </span>
           </p>
         </span>
-        <span class="icon is-small" @click="startScan"
+        <span v-if="showQrCode" class="icon is-small" @click="startScan"
           ><fa-icon class="qrcode-icon" icon="qrcode" />
         </span>
       </div>
@@ -112,6 +112,10 @@
       purpose: {
         type: String,
         default: "transfer",
+      },
+      showQrCode: {
+        type: Boolean,
+        default: true,
       },
     },
     data() {

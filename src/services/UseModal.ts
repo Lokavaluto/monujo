@@ -61,6 +61,17 @@ function UseModal(): any {
     }
   }
 
+  function goTo(targetStep: number): void {
+    const frame = currentFrame.value
+    if (!frame) {
+      throw new Error(
+        "Unexpected call to useModal.goTo() with no modal in stack."
+      )
+    }
+    const { label, args } = frame
+    modalStack.value[stackSize.value - 1] = { label, step: targetStep, args }
+  }
+
   const stackSize = computed(() => modalStack.value.length)
   const isActive = computed(() => !!stackSize.value)
   const currentFrame = computed(() =>
@@ -95,6 +106,7 @@ function UseModal(): any {
     open,
     next,
     back,
+    goTo,
     close,
 
     // Computed
