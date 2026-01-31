@@ -440,6 +440,26 @@ fetchConfig("config.json").then(async (config: any) => {
       })
     }
 
+    if (store.state.lokapi.virtualAccountTree.includes(obj)) {
+      items.push({
+        label: $gettext("Import payment requests"),
+        icon: "file-alt",
+        action: (component: any) => {
+          const refreshTransaction = () => {
+            component.$emit("refreshTransaction")
+          }
+          const refreshAccounts = () => {
+            component.$emit("refreshAccounts")
+          }
+          modal.open("ImportPaymentRequestsModal", {
+            account: obj,
+            refreshTransaction,
+            refreshAccounts,
+          })
+        },
+      })
+    }
+
     return items
   })
 
