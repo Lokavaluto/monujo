@@ -420,11 +420,14 @@
           try {
             const senderWalletUri = this.selectedSender.userAccountInternalId
 
-            await this.account.createPaymentRequest(
-              senderWalletUri,
-              parseFloat(this.amount),
-              this.recipientMemo || null
-            )
+            await this.account.createPaymentRequest([
+              {
+                sender_wallet_uri: senderWalletUri,
+                receiver_wallet_uri: this.account.internalId,
+                amount: parseFloat(this.amount),
+                message: this.recipientMemo || null,
+              }
+            ])
 
             this.$msg.success(this.$gettext("Payment request created successfully"))
 
