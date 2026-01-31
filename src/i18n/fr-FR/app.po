@@ -22,6 +22,18 @@ msgstr ""
 msgid "%{ appName } version %{ appVersion }"
 msgstr "%{ appName } version %{ appVersion }"
 
+#: src/components/ImportPaymentRequestsModal.vue:228
+msgid "%{ count } payment request is ready to be created."
+msgid_plural "%{ count } payment requests are ready to be created."
+msgstr[0] "%{ count } demande de paiement est prête à être créée."
+msgstr[1] "%{ count } demandes de paiement sont prêtes à être créées."
+
+#: src/components/ImportPaymentRequestsModal.vue:403
+msgid "%{ count } payment request was created successfully."
+msgid_plural "%{ count } payment requests were created successfully."
+msgstr[0] "%{ count } demande de paiement a été créée avec succès."
+msgstr[1] "%{ count } demandes de paiement ont été créées avec succès."
+
 #: src/components/MoneyTransferModal.vue:534
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
@@ -484,6 +496,14 @@ msgstr "Authentification"
 msgid "Backend:"
 msgstr "Backend:"
 
+#: src/components/ImportPaymentRequestsModal.vue:58
+#: src/components/ImportPaymentRequestsModal.vue:59
+#: src/components/ImportPaymentRequestsModal.vue:63
+#: src/components/ImportPaymentRequestsModal.vue:70
+#: src/components/ImportPaymentRequestsModal.vue:73
+msgid "Before importing"
+msgstr "Avant l’importation"
+
 #: src/components/BiometryPrefs.vue:87
 msgid "Biometric login successfully disabled"
 msgstr "Identification biométrique désactivée"
@@ -543,6 +563,7 @@ msgstr ""
 "Choisissez le mot de passe de votre portefeuille. Il est différent de celui "
 "de votre compte utilisateur et ne concerne que votre portefeuille."
 
+#: src/components/ImportPaymentRequestsModal.vue:18
 #: src/components/PaymentRequestListModal.vue:126
 #: src/components/PaymentRequestListModal.vue:127
 #: src/components/PaymentRequestListModal.vue:131
@@ -633,6 +654,15 @@ msgstr "Créer mon portefeuille"
 msgid "Create or import my wallet"
 msgstr "Créer ou importer mon portefeuille"
 
+#: src/components/ImportPaymentRequestsModal.vue:138
+#: src/components/ImportPaymentRequestsModal.vue:139
+#: src/components/ImportPaymentRequestsModal.vue:143
+#: src/components/ImportPaymentRequestsModal.vue:176
+#: src/components/ImportPaymentRequestsModal.vue:182
+#: src/components/ImportPaymentRequestsModal.vue:187
+msgid "Create payment requests"
+msgstr "Créer les demandes de paiement"
+
 #: src/components/MoneyRequestModal.vue:128
 #: src/components/MoneyRequestModal.vue:129
 #: src/components/MoneyRequestModal.vue:150
@@ -649,6 +679,15 @@ msgstr "Créée par %{creator}"
 msgid "Created on %{date}"
 msgstr "Date de création : %{date}"
 
+#: src/components/ImportPaymentRequestsModal.vue:137
+#: src/components/ImportPaymentRequestsModal.vue:138
+#: src/components/ImportPaymentRequestsModal.vue:142
+#: src/components/ImportPaymentRequestsModal.vue:175
+#: src/components/ImportPaymentRequestsModal.vue:181
+#: src/components/ImportPaymentRequestsModal.vue:186
+msgid "Creating..."
+msgstr "Création en cours…"
+
 #: src/utils/pdf.ts:230
 msgid "Credit"
 msgstr "Crédit"
@@ -664,6 +703,13 @@ msgstr "Crédit"
 #: src/components/MoneyTransferModal.vue:39
 msgid "Credit money"
 msgstr "Créditer"
+
+#: src/components/ImportPaymentRequestsModal.vue:23
+#: src/components/ImportPaymentRequestsModal.vue:24
+#: src/components/ImportPaymentRequestsModal.vue:28
+#: src/components/ImportPaymentRequestsModal.vue:35
+msgid "CSV file format"
+msgstr "Format du fichier CSV"
 
 #: src/components/CreateAccount.vue:28 src/components/CreateAccount.vue:30
 #: src/components/CreateAccount.vue:31 src/components/CreateAccount.vue:43
@@ -822,6 +868,18 @@ msgstr "Actif"
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
+#: src/components/ImportPaymentRequestsModal.vue:39
+#: src/components/ImportPaymentRequestsModal.vue:40
+#: src/components/ImportPaymentRequestsModal.vue:44
+#: src/components/ImportPaymentRequestsModal.vue:49
+#: src/components/ImportPaymentRequestsModal.vue:50
+#: src/components/ImportPaymentRequestsModal.vue:51
+#: src/components/ImportPaymentRequestsModal.vue:54
+#: src/components/ImportPaymentRequestsModal.vue:61
+#: src/components/ImportPaymentRequestsModal.vue:64
+msgid "Example"
+msgstr "Exemple"
+
 #: src/components/PaymentRequestModal.vue:128
 #: src/components/PaymentRequestModal.vue:129
 #: src/components/PaymentRequestModal.vue:160
@@ -853,9 +911,29 @@ msgstr ""
 "Impossible de créer la demande de paiement. Veuillez réessayer ou contacter "
 "votre administrateur."
 
+#: src/components/ImportPaymentRequestsModal.vue:100
+#: src/components/ImportPaymentRequestsModal.vue:101
+#: src/components/ImportPaymentRequestsModal.vue:105
+#: src/components/ImportPaymentRequestsModal.vue:112
+#: src/components/ImportPaymentRequestsModal.vue:124
+#: src/components/ImportPaymentRequestsModal.vue:128
+#: src/components/ImportPaymentRequestsModal.vue:419
+msgid "Failed to create payment requests"
+msgstr "Échec de la création des demandes de paiement"
+
+#: src/components/ImportPaymentRequestsModal.vue:421
+msgid ""
+"Failed to create payment requests. Please check the error and try again."
+msgstr ""
+"Impossible de créer les demandes de paiement. Vérifiez l’erreur et réessayez."
+
 #: src/store/index.ts:61
 msgid "Failed to load language \"%{ lang }\""
 msgstr "Le langage \"%{ lang }\" n'a pas pu être chargé"
+
+#: src/components/ImportPaymentRequestsModal.vue:265
+msgid "Failed to read file"
+msgstr "Impossible de lire le fichier"
 
 #: src/components/CreateAccount.vue:393
 msgid "Failed to read the file contents"
@@ -864,6 +942,15 @@ msgstr "Le contenu du fichier n'a pas pu être lu"
 #: src/components/TheBankAccountList.vue:277
 msgid "Failed to refresh account informations"
 msgstr "Échec de la mise à jour des informations du compte"
+
+#: src/components/ImportPaymentRequestsModal.vue:104
+#: src/components/ImportPaymentRequestsModal.vue:86
+#: src/components/ImportPaymentRequestsModal.vue:87
+#: src/components/ImportPaymentRequestsModal.vue:91
+#: src/components/ImportPaymentRequestsModal.vue:96
+#: src/components/ImportPaymentRequestsModal.vue:98
+msgid "File validated successfully"
+msgstr "Fichier validé avec succès"
 
 #: src/components/PaymentRequestListModal.vue:100
 #: src/components/PaymentRequestListModal.vue:104
@@ -945,6 +1032,21 @@ msgstr "Aide"
 msgid "Import an existing wallet"
 msgstr "Importer un portefeuille existant"
 
+#: src/components/ImportPaymentRequestsModal.vue:120
+#: src/components/ImportPaymentRequestsModal.vue:121
+#: src/components/ImportPaymentRequestsModal.vue:125
+#: src/components/ImportPaymentRequestsModal.vue:132
+#: src/components/ImportPaymentRequestsModal.vue:155
+#: src/components/ImportPaymentRequestsModal.vue:162
+msgid "Import file"
+msgstr "Importer un fichier"
+
+#: src/components/ImportPaymentRequestsModal.vue:11
+#: src/components/ImportPaymentRequestsModal.vue:6
+#: src/components/ImportPaymentRequestsModal.vue:7 src/main.ts:445
+msgid "Import payment requests"
+msgstr "Importer des demandes de paiement"
+
 #: src/components/TheBankAccountList.vue:101
 #: src/components/TheBankAccountList.vue:102
 #: src/components/TheBankAccountList.vue:143
@@ -966,6 +1068,12 @@ msgid ""
 msgstr ""
 "Fonds disponibles insuffisants. Vous ne disposez que de %{ safeAmount } "
 "%{ currency } à envoyer."
+
+#: src/components/ImportPaymentRequestsModal.vue:296
+msgid "Invalid columns. Expected: %{ expected }. Found: %{ actual }."
+msgstr ""
+"Colonnes invalides. Colonnes attendues : %{ expected }. Colonnes trouvées : "
+"%{ actual }."
 
 #: src/views/Login.vue:175
 msgid "Invalid credentials"
@@ -1261,6 +1369,14 @@ msgstr "Confirmation de paiement"
 msgid "Payment request"
 msgstr "Demande de paiement"
 
+#: src/components/ImportPaymentRequestsModal.vue:47
+#: src/components/ImportPaymentRequestsModal.vue:48
+#: src/components/ImportPaymentRequestsModal.vue:52
+#: src/components/ImportPaymentRequestsModal.vue:59
+#: src/components/ImportPaymentRequestsModal.vue:62
+msgid "Payment request amount"
+msgstr "Montant de la demande de paiement"
+
 #: src/components/PaymentRequestModal.vue:252
 #: src/components/PaymentRequestModal.vue:399
 msgid "Payment request cancelled"
@@ -1412,6 +1528,18 @@ msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 msgid "Pledge admin"
 msgstr "Gestionnaire de nantissement"
 
+#: src/components/ImportPaymentRequestsModal.vue:68
+#: src/components/ImportPaymentRequestsModal.vue:69
+#: src/components/ImportPaymentRequestsModal.vue:73
+#: src/components/ImportPaymentRequestsModal.vue:80
+#: src/components/ImportPaymentRequestsModal.vue:83
+msgid ""
+"Positive amounts are incoming payments; negative amounts are outgoing "
+"payments."
+msgstr ""
+"Les montants positifs correspondent aux paiements entrants ; les montants "
+"négatifs correspondent aux paiements sortants."
+
 #: src/router/index.ts:62
 msgid "Preferences"
 msgstr "Préférences"
@@ -1560,6 +1688,11 @@ msgstr "refusée"
 msgid "Refused requests only"
 msgstr "Demandes refusées uniquement"
 
+#: src/components/ImportPaymentRequestsModal.vue:112
+#: src/components/ImportPaymentRequestsModal.vue:142
+msgid "Remove file"
+msgstr "Retirer le fichier"
+
 #: src/components/TheDashboardFooter.vue:55
 #: src/components/TheDashboardFooter.vue:56
 #: src/components/TheDashboardFooter.vue:57
@@ -1612,6 +1745,20 @@ msgstr "Ré-initialiser mon mot de passe"
 #: src/views/ResetPassword.vue:30 src/views/ResetPassword.vue:35
 msgid "Reset password"
 msgstr "Ré-initialiser le mot de passe"
+
+#: src/components/ImportPaymentRequestsModal.vue:340
+msgid "Row %{ row }: \"%{ amount }\" is not a valid non-zero amount."
+msgstr ""
+"Ligne %{ row } : « %{ amount } » n’est pas un montant valide différent de "
+"zéro."
+
+#: src/components/ImportPaymentRequestsModal.vue:317
+msgid "Row %{ row }: expected 2 columns, found %{ count }."
+msgstr "Ligne %{ row } : 2 colonnes attendues, %{ count } trouvées."
+
+#: src/components/ImportPaymentRequestsModal.vue:331
+msgid "Row %{ row }: related_wallet is empty."
+msgstr "Ligne %{ row } : related_wallet est vide."
 
 #: src/components/AuthPrefPin.vue:33 src/components/AuthPrefPin.vue:34
 #: src/components/AuthPrefPin.vue:37 src/components/AuthPrefPin.vue:58
@@ -1832,6 +1979,14 @@ msgstr "Momentanément indisponible - veuillez rafraîchir"
 msgid "Terms of Service"
 msgstr "CGU"
 
+#: src/components/ImportPaymentRequestsModal.vue:63
+#: src/components/ImportPaymentRequestsModal.vue:64
+#: src/components/ImportPaymentRequestsModal.vue:68
+#: src/components/ImportPaymentRequestsModal.vue:75
+#: src/components/ImportPaymentRequestsModal.vue:78
+msgid "The 0x prefix in wallet addresses is optional."
+msgstr "Le préfixe 0x dans les adresses de portefeuille est facultatif."
+
 #: src/components/TheBankAccountList.vue:117
 #: src/components/TheBankAccountList.vue:118
 #: src/components/TheBankAccountList.vue:166
@@ -1860,6 +2015,32 @@ msgstr ""
 #: src/components/RecipientInfo.vue:73
 msgid "The administrative backend is not up to date."
 msgstr "Le serveur administratif n'est pas à jour."
+
+#: src/components/ImportPaymentRequestsModal.vue:101
+#: src/components/ImportPaymentRequestsModal.vue:102
+#: src/components/ImportPaymentRequestsModal.vue:106
+#: src/components/ImportPaymentRequestsModal.vue:113
+#: src/components/ImportPaymentRequestsModal.vue:125
+#: src/components/ImportPaymentRequestsModal.vue:129
+msgid "The file could not be imported"
+msgstr "Le fichier n’a pas pu être importé"
+
+#: src/components/ImportPaymentRequestsModal.vue:27
+#: src/components/ImportPaymentRequestsModal.vue:28
+#: src/components/ImportPaymentRequestsModal.vue:32
+#: src/components/ImportPaymentRequestsModal.vue:39
+#: src/components/ImportPaymentRequestsModal.vue:42
+msgid ""
+"The file must contain 2 columns, the first row must contain the column names."
+msgstr ""
+"Le fichier doit contenir 2 colonnes et la première ligne doit contenir les "
+"noms des colonnes."
+
+#: src/components/ImportPaymentRequestsModal.vue:279
+msgid "The file must contain a header row and at least one data row."
+msgstr ""
+"Le fichier doit contenir une ligne d’en-tête et au moins une ligne de "
+"données."
 
 #: src/components/PaymentRequests.vue:12 src/components/PaymentRequests.vue:7
 #: src/components/PaymentRequests.vue:8
@@ -1938,6 +2119,14 @@ msgstr "Le message de description est trop long"
 #: src/components/MoneyCreditModal.vue:111
 msgid "The minimum top up amount must be equal or greater than %{ amount }"
 msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
+
+#: src/components/ImportPaymentRequestsModal.vue:37
+#: src/components/ImportPaymentRequestsModal.vue:38
+#: src/components/ImportPaymentRequestsModal.vue:42
+#: src/components/ImportPaymentRequestsModal.vue:49
+#: src/components/ImportPaymentRequestsModal.vue:52
+msgid "The other party's wallet address"
+msgstr "Adresse du portefeuille de l’autre partie"
 
 #: src/views/Signup.vue:275
 msgid "The password and the password confirmation must be equal."
@@ -2267,6 +2456,15 @@ msgstr "Mettre à jour"
 #: src/components/CreateAccount.vue:221
 msgid "Upload <b>%{ backendName }</b> wallet file..."
 msgstr "Importer un fichier portefeuille <b>%{ backendName }</b>"
+
+#: src/components/ImportPaymentRequestsModal.vue:15
+#: src/components/ImportPaymentRequestsModal.vue:16
+#: src/components/ImportPaymentRequestsModal.vue:20
+#: src/components/ImportPaymentRequestsModal.vue:27
+msgid "Upload a CSV file to create multiple payment requests at once."
+msgstr ""
+"Importez un fichier CSV afin de créer plusieurs demandes de paiement en une "
+"seule fois."
 
 #: src/components/CreateAccount.vue:145 src/components/CreateAccount.vue:146
 #: src/components/CreateAccount.vue:207 src/components/CreateAccount.vue:216
