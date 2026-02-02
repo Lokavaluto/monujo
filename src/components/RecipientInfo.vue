@@ -6,7 +6,10 @@
       </div>
       <div class="recipient-actions-row">
         <div class="recipient-item">
-          <RecipientItem :recipient="recipient" />
+          <RecipientItem
+            :recipient="recipient"
+            :toggleRefreshBadge="toggleRefreshBadge"
+          />
         </div>
         <div class="recipient-dropdown">
           <DropdownMenu :object="recipient" />
@@ -30,6 +33,7 @@
           :showSubAccounts="true"
           :disableDropDown="false"
           :isAccountSelected="true"
+          :toggleRefreshBadge="toggleRefreshBadge"
         >
           <template v-slot:name>{{
             userAccount.name ? userAccount.name() : $gettext("Unavailable")
@@ -167,6 +171,7 @@
     emits: ["accountFormChange"],
     props: {
       recipient: Object,
+      toggleRefreshBadge: Boolean,
     },
     async mounted() {
       await this.refreshAccounts()
@@ -235,6 +240,12 @@
           }
         },
         deep: true,
+      },
+      async toggleRefreshBadge() {
+        await this.getRecipient()
+        this.fetchAccountTypes()
+        await this.refreshAccounts()
+        await this.initializeAccountForm()
       },
     },
     methods: {

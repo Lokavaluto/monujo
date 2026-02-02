@@ -9,6 +9,7 @@
     name: "Badge",
     props: {
       object: Object,
+      toggleRefreshBadge: Boolean,
     },
     data: () => {
       return {
@@ -33,6 +34,9 @@
     },
     watch: {
       object: async function () {
+        await this.getBusinessForFinanceBackend()
+      },
+      toggleRefreshBadge: async function () {
         await this.getBusinessForFinanceBackend()
       },
     },

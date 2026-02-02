@@ -50,7 +50,7 @@ msgid "Account"
 msgstr "Compte"
 
 #: src/components/RecipientInfo.vue:30 src/components/RecipientInfo.vue:31
-#: src/components/RecipientInfo.vue:42
+#: src/components/RecipientInfo.vue:46
 msgid "Account actions"
 msgstr "Actions du compte"
 
@@ -59,18 +59,18 @@ msgid "Account creations waiting for approval"
 msgstr "Comptes en attente de validation"
 
 #: src/components/RecipientInfo.vue:46 src/components/RecipientInfo.vue:47
-#: src/components/RecipientInfo.vue:58 src/components/RecipientInfo.vue:64
-#: src/components/RecipientInfo.vue:67 src/components/RecipientInfo.vue:71
+#: src/components/RecipientInfo.vue:62 src/components/RecipientInfo.vue:68
+#: src/components/RecipientInfo.vue:71 src/components/RecipientInfo.vue:75
 msgid "Account status: "
 msgstr "Statut du compte : "
 
-#: src/components/InspectRecipientModal.vue:147
+#: src/components/InspectRecipientModal.vue:150
 msgid "Account successfully updated"
 msgstr "Compte mis à jour avec succès"
 
 #: src/components/RecipientInfo.vue:38 src/components/RecipientInfo.vue:39
-#: src/components/RecipientInfo.vue:50 src/components/RecipientInfo.vue:56
-#: src/components/RecipientInfo.vue:59
+#: src/components/RecipientInfo.vue:54 src/components/RecipientInfo.vue:60
+#: src/components/RecipientInfo.vue:63
 msgid "Account type:"
 msgstr "Type de compte :"
 
@@ -98,7 +98,7 @@ msgstr "Ajouter une référence du paiement pour le destinataire"
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
-#: src/components/RecipientInfo.vue:194 src/views/AdminDashboard.vue:3
+#: src/components/RecipientInfo.vue:199 src/views/AdminDashboard.vue:3
 #: src/views/AdminDashboard.vue:4
 msgid "Admin"
 msgstr "Admin"
@@ -172,7 +172,7 @@ msgstr "Une erreur est survenue lors du processus de scan"
 msgid "An error occured while creating the CSV file"
 msgstr "Une erreur est survenue lors de la creation du ficher CSV"
 
-#: src/components/RecipientInfo.vue:313
+#: src/components/RecipientInfo.vue:324
 msgid "An error occured while retrieving account information"
 msgstr ""
 "Une erreur est survenue lors de récuperation des informations du compte."
@@ -181,7 +181,7 @@ msgstr ""
 msgid "An error occured while searching recipient"
 msgstr "Il y a eu un problème lors de la recherche du destinataire"
 
-#: src/components/InspectRecipientModal.vue:143
+#: src/components/InspectRecipientModal.vue:145
 msgid "An error occured while updating account"
 msgstr "Une erreur est survenue lors de la mise à jour du compte"
 
@@ -321,7 +321,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le chargement des portefeuilles. "
 "Veuillez nous excuser pour le désagrément."
 
-#: src/components/RecipientItem.vue:63
+#: src/components/RecipientItem.vue:68
 msgid ""
 "An unexpected issue occurred while switching this recipient favorite status"
 msgstr ""
@@ -341,7 +341,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "demandes de rechargement"
 
-#: src/components/RecipientInfo.vue:267
+#: src/components/RecipientInfo.vue:278
 msgid "An unexpected server error occurred while fetching mutual credit limits"
 msgstr ""
 "Une erreur serveur inattendue est survenue lors de la récupération des "
@@ -479,8 +479,8 @@ msgstr "Créer ou importer mon portefeuille"
 #: src/components/InspectRecipientModal.vue:39
 #: src/components/InspectRecipientModal.vue:40
 #: src/components/InspectRecipientModal.vue:49
-#: src/components/InspectRecipientModal.vue:53
-#: src/components/InspectRecipientModal.vue:59
+#: src/components/InspectRecipientModal.vue:54
+#: src/components/InspectRecipientModal.vue:60
 #: src/components/MoneyTransferModal.vue:31
 #: src/components/MoneyTransferModal.vue:32
 #: src/components/MoneyTransferModal.vue:35
@@ -525,8 +525,8 @@ msgstr[0] "chiffre"
 msgstr[1] "chiffres"
 
 #: src/components/RecipientInfo.vue:57 src/components/RecipientInfo.vue:58
-#: src/components/RecipientInfo.vue:69 src/components/RecipientInfo.vue:75
-#: src/components/RecipientInfo.vue:78 src/components/RecipientInfo.vue:82
+#: src/components/RecipientInfo.vue:73 src/components/RecipientInfo.vue:79
+#: src/components/RecipientInfo.vue:82 src/components/RecipientInfo.vue:86
 msgid "Disabled"
 msgstr "Désactiver"
 
@@ -590,8 +590,8 @@ msgid "Enable biometric login"
 msgstr "Activer le login biométrique"
 
 #: src/components/RecipientInfo.vue:56 src/components/RecipientInfo.vue:57
-#: src/components/RecipientInfo.vue:68 src/components/RecipientInfo.vue:74
-#: src/components/RecipientInfo.vue:77 src/components/RecipientInfo.vue:81
+#: src/components/RecipientInfo.vue:72 src/components/RecipientInfo.vue:78
+#: src/components/RecipientInfo.vue:81 src/components/RecipientInfo.vue:85
 msgid "Enabled"
 msgstr "Actif"
 
@@ -749,8 +749,8 @@ msgid "Map"
 msgstr "Carte"
 
 #: src/components/RecipientInfo.vue:69 src/components/RecipientInfo.vue:70
-#: src/components/RecipientInfo.vue:81 src/components/RecipientInfo.vue:87
-#: src/components/RecipientInfo.vue:90 src/components/RecipientInfo.vue:94
+#: src/components/RecipientInfo.vue:85 src/components/RecipientInfo.vue:91
+#: src/components/RecipientInfo.vue:94 src/components/RecipientInfo.vue:98
 msgid "Maximum allowed"
 msgstr "Maximum autorisé"
 
@@ -760,14 +760,14 @@ msgstr "Maximum autorisé"
 msgid "Maximum credit amount: "
 msgstr "Montant maximum à créditer : "
 
-#: src/components/RecipientInfo.vue:206
+#: src/components/RecipientInfo.vue:211
 msgid "Maximum limit must be zero or greater."
 msgstr "La limite maximale doit être zéro ou supérieure."
 
-#: src/components/RecipientInfo.vue:100 src/components/RecipientInfo.vue:103
-#: src/components/RecipientInfo.vue:107 src/components/RecipientInfo.vue:112
+#: src/components/RecipientInfo.vue:104 src/components/RecipientInfo.vue:107
+#: src/components/RecipientInfo.vue:111 src/components/RecipientInfo.vue:116
 #: src/components/RecipientInfo.vue:82 src/components/RecipientInfo.vue:83
-#: src/components/RecipientInfo.vue:94
+#: src/components/RecipientInfo.vue:98
 msgid "Minimum allowed"
 msgstr "Minimum autorisé"
 
@@ -777,7 +777,7 @@ msgstr "Minimum autorisé"
 msgid "Minimum credit amount: "
 msgstr "Montant minimum à créditer : "
 
-#: src/components/RecipientInfo.vue:219
+#: src/components/RecipientInfo.vue:224
 msgid "Minimum limit must be zero or less."
 msgstr "La limite minimale doit être zéro ou inférieure."
 
@@ -802,8 +802,8 @@ msgid "Mutual"
 msgstr "Mutuel"
 
 #: src/components/RecipientInfo.vue:64 src/components/RecipientInfo.vue:65
-#: src/components/RecipientInfo.vue:76 src/components/RecipientInfo.vue:82
-#: src/components/RecipientInfo.vue:85 src/components/RecipientInfo.vue:89
+#: src/components/RecipientInfo.vue:80 src/components/RecipientInfo.vue:86
+#: src/components/RecipientInfo.vue:89 src/components/RecipientInfo.vue:93
 msgid "Mutual credit balance limits:"
 msgstr "Limites de crédit mutuel :"
 
@@ -961,7 +961,7 @@ msgstr "Demandes de crédit en cours"
 msgid "Permission denied to the camera"
 msgstr "Permission d'accès à la caméra refusé"
 
-#: src/components/RecipientInfo.vue:193
+#: src/components/RecipientInfo.vue:198
 msgid "Personal"
 msgstr "Particulier"
 
@@ -1026,7 +1026,7 @@ msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 msgid "Please try again or contact your administrator"
 msgstr "Veuillez ré-éssayer ou contacter votre administrateur"
 
-#: src/components/RecipientInfo.vue:195
+#: src/components/RecipientInfo.vue:200
 msgid "Pledge admin"
 msgstr "Gestionnaire de nantissement"
 
@@ -1040,7 +1040,7 @@ msgstr "Préférences"
 msgid "processed"
 msgstr "traitée"
 
-#: src/components/RecipientInfo.vue:192
+#: src/components/RecipientInfo.vue:197
 msgid "Professional"
 msgstr "Professionnel"
 
@@ -1050,7 +1050,7 @@ msgstr "Professionnel"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/components/RecipientInfo.vue:196
+#: src/components/RecipientInfo.vue:201
 msgid "Property admin"
 msgstr "Gestionnaire des attributs"
 
@@ -1190,8 +1190,8 @@ msgstr "Enregistrer"
 #: src/components/InspectRecipientModal.vue:42
 #: src/components/InspectRecipientModal.vue:43
 #: src/components/InspectRecipientModal.vue:52
-#: src/components/InspectRecipientModal.vue:56
-#: src/components/InspectRecipientModal.vue:67
+#: src/components/InspectRecipientModal.vue:57
+#: src/components/InspectRecipientModal.vue:68
 msgid "Save changes"
 msgstr "Enregistrer"
 
@@ -1338,9 +1338,9 @@ msgid "Technical infos"
 msgstr "Informations techniques"
 
 #: src/components/BankAccountItem.vue:10 src/components/BankAccountItem.vue:15
-#: src/components/BankAccountItem.vue:8 src/components/CurrencyItem.vue:11
-#: src/components/CurrencyItem.vue:14 src/components/CurrencyItem.vue:6
-#: src/components/CurrencyItem.vue:7
+#: src/components/BankAccountItem.vue:19 src/components/BankAccountItem.vue:8
+#: src/components/CurrencyItem.vue:11 src/components/CurrencyItem.vue:14
+#: src/components/CurrencyItem.vue:6 src/components/CurrencyItem.vue:7
 msgid "Temporarily unavailable - please refresh"
 msgstr "Momentanément indisponible - veuillez rafraîchir"
 
@@ -1621,7 +1621,8 @@ msgid "unavailable"
 msgstr "Indisponible"
 
 #: src/components/RecipientInfo.vue:23 src/components/RecipientInfo.vue:24
-#: src/components/RecipientInfo.vue:30 src/components/RecipientInfo.vue:35
+#: src/components/RecipientInfo.vue:27 src/components/RecipientInfo.vue:33
+#: src/components/RecipientInfo.vue:39
 #: src/components/TheBankAccountList.vue:103
 #: src/components/TheBankAccountList.vue:113
 #: src/components/TheBankAccountList.vue:75
@@ -1739,6 +1740,7 @@ msgstr ""
 "annulée"
 
 #: src/components/RecipientInfo.vue:17 src/components/RecipientInfo.vue:18
+#: src/components/RecipientInfo.vue:21
 msgid "User account"
 msgstr "vos comptes"
 
@@ -1746,11 +1748,11 @@ msgstr "vos comptes"
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
-#: src/components/RecipientInfo.vue:209 src/components/RecipientInfo.vue:222
+#: src/components/RecipientInfo.vue:214 src/components/RecipientInfo.vue:227
 msgid "Value is too large."
 msgstr ""
 
-#: src/components/RecipientInfo.vue:212 src/components/RecipientInfo.vue:225
+#: src/components/RecipientInfo.vue:217 src/components/RecipientInfo.vue:230
 #, fuzzy
 msgid "Value must not have more than 2 decimals."
 msgstr "Le montant envoyé doit être un nombre n'ayant pas plus de 2 décimales"

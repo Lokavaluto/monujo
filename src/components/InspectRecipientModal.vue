@@ -44,6 +44,7 @@
         <section class="modal-card-body">
           <RecipientInfo
             :recipient="recipient"
+            :toggleRefreshBadge="toggleRefreshBadge"
             ref="recipientInfo"
             @accountFormChange="handleAccountFormChange"
           />
@@ -99,6 +100,7 @@
         accountForm: null,
         isAccountFormChanged: false,
         isFormValid: false,
+        toggleRefreshBadge: false,
         isActiveAccount: false,
       }
     },
@@ -144,6 +146,7 @@
               err
             )
           }
+          this.toggleRefreshBadge = !this.toggleRefreshBadge
           this.$msg.success(this.$gettext("Account successfully updated"))
         }
       ),

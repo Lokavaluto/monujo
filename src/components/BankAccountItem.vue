@@ -10,7 +10,11 @@
     <div class="custom-inner-card card px-5 py-2 is-flex">
       <div class="is-flex-grow-1 account-title">
         <slot name="name">default name</slot>
-        <Badge v-if="$config.disableBadges !== true" :object="account" />
+        <Badge
+          v-if="$config.disableBadges !== true"
+          :object="account"
+          :toggleRefreshBadge="toggleRefreshBadge"
+        />
         <div v-if="isTemporarilyUnavailable" class="account-backend error-msg">
           {{ $gettext("Temporarily unavailable - please refresh") }}
         </div>
@@ -72,6 +76,7 @@
         class="mt-4 subaccount"
         @accountSelected="$emit('accountSelected', account)"
         :account="account"
+        :toggleRefreshBadge="toggleRefreshBadge"
       >
         <template v-slot:name>{{ account.name() }}</template>
       </BankAccountItem>
@@ -101,6 +106,7 @@
       account: Object,
       showSubAccounts: Boolean,
       disableDropDown: Boolean,
+      toggleRefreshBadge: Boolean,
     },
     data() {
       return {
