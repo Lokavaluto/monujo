@@ -44,6 +44,7 @@
         <section class="modal-card-body">
           <RecipientInfo
             :recipient="recipient"
+            ref="recipientInfo"
             @accountFormChange="handleAccountFormChange"
           />
         </section>
@@ -54,6 +55,14 @@
             is-justify-content-flex-end
           "
         >
+          <button
+            type="button"
+            class="button is-pay is-rounded mr-2"
+            @click="handleCreditMoney"
+            :disabled="!isActiveAccount"
+          >
+            {{ $gettext("Credit money") }}
+          </button>
           <button
             type="button"
             class="button is-pay is-rounded"
@@ -90,6 +99,7 @@
         accountForm: null,
         isAccountFormChanged: false,
         isFormValid: false,
+        isActiveAccount: false,
       }
     },
     created() {
@@ -97,8 +107,12 @@
       this.currency = opts.currency
     },
     methods: {
-      handleClickRecipient(data: any): void {
+      async handleClickRecipient(data: any): Promise<void> {
         this.recipient = data.recipient
+        const account = await this.$lokapi.getAccountFromRecipient(
+          this.recipient
+        )
+        this.isActiveAccount = account.isActiveAccount
         this.$modal.next()
       },
 
@@ -133,6 +147,12 @@
           this.$msg.success(this.$gettext("Account successfully updated"))
         }
       ),
+      handleCreditMoney() {
+        const recipientInfo = this.$refs.recipientInfo as any
+        if (recipientInfo) {
+          recipientInfo.openCreditMoney()
+        }
+      },
     },
   })
   export default class InspectRecipientModal extends Vue {}

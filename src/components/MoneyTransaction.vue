@@ -1,7 +1,21 @@
 <template>
   <div class="is-flex is-flex-direction-column is-justify-content-space-evenly">
     <div class="is-flex is-flex-direction-column custom-amount-input">
-      <div>
+      <div v-if="transactionType === 'adminCredit'">
+        <p class="notification is-danger is-light mb-2">
+          <span class="icon is-small">
+            <fa-icon icon="triangle-exclamation" />
+          </span>
+          {{
+            $gettext(
+              "This is a pledge operation that creates new currency, not a transfer. The total money supply will increase."
+            ) +
+            " " +
+            $gettext("Use only for authorized and exceptional cases.")
+          }}
+        </p>
+      </div>
+      <div v-else>
         <h2 v-if="directionTransfer === 'send'" class="frame3-sub-title mb-3">
           {{ $gettext("From") }}
         </h2>
@@ -19,11 +33,16 @@
       </div>
       <div v-if="selectedRecipient && transactionType !== 'reconversion'">
         <h2 class="frame3-sub-title mb-3">
-          {{ $gettext("To") }}
+          {{
+            transactionType === "adminCredit"
+              ? $gettext("Selected credit recipient")
+              : $gettext("To")
+          }}
         </h2>
         <RecipientItem
           v-if="selectedRecipient"
           :recipient="selectedRecipient"
+          :hideAdminButton="true"
         />
       </div>
       <h2 class="frame3-sub-title mt-3 mb-3">
@@ -92,8 +111,9 @@
         </div>
         <div
           v-if="
-            !['requestPay', 'createRequestPay'].includes(transactionType) &&
-            hasSplitMemoSupport
+            !['requestPay', 'createRequestPay', 'adminCredit'].includes(
+              transactionType
+            ) && hasSplitMemoSupport
           "
         >
           <div class="is-flex mt-3">

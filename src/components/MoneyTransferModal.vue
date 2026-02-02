@@ -35,7 +35,13 @@
               </span>
             </a>
           </span>
-          <p class="modal-card-title is-title-shrink">
+          <p
+            v-if="transactionType === 'adminCredit'"
+            class="modal-card-title is-title-shrink"
+          >
+            {{ $gettext("Credit money") }}
+          </p>
+          <p v-else class="modal-card-title is-title-shrink">
             {{
               transactionType === "reconversion"
                 ? $gettext("Money reconversion")
@@ -160,6 +166,7 @@
     created() {
       const [opts] = this.$modal.args.value
       let { account } = opts
+
       if (account._obj?.getTransactions) {
         account = account._obj
       } else {
@@ -171,6 +178,13 @@
       this.prepareTransactionSignalHandler = null
     },
     mounted() {
+      if (this.$modal.args.value[0]?.transactionType === "adminCredit") {
+        this.transactionType = "adminCredit"
+        this.toPaymentStage({
+          recipient: this.$modal.args.value[0].recipient,
+        })
+      }
+
       if (this.$modal.args.value[0]?.transactionType === "reconversion") {
         this.transactionType = "reconversion"
         this.toPaymentStage({
@@ -241,7 +255,33 @@
           signal: AbortSignal
         ): Promise<boolean | any> {
           let txs
+
+          if (
+            this.transactionType === "adminCredit" &&
+            this.selectedRecipient
+          ) {
+            try {
+              txs = await this.selectedRecipient.preparePledge(
+                this.amount,
+                this.recipientMemo
+              )
+            } catch (err: any) {
+              this.$msg.error(
+                this.$gettext(
+                  "An unexpected issue occurred during the money credit." +
+                    "We are sorry for the inconvenience.",
+                  err
+                )
+              )
+            }
+            this.plannedTransactions = txs
+            this.isReady = true
+
+            return
+          }
+
           try {
+            //preparePledge
             txs = await this.selectedRecipient.prepareTransfer(
               amount.toString(),
               senderMemo,
@@ -422,7 +462,7 @@
         }
       ),
       sendTransaction: applyDecorators(
-        [debounceMethod],
+        [debounceMethod, showSpinnerMethod(".modal-card-body")],
         async function (this: any): Promise<void> {
           const payment = await this._executeTransaction()
           if (payment === false) return

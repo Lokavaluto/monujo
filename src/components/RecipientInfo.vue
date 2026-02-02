@@ -295,6 +295,14 @@
         })
       },
 
+      openCreditMoney() {
+        this.$modal.open("MoneyTransferModal", {
+          recipient: this.recipient,
+          account: this.userAccount,
+          transactionType: "adminCredit",
+          refreshAccounts: () => this.refreshAccounts(),
+        })
+      },
       async refreshAccounts() {
         try {
           this.userAccount = await this.$lokapi.getAccountFromRecipient(
