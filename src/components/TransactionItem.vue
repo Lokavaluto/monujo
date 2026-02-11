@@ -6,6 +6,7 @@
       reconversion: transaction.isReconversion,
       paymentrequest: transaction.isPaymentRequest,
       refused: transaction.isPaymentRequest && transaction.state === 'refused',
+      recurrentcontract: transaction.isRecurrentContract,
       cm: transaction.tags && transaction.tags.includes('barter'),
       'mode-small': mode === 'small',
       'cursor-pointer': mode !== 'small',
@@ -41,7 +42,7 @@
         </h4>
 
         <h5
-          v-if="!transaction.isTopUp && !transaction.isReconversion"
+          v-if="!transaction.isTopUp && !transaction.isReconversion && !transaction.isRecurrentContract"
           class="has-text-grey-light transaction-desc"
         >
           {{ transaction.description }}
@@ -71,21 +72,29 @@
       {{ transaction.related }}
     </div>
     <div
-      v-if="transaction?.pending !== null || transaction?.date !== null"
+      v-if="transaction?.pending !== null || transaction?.date !== null || transaction?.nextExecutionDate !== null"
       class="is-pulled-right right"
     >
       <h5 v-if="mode !== 'small'" class="custom-card-related has-text-right">
-        {{ dateFormat(transaction.date) }}
+        <template v-if="transaction.isRecurrentContract && transaction.nextExecutionDate">
+          {{ formatNextExecutionDate(transaction.nextExecutionDate) }}
+        </template>
+        <template v-else>
+          {{ dateFormat(transaction.date) }}
+        </template>
       </h5>
       <h5 class="status card-paiement-defaut-carte has-text-right mt-1">
-        <span v-if="transaction.date">
+        <span v-if="transaction.isRecurrentContract && transaction.nextExecutionDate">
+          {{ relativeNextExecutionDate(transaction.nextExecutionDate) }}
+        </span>
+        <span v-else-if="transaction.date">
           {{ relativeDateFormat(transaction.date) }}
         </span>
         <span v-if="transaction.isPaymentRequest" class="payment-request-state" :class="transaction.state">
           {{ paymentRequestStateLabel }}
         </span>
         <fa-icon
-          v-else
+          v-else-if="!transaction.isRecurrentContract"
           :class="{
             hide:
               transaction?.pending === true || transaction?.pending === null,
@@ -102,6 +111,7 @@
   import { mapGetters } from "vuex"
   import { mapModuleState } from "@/utils/vuex"
   import { Options, Vue } from "vue-class-component"
+  import moment from "moment"
 
   import WorkflowIndicator from "./WorkflowIndicator.vue"
   @Options({
@@ -109,7 +119,14 @@
     components: {
       WorkflowIndicator,
     },
-    methods: {},
+    methods: {
+      formatNextExecutionDate(dateStr: string): string {
+        return moment(dateStr).format("DD/MM/YYYY")
+      },
+      relativeNextExecutionDate(dateStr: string): string {
+        return moment(dateStr).fromNow()
+      },
+    },
     props: {
       transaction: Object,
       mode: Object,
@@ -238,6 +255,7 @@
         background-color: $tx-refused-bg-color;
       }
     }
+
 
     .left {
       margin-right: auto;
