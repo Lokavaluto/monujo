@@ -20,6 +20,8 @@
   import RecipientTechnicalDetailsModal from "./RecipientTechnicalDetailsModal.vue"
   import PaymentRequestModal from "./PaymentRequestModal.vue"
   import ImportPaymentRequestsModal from "./ImportPaymentRequestsModal.vue"
+  import RecurrentContractModal from "./RecurrentContractModal.vue"
+  import ContractListModal from "./ContractListModal.vue"
 
   @Options({
     name: "Modal",
@@ -35,6 +37,8 @@
       RecipientTechnicalDetailsModal,
       PaymentRequestModal,
       ImportPaymentRequestsModal,
+      RecurrentContractModal,
+      ContractListModal,
     },
     data() {
       return {

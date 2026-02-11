@@ -1574,6 +1574,10 @@ msgstr ""
 msgid "The administrative backend is not up to date."
 msgstr "Le serveur administratif n'est pas à jour."
 
+#: src/components/ContractListRecent.vue:12
+msgid "The following recurrent contracts are active."
+msgstr "Les contrats récurrents suivants sont actifs."
+
 #: src/components/PendingTopUp.vue:33 src/components/PendingTopUp.vue:34
 #: src/components/PendingTopUp.vue:56
 msgid ""
