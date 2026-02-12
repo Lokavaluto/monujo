@@ -5,7 +5,11 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Recurring payment details") }}
+            {{
+              isCreateMode
+                ? $gettext("Create recurring payment")
+                : $gettext("Recurring payment details")
+            }}
           </p>
           <button
             class="delete"
@@ -19,7 +23,11 @@
               {{ statusTitle }}
             </p>
             <div class="confirm-icon-container">
-              <fa-icon icon="sync" class="confirm-icon fa-thin open" />
+              <fa-icon
+                icon="sync"
+                class="confirm-icon fa-thin"
+                :class="isCreateMode ? 'new' : 'open'"
+              />
             </div>
             <div class="amount-details mb-3">
               <p class="amount is-size-3 has-text-weight-bold">
@@ -82,7 +90,7 @@
                 <span v-else> {{ " " }}{{ $gettext("(no end date)") }} </span>
               </p>
             </div>
-            <p class="contract-summary is-size-5 mb-3">
+            <p v-if="!isCreateMode" class="contract-summary is-size-5 mb-3">
               {{ createdOnSentence }}
             </p>
             <p class="contract-guidance is-size-5 mb-3">
@@ -98,7 +106,18 @@
           "
         >
           <button
-            v-if="contractData.isCreator && contractData.state === 'open'"
+            v-if="isCreateMode"
+            class="button custom-button-modal has-text-weight-medium"
+            :disabled="isCreating"
+            @click="createContract()"
+          >
+            <span v-if="isCreating" class="icon">
+              <fa-icon icon="circle-notch" class="refreshing" />
+            </span>
+            <span>{{ $gettext("Create recurring payment") }}</span>
+          </button>
+          <button
+            v-else-if="contractData.isCreator && contractData.state === 'open'"
             class="button custom-button-modal has-text-weight-medium"
             @click="startDelete()"
           >
@@ -167,6 +186,8 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapGetters } from "vuex"
+  import { mapModuleState } from "@/utils/vuex"
+  import { getUserAccount } from "@/utils/account"
   import { UIError } from "../exception"
   import moment from "moment"
 
@@ -175,6 +196,7 @@
     data() {
       return {
         isDeleting: false,
+        isCreating: false,
       }
     },
     mounted() {
@@ -182,11 +204,48 @@
     },
     computed: {
       ...mapGetters(["dateFormat", "numericFormat"]),
+      ...mapModuleState("lokapi", ["userProfile"]),
+
+      mode() {
+        return this.$modal.args.value[0].mode || "view"
+      },
+
+      isCreateMode() {
+        return this.mode === "create"
+      },
+
+      isRequestMode() {
+        return this.$modal.args.value[0].requestMode === true
+      },
+
       contract() {
         return this.$modal.args.value[0].contract
       },
 
       contractData() {
+        if (this.isCreateMode) {
+          const args = this.$modal.args.value[0]
+          const senderName = this.isRequestMode
+            ? args.selectedSender?.name || ""
+            : this.userProfile?.name || ""
+          const receiverName = this.isRequestMode
+            ? this.userProfile?.name || ""
+            : args.selectedRecipient?.name || ""
+          return {
+            amount: args.amount,
+            message: args.senderMemo,
+            state: "new",
+            senderName,
+            receiverName,
+            creatorName: this.userProfile?.name || "",
+            dateStart: args.dateStart,
+            dateEnd: args.dateEnd,
+            recurringRuleType: args.recurringRuleType,
+            recurringInterval: args.recurringInterval,
+            nextExecutionDate: null,
+            isCreator: true,
+          }
+        }
         return this.contract
       },
 
@@ -195,7 +254,9 @@
       },
 
       statusTitle() {
-        return this.$gettext("Active recurring payment")
+        return this.isCreateMode
+          ? this.$gettext("New recurring payment")
+          : this.$gettext("Active recurring payment")
       },
 
       createdOnSentence() {
@@ -204,6 +265,11 @@
       },
 
       contractGuidance() {
+        if (this.isCreateMode) {
+          return this.$gettext(
+            "This operation will be automatically repeated at the selected frequency."
+          )
+        }
         if (this.contractData.isCreator) {
           return this.$gettext(
             "This operation is automatically repeated at the selected frequency. You can delete this recurring payment to stop future operations."
@@ -215,7 +281,9 @@
       },
 
       nextOccurrenceDate() {
-        return this.contractData.nextExecutionDate
+        return this.isCreateMode
+          ? this.contractData.dateStart
+          : this.contractData.nextExecutionDate
       },
 
       recurrencePaymentLabel() {
@@ -285,6 +353,79 @@
           this.isDeleting = false
         }
       },
+
+      async createContract() {
+        if (this.isCreating) return
+        this.isCreating = true
+
+        const args = this.$modal.args.value[0]
+
+        let accountObj
+        try {
+          accountObj = getUserAccount(args.account)
+        } catch (err) {
+          this.isCreating = false
+          throw new UIError(
+            this.$gettext(
+              "Failed to create recurring payment. Please try again or contact your administrator."
+            ),
+            err
+          )
+        }
+
+        let senderWalletUri, receiverWalletUri
+        if (args.requestMode) {
+          senderWalletUri = args.selectedSender.userAccountInternalId
+          receiverWalletUri = accountObj.internalId
+        } else {
+          senderWalletUri = accountObj.internalId
+          receiverWalletUri = args.selectedRecipient.userAccountInternalId
+        }
+
+        let contractIds
+        try {
+          contractIds = await accountObj.createRecurrentContract([
+            {
+              sender_wallet_uri: senderWalletUri,
+              receiver_wallet_uri: receiverWalletUri,
+              amount: parseFloat(args.amount),
+              message: args.senderMemo || null,
+              date_start: args.dateStart,
+              date_end: args.dateEnd || null,
+              recurring_rule_type: args.recurringRuleType,
+              recurring_interval: args.recurringInterval,
+            },
+          ])
+        } catch (err) {
+          this.isCreating = false
+          throw new UIError(
+            this.$gettext(
+              "Failed to create recurring payment. Please try again or contact your administrator."
+            ),
+            err
+          )
+        }
+
+        if (!contractIds || contractIds.length === 0) {
+          this.isCreating = false
+          throw new UIError(
+            this.$gettext(
+              "Failed to create recurring payment. Please try again or contact your administrator."
+            ),
+            new Error("No recurring payment ID returned")
+          )
+        }
+
+        this.$msg.success(
+          this.$gettext("Recurring payment created successfully")
+        )
+
+        if (args.refreshTransaction) args.refreshTransaction()
+        if (args.refreshAccounts) args.refreshAccounts(true)
+
+        this.$modal.close()
+        this.$router.push({ name: "dashboard" })
+      },
     },
   })
   export default class RecurrentContractModal extends Vue {}
@@ -305,7 +446,8 @@
   .confirm-icon {
     font-size: 4em;
 
-    &.open {
+    &.open,
+    &.new {
       color: $color-2;
     }
   }

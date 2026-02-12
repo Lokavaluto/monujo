@@ -12,12 +12,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/components/RecurrentContractModal.vue:70
-#: src/components/RecurrentContractModal.vue:71
+#: src/components/RecurrentContractModal.vue:74
 #: src/components/RecurrentContractModal.vue:75
-#: src/components/RecurrentContractModal.vue:82
+#: src/components/RecurrentContractModal.vue:79
+#: src/components/RecurrentContractModal.vue:90
 msgid "(no end date)"
 msgstr "(sans date de fin)"
+
+#: src/components/RecurrenceOptions.vue:46
+#: src/components/RecurrenceOptions.vue:47
+#: src/components/RecurrenceOptions.vue:74
+msgid "(optional)"
+msgstr "(facultative)"
 
 #: src/components/AboutModal.vue:70
 msgid ""
@@ -45,7 +51,7 @@ msgid_plural "%{ count } payment requests were created successfully."
 msgstr[0] "%{ count } demande de paiement a été créée avec succès."
 msgstr[1] "%{ count } demandes de paiement ont été créées avec succès."
 
-#: src/components/MoneyTransferModal.vue:534
+#: src/components/MoneyTransferModal.vue:580
 msgid "%{ name } was added to your favorite list"
 msgstr "%{ name } a bien été ajouté en favori"
 
@@ -61,7 +67,7 @@ msgid_plural "%{ pinLength } digits"
 msgstr[0] "%{ pinLength } chiffre"
 msgstr[1] "%{ pinLength } chiffres"
 
-#: src/components/RecurrentContractModal.vue:222
+#: src/components/RecurrentContractModal.vue:290
 msgid "%{ recurrence } payments"
 msgstr "Fréquence : %{ recurrence }"
 
@@ -80,6 +86,10 @@ msgstr[1] "%{nbTopUp} rechargements"
 #: src/utils/pdf.ts:1042
 msgid "%{nbTransactions} transactions"
 msgstr "%{nbTransactions} opérations"
+
+#: src/components/RecurrenceOptions.vue:27
+msgid "1"
+msgstr "1"
 
 #: src/components/AboutModal.vue:85 src/components/TheNavBar.vue:116
 #: src/components/TheNavBar.vue:71 src/components/TheNavBar.vue:72
@@ -137,11 +147,11 @@ msgstr "Type de compte"
 msgid "Account type:"
 msgstr "Type de compte :"
 
-#: src/components/RecurrentContractModal.vue:198
+#: src/components/RecurrentContractModal.vue:259
 msgid "Active recurring payment"
 msgstr "Paiement récurrent actif"
 
-#: src/components/MoneyTransferModal.vue:520
+#: src/components/MoneyTransferModal.vue:566
 msgid "Add"
 msgstr "Ajouter"
 
@@ -165,7 +175,7 @@ msgstr "Ajouter une référence du paiement pour le destinataire"
 msgid "Add an explanation..."
 msgstr "Ajouter une explication…"
 
-#: src/components/MoneyTransferModal.vue:514
+#: src/components/MoneyTransferModal.vue:560
 msgid "Add as favorite"
 msgstr "Ajouter aux favoris"
 
@@ -356,7 +366,7 @@ msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
 "transactions"
 
-#: src/components/MoneyTransferModal.vue:268
+#: src/components/MoneyTransferModal.vue:314
 msgid ""
 "An unexpected issue occurred during the money credit.We are sorry for the "
 "inconvenience."
@@ -364,7 +374,7 @@ msgstr ""
 "Une erreur inattendue est survenue pendant le crédit. Veuillez nous excuser "
 "pour la gêne occasionnée."
 
-#: src/components/MoneyTransferModal.vue:446
+#: src/components/MoneyTransferModal.vue:492
 msgid ""
 "An unexpected issue occurred during the money transfer. We are sorry for the "
 "inconvenience."
@@ -386,7 +396,7 @@ msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
 "serveur distant."
 
-#: src/components/MoneyTransferModal.vue:299
+#: src/components/MoneyTransferModal.vue:345
 msgid ""
 "An unexpected issue occurred while checking available funds. The transaction "
 "was not sent. We are sorry for the inconvenience."
@@ -533,10 +543,10 @@ msgstr "Valider"
 msgid "Archive"
 msgstr "Archiver"
 
-#: src/components/RecurrentContractModal.vue:112
-#: src/components/RecurrentContractModal.vue:113
-#: src/components/RecurrentContractModal.vue:130
-#: src/components/RecurrentContractModal.vue:134
+#: src/components/RecurrentContractModal.vue:122
+#: src/components/RecurrentContractModal.vue:123
+#: src/components/RecurrentContractModal.vue:149
+#: src/components/RecurrentContractModal.vue:153
 msgid "Are you sure you want to delete this recurring payment?"
 msgstr "Voulez-vous vraiment supprimer ce paiement récurrent ?"
 
@@ -686,7 +696,7 @@ msgstr "Confirmez votre mot de passe"
 msgid "Connection successful"
 msgstr "Connection réussie"
 
-#: src/components/MoneyTransferModal.vue:420
+#: src/components/MoneyTransferModal.vue:466
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
@@ -740,11 +750,35 @@ msgstr "Créer ou importer mon portefeuille"
 msgid "Create payment requests"
 msgstr "Créer les demandes de paiement"
 
-#: src/components/MoneyRequestModal.vue:128
-#: src/components/MoneyRequestModal.vue:129
-#: src/components/MoneyRequestModal.vue:150
-#: src/components/MoneyRequestModal.vue:154
-#: src/components/MoneyRequestModal.vue:160
+#: src/components/MoneyRequestModal.vue:43
+#: src/components/MoneyRequestModal.vue:44
+#: src/components/MoneyRequestModal.vue:57
+#: src/components/MoneyRequestModal.vue:72
+#: src/components/MoneyRequestModal.vue:77
+#: src/components/MoneyTransferModal.vue:122
+#: src/components/MoneyTransferModal.vue:134
+#: src/components/MoneyTransferModal.vue:140
+#: src/components/MoneyTransferModal.vue:90
+#: src/components/MoneyTransferModal.vue:91
+#: src/components/MoneyTransferModal.vue:94
+msgid "Create recurrence payment"
+msgstr "Créer le paiement récurrent"
+
+#: src/components/RecurrentContractModal.vue:10
+#: src/components/RecurrentContractModal.vue:106
+#: src/components/RecurrentContractModal.vue:112
+#: src/components/RecurrentContractModal.vue:117
+#: src/components/RecurrentContractModal.vue:9
+#: src/components/RecurrentContractModal.vue:94
+#: src/components/RecurrentContractModal.vue:95
+msgid "Create recurring payment"
+msgstr "Créer un paiement récurrent"
+
+#: src/components/MoneyRequestModal.vue:130
+#: src/components/MoneyRequestModal.vue:131
+#: src/components/MoneyRequestModal.vue:164
+#: src/components/MoneyRequestModal.vue:168
+#: src/components/MoneyRequestModal.vue:174
 msgid "Create request"
 msgstr "Créer la demande"
 
@@ -753,7 +787,7 @@ msgid "Created by %{creator}"
 msgstr "Créée par %{creator}"
 
 #: src/components/PaymentRequestModal.vue:282
-#: src/components/RecurrentContractModal.vue:203
+#: src/components/RecurrentContractModal.vue:264
 msgid "Created on %{date}"
 msgstr "Date de création : %{date}"
 
@@ -795,7 +829,7 @@ msgstr "Format du fichier CSV"
 msgid "Currency:"
 msgstr "Monnaie :"
 
-#: src/components/RecurrentContractModal.vue:229
+#: src/components/RecurrentContractModal.vue:297
 msgid "Daily"
 msgstr "Quotidien"
 
@@ -815,38 +849,49 @@ msgstr "Date"
 
 #: src/components/ContractListModal.vue:236
 #: src/components/PaymentRequestListModal.vue:236
-#: src/components/RecurrentContractModal.vue:240
+#: src/components/RecurrentContractModal.vue:308
 #: src/components/TransactionList.vue:241
 msgid "day"
 msgid_plural "days"
 msgstr[0] "jour"
 msgstr[1] "jours"
 
+#: src/components/RecurrenceOptions.vue:25
+#: src/components/RecurrenceOptions.vue:26
+#: src/components/RecurrenceOptions.vue:35
+#: src/components/RecurrenceOptions.vue:36
+msgid "Day(s)"
+msgstr "Jour(s)"
+
 #: src/utils/pdf.ts:193
 msgid "Debit"
 msgstr "Débit"
+
+#: src/components/RecurrenceOptions.vue:29
+msgid "Decrease frequency"
+msgstr "Diminuer la fréquence"
 
 #: src/components/ConfirmPaymentModal.vue:114
 #: src/components/ConfirmPaymentModal.vue:115
 #: src/components/ConfirmPaymentModal.vue:137
 #: src/components/ConfirmPaymentModal.vue:143
 #: src/components/ConfirmPaymentModal.vue:147
-#: src/components/RecurrentContractModal.vue:101
-#: src/components/RecurrentContractModal.vue:105
-#: src/components/RecurrentContractModal.vue:131
-#: src/components/RecurrentContractModal.vue:132
-#: src/components/RecurrentContractModal.vue:149
-#: src/components/RecurrentContractModal.vue:155
-#: src/components/RecurrentContractModal.vue:159
-#: src/components/RecurrentContractModal.vue:87
-#: src/components/RecurrentContractModal.vue:88
-#: src/components/RecurrentContractModal.vue:95
+#: src/components/RecurrentContractModal.vue:109
+#: src/components/RecurrentContractModal.vue:120
+#: src/components/RecurrentContractModal.vue:124
+#: src/components/RecurrentContractModal.vue:141
+#: src/components/RecurrentContractModal.vue:142
+#: src/components/RecurrentContractModal.vue:168
+#: src/components/RecurrentContractModal.vue:174
+#: src/components/RecurrentContractModal.vue:178
+#: src/components/RecurrentContractModal.vue:97
+#: src/components/RecurrentContractModal.vue:98
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/components/RecurrentContractModal.vue:103
-#: src/components/RecurrentContractModal.vue:104
-#: src/components/RecurrentContractModal.vue:121
+#: src/components/RecurrentContractModal.vue:113
+#: src/components/RecurrentContractModal.vue:114
+#: src/components/RecurrentContractModal.vue:140
 msgid "Delete recurring payment"
 msgstr "Supprimer le paiement récurrent"
 
@@ -884,7 +929,7 @@ msgstr "Comptes désactivés"
 msgid "Discard"
 msgstr "Annuler"
 
-#: src/components/MoneyTransferModal.vue:515
+#: src/components/MoneyTransferModal.vue:561
 msgid "Do you want to add %{ name } to your favorite list ?"
 msgstr "Voulez vous ajouter %{ name } aux favoris ?"
 
@@ -925,9 +970,9 @@ msgstr "Télécharger le fichier CSV"
 msgid "Download PDF file"
 msgstr "Télécharger le fichier PDF"
 
-#: src/components/MoneyRequestModal.vue:115
-#: src/components/MoneyRequestModal.vue:89
-#: src/components/MoneyRequestModal.vue:90
+#: src/components/MoneyRequestModal.vue:129
+#: src/components/MoneyRequestModal.vue:91
+#: src/components/MoneyRequestModal.vue:92
 msgid "Draft"
 msgstr "Brouillon"
 
@@ -965,12 +1010,19 @@ msgstr "Activer le login biométrique"
 msgid "Enabled"
 msgstr "Actif"
 
+#: src/components/RecurrenceOptions.vue:45
+#: src/components/RecurrenceOptions.vue:46
+#: src/components/RecurrenceOptions.vue:73
+#: src/components/RecurrenceOptions.vue:88
+msgid "End date"
+msgstr "Date de fin"
+
 #: src/components/AuthChallengeDirect.vue:2
 #: src/components/AuthChallengeDirect.vue:3
 msgid "Enter your password"
 msgstr "Entrez votre mot de passe"
 
-#: src/components/RecurrentContractModal.vue:245
+#: src/components/RecurrentContractModal.vue:313
 msgid "Every %{ interval } %{ unit }"
 msgstr "Tous les %{ interval } %{ unit }"
 
@@ -1009,7 +1061,7 @@ msgstr "Exporter le portefeuille"
 msgid "Failed authentication. Please try again."
 msgstr "Échec de l'authentification. Veuillez ré-essayer."
 
-#: src/components/MoneyRequestModal.vue:275
+#: src/components/MoneyRequestModal.vue:329
 msgid ""
 "Failed to create payment request. Please try again or contact your "
 "administrator."
@@ -1033,7 +1085,17 @@ msgid ""
 msgstr ""
 "Impossible de créer les demandes de paiement. Vérifiez l’erreur et réessayez."
 
-#: src/components/RecurrentContractModal.vue:279
+#: src/components/RecurrentContractModal.vue:369
+#: src/components/RecurrentContractModal.vue:402
+#: src/components/RecurrentContractModal.vue:412
+msgid ""
+"Failed to create recurring payment. Please try again or contact your "
+"administrator."
+msgstr ""
+"La création du paiement récurrent a échoué. Veuillez réessayer ou contacter "
+"votre administrateur."
+
+#: src/components/RecurrentContractModal.vue:347
 msgid ""
 "Failed to delete recurring payment. Please try again or contact your "
 "administrator."
@@ -1094,27 +1156,32 @@ msgstr "pour le compte %{ name }"
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
+#: src/components/RecurrenceOptions.vue:28
+msgid "Frequency interval"
+msgstr "Intervalle de fréquence"
+
 #: src/components/ConfirmPaymentModal.vue:449
-#: src/components/MoneyRequestModal.vue:102
-#: src/components/MoneyRequestModal.vue:103
-#: src/components/MoneyRequestModal.vue:128
+#: src/components/MoneyRequestModal.vue:104
+#: src/components/MoneyRequestModal.vue:105
+#: src/components/MoneyRequestModal.vue:142
 #: src/components/PaymentRequestModal.vue:32
 #: src/components/PaymentRequestModal.vue:33
 #: src/components/PaymentRequestModal.vue:37
 #: src/components/PaymentRequestModal.vue:41
-#: src/components/RecurrentContractModal.vue:27
-#: src/components/RecurrentContractModal.vue:28
+#: src/components/RecurrentContractModal.vue:31
 #: src/components/RecurrentContractModal.vue:32
+#: src/components/RecurrentContractModal.vue:36
+#: src/components/RecurrentContractModal.vue:40
 #: src/components/TransactionItem.vue:263
 msgid "from"
 msgstr "De"
 
 #: src/components/MoneyTransaction.vue:19
 #: src/components/MoneyTransaction.vue:20
-#: src/components/RecurrentContractModal.vue:63
-#: src/components/RecurrentContractModal.vue:64
+#: src/components/RecurrentContractModal.vue:67
 #: src/components/RecurrentContractModal.vue:68
-#: src/components/RecurrentContractModal.vue:75
+#: src/components/RecurrentContractModal.vue:72
+#: src/components/RecurrentContractModal.vue:83
 msgid "From"
 msgstr "Depuis"
 
@@ -1126,11 +1193,12 @@ msgstr "De / À"
 msgid "General user account info"
 msgstr "Informations generales du compte"
 
-#: src/components/MoneyRequestModal.vue:41
-#: src/components/MoneyRequestModal.vue:42
-#: src/components/MoneyRequestModal.vue:47
-#: src/components/MoneyRequestModal.vue:53
-#: src/components/MoneyRequestModal.vue:63
+#: src/components/MoneyRequestModal.vue:35
+#: src/components/MoneyRequestModal.vue:36
+#: src/components/MoneyRequestModal.vue:49
+#: src/components/MoneyRequestModal.vue:55
+#: src/components/MoneyRequestModal.vue:59
+#: src/components/MoneyRequestModal.vue:64
 msgid "Generate request"
 msgstr "Générer la demande"
 
@@ -1175,6 +1243,10 @@ msgstr "Importer des demandes de paiement"
 msgid "Inactive accounts"
 msgstr "Comptes désactivés"
 
+#: src/components/RecurrenceOptions.vue:30
+msgid "Increase frequency"
+msgstr "Augmenter la fréquence"
+
 #: src/components/TheDashboardFooter.vue:11
 #: src/components/TheDashboardFooter.vue:19
 #: src/components/TheDashboardFooter.vue:20
@@ -1182,7 +1254,7 @@ msgstr "Comptes désactivés"
 msgid "Inspect"
 msgstr "Inspecter"
 
-#: src/components/MoneyTransferModal.vue:315
+#: src/components/MoneyTransferModal.vue:361
 msgid ""
 "Insufficient balance. You only have %{ safeAmount } %{ currency } available "
 "to spend."
@@ -1223,7 +1295,7 @@ msgstr "Préférences de langue"
 msgid "Lastname"
 msgstr "Nom"
 
-#: src/components/MoneyTransferModal.vue:521
+#: src/components/MoneyTransferModal.vue:567
 msgid "Later"
 msgstr "Plus tard"
 
@@ -1301,14 +1373,21 @@ msgstr "Reconversion"
 
 #: src/components/ContractListModal.vue:238
 #: src/components/PaymentRequestListModal.vue:238
-#: src/components/RecurrentContractModal.vue:242
+#: src/components/RecurrentContractModal.vue:310
 #: src/components/TransactionList.vue:243
 msgid "month"
 msgid_plural "months"
 msgstr[0] "mois"
 msgstr[1] "mois"
 
-#: src/components/RecurrentContractModal.vue:231
+#: src/components/RecurrenceOptions.vue:27
+#: src/components/RecurrenceOptions.vue:28
+#: src/components/RecurrenceOptions.vue:37
+#: src/components/RecurrenceOptions.vue:38
+msgid "Month(s)"
+msgstr "Mois"
+
+#: src/components/RecurrentContractModal.vue:299
 msgid "Monthly"
 msgstr "Mensuel"
 
@@ -1348,6 +1427,10 @@ msgstr "Mes demandes de crédit non payées"
 msgid "Name, email address or phone number"
 msgstr "Nom, adresse email ou téléphone"
 
+#: src/components/RecurrentContractModal.vue:258
+msgid "New recurring payment"
+msgstr "Nouveau paiement récurrent"
+
 #: src/components/MoneyCreditModal.vue:33
 #: src/components/MoneyCreditModal.vue:34
 #: src/components/MoneyCreditModal.vue:46
@@ -1365,10 +1448,10 @@ msgstr "Suivant"
 msgid "Next payment period:"
 msgstr "Période du prochain paiement :"
 
-#: src/components/RecurrentContractModal.vue:54
-#: src/components/RecurrentContractModal.vue:55
+#: src/components/RecurrentContractModal.vue:58
 #: src/components/RecurrentContractModal.vue:59
 #: src/components/RecurrentContractModal.vue:63
+#: src/components/RecurrentContractModal.vue:71
 msgid "Next:"
 msgstr "Prochaine exécution :"
 
@@ -1514,7 +1597,7 @@ msgstr "Le mot de passe entré n'est pas identique"
 msgid "Pay"
 msgstr "Payer"
 
-#: src/components/MoneyTransferModal.vue:488
+#: src/components/MoneyTransferModal.vue:534
 msgid ""
 "Payment completed but failed to update the request status. Please contact "
 "your administrator."
@@ -1543,7 +1626,7 @@ msgstr "Montant de la demande de paiement"
 msgid "Payment request cancelled"
 msgstr "Demande de paiement annulée."
 
-#: src/components/MoneyRequestModal.vue:285
+#: src/components/MoneyRequestModal.vue:339
 msgid "Payment request created successfully"
 msgstr "Demande de paiement créée avec succès."
 
@@ -1556,7 +1639,7 @@ msgstr "Détails de la demande de paiement"
 msgid "Payment request paid"
 msgstr "Demande de paiement payée"
 
-#: src/components/MoneyTransferModal.vue:484
+#: src/components/MoneyTransferModal.vue:530
 msgid "Payment request paid successfully"
 msgstr "Demande de paiement réglée avec succès."
 
@@ -1657,7 +1740,7 @@ msgstr ""
 "Veuillez remplir les champs ci-dessous et cliquer sur le bouton Inscription "
 "pour créer votre compte."
 
-#: src/components/MoneyTransferModal.vue:415
+#: src/components/MoneyTransferModal.vue:461
 msgid ""
 "Please make sure to double check in the transaction list if this transaction "
 "appears in the near future. "
@@ -1675,7 +1758,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/MoneyRequestModal.vue:244 src/main.ts:376
+#: src/components/MoneyRequestModal.vue:298 src/main.ts:376
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
@@ -1727,15 +1810,15 @@ msgstr "Profil"
 msgid "Property admin"
 msgstr "Gestionnaire des attributs"
 
+#: src/components/MoneyRequestModal.vue:29
 #: src/components/MoneyRequestModal.vue:30
-#: src/components/MoneyRequestModal.vue:31
-#: src/components/MoneyRequestModal.vue:36
-#: src/components/MoneyRequestModal.vue:38
-#: src/components/MoneyRequestModal.vue:47 src/main.ts:371 src/main.ts:375
+#: src/components/MoneyRequestModal.vue:43
+#: src/components/MoneyRequestModal.vue:49
+#: src/components/MoneyRequestModal.vue:53 src/main.ts:371 src/main.ts:375
 msgid "QR code"
 msgstr "Code QR"
 
-#: src/components/MoneyRequestModal.vue:231
+#: src/components/MoneyRequestModal.vue:285
 msgid "QR code - Payment request to %{ name } of %{ amount } %{ currency }"
 msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
 
@@ -1753,7 +1836,7 @@ msgstr "reçue"
 msgid "Received %{amount}"
 msgstr "%{amount} reçu"
 
-#: src/components/MoneyTransferModal.vue:369
+#: src/components/MoneyTransferModal.vue:415
 msgid ""
 "Recipient can not receive this much mutual currency unit. You can lower your "
 "transaction amount underneath %{ safeAmount } %{ currency } so-as to avoid "
@@ -1782,12 +1865,12 @@ msgstr "Destinataire de paiement info"
 msgid "Recipient Selector"
 msgstr "Selection du destinataire de paiement"
 
-#: src/components/MoneyTransferModal.vue:100
-#: src/components/MoneyTransferModal.vue:106
-#: src/components/MoneyTransferModal.vue:111
-#: src/components/MoneyTransferModal.vue:76
-#: src/components/MoneyTransferModal.vue:77
+#: src/components/MoneyTransferModal.vue:112
+#: src/components/MoneyTransferModal.vue:118
+#: src/components/MoneyTransferModal.vue:124
 #: src/components/MoneyTransferModal.vue:80
+#: src/components/MoneyTransferModal.vue:81
+#: src/components/MoneyTransferModal.vue:84
 #: src/components/TransactionItem.vue:20 src/components/TransactionItem.vue:30
 #: src/components/TransactionItem.vue:32 src/components/TransactionItem.vue:35
 #: src/utils/pdf.ts:149
@@ -1806,12 +1889,16 @@ msgstr "Détails de la reconversion"
 msgid "reconvertible"
 msgstr "reconvertible"
 
-#: src/components/RecurrentContractModal.vue:269
+#: src/components/RecurrentContractModal.vue:420
+msgid "Recurring payment created successfully"
+msgstr "Paiement récurrent créé avec succès"
+
+#: src/components/RecurrentContractModal.vue:337
 msgid "Recurring payment deleted successfully"
 msgstr "Paiement récurrent supprimé avec succès"
 
-#: src/components/RecurrentContractModal.vue:7
-#: src/components/RecurrentContractModal.vue:8
+#: src/components/RecurrentContractModal.vue:10
+#: src/components/RecurrentContractModal.vue:11
 msgid "Recurring payment details"
 msgstr "Détails du paiement récurrent"
 
@@ -1869,6 +1956,11 @@ msgstr "Demandes refusées uniquement"
 msgid "Remove file"
 msgstr "Retirer le fichier"
 
+#: src/components/RecurrenceOptions.vue:19
+#: src/components/RecurrenceOptions.vue:20
+msgid "Repeat every"
+msgstr "Répéter tous les"
+
 #: src/components/TheDashboardFooter.vue:55
 #: src/components/TheDashboardFooter.vue:56
 #: src/components/TheDashboardFooter.vue:57
@@ -1882,15 +1974,15 @@ msgstr "Recevoir"
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/components/MoneyRequestModal.vue:104
-#: src/components/MoneyRequestModal.vue:243
-#: src/components/MoneyRequestModal.vue:58
-#: src/components/MoneyRequestModal.vue:59
-#: src/components/MoneyRequestModal.vue:78
-#: src/components/MoneyRequestModal.vue:79
+#: src/components/MoneyRequestModal.vue:118
+#: src/components/MoneyRequestModal.vue:297
+#: src/components/MoneyRequestModal.vue:60
+#: src/components/MoneyRequestModal.vue:61
 #: src/components/MoneyRequestModal.vue:8
 #: src/components/MoneyRequestModal.vue:80
+#: src/components/MoneyRequestModal.vue:81
 #: src/components/MoneyRequestModal.vue:9
+#: src/components/MoneyRequestModal.vue:94
 msgid "Request money"
 msgstr "Recevoir"
 
@@ -2010,12 +2102,12 @@ msgstr "Destinataire du crédit sélectionné"
 #: src/components/AuthChallengeDirect.vue:13
 #: src/components/AuthChallengeDirect.vue:7
 #: src/components/AuthChallengeDirect.vue:8
-#: src/components/MoneyTransferModal.vue:101
-#: src/components/MoneyTransferModal.vue:107
-#: src/components/MoneyTransferModal.vue:112
-#: src/components/MoneyTransferModal.vue:77
-#: src/components/MoneyTransferModal.vue:78
+#: src/components/MoneyTransferModal.vue:113
+#: src/components/MoneyTransferModal.vue:119
+#: src/components/MoneyTransferModal.vue:125
 #: src/components/MoneyTransferModal.vue:81
+#: src/components/MoneyTransferModal.vue:82
+#: src/components/MoneyTransferModal.vue:85
 msgid "Send"
 msgstr "Envoyer"
 
@@ -2038,6 +2130,14 @@ msgstr "envoyée"
 #: src/components/ConfirmPaymentModal.vue:398
 msgid "Sent %{amount}"
 msgstr "%{amount} envoyé"
+
+#: src/components/MoneyTransferModal.vue:97
+msgid "Set up a recurring payment"
+msgstr "Configurer un paiement récurrent"
+
+#: src/components/MoneyRequestModal.vue:33
+msgid "Set up a recurring request"
+msgstr "Configurer une demande récurrente"
 
 #: src/components/RecipientInfo.vue:111 src/components/RecipientInfo.vue:117
 #: src/components/RecipientInfo.vue:120 src/components/RecipientInfo.vue:134
@@ -2138,11 +2238,18 @@ msgstr "Authentification simplifiée sur ce périphérique"
 msgid "Source"
 msgstr "Source"
 
+#: src/components/RecurrenceOptions.vue:36
+#: src/components/RecurrenceOptions.vue:37
+#: src/components/RecurrenceOptions.vue:51
+#: src/components/RecurrenceOptions.vue:66
+msgid "Start date"
+msgstr "Date de début"
+
 #: src/components/TransactionList.vue:414
 msgid "Target"
 msgstr "Destination"
 
-#: src/components/MoneyTransferModal.vue:435
+#: src/components/MoneyTransferModal.vue:481
 msgid "Target account is inactive."
 msgstr "Le compte destinataire du tranfert est désactivé."
 
@@ -2261,7 +2368,7 @@ msgstr ""
 msgid "The following top up requests needs to be paid or canceled"
 msgstr "Les demandes de rechargement suivantes doivent être payées ou annulées"
 
-#: src/components/MoneyTransferModal.vue:342
+#: src/components/MoneyTransferModal.vue:388
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -2271,7 +2378,7 @@ msgstr ""
 "garantir que ce paiement puisse être envoyé, vous devez attendre le "
 "traitement de ces transactions en attente."
 
-#: src/components/MoneyTransferModal.vue:326
+#: src/components/MoneyTransferModal.vue:372
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -2286,7 +2393,7 @@ msgstr ""
 "%{ realBal } %{ currency }. Si le problème persiste, veuillez contacter un "
 "administrateur."
 
-#: src/components/MoneyTransferModal.vue:353
+#: src/components/MoneyTransferModal.vue:399
 msgid ""
 "The last transactions were not yet all processed. To ensure that this "
 "payment can be sent, you need to wait for these pending transactions to be "
@@ -2335,7 +2442,7 @@ msgstr "Votre demande de rechargement a été supprimée"
 msgid "The Top-up request has been successfully payed"
 msgstr "Votre demande de rechargement a été traitée avec succès"
 
-#: src/components/MoneyTransferModal.vue:411
+#: src/components/MoneyTransferModal.vue:457
 msgid "The transaction was sent but no confirmation was received. "
 msgstr "La transaction a été envoyée mais aucune confirmation n'a été reçue."
 
@@ -2357,10 +2464,10 @@ msgstr ""
 "compte.\n"
 "Voulez-vous continuer ?"
 
-#: src/components/RecurrentContractModal.vue:118
-#: src/components/RecurrentContractModal.vue:119
-#: src/components/RecurrentContractModal.vue:136
-#: src/components/RecurrentContractModal.vue:140
+#: src/components/RecurrentContractModal.vue:128
+#: src/components/RecurrentContractModal.vue:129
+#: src/components/RecurrentContractModal.vue:155
+#: src/components/RecurrentContractModal.vue:159
 msgid "This action cannot be undone."
 msgstr "Cette action est irréversible."
 
@@ -2376,12 +2483,12 @@ msgstr ""
 "Ceci est une opération de création monétaire, pas un transfert. Le\n"
 "compte total d'unité monétaire de la monnaie va s'accroître."
 
-#: src/components/RecurrentContractModal.vue:212
+#: src/components/RecurrentContractModal.vue:278
 msgid "This operation is automatically repeated at the selected frequency."
 msgstr ""
 "Cette opération est automatiquement répétée à la fréquence sélectionnée."
 
-#: src/components/RecurrentContractModal.vue:208
+#: src/components/RecurrentContractModal.vue:274
 msgid ""
 "This operation is automatically repeated at the selected frequency. You can "
 "delete this recurring payment to stop future operations."
@@ -2389,6 +2496,12 @@ msgstr ""
 "Cette opération est automatiquement répétée à la fréquence sélectionnée. "
 "Vous pouvez supprimer ce paiement récurrent pour arrêter les prochaines "
 "opérations."
+
+#: src/components/RecurrentContractModal.vue:269
+msgid ""
+"This operation will be automatically repeated at the selected frequency."
+msgstr ""
+"Cette opération sera automatiquement répétée à la fréquence sélectionnée."
 
 #: src/components/PaymentRequestModal.vue:312
 msgid "This payment request has been cancelled and can no longer be paid."
@@ -2457,21 +2570,21 @@ msgstr ""
 "disponible sur ce serveur."
 
 #: src/components/ConfirmPaymentModal.vue:448
-#: src/components/MoneyRequestModal.vue:106
-#: src/components/MoneyRequestModal.vue:107
-#: src/components/MoneyRequestModal.vue:132
+#: src/components/MoneyRequestModal.vue:108
+#: src/components/MoneyRequestModal.vue:109
+#: src/components/MoneyRequestModal.vue:146
 #: src/components/PaymentRequestModal.vue:43
 #: src/components/PaymentRequestModal.vue:44
 #: src/components/PaymentRequestModal.vue:48
 #: src/components/PaymentRequestModal.vue:54
-#: src/components/RecurrentContractModal.vue:38
-#: src/components/RecurrentContractModal.vue:39
+#: src/components/RecurrentContractModal.vue:42
 #: src/components/RecurrentContractModal.vue:43
-#: src/components/RecurrentContractModal.vue:45
-#: src/components/RecurrentContractModal.vue:67
-#: src/components/RecurrentContractModal.vue:68
+#: src/components/RecurrentContractModal.vue:47
+#: src/components/RecurrentContractModal.vue:53
+#: src/components/RecurrentContractModal.vue:71
 #: src/components/RecurrentContractModal.vue:72
-#: src/components/RecurrentContractModal.vue:79
+#: src/components/RecurrentContractModal.vue:76
+#: src/components/RecurrentContractModal.vue:87
 #: src/components/TransactionItem.vue:262
 msgid "to"
 msgstr "à"
@@ -2588,7 +2701,7 @@ msgstr "Opération traitée"
 msgid "Transaction sent"
 msgstr "Opération envoyée"
 
-#: src/components/MoneyTransferModal.vue:428
+#: src/components/MoneyTransferModal.vue:474
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -2632,7 +2745,7 @@ msgstr ""
 msgid "Unexpected error occurred"
 msgstr "Erreure Inattendue"
 
-#: src/components/MoneyTransferModal.vue:383
+#: src/components/MoneyTransferModal.vue:429
 msgid ""
 "Unexpected error while checking transfer, pleace contact your administrator."
 msgstr ""
@@ -2799,14 +2912,21 @@ msgstr "Attention :"
 
 #: src/components/ContractListModal.vue:237
 #: src/components/PaymentRequestListModal.vue:237
-#: src/components/RecurrentContractModal.vue:241
+#: src/components/RecurrentContractModal.vue:309
 #: src/components/TransactionList.vue:242
 msgid "week"
 msgid_plural "weeks"
 msgstr[0] "semaine"
 msgstr[1] "semaines"
 
-#: src/components/RecurrentContractModal.vue:230
+#: src/components/RecurrenceOptions.vue:26
+#: src/components/RecurrenceOptions.vue:27
+#: src/components/RecurrenceOptions.vue:36
+#: src/components/RecurrenceOptions.vue:37
+msgid "Week(s)"
+msgstr "Semaine(s)"
+
+#: src/components/RecurrentContractModal.vue:298
 msgid "Weekly"
 msgstr "Hebdomadaire"
 
@@ -2820,14 +2940,21 @@ msgstr ""
 
 #: src/components/ContractListModal.vue:239
 #: src/components/PaymentRequestListModal.vue:239
-#: src/components/RecurrentContractModal.vue:243
+#: src/components/RecurrentContractModal.vue:311
 #: src/components/TransactionList.vue:244
 msgid "year"
 msgid_plural "years"
 msgstr[0] "année"
 msgstr[1] "années"
 
-#: src/components/RecurrentContractModal.vue:232
+#: src/components/RecurrenceOptions.vue:28
+#: src/components/RecurrenceOptions.vue:29
+#: src/components/RecurrenceOptions.vue:38
+#: src/components/RecurrenceOptions.vue:39
+msgid "Year(s)"
+msgstr "Année(s)"
+
+#: src/components/RecurrentContractModal.vue:300
 msgid "Yearly"
 msgstr "Annuel"
 
@@ -2853,8 +2980,8 @@ msgstr "Vous n'êtes pas autorisé à envoyer de l'argent à %{recipientName}"
 msgid "You can not transfer money to your own account"
 msgstr "Vous ne pouvez pas envoyer de l'argent vers votre propre compte."
 
-#: src/components/MoneyTransferModal.vue:304
-#: src/components/MoneyTransferModal.vue:451
+#: src/components/MoneyTransferModal.vue:350
+#: src/components/MoneyTransferModal.vue:497
 msgid ""
 "You can try again. If the issue persists, please contact your administrator."
 msgstr ""
@@ -2884,7 +3011,7 @@ msgstr ""
 "Vous pouvez essayer de recharger la page, ou contacter votre administrateur "
 "si l'erreur persiste."
 
-#: src/components/MoneyTransferModal.vue:437
+#: src/components/MoneyTransferModal.vue:483
 msgid "You can't send money to this account."
 msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 
