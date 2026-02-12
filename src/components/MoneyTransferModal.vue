@@ -162,7 +162,7 @@
               (ev) => (ev ? null : ((isReady = false), (errors = false)))
             "
           />
-          <div v-if="plannedTransactions.length > 1">
+          <div v-if="plannedTransactions.length > 1 && !isRecurrenceEnabled">
             <hr class="transaction-list-separator" />
             <h2 class="frame3-sub-title mt-3 mb-3">
               {{
@@ -179,6 +179,17 @@
               mode="small"
             />
           </div>
+
+          <!-- Recurrence options -->
+          <RecurrenceOptions
+            v-if="transactionType !== 'reconversion'"
+            v-model:enabled="isRecurrenceEnabled"
+            v-model:interval="recurringInterval"
+            v-model:ruleType="recurringRuleType"
+            v-model:startDate="dateStart"
+            v-model:endDate="dateEnd"
+            :label="$gettext('Set up a recurring payment')"
+          />
         </section>
         <footer
           class="
@@ -187,14 +198,16 @@
             is-justify-content-flex-end
           "
         >
+          <!-- Regular send button -->
           <button
+            v-if="!isRecurrenceEnabled"
             class="button custom-button-modal has-text-weight-medium"
             id="send-money-button"
             @click="sendTransaction()"
             :disabled="!isReady || checkOngoing > 0"
           >
             <span class="icon" v-if="checkOngoing > 0">
-              <fa-icon icon="arrows-rotate" class="fa-lg refreshing" />
+              <fa-icon icon="circle-notch" class="fa-lg refreshing" />
             </span>
             <span class="icon" v-else>
               <fa-icon icon="arrow-circle-up" class="fa-lg" />
@@ -206,6 +219,19 @@
                   : $gettext("Send")
               }}
             </span>
+          </button>
+          <!-- Create recurrence contract button -->
+          <button
+            v-else
+            class="button custom-button-modal has-text-weight-medium"
+            id="create-recurrence-button"
+            @click="openCreateRecurrenceModal()"
+            :disabled="!isRecurrenceReady"
+          >
+            <span class="icon">
+              <fa-icon icon="sync" class="fa-lg" />
+            </span>
+            <span>{{ $gettext("Create recurrence contract") }}</span>
           </button>
         </footer>
       </div>
@@ -224,6 +250,7 @@
   import { makeUIProxyBackend } from "@/services/lokapiService"
   import MoneyTransaction from "./MoneyTransaction.vue"
   import TransactionItem from "./TransactionItem.vue"
+  import RecurrenceOptions from "./RecurrenceOptions.vue"
 
   import UseBatchLoading from "@/services/UseBatchLoading"
   import { debounceMethod } from "@/utils/debounce"
@@ -237,6 +264,7 @@
       MoneyTransaction,
       TransactionItem,
       Loading,
+      RecurrenceOptions,
     },
     data() {
       return {
@@ -255,6 +283,12 @@
         transactionType: null,
         plannedTransactions: [],
         checkOngoing: 0,
+        // Recurrence fields
+        isRecurrenceEnabled: false,
+        recurringRuleType: "monthly",
+        recurringInterval: 1,
+        dateStart: null,
+        dateEnd: null,
       }
     },
     created() {
@@ -310,6 +344,15 @@
         return this.recipientBatchLoader.elements.value.filter((p: any) => {
           return currencyIds.indexOf(p.backendId) > -1
         })
+      },
+      isRecurrenceReady(): boolean {
+        return (
+          this.isRecurrenceEnabled &&
+          this.amount > 0 &&
+          this.recurringInterval > 0 &&
+          this.recurringRuleType &&
+          this.dateStart
+        )
       },
     },
     methods: {
@@ -704,6 +747,22 @@
           ref.select()
         })
       },
+      async openCreateRecurrenceModal() {
+        await this.$modal.open("RecurrentContractModal", {
+          mode: "create",
+          amount: this.amount,
+          senderMemo: this.senderMemo,
+          account: this.ownSelectedAccount,
+          selectedRecipient: this.selectedRecipient,
+          dateStart: this.dateStart,
+          dateEnd: this.dateEnd,
+          recurringRuleType: this.recurringRuleType,
+          recurringInterval: this.recurringInterval,
+          refreshTransaction: this.$modal.args.value[0].refreshTransaction,
+          refreshAccounts: this.$modal.args.value[0].refreshAccounts,
+        })
+        this.close()
+      },
     },
   })
   export default class MoneyTransferModal extends Vue {}
@@ -787,5 +846,16 @@
   }
   h2 {
     font-weight: 500;
+  }
+  .refreshing {
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>

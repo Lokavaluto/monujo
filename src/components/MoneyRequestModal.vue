@@ -23,28 +23,53 @@
             @update:recipientMemo="(x) => (recipientMemo = x)"
             @update:isValid="(x) => (isValid = x)"
           />
+
+          <!-- Recurrence options -->
+          <RecurrenceOptions
+            v-model:enabled="isRecurrenceEnabled"
+            v-model:interval="recurringInterval"
+            v-model:ruleType="recurringRuleType"
+            v-model:startDate="dateStart"
+            v-model:endDate="dateEnd"
+            :label="$gettext('Set up a recurring request')"
+          />
         </section>
         <footer
           class="modal-card-foot custom-modal-card-foot is-justify-content-space-between step1-footer"
         >
+          <!-- Regular mode: QR code and Generate request buttons -->
+          <template v-if="!isRecurrenceEnabled">
+            <button
+              class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
+              @click="goToQrCode()"
+            >
+              <span class="icon">
+                <fa-icon icon="qrcode" />
+              </span>
+              <span>{{ $gettext("QR code") }}</span>
+            </button>
+            <button
+              :disabled="!isValid"
+              class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
+              @click="$modal.next()"
+            >
+              <span class="icon">
+                <fa-icon icon="plus-circle" />
+              </span>
+              <span>{{ $gettext("Generate request") }}</span>
+            </button>
+          </template>
+          <!-- Recurrence mode: Create recurrence contract button -->
           <button
-            class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
-            @click="goToQrCode()"
-          >
-            <span class="icon">
-              <fa-icon icon="qrcode" />
-            </span>
-            <span>{{ $gettext("QR code") }}</span>
-          </button>
-          <button
-            :disabled="!isValid"
+            v-else
+            :disabled="!isRecurrenceReady"
             class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
             @click="$modal.next()"
           >
             <span class="icon">
-              <fa-icon icon="plus-circle" />
+              <fa-icon icon="sync" />
             </span>
-            <span>{{ $gettext("Generate request") }}</span>
+            <span>{{ $gettext("Create recurrence contract") }}</span>
           </button>
         </footer>
       </div>
@@ -264,6 +289,7 @@
   import QrCodeVue from "qrcode.vue"
   import MoneyTransaction from "@/components/MoneyTransaction.vue"
   import RecipientItem from "@/components/RecipientItem.vue"
+  import RecurrenceOptions from "@/components/RecurrenceOptions.vue"
   import { UIError } from "@/exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
   import UseBatchLoading from "@/services/UseBatchLoading"
@@ -277,6 +303,7 @@
       MoneyTransaction,
       RecipientItem,
       Loading,
+      RecurrenceOptions,
     },
     data() {
       return {
@@ -289,6 +316,12 @@
         recipientsSearchError: false,
         selectedSender: null,
         isCreating: false,
+        // Recurrence fields
+        isRecurrenceEnabled: false,
+        recurringRuleType: "monthly",
+        recurringInterval: 1,
+        dateStart: null,
+        dateEnd: null,
       }
     },
     created() {
@@ -332,12 +365,22 @@
       },
 
       ownCurrenciesRecipients(): Array<any> {
-        let currencyIds = this.$store.getters.activeVirtualAccounts.map(
+        const currencyIds = this.$store.getters.activeVirtualAccounts.map(
           (a: any) => a.currencyId
         )
         return this.recipientBatchLoader.elements.value.filter((p: any) => {
           return currencyIds.indexOf(p.backendId) > -1
         })
+      },
+
+      isRecurrenceReady(): boolean {
+        return (
+          this.isRecurrenceEnabled &&
+          this.isValid &&
+          this.recurringInterval > 0 &&
+          this.recurringRuleType &&
+          this.dateStart
+        )
       },
 
       qrCodeValue() {
@@ -387,7 +430,30 @@
 
       handleSelectSender(recipient: any) {
         this.selectedSender = recipient
-        this.$modal.next()
+        if (this.isRecurrenceEnabled) {
+          // Open RecurrentContractModal for recurrence creation
+          this.openRecurrenceModal(recipient)
+        } else {
+          this.$modal.next()
+        }
+      },
+
+      async openRecurrenceModal(sender: any) {
+        await this.$modal.open("RecurrentContractModal", {
+          mode: "create",
+          requestMode: true, // Indicates this is a payment request (sender/receiver swapped)
+          amount: this.amount,
+          senderMemo: this.recipientMemo, // In request context, recipientMemo is the message
+          account: this.$modal.args.value[0].account,
+          selectedSender: sender, // The person who will pay
+          dateStart: this.dateStart,
+          dateEnd: this.dateEnd,
+          recurringRuleType: this.recurringRuleType,
+          recurringInterval: this.recurringInterval,
+          refreshTransaction: this.$modal.args.value[0].refreshTransaction,
+          refreshAccounts: this.$modal.args.value[0].refreshAccounts,
+        })
+        this.close()
       },
 
       goToQrCode() {
@@ -396,7 +462,7 @@
       },
 
       async downloadQrCodePdf() {
-        let svgQrCode = this.$refs.qrCodeTransaction.firstChild.outerHTML
+        const svgQrCode = this.$refs.qrCodeTransaction.firstChild.outerHTML
         let fileName = this.$gettext(
           "QR code - Payment request to %{ name } of %{ amount } %{ currency }",
           {
