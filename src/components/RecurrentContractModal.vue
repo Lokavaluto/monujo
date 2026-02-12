@@ -7,7 +7,11 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Recurrent contract") }}
+            {{
+              isCreateMode
+                ? $gettext("Create recurrent contract")
+                : $gettext("Recurrent contract")
+            }}
           </p>
           <button
             class="delete"
@@ -20,36 +24,36 @@
             <!-- Status icon -->
             <div class="status-icon-container mb-3">
               <fa-icon
-                v-if="contract.state === 'open'"
+                v-if="isCreateMode || contractData.state === 'open'"
                 icon="sync"
                 class="status-icon active"
               />
               <fa-icon
-                v-else-if="contract.state === 'cancelled'"
+                v-else-if="contractData.state === 'cancelled'"
                 icon="ban"
                 class="status-icon cancelled"
               />
               <fa-icon
                 v-else
-                icon="file-contract"
+                icon="file-alt"
                 class="status-icon default"
               />
             </div>
 
             <!-- Status label -->
-            <p class="status-label mb-2" :class="contract.state">
+            <p class="status-label mb-2" :class="isCreateMode ? 'new' : contractData.state">
               {{ stateLabel }}
             </p>
 
             <!-- Amount -->
             <p class="amount has-text-weight-bold is-size-3 mb-1">
-              {{ numericFormat(parseFloat(contract.amount)) }}
+              {{ numericFormat(parseFloat(contractData.amount)) }}
               <span class="currency">{{ currency }}</span>
             </p>
 
-            <!-- Next execution date -->
-            <p v-if="contract.nextExecutionDate" class="next-execution mb-3">
-              {{ $gettext("Next:") }} {{ formatDate(contract.nextExecutionDate) }} - {{ relativeDate(contract.nextExecutionDate) }}
+            <!-- Next execution date (only in view mode) -->
+            <p v-if="!isCreateMode && contractData.nextExecutionDate" class="next-execution mb-3">
+              {{ $gettext("Next:") }} {{ formatDate(contractData.nextExecutionDate) }} - {{ relativeDate(contractData.nextExecutionDate) }}
             </p>
 
             <!-- Recurrence info -->
@@ -59,19 +63,19 @@
             </p>
 
             <!-- Message if present -->
-            <p v-if="contract.message" class="message-text mb-3">
-              « {{ contract.message }} »
+            <p v-if="contractData.message" class="message-text mb-3">
+              {{ contractData.message }}
             </p>
 
             <!-- From / To -->
             <div class="parties mb-3">
               <p class="frame3-sub-title">{{ $gettext("from") }}</p>
               <p class="party-name has-text-weight-bold is-size-5">
-                {{ contract.senderName }}
+                {{ contractData.senderName }}
               </p>
               <p class="frame3-sub-title mt-2">{{ $gettext("to") }}</p>
               <p class="party-name has-text-weight-bold is-size-5">
-                {{ contract.receiverName }}
+                {{ contractData.receiverName }}
               </p>
             </div>
 
@@ -79,11 +83,11 @@
             <div class="date-range mb-3">
               <p class="frame3-sub-title">{{ $gettext("Period") }}</p>
               <p class="is-size-6">
-                <span v-if="contract.dateStart">
-                  {{ $gettext("From") }} {{ formatDate(contract.dateStart) }}
+                <span v-if="contractData.dateStart">
+                  {{ $gettext("From") }} {{ formatDate(contractData.dateStart) }}
                 </span>
-                <span v-if="contract.dateEnd">
-                  {{ " " }}{{ $gettext("to") }} {{ formatDate(contract.dateEnd) }}
+                <span v-if="contractData.dateEnd">
+                  {{ " " }}{{ $gettext("to") }} {{ formatDate(contractData.dateEnd) }}
                 </span>
                 <span v-else>
                   {{ $gettext("(no end date)") }}
@@ -91,16 +95,35 @@
               </p>
             </div>
 
-            <!-- Date and creator -->
-            <p class="frame3-sub-title date-info">
-              {{ $gettext("Created on") }} {{ dateFormat(contract.date) }}
-              {{ $gettext("by") }} {{ contract.creatorName }}
+            <!-- Date and creator (only in view mode) -->
+            <p v-if="!isCreateMode" class="frame3-sub-title date-info">
+              {{ $gettext("Created on") }} {{ dateFormat(contractData.date) }}
+              {{ $gettext("by") }} {{ contractData.creatorName }}
+            </p>
+            <!-- Creator info (only in create mode) -->
+            <p v-else class="frame3-sub-title date-info">
+              {{ $gettext("Created by") }} {{ contractData.creatorName }}
             </p>
           </div>
         </section>
         <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
           <button
-            v-if="contract.isCreator && contract.state === 'open'"
+            v-if="isCreateMode"
+            class="button custom-button-modal button-modal has-text-weight-medium"
+            :disabled="isCreating"
+            @click="createContract()"
+          >
+            <span v-if="isCreating" class="icon">
+              <fa-icon icon="circle-notch" class="refreshing" />
+            </span>
+            <span v-else class="icon">
+              <fa-icon icon="sync" />
+            </span>
+            <span>{{ $gettext("Create recurrent contract") }}</span>
+          </button>
+          <!-- View mode: Delete button -->
+          <button
+            v-else-if="contractData.isCreator && contractData.state === 'open'"
             class="button custom-button-modal button-modal has-text-weight-medium action btn-danger"
             @click="startDelete()"
           >
@@ -170,6 +193,8 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapGetters } from "vuex"
+  import { mapModuleState } from "@/utils/vuex"
+  import { getUserAccount } from "@/utils/account"
   import { UIError } from "../exception"
   import moment from "moment"
 
@@ -178,13 +203,57 @@
     data() {
       return {
         isDeleting: false,
+        isCreating: false,
       }
     },
     computed: {
       ...mapGetters(["dateFormat", "numericFormat"]),
+      ...mapModuleState("lokapi", ["userProfile"]),
+
+      mode() {
+        return this.$modal.args.value[0].mode || "view"
+      },
+
+      isCreateMode() {
+        return this.mode === "create"
+      },
+
+      isRequestMode() {
+        return this.$modal.args.value[0].requestMode === true
+      },
 
       contract() {
         return this.$modal.args.value[0].contract
+      },
+
+      // Returns contract data for both view and create modes
+      contractData() {
+        if (this.isCreateMode) {
+          const args = this.$modal.args.value[0]
+          // In request mode: selectedSender pays, current user receives
+          // In transfer mode: current user pays, selectedRecipient receives
+          const senderName = this.isRequestMode
+            ? args.selectedSender?.name || ""
+            : this.userProfile?.name || ""
+          const receiverName = this.isRequestMode
+            ? this.userProfile?.name || ""
+            : args.selectedRecipient?.name || ""
+          return {
+            amount: args.amount,
+            message: args.senderMemo,
+            state: "new",
+            senderName,
+            receiverName,
+            creatorName: this.userProfile?.name || "",
+            dateStart: args.dateStart,
+            dateEnd: args.dateEnd,
+            recurringRuleType: args.recurringRuleType,
+            recurringInterval: args.recurringInterval,
+            nextExecutionDate: null,
+            isCreator: true,
+          }
+        }
+        return this.contract
       },
 
       currency() {
@@ -192,11 +261,14 @@
       },
 
       stateLabel() {
+        if (this.isCreateMode) {
+          return this.$gettext("new")
+        }
         const stateTranslations: { [key: string]: string } = {
           open: this.$gettext("active"),
           cancelled: this.$gettext("cancelled"),
         }
-        return stateTranslations[this.contract.state] || this.contract.state
+        return stateTranslations[this.contractData.state] || this.contractData.state
       },
 
       recurrenceLabel() {
@@ -206,8 +278,8 @@
           monthly: this.$gettext("Monthly"),
           yearly: this.$gettext("Yearly"),
         }
-        const ruleType = this.contract.recurringRuleType
-        const interval = this.contract.recurringInterval
+        const ruleType = this.contractData.recurringRuleType
+        const interval = this.contractData.recurringInterval
         if (interval === 1) {
           return ruleTypeTranslations[ruleType] || ruleType
         }
@@ -264,6 +336,86 @@
           this.isDeleting = false
         }
       },
+
+      async createContract() {
+        if (this.isCreating) return
+        this.isCreating = true
+
+        const args = this.$modal.args.value[0]
+
+        let accountObj
+        try {
+          accountObj = getUserAccount(args.account)
+        } catch (err) {
+          this.isCreating = false
+          throw new UIError(
+            this.$gettext(
+              "Failed to create recurrent contract. Please try again or contact your administrator."
+            ),
+            err
+          )
+        }
+
+        // Get wallet URIs
+        // In request mode: selectedSender pays, current user (account) receives
+        // In transfer mode: current user (account) pays, selectedRecipient receives
+        let senderWalletUri, receiverWalletUri
+        if (args.requestMode) {
+          senderWalletUri = args.selectedSender.userAccountInternalId
+          receiverWalletUri = accountObj.internalId
+        } else {
+          senderWalletUri = accountObj.internalId
+          receiverWalletUri = args.selectedRecipient.userAccountInternalId
+        }
+
+        // Create the contract - this is the only part that can fail
+        let contractIds
+        try {
+          contractIds = await accountObj.createRecurrentContract([
+            {
+              sender_wallet_uri: senderWalletUri,
+              receiver_wallet_uri: receiverWalletUri,
+              amount: parseFloat(args.amount),
+              message: args.senderMemo || null,
+              date_start: args.dateStart,
+              date_end: args.dateEnd || null,
+              recurring_rule_type: args.recurringRuleType,
+              recurring_interval: args.recurringInterval,
+            },
+          ])
+        } catch (err) {
+          this.isCreating = false
+          throw new UIError(
+            this.$gettext(
+              "Failed to create recurrent contract. Please try again or contact your administrator."
+            ),
+            err
+          )
+        }
+
+        if (!contractIds || contractIds.length === 0) {
+          this.isCreating = false
+          throw new UIError(
+            this.$gettext(
+              "Failed to create recurrent contract. Please try again or contact your administrator."
+            ),
+            new Error("No contract ID returned")
+          )
+        }
+
+        // Success
+        this.$msg.success(
+          this.$gettext("Recurrent contract created successfully")
+        )
+
+        // Refresh data if callbacks provided
+        if (args.refreshTransaction) args.refreshTransaction()
+        if (args.refreshAccounts) args.refreshAccounts(true)
+
+        // Close modal and return to dashboard
+        this.$modal.close()
+        this.$router.push({ name: "dashboard" })
+      },
     },
   })
   export default class RecurrentContractModal extends Vue {}
@@ -304,6 +456,10 @@
     letter-spacing: 0.05em;
 
     &.open {
+      color: $color-2;
+    }
+
+    &.new {
       color: $color-2;
     }
 
