@@ -96,26 +96,9 @@
 
               <hr class="dropdown-divider" />
 
-              <template
-                v-if="
-                  isLog &&
-                  (hasUserAccountValidationRights ||
-                    hasCreditRequestValidationRights)
-                "
-              >
-                <router-link
-                  v-if="hasUserAccountValidationRights"
-                  to="/admin/pending-accounts"
-                  class="navbar-item"
-                >
-                  {{ $gettext("Account requests") }}
-                </router-link>
-                <router-link
-                  v-if="hasCreditRequestValidationRights"
-                  to="/admin/pending-credits"
-                  class="navbar-item"
-                >
-                  {{ $gettext("Credit requests") }}
+              <template v-if="isLog && hasAnyAdminRights">
+                <router-link to="/admin-dashboard" class="navbar-item">
+                  {{ $gettext("Admin dasboard") }}
                 </router-link>
                 <a
                   v-if="
@@ -204,7 +187,7 @@
         "hasCreditRequestValidationRights",
         "userProfile",
       ]),
-      ...mapGetters(["hasUnconfiguredBackend"]),
+      ...mapGetters(["hasUnconfiguredBackend", "hasAnyAdminRights"]),
     },
   })
   export default class TheNavBar extends Vue {}

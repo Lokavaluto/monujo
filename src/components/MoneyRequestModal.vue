@@ -2,132 +2,71 @@
   <div
     class="modal is-active"
     tabindex="0"
-    @keyup.enter="isValid ? $modal.next() : null"
+    @keyup.enter="isValid ? openQrCode() : null"
   >
     <div class="modal-background"></div>
-    <template v-if="$modal.step.value == 1">
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Request money") }} - 1/2
-          </p>
-          <button class="delete" aria-label="close" @click="close()"></button>
-        </header>
-        <section class="modal-card-body">
-          <MoneyTransaction
-            directionTransfer="receive"
-            :account="$modal.args.value[0].account"
-            :selectedRecipient="selectedRecipient"
-            :config="config"
-            transactionType="createRequestPay"
-            @update:amount="(x) => (amount = x)"
-            @update:senderMemo="(x) => (senderMemo = x)"
-            @update:recipientMemo="(x) => (recipientMemo = x)"
-            @update:isValid="(x) => (isValid = x)"
-          />
-        </section>
-        <footer
-          class="
-            modal-card-foot
-            custom-modal-card-foot
-            is-justify-content-flex-end
-          "
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title is-title-shrink">
+          {{ $gettext("Request money") }}
+        </p>
+        <button class="delete" aria-label="close" @click="close()"></button>
+      </header>
+      <section class="modal-card-body">
+        <MoneyTransaction
+          directionTransfer="receive"
+          :account="account"
+          :selectedRecipient="selectedRecipient"
+          :config="config"
+          transactionType="createRequestPay"
+          @update:amount="(x) => (amount = x)"
+          @update:senderMemo="(x) => (senderMemo = x)"
+          @update:recipientMemo="(x) => (recipientMemo = x)"
+          @update:isValid="(x) => (isValid = x)"
+        />
+      </section>
+      <footer
+        class="
+          modal-card-foot
+          custom-modal-card-foot
+          is-justify-content-flex-end
+        "
+      >
+        <button
+          :disabled="!isValid"
+          class="button custom-button-modal has-text-weight-medium"
+          id="send-money-button"
+          @click="openQrCode()"
         >
-          <button
-            :disabled="!isValid"
-            class="button custom-button-modal has-text-weight-medium"
-            id="send-money-button"
-            @click="$modal.next()"
-          >
-            {{ $gettext("Generate QR code") }}
-          </button>
-        </footer>
-      </div>
-    </template>
-    <template v-if="$modal.step.value == 2">
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <span class="is-flex is-flex-shrink-0">
-            <a class="mr-3 is-flex" @click="$modal.back()">
-              <span class="icon has-text-white">
-                <fa-icon icon="arrow-left" class="fa-lg" />
-              </span>
-            </a>
-          </span>
-          <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Request money") }} - 2/2
-          </p>
-          <span
-            v-if="$platform === 'web'"
-            @click="downloadQrCodePdf"
-            class="button download is-default is-rounded refresh mr-2 ml-2"
-          >
-            <span class="icon">
-              <fa-icon icon="download" />
-            </span>
-          </span>
-          <button class="delete" aria-label="close" @click="close()"></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="qrcode-container" ref="qrCodeTransaction">
-            <QrCodeVue
-              render-as="svg"
-              :size="200"
-              :value="
-                JSON.stringify({
-                  rp: userProfile.id,
-                  rpb: $modal.args.value[0].account.id,
-                  amount: amount,
-                  senderMemo: senderMemo,
-                  recipientMemo: recipientMemo,
-                })
-              "
-            />
-          </div>
-          <p class="has-text-centered is-size-4 mt-2">
-            {{ $gettext("Please scan the QR code above to proceed") }}
-          </p>
-        </section>
-        <footer
-          class="
-            modal-card-foot
-            custom-modal-card-foot
-            is-justify-content-flex-end
-          "
-        >
-          <button
-            class="button custom-button-modal has-text-weight-medium"
-            id="send-money-button"
-            @click="$modal.close()"
-          >
-            {{ $gettext("Close") }}
-          </button>
-        </footer>
-      </div>
-    </template>
+          {{ $gettext("Generate QR code") }}
+        </button>
+      </footer>
+    </div>
   </div>
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
 
-  import QrCodeVue from "qrcode.vue"
   import MoneyTransaction from "@/components/MoneyTransaction.vue"
 
   @Options({
     name: "MoneyRequestModal",
     components: {
-      QrCodeVue,
       MoneyTransaction,
     },
     data() {
       return {
+        account: null,
         amount: null,
         senderMemo: null,
         recipientMemo: null,
         isValid: false,
         config: {},
       }
+    },
+    created() {
+      this.account = this.$modal.args.value[0].account
     },
     mounted() {
       ;(this.$el as HTMLElement).focus()
@@ -153,21 +92,30 @@
       },
     },
     methods: {
-      async downloadQrCodePdf() {
-        let svgQrCode = this.$refs.qrCodeTransaction.firstChild.outerHTML
-        let fileName = this.$gettext(
+      openQrCode() {
+        let name = this.$gettext(
           "QR code - Payment request to %{ name } of %{ amount } %{ currency }",
           {
             name: this.userProfile.name,
             amount: this.amount,
-            currency: this.$modal.args?.value[0].account?.curr,
+            currency: this.account?.curr,
           }
         )
-
         if (this.recipientMemo) {
-          fileName += " (" + this.recipientMemo + ")"
+          name += " (" + this.recipientMemo + ")"
         }
-        await this.$export.DownloadQrCode(svgQrCode, fileName)
+        this.$modal.open("QrCodeModal", {
+          title: this.$gettext("Request money"),
+          label: this.$gettext("Please scan the QR code above to proceed"),
+          name,
+          data: {
+            rp: this.userProfile.id,
+            rpb: this.account.id,
+            amount: this.amount,
+            senderMemo: this.senderMemo,
+            recipientMemo: this.recipientMemo,
+          },
+        })
       },
       close() {
         this.amount = 0
@@ -221,13 +169,6 @@
   }
   .search-bar-container {
     width: 75%;
-  }
-  .qrcode-icon {
-    font-size: 1.5em;
-    opacity: 0.8;
-    padding: 0.1em;
-    border: 0.2em solid #e8e8e8;
-    border-radius: 5px;
   }
   .custom-search-bar input {
     background: #ffffff;

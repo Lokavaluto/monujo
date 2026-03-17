@@ -115,6 +115,7 @@
         </BankAccountItem>
       </div>
     </div>
+
     <div
       class="inactive section-card"
       v-if="inactiveVirtualAccounts.length > 0"
@@ -133,6 +134,30 @@
       </p>
       <BankAccountItem
         v-for="account in inactiveVirtualAccounts"
+        class="mb-5"
+        :account="account"
+      >
+        <template v-slot:name>{{ account.name() }}</template>
+      </BankAccountItem>
+    </div>
+
+    <div
+      class="inactive section-card"
+      v-if="pathologicalVirtualAccounts.length > 0"
+    >
+      <h2 class="custom-card-title">
+        {{ $gettext("Disabled accounts") }}
+      </h2>
+      <p>
+        {{
+          $gettext(
+            "The accounts listed below are disabled, if this is not expected please contact an administrator"
+          )
+        }}
+      </p>
+      <BankAccountItem
+        v-for="account in pathologicalVirtualAccounts"
+        class="mb-5"
         :account="account"
       >
         <template v-slot:name>{{ account.name() }}</template>
@@ -173,7 +198,6 @@
     },
     mounted() {
       const accountsRefreshInterval = this.$config.accountsRefreshInterval || 90
-
       if (accountsRefreshInterval != -1) {
         if (interval) clearInterval(interval)
 
@@ -205,6 +229,7 @@
         "inactiveVirtualAccounts",
         "getBackends",
         "getUnconfiguredBackends",
+        "pathologicalVirtualAccounts",
       ]),
       ...mapModuleState("lokapi", ["accountsLoading", "accountsLoadingErrors"]),
     },
@@ -242,7 +267,6 @@
               a?.active && a?._obj.internalId === this.account?._obj.internalId
           )
           const balance = account?.bal
-
           if (balanceOrig === balance) {
             if (Date.now() - startTime < maxDuration) {
               setTimeout(checkBalance, 200)

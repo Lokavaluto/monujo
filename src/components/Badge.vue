@@ -9,6 +9,7 @@
     name: "Badge",
     props: {
       object: Object,
+      toggleRefreshBadge: Boolean,
     },
     data: () => {
       return {
@@ -16,15 +17,28 @@
       }
     },
     async mounted() {
-      if (typeof this.object.isBusinessForFinanceBackend == "function") {
-        // This is using raw object from lokapi, providing an async function
-        this.isBusinessForFinanceBackend =
-          await this.object.isBusinessForFinanceBackend()
-      } else if (this.object.isBusinessForFinanceBackend) {
-        // This is for the virtual account tree that already resolved the previous promise
-        this.isBusinessForFinanceBackend =
-          this.object.isBusinessForFinanceBackend
-      }
+      await this.getBusinessForFinanceBackend()
+    },
+    methods: {
+      async getBusinessForFinanceBackend() {
+        if (typeof this.object.isBusinessForFinanceBackend == "function") {
+          // This is using raw object from lokapi, providing an async function
+          this.isBusinessForFinanceBackend =
+            await this.object.isBusinessForFinanceBackend()
+        } else if (this.object.isBusinessForFinanceBackend) {
+          // This is for the virtual account tree that already resolved the previous promise
+          this.isBusinessForFinanceBackend =
+            this.object.isBusinessForFinanceBackend
+        }
+      },
+    },
+    watch: {
+      object: async function () {
+        await this.getBusinessForFinanceBackend()
+      },
+      toggleRefreshBadge: async function () {
+        await this.getBusinessForFinanceBackend()
+      },
     },
   })
   export default class Badge extends Vue {}

@@ -3,7 +3,9 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title is-title-shrink">QR code</p>
+        <p class="modal-card-title is-title-shrink">
+          {{ $modal.args.value[0].title }}
+        </p>
         <span
           v-if="$platform === 'web'"
           class="button download is-default is-rounded refresh mr-2 ml-2"
@@ -23,16 +25,11 @@
           <QrCodeVue
             render-as="svg"
             :size="200"
-            :value="
-              JSON.stringify({
-                rp: userProfile.id,
-                rpb: $modal.args.value[0].accountId,
-              })
-            "
+            :value="JSON.stringify($modal.args.value[0].data)"
           />
         </div>
         <p class="has-text-centered is-size-4 mt-2">
-          {{ $gettext("Please scan the QR code above to proceed") }}
+          {{ $modal.args.value[0].label }}
         </p>
       </section>
       <footer
@@ -54,7 +51,6 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import { mapModuleState } from "@/utils/vuex"
   import QrCodeVue from "qrcode.vue"
 
   @Options({
@@ -65,16 +61,11 @@
     mounted() {
       this.$refs.qrCode.focus()
     },
-    computed: {
-      ...mapModuleState("lokapi", ["userProfile"]),
-    },
     methods: {
       async downloadQrCodePdf() {
         await this.$export.DownloadQrCode(
           this.$refs.qrCode.firstChild.outerHTML,
-          this.$gettext("QR code wallet - %{name}", {
-            name: this.userProfile.name,
-          })
+          this.$modal.args.value[0].name
         )
       },
     },

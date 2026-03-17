@@ -78,6 +78,7 @@
   "css": ".nav-item {color: red !important} .refresh {background-color: #009688;}",
   "accountsRefreshInterval": 90,
   "transactionsRefreshInterval": 47,
+  "currenciesRefreshInterval": 60,
   "disableReconversion": false,
   "disableTopUp": false,
   "disableSplitMemo": false,

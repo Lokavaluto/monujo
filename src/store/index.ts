@@ -6,6 +6,7 @@ import { createStore } from "vuex"
 
 import DatePicker from "../services/DatePicker"
 import { UIError } from "../exception"
+import { amountPlaceholder } from "../utils/format"
 
 // XXXvlab: required to make vuex getters cached in vue 3 (as they
 // should be).  (cf: https://vuex.vuejs.org/guide/getters.html#getters
@@ -90,6 +91,8 @@ export default async function mkStore(localesConfig: any, gettext: any) {
           }).format,
         "numericFormatLanguage"
       ),
+      numericPlaceholder: (state: any, getters: any) => (sample: number) =>
+        amountPlaceholder(getters.numericFormat(sample)),
       dateFormat: PoorMansCachedGetter(
         (state: any) =>
           new Intl.DateTimeFormat(state.dateFormatLanguage, {

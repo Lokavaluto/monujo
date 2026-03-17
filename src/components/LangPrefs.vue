@@ -17,28 +17,23 @@
           {{ $gettext("Use custom language") }}
         </div>
       </div>
-      <div v-if="useCustomLanguage" class="is-flax ml-5">
-        <span class="select center">
-          <select v-model="userLanguage">
-            <option
-              v-for="(name, key) in $language.available"
-              :key="key"
-              :value="key"
-            >
-              {{ name }}
-            </option>
-          </select>
-        </span>
+      <div v-if="useCustomLanguage" class="is-flax ml-5 center">
+        <DropdownButton
+          :options="languageOptions"
+          v-model="userLanguage"
+          customWidth="12em"
+        />
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import { useGettext } from "vue3-gettext"
+  import DropdownButton from "@/components/DropdownButton.vue"
+
   @Options({
     name: "LangPrefs",
-    components: {},
+    components: { DropdownButton },
     props: {
       prefsData: Object,
     },
@@ -55,6 +50,14 @@
         this.useCustomLanguage = true
       }
       this.userLanguage = this.userLanguage || this.$language.current
+    },
+    computed: {
+      languageOptions() {
+        return Object.entries(this.$language.available).map(([value, label]) => ({
+          value,
+          label,
+        }))
+      },
     },
     watch: {
       userLanguage: function (): void {

@@ -16,6 +16,8 @@
   import ConfirmPaymentModal from "./ConfirmPaymentModal.vue"
   import QrCodeModal from "./QrCodeModal.vue"
   import MoneyRequestModal from "./MoneyRequestModal.vue"
+  import InspectRecipientModal from "./InspectRecipientModal.vue"
+  import RecipientTechnicalDetailsModal from "./RecipientTechnicalDetailsModal.vue"
 
   @Options({
     name: "Modal",
@@ -27,6 +29,8 @@
       ConfirmPaymentModal,
       QrCodeModal,
       MoneyRequestModal,
+      InspectRecipientModal,
+      RecipientTechnicalDetailsModal,
     },
     data() {
       return {

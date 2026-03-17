@@ -1,10 +1,10 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import Dashboard from "../views/Dashboard.vue"
+import AdminDashboard from "../views/AdminDashboard.vue"
 import Carto from "../views/Carto.vue"
 import Login from "../views/Login.vue"
 import CreateMyAccount from "../views/CreateMyAccount.vue"
-import PendingAccounts from "../views/admin/PendingAccounts.vue"
-import PendingCredits from "../views/admin/PendingCredits.vue"
+
 import Prefs from "../views/Prefs.vue"
 import ResetPassword from "../views/ResetPassword.vue"
 import Signup from "../views/Signup.vue"
@@ -19,6 +19,12 @@ export function mkRouter(appName: string, store: any, gettext: any): any {
         name: "dashboard",
         meta: { title: $gettext("Dashboard") },
         component: Dashboard,
+      },
+      {
+        path: "/admin-dashboard",
+        name: "dashboard admin",
+        meta: { title: $gettext("Dashboard admin") },
+        component: AdminDashboard,
       },
       {
         path: "/carto",
@@ -56,18 +62,7 @@ export function mkRouter(appName: string, store: any, gettext: any): any {
         meta: { title: $gettext("Preferences") },
         component: Prefs,
       },
-      {
-        path: "/admin/pending-accounts",
-        name: "Validate-account",
-        meta: { title: $gettext("Approval of account creation") },
-        component: PendingAccounts,
-      },
-      {
-        path: "/admin/pending-credits",
-        name: "Pending Credits",
-        meta: { title: $gettext("Approval of top-up requests") },
-        component: PendingCredits,
-      },
+
       {
         path: "/:pathMatch(.*)*",
         component: Carto,

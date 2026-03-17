@@ -1,7 +1,21 @@
 <template>
   <div class="is-flex is-flex-direction-column is-justify-content-space-evenly">
     <div class="is-flex is-flex-direction-column custom-amount-input">
-      <div>
+      <div v-if="transactionType === 'adminCredit'">
+        <p class="notification is-danger is-light mb-2">
+          <span class="icon is-small">
+            <fa-icon icon="triangle-exclamation" />
+          </span>
+          {{
+            $gettext(
+              "This is a pledge operation that creates new currency, not a transfer. The total money supply will increase."
+            ) +
+            " " +
+            $gettext("Use only for authorized and exceptional cases.")
+          }}
+        </p>
+      </div>
+      <div v-else>
         <h2 v-if="directionTransfer === 'send'" class="frame3-sub-title mb-3">
           {{ $gettext("From") }}
         </h2>
@@ -19,11 +33,16 @@
       </div>
       <div v-if="selectedRecipient && transactionType !== 'reconversion'">
         <h2 class="frame3-sub-title mb-3">
-          {{ $gettext("To") }}
+          {{
+            transactionType === "adminCredit"
+              ? $gettext("Selected credit recipient")
+              : $gettext("To")
+          }}
         </h2>
         <RecipientItem
           v-if="selectedRecipient"
           :recipient="selectedRecipient"
+          :hideAdminButton="true"
         />
       </div>
       <h2 class="frame3-sub-title mt-3 mb-3">
@@ -92,8 +111,9 @@
         </div>
         <div
           v-if="
-            !['requestPay', 'createRequestPay'].includes(transactionType) &&
-            hasSplitMemoSupport
+            !['requestPay', 'createRequestPay', 'adminCredit'].includes(
+              transactionType
+            ) && hasSplitMemoSupport
           "
         >
           <div class="is-flex mt-3">
@@ -144,6 +164,11 @@
   import { mapModuleState } from "@/utils/vuex"
   import RecipientItem from "@/components/RecipientItem.vue"
   import BankAccountItem from "@/components/BankAccountItem.vue"
+  import {
+    AMOUNT_MAX_SAFE_VALUE,
+    isAmountTooLarge,
+    hasExcessDecimals,
+  } from "@/utils/amount"
 
   @Options({
     name: "MoneyTransaction",
@@ -234,29 +259,22 @@
 
         const amountStrRaw = this.$refs.amountRequested.value
         const amountStr = this.amount.toString()
-        // XXXvlab: this is the maximum size of a XXXX.YY that
-        // is safely converted to a number in javascript. (We
-        // can garantee that what the user typed in is
-        // eauivalent to what we get in the code.
-        const maxValue = 2 ** 46
-        if (this.amount >= maxValue) {
+        if (isAmountTooLarge(this.amount)) {
           this.errors.amount = this.$gettext(
             "Amount to send is too large (<= %{ maxValue })",
-            { maxValue }
+            { maxValue: AMOUNT_MAX_SAFE_VALUE }
+          )
+          return
+        }
+
+        if (hasExcessDecimals(amountStrRaw)) {
+          this.errors.amount = this.$gettext(
+            "Amount to send must be a number with not more than 2 decimals"
           )
           return
         }
 
         const amountParts = amountStrRaw.split(".")
-
-        if (amountParts.length > 1) {
-          if (amountParts[1].length > 2) {
-            this.errors.amount = this.$gettext(
-              "Amount to send must be a number with not more than 2 decimals"
-            )
-            return
-          }
-        }
         if (
           !(
             amountStr == this.$refs.amountRequested.value ||
@@ -362,13 +380,6 @@
   }
   .search-bar-container {
     width: 75%;
-  }
-  .qrcode-icon {
-    font-size: 1.5em;
-    opacity: 0.8;
-    padding: 0.1em;
-    border: 0.2em solid #e8e8e8;
-    border-radius: 5px;
   }
   .custom-search-bar input {
     background: #ffffff;

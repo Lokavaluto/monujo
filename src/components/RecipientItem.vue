@@ -15,10 +15,15 @@
     </div>
     <div class="recipient-name is-size-5" @click="$emit('select', recipient)">
       {{ recipient.name }}
+      <Badge
+        v-if="$config.disableBadges !== true"
+        :object="recipient"
+        :toggleRefreshBadge="toggleRefreshBadge"
+      />
+
       <div v-if="recipient.markBackend" class="is-size-6 has-text-grey-light">
         {{ `${recipient.backendId}` }}
       </div>
-      <Badge v-if="$config.disableBadges !== true" :object="recipient" />
     </div>
   </div>
 </template>
@@ -40,6 +45,7 @@
     },
     props: {
       recipient: Object,
+      toggleRefreshBadge: Boolean,
     },
     methods: {
       toggleFavorite: applyDecorators(
@@ -80,5 +86,9 @@
   }
   .recipient-icon {
     position: relative;
+
+    &.is-active span {
+      color: #ffb800;
+    }
   }
 </style>

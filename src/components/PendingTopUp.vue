@@ -18,7 +18,8 @@
         :key="topup"
         class="pending-top-up-item"
         :transaction="topup"
-        @click="openModal(topup)"
+        :account="account"
+        @refreshTransaction="$emit('refreshTransaction')"
       />
     </div>
     <div
@@ -42,7 +43,8 @@
         :key="topup"
         class="pending-top-up-item"
         :transaction="topup"
-        @click="openModal(topup)"
+        :account="account"
+        @refreshTransaction="$emit('refreshTransaction')"
       />
     </div>
     <div class="section-card" v-if="pendingPaidTopUpList.length">
@@ -60,7 +62,8 @@
         v-for="topup in pendingPaidTopUpList"
         :key="topup"
         :transaction="topup"
-        @click="openModal(topup)"
+        :account="account"
+        @refreshTransaction="$emit('refreshTransaction')"
       />
     </div>
   </div>

@@ -18,9 +18,11 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
       hasUserAccountValidationRights: false,
       pendingUserAccounts: [],
       hasCreditRequestValidationRights: false,
+      hasAnyInspectRights: false,
       pendingCreditRequests: [],
       accountsLoading: true,
       accountsLoadingErrors: [],
+      adminRightsLoaded: false,
     },
     actions: {
       async login(
@@ -50,8 +52,12 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         dispatch("fetchAccounts")
         commit("auth_success")
         await dispatch("setBackends")
-        dispatch("fetchUserAccountValidationRights")
-        dispatch("fetchCreditRequestValidationRights")
+        await Promise.all([
+          dispatch("fetchUserAccountValidationRights"),
+          dispatch("fetchCreditRequestValidationRights"),
+          dispatch("fetchAnyInspectRights"),
+        ])
+        commit("setAdminRightsLoaded", true)
       },
       async fetchAccounts({ commit, state }: any) {
         commit("setAccountsLoading", true)
@@ -149,6 +155,28 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         const accounts = await lokApiService.getStagingUserAccounts()
         commit("setPendingUserAccounts", accounts)
       },
+      async fetchAnyInspectRights({ commit, state }: any) {
+        let hasRight
+        try {
+          const backends = await lokApiService.getBackends()
+          const results = await Promise.all(
+            Object.values(backends).map((b: any) => b.canSearchAllRecipients())
+          )
+          hasRight = results.some((r: boolean) => r)
+        } catch (err) {
+          if (!(err instanceof LokapiExc.BackendUnavailableTransient)) {
+            if (state.accountsLoadingErrors.every((e: any) => e !== err)) {
+              commit("setAccountsLoadingErrors", [
+                err,
+                ...state.accountsLoadingErrors,
+              ])
+              console.error("Exception while fetching inspect rights", err)
+            }
+          }
+          hasRight = false
+        }
+        commit("setHasAnyInspectRights", hasRight)
+      },
       async fetchCreditRequestValidationRights({ commit, state }: any) {
         let hasRight
         try {
@@ -169,10 +197,6 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
           hasRight = false
         }
         commit("setHasCreditRequestValidationRights", hasRight)
-      },
-      async fetchPendingCreditRequests({ commit, state }: any) {
-        const requests = await lokApiService.getCreditRequests()
-        commit("setPendingCreditRequests", requests)
       },
     },
     mutations: {
@@ -202,6 +226,8 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         state.pendingUserAccounts = []
         state.backends = {}
         state.hasCreditRequestValidationRights = false
+        state.hasAnyInspectRights = false
+        state.adminRightsLoaded = false
         state.pendingCreditRequests = []
         state.accountsLoading = false
         state.accountsLoadingErrors = []
@@ -238,6 +264,12 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
       },
       setHasCreditRequestValidationRights(state: any, hasRight: boolean) {
         state.hasCreditRequestValidationRights = hasRight
+      },
+      setHasAnyInspectRights(state: any, hasRight: boolean) {
+        state.hasAnyInspectRights = hasRight
+      },
+      setAdminRightsLoaded(state: any, loaded: boolean) {
+        state.adminRightsLoaded = loaded
       },
       setPendingCreditRequests(state: any, requests: Array<any>) {
         state.pendingCreditRequests = requests
@@ -288,11 +320,20 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         }
       },
       availableVirtualAccounts: (state: any) => {
-        return state.virtualAccountTree.filter((a: any) => a.active === true)
+        return state.virtualAccountTree.filter(
+          (a: any) => a.active === true && a.isActiveAccount === true
+        )
+      },
+      pathologicalVirtualAccounts: (state: any) => {
+        return state.virtualAccountTree.filter(
+          (a: any) => a.isActiveAccount === false && a.active === true
+        )
       },
       activeVirtualAccounts: (state: any) => {
         return state.virtualAccountTree.filter(
-          (a: any) => a?.active === true || a instanceof Array
+          (a: any) =>
+            (a?.active === true && a.isActiveAccount === true) ||
+            a instanceof Array
         )
       },
       inactiveVirtualAccounts: (state: any) => {
@@ -307,6 +348,13 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         return function (): any {
           return "https://" + lokApiService.host
         }
+      },
+      hasAnyAdminRights: (state: any) => {
+        return (
+          state.hasUserAccountValidationRights ||
+          state.hasCreditRequestValidationRights ||
+          state.hasAnyInspectRights
+        )
       },
       isAuthenticated: (state: any) => {
         return state.isLog
