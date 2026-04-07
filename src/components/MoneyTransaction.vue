@@ -186,7 +186,10 @@
         this.amount = this.config?.amount
         this.senderMemo = this.config?.senderMemo
         this.recipientMemo = this.config?.recipientMemo
-        this.errors.amountLength = this.amount?.length === 0
+        this.$emit(
+          "update:amount",
+          parseFloat(this.amount).toFixed(2)
+        )
       }
       if (this.transactionType === "requestPay") {
         this.isCopyMemo = false
