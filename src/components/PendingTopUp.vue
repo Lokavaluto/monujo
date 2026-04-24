@@ -1,13 +1,11 @@
 <template>
   <div id="pending-topup-list">
-    <div
-      class="section-card"
+    <FoldableSectionCard
       id="pending-top-up-list"
       v-if="pendingMyUnpaidTopUpList.length"
+      :title="$gettext('My unpaid top-up requests')"
+      :count="pendingMyUnpaidTopUpList.length"
     >
-      <h2 class="custom-card-title title-card">
-        {{ $gettext("My unpaid top-up requests") }}
-      </h2>
       <p class="top-up-info">
         {{
           $gettext("The following top up requests needs to be paid or canceled")
@@ -21,18 +19,16 @@
         :account="account"
         @refreshTransaction="$emit('refreshTransaction')"
       />
-    </div>
-    <div
-      class="section-card"
+    </FoldableSectionCard>
+    <FoldableSectionCard
       id="pending-top-up-list"
       v-if="
         $config.disableDisplayOtherUnpaidTopup !== true &&
         pendingOthersUnpaidTopUpList.length
       "
+      :title="$gettext('Pending top-up requests')"
+      :count="pendingOthersUnpaidTopUpList.length"
     >
-      <h2 class="custom-card-title title-card">
-        {{ $gettext("Pending top-up requests") }}
-      </h2>
       <p class="top-up-info">
         {{
           $gettext("The following top up requests await payment by third party")
@@ -46,11 +42,12 @@
         :account="account"
         @refreshTransaction="$emit('refreshTransaction')"
       />
-    </div>
-    <div class="section-card" v-if="pendingPaidTopUpList.length">
-      <h2 class="custom-card-title">
-        {{ $gettext("Top up waiting admin validation") }}
-      </h2>
+    </FoldableSectionCard>
+    <FoldableSectionCard
+      v-if="pendingPaidTopUpList.length"
+      :title="$gettext('Top up waiting admin validation')"
+      :count="pendingPaidTopUpList.length"
+    >
       <p class="top-up-info">
         {{
           $gettext(
@@ -65,7 +62,7 @@
         :account="account"
         @refreshTransaction="$emit('refreshTransaction')"
       />
-    </div>
+    </FoldableSectionCard>
   </div>
 </template>
 
@@ -75,6 +72,7 @@
 
   import { mapModuleState } from "@/utils/vuex"
   import TransactionItem from "./TransactionItem.vue"
+  import FoldableSectionCard from "./FoldableSectionCard.vue"
   import { UIError } from "../exception"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
@@ -83,6 +81,7 @@
     name: "PendingTopUp",
     components: {
       TransactionItem,
+      FoldableSectionCard,
     },
     props: {
       refreshToggle: Boolean,

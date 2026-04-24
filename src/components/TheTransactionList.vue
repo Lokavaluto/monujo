@@ -18,6 +18,7 @@
       :key="'contracts-' + account._obj.internalId"
       class="mt-4"
     />
+
     <PaymentRequests
       :account="account"
       :refreshToggle="subRefreshToggle"

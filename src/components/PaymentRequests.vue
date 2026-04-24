@@ -1,13 +1,11 @@
 <template>
   <div id="payment-requests">
-    <div
-      class="section-card"
+    <FoldableSectionCard
       id="payment-requests-list"
       v-if="paymentRequestList.length"
+      :title="$gettext('My unpaid payment requests')"
+      :count="paymentRequestList.length"
     >
-      <h2 class="custom-card-title title-card">
-        {{ $gettext("My unpaid payment requests") }}
-      </h2>
       <p class="top-up-info">
         {{ $gettext("The following payment requests need to be paid.") }}
       </p>
@@ -35,7 +33,7 @@
           {{ $gettext("See more") }}
         </button>
       </div>
-    </div>
+    </FoldableSectionCard>
   </div>
 </template>
 
@@ -46,6 +44,7 @@
   import { mapModuleState } from "@/utils/vuex"
   import { getUserAccount } from "@/utils/account"
   import TransactionItem from "./TransactionItem.vue"
+  import FoldableSectionCard from "./FoldableSectionCard.vue"
   import { UIError } from "../exception"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
@@ -54,6 +53,7 @@
     name: "PaymentRequests",
     components: {
       TransactionItem,
+      FoldableSectionCard,
     },
     props: {
       refreshToggle: Boolean,

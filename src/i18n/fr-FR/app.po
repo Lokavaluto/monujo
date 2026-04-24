@@ -360,7 +360,7 @@ msgstr ""
 
 #: src/components/TransactionList.vue:284
 #: src/components/TransactionList.vue:386
-#: src/components/TransactionListRecent.vue:110
+#: src/components/TransactionListRecent.vue:111
 msgid "An unexpected issue occured while downloading transaction list"
 msgstr ""
 "Il y a eu un problème lors de la tentative de téléchargement de la liste des "
@@ -414,16 +414,16 @@ msgstr ""
 "portefeuille pour l'utilisateur %{ name }"
 
 #: src/components/ContractListModal.vue:348
-#: src/components/ContractListRecent.vue:131
+#: src/components/ContractListRecent.vue:136
 msgid "An unexpected issue occurred while downloading recurring payment list"
 msgstr ""
 "Une erreur inattendue est survenue lors du téléchargement de la liste des "
 "paiements récurrents."
 
-#: src/components/TransactionListRecent.vue:12
-#: src/components/TransactionListRecent.vue:15
+#: src/components/TransactionListRecent.vue:11
+#: src/components/TransactionListRecent.vue:14
+#: src/components/TransactionListRecent.vue:6
 #: src/components/TransactionListRecent.vue:7
-#: src/components/TransactionListRecent.vue:8
 msgid ""
 "An unexpected issue occurred while loading the last transactions. Sorry for "
 "the inconvenience."
@@ -441,9 +441,9 @@ msgstr ""
 "comptes. Veuillez nous excuser pour le désagrément."
 
 #: src/components/ContractListRecent.vue:10
-#: src/components/ContractListRecent.vue:11
-#: src/components/ContractListRecent.vue:15
-#: src/components/ContractListRecent.vue:18
+#: src/components/ContractListRecent.vue:16
+#: src/components/ContractListRecent.vue:19
+#: src/components/ContractListRecent.vue:9
 msgid ""
 "An unexpected issue occurred while loading the recurring payments. Sorry for "
 "the inconvenience."
@@ -490,7 +490,7 @@ msgstr ""
 "Une erreur serveur inattendue s’est produite lors de la récupération de la "
 "liste des demandes de paiement."
 
-#: src/components/MoneyCreditModal.vue:176 src/components/PendingTopUp.vue:151
+#: src/components/MoneyCreditModal.vue:176 src/components/PendingTopUp.vue:150
 #: src/components/TheDashboardFooter.vue:145
 msgid "An unexpected server error occured while fetching pending topup list"
 msgstr ""
@@ -1409,13 +1409,11 @@ msgstr "Limites de crédit mutuel :"
 #: src/components/PaymentRequestListModal.vue:11
 #: src/components/PaymentRequestListModal.vue:6
 #: src/components/PaymentRequestListModal.vue:7
-#: src/components/PaymentRequests.vue:4 src/components/PaymentRequests.vue:5
-#: src/components/PaymentRequests.vue:9
+#: src/components/PaymentRequests.vue:6
 msgid "My unpaid payment requests"
 msgstr "Mes demandes de paiement impayées"
 
-#: src/components/PendingTopUp.vue:4 src/components/PendingTopUp.vue:5
-#: src/components/PendingTopUp.vue:9
+#: src/components/PendingTopUp.vue:6
 msgid "My unpaid top-up requests"
 msgstr "Mes demandes de crédit non payées"
 
@@ -1459,9 +1457,9 @@ msgstr "Prochaine exécution :"
 msgid "No"
 msgstr "Non"
 
+#: src/components/TransactionListRecent.vue:22
 #: src/components/TransactionListRecent.vue:23
-#: src/components/TransactionListRecent.vue:24
-#: src/components/TransactionListRecent.vue:31
+#: src/components/TransactionListRecent.vue:30
 msgid "No previous transactions in your history."
 msgstr "Aucune opération dans votre historique"
 
@@ -1484,9 +1482,9 @@ msgstr "Aucun destinataire de paiement à afficher"
 msgid "No recurring payment found"
 msgstr "Aucun paiement récurrent trouvé"
 
+#: src/components/ContractListRecent.vue:25
 #: src/components/ContractListRecent.vue:26
-#: src/components/ContractListRecent.vue:27
-#: src/components/ContractListRecent.vue:34
+#: src/components/ContractListRecent.vue:35
 msgid "No recurring payments."
 msgstr "Aucun paiement récurrent."
 
@@ -1688,8 +1686,8 @@ msgstr "en attente"
 msgid "Pending top-up requested"
 msgstr "Rechargement en attente demandé"
 
-#: src/components/PendingTopUp.vue:18 src/components/PendingTopUp.vue:19
-#: src/components/PendingTopUp.vue:27 src/components/PendingTopUp.vue:34
+#: src/components/PendingTopUp.vue:13 src/components/PendingTopUp.vue:14
+#: src/components/PendingTopUp.vue:29
 msgid "Pending top-up requests"
 msgstr "Demandes de crédit en cours"
 
@@ -1902,9 +1900,7 @@ msgstr "Paiement récurrent supprimé avec succès"
 msgid "Recurring payment details"
 msgstr "Détails du paiement récurrent"
 
-#: src/components/ContractListRecent.vue:3
-#: src/components/ContractListRecent.vue:4
-#: src/components/ContractListRecent.vue:8
+#: src/components/ContractListRecent.vue:7
 msgid "Recurring payments"
 msgstr "Paiements récurrents"
 
@@ -2045,20 +2041,20 @@ msgstr "Enregistrer"
 msgid "Security settings"
 msgstr "Préférences de sécurité"
 
+#: src/components/ContractListRecent.vue:44
 #: src/components/ContractListRecent.vue:45
-#: src/components/ContractListRecent.vue:46
-#: src/components/ContractListRecent.vue:47
-#: src/components/ContractListRecent.vue:51
-#: src/components/ContractListRecent.vue:53
-#: src/components/ContractListRecent.vue:58
-#: src/components/PaymentRequests.vue:21 src/components/PaymentRequests.vue:22
-#: src/components/PaymentRequests.vue:23 src/components/PaymentRequests.vue:26
-#: src/components/PaymentRequests.vue:32
+#: src/components/ContractListRecent.vue:48
+#: src/components/ContractListRecent.vue:52
+#: src/components/ContractListRecent.vue:54
+#: src/components/ContractListRecent.vue:59
+#: src/components/PaymentRequests.vue:18 src/components/PaymentRequests.vue:19
+#: src/components/PaymentRequests.vue:21 src/components/PaymentRequests.vue:24
+#: src/components/PaymentRequests.vue:30
+#: src/components/TransactionListRecent.vue:32
 #: src/components/TransactionListRecent.vue:33
-#: src/components/TransactionListRecent.vue:34
+#: src/components/TransactionListRecent.vue:40
 #: src/components/TransactionListRecent.vue:41
-#: src/components/TransactionListRecent.vue:42
-#: src/components/TransactionListRecent.vue:46
+#: src/components/TransactionListRecent.vue:45
 msgid "See more"
 msgstr "Voir tout"
 
@@ -2337,19 +2333,19 @@ msgstr ""
 "Le fichier doit contenir une ligne d’en-tête et au moins une ligne de "
 "données."
 
-#: src/components/PaymentRequests.vue:12 src/components/PaymentRequests.vue:7
-#: src/components/PaymentRequests.vue:8
+#: src/components/PaymentRequests.vue:10 src/components/PaymentRequests.vue:4
+#: src/components/PaymentRequests.vue:5
 msgid "The following payment requests need to be paid."
 msgstr "Les demandes de paiement suivantes doivent être réglées."
 
-#: src/components/ContractListRecent.vue:10
+#: src/components/ContractListRecent.vue:11
+#: src/components/ContractListRecent.vue:4
 #: src/components/ContractListRecent.vue:5
-#: src/components/ContractListRecent.vue:6
 msgid "The following recurring payments are active."
 msgstr "Les paiements récurrents suivants sont actifs."
 
-#: src/components/PendingTopUp.vue:33 src/components/PendingTopUp.vue:34
-#: src/components/PendingTopUp.vue:56
+#: src/components/PendingTopUp.vue:24 src/components/PendingTopUp.vue:25
+#: src/components/PendingTopUp.vue:49 src/components/PendingTopUp.vue:53
 msgid ""
 "The following top up have been paid and are waiting for an administrator of "
 "your local currency to validate them."
@@ -2357,14 +2353,14 @@ msgstr ""
 "Les rechargements suivants ont été payés et attendent qu'un administrateur "
 "de votre monnaie locale les valide."
 
-#: src/components/PendingTopUp.vue:22 src/components/PendingTopUp.vue:23
-#: src/components/PendingTopUp.vue:31 src/components/PendingTopUp.vue:38
+#: src/components/PendingTopUp.vue:16 src/components/PendingTopUp.vue:17
+#: src/components/PendingTopUp.vue:26 src/components/PendingTopUp.vue:34
 msgid "The following top up requests await payment by third party"
 msgstr ""
 "Les demandes de rechargement suivantes attendent d'être réglées par un tiers"
 
-#: src/components/PendingTopUp.vue:13 src/components/PendingTopUp.vue:8
-#: src/components/PendingTopUp.vue:9
+#: src/components/PendingTopUp.vue:11 src/components/PendingTopUp.vue:5
+#: src/components/PendingTopUp.vue:6
 msgid "The following top up requests needs to be paid or canceled"
 msgstr "Les demandes de rechargement suivantes doivent être payées ou annulées"
 
@@ -2627,8 +2623,7 @@ msgstr ""
 msgid "Top up requests waiting for approval"
 msgstr "Opérations de crédit en attente de validation"
 
-#: src/components/PendingTopUp.vue:29 src/components/PendingTopUp.vue:30
-#: src/components/PendingTopUp.vue:52
+#: src/components/PendingTopUp.vue:48
 msgid "Top up waiting admin validation"
 msgstr "Rechargement en attente de validation de la part d'un administrateur"
 
@@ -2705,9 +2700,7 @@ msgstr "Opération envoyée"
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
-#: src/components/TransactionListRecent.vue:3
-#: src/components/TransactionListRecent.vue:4
-#: src/components/TransactionListRecent.vue:8
+#: src/components/TransactionListRecent.vue:6
 msgid "Transactions"
 msgstr "Opérations"
 
@@ -2988,10 +2981,10 @@ msgstr ""
 "Vous pouvez réessayer. Si l'erreur persiste, veuillez contacter votre "
 "administrateur."
 
+#: src/components/ContractListRecent.vue:17
 #: src/components/ContractListRecent.vue:18
-#: src/components/ContractListRecent.vue:19
-#: src/components/ContractListRecent.vue:23
-#: src/components/ContractListRecent.vue:26
+#: src/components/ContractListRecent.vue:24
+#: src/components/ContractListRecent.vue:27
 #: src/components/PendingAccounts.vue:16 src/components/PendingAccounts.vue:17
 #: src/components/PendingAccounts.vue:20 src/components/PendingCredits.vue:12
 #: src/components/PendingCredits.vue:13
@@ -3000,10 +2993,10 @@ msgstr ""
 #: src/components/TheBankAccountList.vue:34
 #: src/components/TheBankAccountList.vue:42
 #: src/components/TheBankAccountList.vue:45
+#: src/components/TransactionListRecent.vue:14
 #: src/components/TransactionListRecent.vue:15
-#: src/components/TransactionListRecent.vue:16
-#: src/components/TransactionListRecent.vue:20
-#: src/components/TransactionListRecent.vue:23
+#: src/components/TransactionListRecent.vue:19
+#: src/components/TransactionListRecent.vue:22
 msgid ""
 "You can try to refresh the page, if the issue persists, you may want to "
 "contact your administrator"

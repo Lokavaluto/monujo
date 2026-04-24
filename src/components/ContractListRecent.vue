@@ -1,11 +1,12 @@
 <template>
   <div id="contract-list-recent">
-    <div
-      class="section-card"
+    <FoldableSectionCard
       id="the-contract-list"
-      v-if="hasFinishedFirstLoading"
+      v-if="hasFinishedFirstLoading && contractsCount > 0"
+      :isFolded="true"
+      :title="$gettext('Recurring payments')"
+      :count="contractsCount"
     >
-      <h2 class="custom-card-title">{{ $gettext("Recurring payments") }}</h2>
       <p class="top-up-info">
         {{ $gettext("The following recurring payments are active.") }}
       </p>
@@ -46,7 +47,7 @@
             })
           "
         />
-        <div v-if="contracts.length" class="has-text-centered mt-5">
+        <div v-if="contractsCount > 5" class="has-text-centered mt-5">
           <button
             @click="
               () => {
@@ -62,13 +63,14 @@
           </button>
         </div>
       </div>
-    </div>
+    </FoldableSectionCard>
   </div>
 </template>
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import TransactionItem from "./TransactionItem.vue"
+  import FoldableSectionCard from "./FoldableSectionCard.vue"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
   import { getUserAccount } from "@/utils/account"
@@ -77,15 +79,17 @@
   @Options({
     name: "ContractListRecent",
     props: {
-      refreshToggle: Boolean, // change of this props requests a refresh
+      refreshToggle: Boolean,
       account: Object,
     },
     components: {
       TransactionItem,
+      FoldableSectionCard,
     },
     data(this: any) {
       return {
         contracts: [],
+        contractsCount: 0,
         hasFinishedFirstLoading: false,
         isContractsLoadingError: false,
       }
@@ -116,7 +120,7 @@
             const allContracts = await accountObj.getRecurrentContracts([
               "open",
             ])
-            // Sort by creation date (most recent first) and take first 5
+            this.contractsCount = allContracts.length
             this.contracts = allContracts
               .map((contract: any) => {
                 contract.currency = this.account.curr
@@ -126,6 +130,7 @@
               .slice(0, 5)
             this.isContractsLoadingError = false
           } catch (e) {
+            this.contractsCount = 0
             this.isContractsLoadingError = true
             throw new UIError(
               this.$gettext(
@@ -149,12 +154,6 @@
   export default class ContractListRecent extends Vue {}
 </script>
 <style lang="scss" scoped>
-  @import "../assets/custom-variables.scss";
-
-  span.icon {
-    color: $top-menu-link-color;
-    background-color: transparent;
-  }
   .top-up-info {
     font-style: italic;
   }
