@@ -621,7 +621,7 @@ msgstr "Annuler la demande de paiement"
 msgid "Cancel request"
 msgstr "Annuler la demande"
 
-#: src/components/TransactionItem.vue:273
+#: src/components/TransactionItem.vue:275
 msgid "cancelled"
 msgstr "annulée"
 
@@ -1172,7 +1172,7 @@ msgstr "Intervalle de fréquence"
 #: src/components/RecurrentContractModal.vue:32
 #: src/components/RecurrentContractModal.vue:36
 #: src/components/RecurrentContractModal.vue:40
-#: src/components/TransactionItem.vue:263
+#: src/components/TransactionItem.vue:265
 msgid "from"
 msgstr "De"
 
@@ -1282,7 +1282,7 @@ msgstr "Format du code QR invalide"
 
 #: src/components/ConfirmPaymentModal.vue:214
 #: src/components/ConfirmPaymentModal.vue:428
-#: src/components/TransactionItem.vue:194
+#: src/components/TransactionItem.vue:193
 msgid "invoiced"
 msgstr "facturée"
 
@@ -1540,7 +1540,7 @@ msgstr "Solde d'ouverture"
 msgid "Operation canceled"
 msgstr "Opération annulée"
 
-#: src/components/TransactionItem.vue:271
+#: src/components/TransactionItem.vue:273
 msgid "paid"
 msgstr "payée"
 
@@ -1680,7 +1680,7 @@ msgstr "Le paiement a été effectué en %{nbTransactions} opérations :"
 msgid "Payment will be done in %{nbTransactions} transactions:"
 msgstr "Le paiement sera effectué en %{nbTransactions} opérations :"
 
-#: src/components/TransactionItem.vue:270
+#: src/components/TransactionItem.vue:272
 msgid "pending"
 msgstr "en attente"
 
@@ -1790,7 +1790,7 @@ msgstr "Préférences"
 
 #: src/components/ConfirmPaymentModal.vue:215
 #: src/components/ConfirmPaymentModal.vue:429
-#: src/components/TransactionItem.vue:195
+#: src/components/TransactionItem.vue:194
 msgid "processed"
 msgstr "traitée"
 
@@ -1828,7 +1828,7 @@ msgstr "Code QR portefeuille - %{ name }"
 
 #: src/components/ConfirmPaymentModal.vue:213
 #: src/components/ConfirmPaymentModal.vue:427
-#: src/components/TransactionItem.vue:193
+#: src/components/TransactionItem.vue:192
 msgid "received"
 msgstr "reçue"
 
@@ -1943,7 +1943,7 @@ msgstr "Refuser"
 msgid "Refuse payment request"
 msgstr "Refuser la demande de paiement"
 
-#: src/components/TransactionItem.vue:272
+#: src/components/TransactionItem.vue:274
 msgid "refused"
 msgstr "refusée"
 
@@ -2123,7 +2123,7 @@ msgstr "Envoyer de l'argent"
 
 #: src/components/ConfirmPaymentModal.vue:212
 #: src/components/ConfirmPaymentModal.vue:425
-#: src/components/TransactionItem.vue:192
+#: src/components/TransactionItem.vue:191
 msgid "sent"
 msgstr "envoyée"
 
@@ -2585,7 +2585,7 @@ msgstr ""
 #: src/components/RecurrentContractModal.vue:72
 #: src/components/RecurrentContractModal.vue:76
 #: src/components/RecurrentContractModal.vue:87
-#: src/components/TransactionItem.vue:262
+#: src/components/TransactionItem.vue:264
 msgid "to"
 msgstr "à"
 

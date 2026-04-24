@@ -10,13 +10,6 @@
               :refreshToggle="refreshAccountsToggle"
               :account="account"
             />
-            <TheContractList
-              v-if="account"
-              :refreshToggle="refreshContractsToggle"
-              :account="account"
-              :key="'contracts-' + account._obj.internalId"
-              class="mt-4"
-            />
           </div>
           <div class="column is-half">
             <TheTransactionList
@@ -48,7 +41,6 @@
 
   import TheBankAccountList from "@/components//TheBankAccountList.vue"
   import TheTransactionList from "@/components/TheTransactionList.vue"
-  import TheContractList from "@/components/TheContractList.vue"
   import TheDashboardFooter from "@/components/TheDashboardFooter.vue"
 
   @Options({
@@ -67,7 +59,6 @@
     components: {
       TheTransactionList,
       TheBankAccountList,
-      TheContractList,
       TheDashboardFooter,
     },
     methods: {

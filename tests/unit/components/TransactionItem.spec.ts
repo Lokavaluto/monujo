@@ -199,4 +199,36 @@ describe("TransactionItem.vue", () => {
     expect(amount.classes()).not.toContain("has-text-danger")
     expect(wrapper.classes()).toContain("refused")
   })
+
+  it("renders an outgoing recurring payment as a debit with its description", () => {
+    const wrapper = mount(TransactionItem, {
+      props: {
+        transaction: {
+          ...baseTransaction,
+          isTopUp: false,
+          isRecurrentContract: true,
+          isSender: true,
+          pending: false,
+          nextExecutionDate: "2026-02-01T00:00:00Z",
+          description: "Monthly membership",
+        },
+      },
+      global: {
+        stubs: {
+          WorkflowIndicator: true,
+          "fa-icon": true,
+        },
+        mocks: {
+          $gettext: (msg: string) => msg,
+          $config: {},
+          $modal: { open: vi.fn() },
+        },
+      },
+    })
+
+    const amount = wrapper.find("h3.custom-card-related")
+    expect(amount.classes()).toContain("has-text-danger")
+    expect(amount.find("span.amount").text().trim()).toMatch(/^-/)
+    expect(wrapper.get(".transaction-desc").text()).toBe("Monthly membership")
+  })
 })

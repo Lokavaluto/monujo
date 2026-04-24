@@ -1,5 +1,5 @@
 <template>
-  <div class="card custom-card custom-card-padding">
+  <div>
     <span
       :class="{
         hide: !refreshAwaitingList.size,

@@ -46,7 +46,6 @@
           v-if="
             !transaction.isTopUp &&
             !transaction.isReconversion &&
-            !transaction.isRecurrentContract &&
             transaction.description
           "
           class="has-text-grey-light transaction-desc"
@@ -231,15 +230,17 @@
           return ["custom-card-related", "has-text-grey"]
         }
 
-        const isOutgoingPaymentRequest =
-          this.transaction.isPaymentRequest && this.transaction.isSender
+        const isOutgoingRequest =
+          (this.transaction.isPaymentRequest ||
+            this.transaction.isRecurrentContract) &&
+          this.transaction.isSender
         const hasNegativeAmount = this.transaction.amount
           .toString()
           .startsWith("-")
 
         return [
           "custom-card-related",
-          isOutgoingPaymentRequest || hasNegativeAmount
+          isOutgoingRequest || hasNegativeAmount
             ? "has-text-danger"
             : "has-text-success",
         ]
@@ -247,7 +248,8 @@
 
       shouldPrefixDebitSign() {
         return (
-          this.transaction.isPaymentRequest &&
+          (this.transaction.isPaymentRequest ||
+            this.transaction.isRecurrentContract) &&
           this.transaction.isSender &&
           !this.transaction.amount.toString().startsWith("-")
         )
