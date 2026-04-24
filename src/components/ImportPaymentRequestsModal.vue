@@ -201,7 +201,8 @@
               return
             }
 
-            const amount = parseFloat(amountStr)
+            const normalizedAmountStr = amountStr.replace(",", ".")
+            const amount = parseFloat(normalizedAmountStr)
             if (isNaN(amount) || amount === 0) {
               this.validationStatus = "error"
               this.validationError = `Row ${i + 1}: Invalid amount "${amountStr}". Must be a non-zero number`
