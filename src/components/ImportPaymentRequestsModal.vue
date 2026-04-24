@@ -20,7 +20,7 @@
             <h4 class="is-size-6 has-text-weight-bold mb-2">
               {{ $gettext("CSV file format") }}
             </h4>
-            <p class="is-size-7 mb-2">{{ $gettext("The file must contain 3 columns:") }}</p>
+            <p class="is-size-7 mb-2">{{ $gettext("The file must contain 2 columns:") }}</p>
             <table class="table is-narrow is-size-7">
               <thead>
                 <tr>
@@ -31,24 +31,19 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><code>sender_wallet</code></td>
-                  <td>{{ $gettext("Sender wallet address") }}</td>
+                  <td><code>related_wallet</code></td>
+                  <td>{{ $gettext("The other party's wallet address") }}</td>
                   <td><code>0x1234abcd...</code></td>
                 </tr>
                 <tr>
-                  <td><code>receiver_wallet</code></td>
-                  <td>{{ $gettext("Receiver wallet address") }}</td>
-                  <td><code>0x5678efgh...</code></td>
-                </tr>
-                <tr>
                   <td><code>amount</code></td>
-                  <td>{{ $gettext("Amount to request") }}</td>
-                  <td><code>50.00</code></td>
+                  <td>{{ $gettext("Amount (positive = incoming, negative = outgoing)") }}</td>
+                  <td><code>50.00</code> / <code>-30.00</code></td>
                 </tr>
               </tbody>
             </table>
             <p class="is-size-7 has-text-grey">
-              {{ $gettext("Note: First row should be the header row. The 0x prefix is optional.") }}
+              {{ $gettext("Note: First row should be the header row. The 0x prefix is optional. A positive amount means you expect to receive a payment (the related wallet is the sender). A negative amount means you are sending a payment (the related wallet is the receiver).") }}
             </p>
           </div>
 
@@ -159,90 +154,88 @@
         reader.readAsText(file)
       },
 
-      validateAndParseCSV(content: string) {
-        this.validationStatus = "idle"
-        this.validationError = ""
-        this.parsedRequests = []
+        validateAndParseCSV(content: string) {
+          this.validationStatus = "idle"
+          this.validationError = ""
+          this.parsedRequests = []
 
-        const lines = content.trim().split(/\r?\n/)
-        
-        if (lines.length < 2) {
-          this.validationStatus = "error"
-          this.validationError = "File must contain at least a header row and one data row"
-          return
-        }
-
-        const headerLine = lines[0].toLowerCase()
-        const headers = this.parseCSVLine(headerLine)
-        
-        const expectedHeaders = ["sender_wallet", "receiver_wallet", "amount"]
-        const hasValidHeaders = expectedHeaders.every((h, i) => 
-          headers[i]?.trim() === h
-        )
-
-        if (!hasValidHeaders) {
-          this.validationStatus = "error"
-          this.validationError = `Invalid headers. Expected: ${expectedHeaders.join(", ")}. Got: ${headers.join(", ")}`
-          return
-        }
-
-        const requests: ParsedRequest[] = []
-        
-        for (let i = 1; i < lines.length; i++) {
-          const line = lines[i].trim()
-          if (!line) continue
-
-          const values = this.parseCSVLine(line)
+          const lines = content.trim().split(/\r?\n/)
           
-          if (values.length < 3) {
+          if (lines.length < 2) {
             this.validationStatus = "error"
-            this.validationError = `Row ${i + 1}: Expected 3 columns, got ${values.length}`
+            this.validationError = "File must contain at least a header row and one data row"
             return
           }
 
-          const senderWallet = values[0]?.trim()
-          const receiverWallet = values[1]?.trim()
-          const amountStr = values[2]?.trim()
+          const headerLine = lines[0].toLowerCase()
+          const headers = this.parseCSVLine(headerLine)
+          
+          const expectedHeaders = ["related_wallet", "amount"]
+          const hasValidHeaders = expectedHeaders.every((h, i) => 
+            headers[i]?.trim() === h
+          )
 
-          if (!senderWallet) {
+          if (!hasValidHeaders) {
             this.validationStatus = "error"
-            this.validationError = `Row ${i + 1}: sender_wallet is empty`
+            this.validationError = `Invalid headers. Expected: ${expectedHeaders.join(", ")}. Got: ${headers.join(", ")}`
             return
           }
 
-          if (!receiverWallet) {
+          const selfWalletUri: string = this.account.internalId
+
+          const requests: ParsedRequest[] = []
+          
+          for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim()
+            if (!line) continue
+
+            const values = this.parseCSVLine(line)
+            
+            if (values.length < 2) {
+              this.validationStatus = "error"
+              this.validationError = `Row ${i + 1}: Expected 2 columns, got ${values.length}`
+              return
+            }
+
+            const relatedWallet = values[0]?.trim()
+            const amountStr = values[1]?.trim()
+
+            if (!relatedWallet) {
+              this.validationStatus = "error"
+              this.validationError = `Row ${i + 1}: related_wallet is empty`
+              return
+            }
+
+            const amount = parseFloat(amountStr)
+            if (isNaN(amount) || amount === 0) {
+              this.validationStatus = "error"
+              this.validationError = `Row ${i + 1}: Invalid amount "${amountStr}". Must be a non-zero number`
+              return
+            }
+
+            const cleanRelatedWallet = relatedWallet.toLowerCase().replace(/^0x/, "")
+            const relatedWalletUri = `comchain:${cleanRelatedWallet}`
+
+            // Positive amount: we expect to receive → related wallet is sender, self is receiver
+            // Negative amount: we send a payment → related wallet is receiver, self is sender
+            const isIncoming = amount > 0
+            requests.push({
+              sender_wallet_uri: isIncoming ? relatedWalletUri : selfWalletUri,
+              receiver_wallet_uri: isIncoming ? selfWalletUri : relatedWalletUri,
+              amount: Math.abs(amount),
+            })
+          }
+
+          if (requests.length === 0) {
             this.validationStatus = "error"
-            this.validationError = `Row ${i + 1}: receiver_wallet is empty`
+            this.validationError = "No valid data rows found in the file"
             return
           }
 
-          const amount = parseFloat(amountStr)
-          if (isNaN(amount) || amount <= 0) {
-            this.validationStatus = "error"
-            this.validationError = `Row ${i + 1}: Invalid amount "${amountStr}". Must be a positive number`
-            return
-          }
-
-          const cleanSenderWallet = senderWallet.toLowerCase().replace(/^0x/, "")
-          const cleanReceiverWallet = receiverWallet.toLowerCase().replace(/^0x/, "")
-
-          requests.push({
-            sender_wallet_uri: `comchain:${cleanSenderWallet}`,
-            receiver_wallet_uri: `comchain:${cleanReceiverWallet}`,
-            amount: amount,
-          })
-        }
-
-        if (requests.length === 0) {
-          this.validationStatus = "error"
-          this.validationError = "No valid data rows found in the file"
-          return
-        }
-
-        this.parsedRequests = requests
-        this.validationStatus = "validated"
-        this.$msg.success(this.$gettext("File validated successfully"))
-      },
+          this.parsedRequests = requests
+          this.validationStatus = "validated"
+          this.$msg.success(this.$gettext("File validated successfully"))
+        },
 
       parseCSVLine(line: string): string[] {
         const result: string[] = []
