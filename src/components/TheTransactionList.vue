@@ -11,13 +11,21 @@
         icon="sync"
       />
     </span>
+    <TheContractList
+      v-if="account"
+      :refreshToggle="refreshContractsToggle"
+      :account="account"
+      :key="'contracts-' + account._obj.internalId"
+      class="mt-4"
+      />
+    
     <PaymentRequests
-	  :account="account"
-	  :refreshToggle="subRefreshToggle"
-	  @triggerTransactionRefresh="trigger"
-	  @refreshTransaction="$emit('refreshTransaction')"
-	  @refreshAccounts="$emit('refreshAccounts')"
-	/>
+      :account="account"
+      :refreshToggle="subRefreshToggle"
+      @triggerTransactionRefresh="trigger"
+      @refreshTransaction="$emit('refreshTransaction')"
+      @refreshAccounts="$emit('refreshAccounts')"
+      />
     <PendingTopUp
       :account="account"
       :refreshToggle="subRefreshToggle"
@@ -39,6 +47,7 @@
   import TransactionListRecent from "./TransactionListRecent.vue"
   import PendingTopUp from "./PendingTopUp.vue"
   import PaymentRequests from "./PaymentRequests.vue"
+  import TheContractList from "@/components/TheContractList.vue"
 
   import { mapModuleState } from "@/utils/vuex"
 
@@ -62,6 +71,7 @@
       TransactionListRecent,
       PendingTopUp,
       PaymentRequests,
+      TheContractList,
     },
     props: {
       refreshToggle: Boolean,
@@ -71,6 +81,7 @@
       return {
         refreshAwaitingList: new Set<any>(),
         subRefreshToggle: false,
+        refreshContractsToggle: false,
       }
     },
     computed: {
@@ -104,6 +115,7 @@
     watch: {
       refreshToggle() {
         this.subRefreshToggle = !this.subRefreshToggle
+        this.refreshContractsToggle = !this.refreshContractsToggle
       },
     },
   })

@@ -43,6 +43,8 @@ import {
   faFileAlt,
   faTrash,
   faCalendarAlt,
+  faChevronDown,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -92,7 +94,9 @@ library.add(
   faTimes,
   faFileAlt,
   faTrash,
-  faCalendarAlt
+  faCalendarAlt,
+  faChevronDown,
+  faChevronUp
 )
 
 export default FontAwesomeIcon
