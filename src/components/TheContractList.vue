@@ -14,6 +14,7 @@
     <ContractListRecent
       :account="account"
       :refreshToggle="subRefreshToggle"
+      :isFolded="isFolded"
       @triggerContractRefresh="trigger"
     />
   </div>
@@ -46,6 +47,10 @@
     props: {
       refreshToggle: Boolean,
       account: Object,
+      isFolded: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {

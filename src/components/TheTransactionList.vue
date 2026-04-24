@@ -15,20 +15,23 @@
       v-if="account"
       :refreshToggle="refreshContractsToggle"
       :account="account"
+      :isFolded="true"
       :key="'contracts-' + account._obj.internalId"
       class="mt-4"
-      />
-    
+    />
+
     <PaymentRequests
       :account="account"
       :refreshToggle="subRefreshToggle"
+      :isFolded="isFolded"
       @triggerTransactionRefresh="trigger"
       @refreshTransaction="$emit('refreshTransaction')"
       @refreshAccounts="$emit('refreshAccounts')"
-      />
+    />
     <PendingTopUp
       :account="account"
       :refreshToggle="subRefreshToggle"
+      :isFolded="isFolded"
       @triggerTransactionRefresh="trigger"
       @refreshTransaction="$emit('refreshTransaction')"
       @refreshAccounts="$emit('refreshAccounts')"
@@ -36,6 +39,7 @@
     <TransactionListRecent
       :account="account"
       :refreshToggle="subRefreshToggle"
+      :isFolded="isFolded"
       @triggerTransactionRefresh="trigger"
     />
   </div>
@@ -76,6 +80,10 @@
     props: {
       refreshToggle: Boolean,
       account: Object,
+      isFolded: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {

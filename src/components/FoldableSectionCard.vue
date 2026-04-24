@@ -9,6 +9,9 @@
       >
         <span class="foldable-section-title-content">
           <slot name="title">{{ title }}</slot>
+          <span v-if="shouldShowCount" class="foldable-section-count">
+            ({{ count }})
+          </span>
         </span>
         <span class="icon is-small foldable-section-icon" aria-hidden="true">
           <fa-icon :icon="isSectionOpen ? 'chevron-up' : 'chevron-down'" />
@@ -33,6 +36,14 @@
         type: String,
         default: "",
       },
+      count: {
+        type: Number,
+        default: null,
+      },
+      showCount: {
+        type: Boolean,
+        default: true,
+      },
       isFolded: {
         type: Boolean,
         default: false,
@@ -46,6 +57,13 @@
     computed: {
       shouldShowBody() {
         return this.isSectionOpen
+      },
+      shouldShowCount() {
+        return (
+          this.showCount &&
+          this.count !== null &&
+          this.count !== undefined
+        )
       },
     },
     watch: {
@@ -85,6 +103,10 @@
     display: flex;
     align-items: center;
     gap: 0.35rem;
+  }
+
+  .foldable-section-count {
+    font-weight: 400;
   }
 
   .foldable-section-icon {
