@@ -18,17 +18,26 @@
     <div class="amount-col is-flex-direction-column left">
       <h3
         :class="[
-          transaction.amount.toString().charAt(0) == '-'
+          transaction.isPaymentRequest && transaction.isSender
+            ? 'custom-card-related has-text-danger'
+            : transaction.amount.toString().charAt(0) == '-'
             ? 'custom-card-related has-text-danger'
             : 'custom-card-related has-text-success',
         ]"
       >
         <div class="amount">
           <span class="amount">
+            <template
+              v-if="
+                transaction.isPaymentRequest &&
+                transaction.isSender &&
+                transaction.amount.toString().charAt(0) !== '-'
+              "
+            >-</template>
             {{ numericFormat(parseFloat(transaction.amount)) }}
           </span>
         </div>
-        <div class="currency">{{ transaction.currency }}</div>
+        <span class="currency">{{ transaction.currency }}</span>
       </h3>
 
       <template v-if="mode !== 'small'">

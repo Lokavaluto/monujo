@@ -129,6 +129,10 @@
             this.contractsCount = allContracts.length
             // Sort by creation date (most recent first) and take first 5
             this.contracts = allContracts
+              .map((contract: any) => {
+                contract.currency = this.account.curr
+                return contract
+              })
               .sort((a: any, b: any) => b.date.getTime() - a.date.getTime())
               .slice(0, 5)
             this.isContractsLoadingError = false
