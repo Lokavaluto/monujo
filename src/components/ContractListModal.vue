@@ -27,7 +27,7 @@
             "
           >
             <div class="mb-1">
-              <strong>{{ $gettext("Select timespan:") }}</strong>
+              <strong>{{ $gettext("Next payment period:") }}</strong>
             </div>
             <div class="datepicker-export">
               <date-picker
@@ -59,11 +59,13 @@
                     >
                       <button
                         class="xmx-btn xmx-btn-text"
+                        :disabled="isPreviousTimeSpanDisabled(selector)"
                         @click="
                           () => {
+                            if (isPreviousTimeSpanDisabled(selector)) return
                             selectedTimeSpanOffset =
                               selectedTimeSpanType != selector
-                                ? -1
+                                ? 0
                                 : selectedTimeSpanOffset - 1
                             selectedTimeSpanType = selector
                             emit(selectedTimeSpan)
@@ -90,9 +92,7 @@
                           ;[selectedTimeSpanOffset++, emit(selectedTimeSpan)]
                         "
                         :class="{
-                          hide:
-                            selectedTimeSpanType != selector ||
-                            isSelectionCurrent,
+                          hide: selectedTimeSpanType != selector,
                         }"
                       >
                         <i class="xmx-icon-right"></i>
@@ -302,8 +302,8 @@
       this.fetchContracts()
     },
     computed: {
-      isSelectionCurrent(): boolean {
-        return moment().isBetween(this.filterDate[0], this.filterDate[1])
+      minFilterDate() {
+        return moment().startOf("day").toDate()
       },
       selectedTimeSpan() {
         const now = moment().toDate()
@@ -317,7 +317,7 @@
           moment(dateSelected).endOf(timeSpanType),
         ].map((m) => m.toDate())
 
-        return [begin, now < end ? now : end]
+        return [begin < this.minFilterDate ? this.minFilterDate : begin, end]
       },
       filteredContracts(): any[] {
         const [dateBegin, dateEnd] = this.filterDate
@@ -325,11 +325,17 @@
           this.recipientBatchLoader.elements[this.selectedRecipientIdx]?.name
 
         return this.allContracts.filter((contract: any) => {
-          // Filter by date (creation date)
-          if (dateBegin && contract.date < dateBegin) return false
-          if (dateEnd && contract.date > dateEnd) return false
+          // Filter by the next payment occurrence date
+          if (dateBegin || dateEnd) {
+            const nextPaymentDate = this.getContractNextPaymentDate(contract)
+            if (!nextPaymentDate) return false
+            if (dateBegin && nextPaymentDate < dateBegin) return false
+            if (dateEnd && nextPaymentDate > dateEnd) return false
+          }
           // Filter by recipient
-          if (selectedRecipientName && selectedRecipientName !== contract.related) return false
+          if (selectedRecipientName && selectedRecipientName !== contract.related) {
+            return false
+          }
           return true
         })
       },
@@ -370,7 +376,18 @@
         // For future pagination if needed
       },
       disabledDates(date: Date) {
-        return date > moment().endOf("day").toDate()
+        return moment(date).isBefore(this.minFilterDate, "day")
+      },
+      isPreviousTimeSpanDisabled(selector: string) {
+        if (this.selectedTimeSpanType !== selector) {
+          return true
+        }
+        return this.selectedTimeSpanOffset <= 0
+      },
+      getContractNextPaymentDate(contract: any): Date | null {
+        if (!contract.nextExecutionDate) return null
+        const nextPaymentDate = moment(contract.nextExecutionDate)
+        return nextPaymentDate.isValid() ? nextPaymentDate.toDate() : null
       },
 
       async onRecipientSearch(recipientsSearchString: any) {
@@ -398,6 +415,14 @@
           newBegin ? moment(newBegin).startOf("day").toDate() : null,
           newEnd ? moment(newEnd).endOf("day").toDate() : null,
         ]
+        if (normEnd && normEnd < this.minFilterDate) {
+          this.filterDate = ["", ""]
+          return
+        }
+        if (normBegin && normBegin < this.minFilterDate) {
+          this.filterDate = [this.minFilterDate, normEnd]
+          return
+        }
         if (
           normBegin &&
           normEnd &&
