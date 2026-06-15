@@ -120,18 +120,12 @@
 </template>
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
-  import { mapModuleState } from "@/utils/vuex"
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
-  import "vue-loading-overlay/dist/css/index.css"
-  import Loading from "vue-loading-overlay"
-  import RecipientItem from "@/components/RecipientItem.vue"
-  import { UIError } from "../exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
   import MoneyTransaction from "./MoneyTransaction.vue"
   import TransactionItem from "./TransactionItem.vue"
 
-  import UseBatchLoading from "@/services/UseBatchLoading"
   import { debounceMethod } from "@/utils/debounce"
   import applyDecorators from "@/utils/applyDecorators"
   import { showSpinnerMethod } from "@/utils/showSpinner"
@@ -140,10 +134,8 @@
   @Options({
     name: "MoneyTransferModal",
     components: {
-      RecipientItem,
       MoneyTransaction,
       TransactionItem,
-      Loading,
       RecipientSelector,
     },
     data() {
