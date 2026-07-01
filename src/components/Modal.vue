@@ -19,6 +19,7 @@
   import InspectRecipientModal from "./InspectRecipientModal.vue"
   import RecipientTechnicalDetailsModal from "./RecipientTechnicalDetailsModal.vue"
   import PaymentRequestModal from "./PaymentRequestModal.vue"
+  import PaymentRequestListModal from "./PaymentRequestListModal.vue"
   import ImportPaymentRequestsModal from "./ImportPaymentRequestsModal.vue"
   import RecurrentContractModal from "./RecurrentContractModal.vue"
   import ContractListModal from "./ContractListModal.vue"
@@ -36,6 +37,7 @@
       InspectRecipientModal,
       RecipientTechnicalDetailsModal,
       PaymentRequestModal,
+      PaymentRequestListModal,
       ImportPaymentRequestsModal,
       RecurrentContractModal,
       ContractListModal,

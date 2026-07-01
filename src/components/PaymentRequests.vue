@@ -13,12 +13,29 @@
         }}
       </p>
       <TransactionItem
-        v-for="paymentRequest in paymentRequestList"
+        v-for="paymentRequest in displayedPaymentRequestList"
         :key="paymentRequest"
         class="payment-request-item"
         :transaction="paymentRequest"
         @click="openModal(paymentRequest)"
       />
+      <div v-if="paymentRequestList.length > 5" class="has-text-centered mt-5">
+        <button
+          @click="
+            () => {
+              $modal.open('PaymentRequestListModal', {
+                paymentRequestList,
+                account,
+                refreshTransaction,
+                refreshAccounts,
+              })
+            }
+          "
+          class="button custom-button custom-inverted"
+        >
+          {{ $gettext("See more") }}
+        </button>
+      </div>
     </FoldableSectionCard>
   </div>
 </template>
@@ -61,6 +78,9 @@
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),
       ...mapGetters(["numericFormat", "relativeDateFormat", "dateFormat"]),
+      displayedPaymentRequestList() {
+        return this.paymentRequestList.slice(0, 5)
+      },
     },
 
     methods: {
