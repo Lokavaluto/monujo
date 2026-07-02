@@ -53,7 +53,7 @@
           }}
         </h5>
         <h4 v-else class="custom-card-related">
-          {{ transaction.related }}
+          {{ relatedLabel }}
         </h4>
 
         <h5
@@ -84,7 +84,7 @@
       </div>
     </div>
     <div v-if="mode === 'small'" class="custom-card-related related small">
-      {{ transaction.related }}
+      {{ relatedLabel }}
     </div>
     <div
       v-if="transaction?.pending !== null || transaction?.date !== null || transaction?.nextExecutionDate !== null"
@@ -214,6 +214,18 @@
         return this.reconversionStatusTranslations[
           this.transaction?.isReconversion.toString()
         ]
+      },
+
+      relatedLabel() {
+        if (!this.transaction?.isPaymentRequest) {
+          return this.transaction?.related
+        }
+
+        const direction = this.transaction.isSender
+          ? this.$gettext("to")
+          : this.$gettext("from")
+
+        return direction + " " + this.transaction.related
       },
 
       paymentRequestStateLabel() {

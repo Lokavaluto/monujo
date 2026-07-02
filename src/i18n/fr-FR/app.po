@@ -767,7 +767,7 @@ msgstr "pour le compte %{ name }"
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
-#: src/components/ConfirmPaymentModal.vue:449
+#: src/components/ConfirmPaymentModal.vue:449 src/components/TransactionItem.vue:226
 msgid "from"
 msgstr "De"
 
@@ -1168,6 +1168,10 @@ msgid ""
 msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
+
+#: src/components/PaymentRequestModal.vue:158
+msgid "Please enter at least 10 characters"
+msgstr "Veuillez saisir au moins 10 caractères."
 
 #: src/components/MoneyRequestModal.vue:109 src/main.ts:376
 msgid "Please scan the QR code above to proceed"
@@ -1744,7 +1748,7 @@ msgstr ""
 "Ce portefeuille appartient à la monnaie « %{ currency } » qui n'est pas "
 "disponible sur ce serveur."
 
-#: src/components/ConfirmPaymentModal.vue:448
+#: src/components/ConfirmPaymentModal.vue:448 src/components/TransactionItem.vue:225
 msgid "to"
 msgstr "à"
 
