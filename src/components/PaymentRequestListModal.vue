@@ -190,7 +190,7 @@
         </div>
       </section>
       <footer
-        class="modal-card-foot custom-modal-card-foot is-justify-content-end"
+        class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
       >
         <button
           class="button custom-button-modal has-text-weight-medium"

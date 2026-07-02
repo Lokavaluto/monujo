@@ -76,10 +76,10 @@
             </p>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot is-justify-content-center">
+        <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
           <button
             v-if="paymentRequest.isSender && paymentRequest.state === 'open'"
-            class="button custom-button-modal button-modal has-text-weight-medium action"
+            class="button custom-button-modal has-text-weight-medium"
             :disabled="isPaymentInProgress"
             @click="pay()"
           >
@@ -90,7 +90,7 @@
           </button>
           <button
             v-if="paymentRequest.isSender && paymentRequest.state === 'open'"
-            class="button custom-button-modal button-modal has-text-weight-medium action btn-danger"
+            class="button custom-button-modal has-text-weight-medium"
             @click="startRefuse()"
           >
             <span class="icon">
@@ -100,7 +100,7 @@
           </button>
           <button
             v-if="paymentRequest.isCreator && (paymentRequest.state === 'open' || paymentRequest.state === 'refused')"
-            class="button custom-button-modal button-modal has-text-weight-medium action btn-secondary"
+            class="button custom-button-modal has-text-weight-medium"
             @click="startCancel()"
           >
             <span class="icon">
@@ -110,7 +110,7 @@
           </button>
           <button
             v-if="paymentRequest.state === 'paid' || paymentRequest.state === 'cancelled'"
-            class="button custom-button-modal button-modal has-text-weight-medium"
+            class="button custom-button-modal has-text-weight-medium"
             @click="$modal.close()"
           >
             <span>{{ $gettext("Ok") }}</span>
@@ -161,13 +161,13 @@
         </section>
         <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
           <button
-            class="button custom-button-modal button-modal has-text-weight-medium"
+            class="button custom-button-modal has-text-weight-medium"
             @click="$modal.back()"
           >
             {{ $gettext("Back") }}
           </button>
           <button
-            class="button custom-button-modal button-modal has-text-weight-medium btn-danger"
+            class="button custom-button-modal has-text-weight-medium"
             :disabled="!canConfirmAction"
             @click="confirmAction()"
           >
@@ -431,30 +431,6 @@
   .date-info {
     color: #888;
     font-size: 0.85rem;
-  }
-
-  .modal-card-foot {
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .button.action {
-    white-space: normal;
-    height: auto;
-
-    .icon {
-      margin-right: 0.3em;
-    }
-  }
-
-  .btn-danger {
-    background-color: #cc0f35 !important;
-    color: white !important;
-  }
-
-  .btn-secondary {
-    background-color: #6c757d !important;
-    color: white !important;
   }
 
   .textarea {
