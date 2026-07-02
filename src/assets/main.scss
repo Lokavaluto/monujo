@@ -81,8 +81,7 @@ body {
     border-color: $btn-top-up-border-color !important;
     background: $btn-top-up-background-color !important;
   }
-  &.custom-button-modal,
-  &.custom-button-modal:hover {
+  &.custom-button-modal {
     color: $modal-btn-text-color;
     background: $modal-btn-background-color;
     font-style: normal;

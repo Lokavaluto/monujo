@@ -39,13 +39,13 @@
           />
         </section>
         <footer
-          class="modal-card-foot custom-modal-card-foot is-justify-content-space-between step1-footer"
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
         >
           <!-- Regular mode: QR code and Generate request buttons -->
           <template v-if="!isRecurrenceEnabled">
             <button
               :disabled="!isValid"
-              class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
+              class="button custom-button-modal has-text-weight-medium"
               @click="openQrCode()"
             >
               <span class="icon">
@@ -55,7 +55,7 @@
             </button>
             <button
               :disabled="!isValid"
-              class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
+              class="button custom-button-modal has-text-weight-medium"
               @click="$modal.next()"
             >
               <span class="icon">
@@ -68,7 +68,7 @@
           <button
             v-else
             :disabled="!isRecurrenceReady"
-            class="button custom-button-modal has-text-weight-medium is-flex-grow-1"
+            class="button custom-button-modal has-text-weight-medium"
             @click="$modal.next()"
           >
             <span class="icon">
@@ -470,23 +470,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-  }
-
-  .modal-card-foot {
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .step1-footer {
-    flex-wrap: nowrap;
-    gap: 0.75rem;
-
-    .button {
-      flex: 1 1 0;
-      min-width: 0;
-      padding-left: 0.5em;
-      padding-right: 0.5em;
     }
   }
 
