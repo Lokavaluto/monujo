@@ -147,11 +147,15 @@
                 class="textarea"
                 v-model="reason"
                 :placeholder="reasonPlaceholder"
+                :minlength="reasonMinLength"
                 rows="3"
               ></textarea>
             </div>
             <p v-if="isReasonRequired && !reason" class="help is-danger">
               {{ $gettext("This field is required") }}
+            </p>
+            <p v-else-if="isReasonTooShort" class="help is-danger">
+              {{ $gettext("Please enter at least 10 characters") }}
             </p>
           </div>
         </section>
@@ -164,7 +168,7 @@
           </button>
           <button
             class="button custom-button-modal button-modal has-text-weight-medium btn-danger"
-            :disabled="isReasonRequired && !reason"
+            :disabled="!canConfirmAction"
             @click="confirmAction()"
           >
             {{ actionType === 'refuse' ? $gettext("Refuse") : $gettext("Cancel request") }}
@@ -223,6 +227,26 @@
 
       isReasonRequired() {
         return this.actionType === "refuse"
+      },
+
+      reasonMinLength() {
+        return this.isReasonRequired ? 10 : undefined
+      },
+
+      reasonText() {
+        return this.reason.trim()
+      },
+
+      isReasonTooShort() {
+        return (
+          this.isReasonRequired &&
+          this.reasonText.length > 0 &&
+          this.reasonText.length < 10
+        )
+      },
+
+      canConfirmAction() {
+        return !this.isReasonRequired || this.reasonText.length >= 10
       },
 
       reasonLabel() {
@@ -295,9 +319,11 @@
         this.$modal.next()
       },
       async confirmAction() {
+        if (!this.canConfirmAction) return
+
         try {
           if (this.actionType === "refuse") {
-            await this.paymentRequest.refuse(this.reason)
+            await this.paymentRequest.refuse(this.reasonText)
             this.$msg.success(this.$gettext("Payment request refused"))
           } else {
             await this.paymentRequest.cancel(this.reason || undefined)
