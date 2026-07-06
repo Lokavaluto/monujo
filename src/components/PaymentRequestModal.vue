@@ -162,12 +162,6 @@
         <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
           <button
             class="button custom-button-modal has-text-weight-medium"
-            @click="$modal.back()"
-          >
-            {{ $gettext("Back") }}
-          </button>
-          <button
-            class="button custom-button-modal has-text-weight-medium"
             :disabled="!canConfirmAction"
             @click="confirmAction()"
           >
