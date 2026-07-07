@@ -440,7 +440,10 @@ fetchConfig("config.json").then(async (config: any) => {
       })
     }
 
-    if (store.state.lokapi.virtualAccountTree.includes(obj)) {
+    if (
+      store.state.lokapi.virtualAccountTree.includes(obj) &&
+      obj?.isPaymentRequestAllowed === true
+    ) {
       items.push({
         label: $gettext("Import payment requests"),
         icon: "file-alt",

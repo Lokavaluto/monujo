@@ -25,6 +25,7 @@
 
           <!-- Recurrence options -->
           <RecurrenceOptions
+            v-if="isPaymentRequestAllowed"
             v-model:enabled="isRecurrenceEnabled"
             v-model:interval="recurringInterval"
             v-model:ruleType="recurringRuleType"
@@ -53,7 +54,7 @@
               <span>{{ $gettext("QR code") }}</span>
             </button>
             <button
-              v-if="backendAccount?.isPaymentRequestAllowed"
+              v-if="isPaymentRequestAllowed"
               :disabled="!isValid"
               class="button custom-button-modal has-text-weight-medium"
               @click="$modal.next()"
@@ -66,7 +67,7 @@
           </template>
           <!-- Recurrence mode: Create recurrence payment button -->
           <button
-            v-else
+            v-else-if="isPaymentRequestAllowed"
             :disabled="!isRecurrenceReady"
             class="button custom-button-modal has-text-weight-medium"
             @click="$modal.next()"
@@ -241,6 +242,12 @@
       currency() {
         return this.$modal.args.value[0].account?.curr || ""
       },
+      isPaymentRequestAllowed(): boolean {
+        return (
+          this.$modal.args.value[0].account?.isPaymentRequestAllowed === true
+        )
+      },
+
       isRecurrenceReady(): boolean {
         return (
           this.isRecurrenceEnabled &&

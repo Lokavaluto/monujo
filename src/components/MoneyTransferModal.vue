@@ -88,7 +88,9 @@
 
           <!-- Recurrence options -->
           <RecurrenceOptions
-            v-if="transactionType !== 'reconversion'"
+            v-if="
+              transactionType !== 'reconversion' && isRecurrentPaymentAllowed
+            "
             v-model:enabled="isRecurrenceEnabled"
             v-model:interval="recurringInterval"
             v-model:ruleType="recurringRuleType"
@@ -225,6 +227,13 @@
       ;(this.$el as HTMLElement).focus()
     },
     computed: {
+      isRecurrentPaymentAllowed(): boolean {
+        return (
+          this.transactionType !== "paymentRequest" &&
+          this.ownSelectedAccount?.isPaymentRequestAllowed === true
+        )
+      },
+
       isRecurrenceReady(): boolean {
         return Boolean(
           this.isRecurrenceEnabled &&
