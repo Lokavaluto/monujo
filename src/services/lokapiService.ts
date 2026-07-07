@@ -148,6 +148,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
           isActiveAccountSupported: !!userAccount.isActiveAccount,
           id: userAccount.internalId,
           isTopUpAllowed: userAccount.isTopUpAllowed,
+          isPaymentRequestAllowed: userAccount.isPaymentRequestAllowed,
           subAccounts: [],
           _obj: userAccount,
           creditable: false,
@@ -195,6 +196,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
               isActiveAccountSupported: !!userAccount.isActiveAccount,
               id: account.internalId,
               isTopUpAllowed: userAccount.isTopUpAllowed,
+              isPaymentRequestAllowed: userAccount.isPaymentRequestAllowed,
               _obj: account,
               creditable: account.creditable,
               isBusinessForFinanceBackend:
@@ -307,6 +309,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
       status: userAccount.status,
       id: userAccount.internalId,
       isTopUpAllowed: userAccount.isTopUpAllowed,
+      isPaymentRequestAllowed: userAccount.isPaymentRequestAllowed,
       subAccounts: [],
       _obj: userAccount,
       creditable: false,
@@ -348,6 +351,7 @@ export class LokAPI extends LokAPIBrowserAbstract {
           status: account.parent.status,
           id: account.internalId,
           isTopUpAllowed: userAccount.isTopUpAllowed,
+          isPaymentRequestAllowed: userAccount.isPaymentRequestAllowed,
           _obj: account,
           creditable: account.creditable,
           isBusinessForFinanceBackend:
