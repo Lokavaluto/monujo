@@ -18,8 +18,15 @@ module Fastlane
             "Unrecognized app label '#{params[:app]}', " +
             "please use one of: #{(data.keys + ["monujo"]).uniq.sort}")
         end
+        app_id = app_info["app"]["id"]
+        if Actions.lane_context[SharedValues::PLATFORM_NAME] == :ios
+          ## Apps may have a specific iOS bundle identifier (see
+          ## `app.ios.id` in the release YAML), falling back on the
+          ## general id.
+          app_id = app_info.dig("app", "ios", "id") || app_id
+        end
         Actions.lane_context[SharedValues::APP_NAME] = params[:app]
-        Actions.lane_context[SharedValues::APP_ID] = app_info["app"]["id"]
+        Actions.lane_context[SharedValues::APP_ID] = app_id
         Actions.lane_context[SharedValues::APP_DATA] = app_info
         UI.message("Successfully loaded #{params[:app]} data. Ready for next steps.")
       end

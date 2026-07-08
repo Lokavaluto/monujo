@@ -1,2 +1,5 @@
 ## Use MATCH_GIT_URL environment variable to override
 git_url("git@github.com:Lokavaluto/certificates.git")
+## Apple ID used by `match` for Apple Developer Portal operations
+## (override with $MATCH_USERNAME or $FASTLANE_USER)
+username("valentin.lab@kalysto.org")

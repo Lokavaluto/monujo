@@ -6,6 +6,89 @@ publish_metadata = Hash.new
 releases_data = nil
 from_publish_store = false
 
+## Lokavaluto's (shared) Apple team, used for apps without a specific
+## `app.ios.team_id` in the release YAML.
+DEFAULT_IOS_TEAM_ID = "25AZX5J5PX"
+
+## Lokavaluto's App Store Connect team. Beware: ASC team ids are
+## different from developer-portal team ids. Used when no ASC team
+## name matches the app name (see `select_store_team_for_current_app`).
+DEFAULT_IOS_ITC_TEAM_ID = "122170227"
+
+## Apple ID used for Apple-ID (cookie) based Spaceship store
+## operations (keep in sync with the `username` of the `Matchfile`).
+DEFAULT_APPLE_ID = "valentin.lab@kalysto.org"
+
+
+## Select the right App Store Connect team for the app currently
+## loaded in lane context (see `load_app_data`).
+##
+## ASC team ids differ from developer-portal team ids and are not
+## stored in the release YAML: for apps having a specific
+## `app.ios.team_id`, the ASC team is deduced by matching the app
+## name as a whole case-insensitive word in the names of the ASC
+## teams available to the Apple ID (ex: 'gemme' matches ASC team 'La
+## Gemme'). Without match, or without specific team, Lokavaluto's
+## default ASC team is used.
+def select_store_team_for_current_app
+  require 'spaceship'
+
+  app = Actions.lane_context[Fastlane::Actions::SharedValues::APP_NAME]
+  app_data = Actions.lane_context[Fastlane::Actions::SharedValues::APP_DATA] || {}
+  ios_data = app_data.dig("app", "ios") || {}
+
+  itc_team_id = DEFAULT_IOS_ITC_TEAM_ID
+  if ios_data["team_id"]
+    ## The (default team scoped) API key, if set, would bypass
+    ## cookie-based team selection (in the current session, but also
+    ## in downstream actions like `upload_to_testflight` that prefer
+    ## the lane-context API key): force Apple-ID authentication.
+    ## Note: the API key was stored with `set_sensitive` (see
+    ## `check_ios_signing_secrets_are_available`), and the sensitive
+    ## context takes precedence on reads: clear it the same way.
+    Spaceship::ConnectAPI.token = nil
+    Actions.lane_context.set_sensitive(
+      Fastlane::Actions::SharedValues::APP_STORE_CONNECT_API_KEY, nil)
+    Actions.lane_context[Fastlane::Actions::SharedValues::APP_STORE_CONNECT_API_KEY] = nil
+    username = ENV["FASTLANE_USER"] || ENV["MATCH_USERNAME"] || DEFAULT_APPLE_ID
+    ## `login` performs its own team selection and would prompt
+    ## interactively without a pre-set team: log in on the default
+    ## team first, deduction re-selects afterwards.
+    ENV["FASTLANE_ITC_TEAM_ID"] = DEFAULT_IOS_ITC_TEAM_ID
+    Spaceship::ConnectAPI.login(username, nil, use_portal: false, use_tunes: true)
+
+    teams = Spaceship::ConnectAPI.client.tunes_client.teams
+    matching = teams.select do |t|
+      t['name'].to_s =~ /\b#{Regexp.escape(app)}\b/i
+    end
+    case matching.length
+    when 0
+      UI.important(
+        "No App Store Connect team name matching '#{app}' found: " +
+        "falling back on default team #{DEFAULT_IOS_ITC_TEAM_ID}."
+      )
+    when 1
+      itc_team_id = matching.first['providerId'].to_s
+      UI.message(
+        "Deduced App Store Connect team '#{matching.first['name']}' " +
+        "(#{itc_team_id}) for app '#{app}'."
+      )
+    else
+      UI.user_error!(
+        "Several App Store Connect team names match '#{app}': " +
+        matching.map { |t| "'#{t['name']}' (#{t['providerId']})" }.join(", ") +
+        ". Can't choose safely."
+      )
+    end
+  end
+
+  ## For current session and subsequent Spaceship-based actions
+  ## (upload_to_testflight, deliver, ...)
+  ENV["FASTLANE_ITC_TEAM_ID"] = itc_team_id
+  Spaceship::ConnectAPI.select_team(tunes_team_id: itc_team_id) if Spaceship::ConnectAPI.client
+  itc_team_id
+end
+
 
 
 ## key is `deliver`'s identifier, value is matching resolution
@@ -95,6 +178,7 @@ lane :get_stored_build_numbers do |options|
     versions = version_codes.compact
   when :ios
     FastlaneCore::Globals.verbose = true
+    select_store_team_for_current_app
     app = Spaceship::ConnectAPI::App.find(
       lane_context[SharedValues::APP_ID]
     )
@@ -130,11 +214,15 @@ private_lane :_setup_signing do |options|
       keystore_password_file: options[:keystore_password_file],
     )
   when :ios
-    check_ios_signing_secrets_are_available(
-      api_key: options[:api_key],
-      api_key_path: options[:api_key_path],
-      set_spaceship_token: true,
-    )
+    ## XXXvlab: temporarily disabled along with the broken
+    ## spaceship-based store upload (store sending is done manually
+    ## for now). Note that this also skips the MATCH_PASSWORD lookup:
+    ## `match` will rely on the local keychain.
+    #check_ios_signing_secrets_are_available(
+    #  api_key: options[:api_key],
+    #  api_key_path: options[:api_key_path],
+    #  set_spaceship_token: true,
+    #)
   when :web
     ## Nothing to do
     UI.important "No signing happening for web. Ignoring."
@@ -619,9 +707,6 @@ end
 platform :ios do
 
   lane :build do |options|
-    ## Lokavaluto's team id is hard-written here for now
-    team_id "25AZX5J5PX"
-
     _build_apps options
   end
 
@@ -639,6 +724,94 @@ platform :ios do
       options[:screenshot] = true
     end
     _publish_store options
+  end
+
+  desc "Renew signing certificates for given app (right team and " +
+       "certificate repository branch are inferred from the release YAML). " +
+       "Revokes the type's certificates and profiles (portal and " +
+       "certificate repository), then regenerates them. " +
+       "Apps on the shared default team require an additional 'force:true' " +
+       "as all the team's apps' profiles are nuked along."
+  lane :renew_certs do |options|
+    app = options[:app]
+    UI.user_error! "Please provide an 'app:NAME' argument." unless app
+    releases_data = load_releases_data unless releases_data
+    load_app_data app: app
+
+    app_data = lane_context[SharedValues::APP_DATA]
+    ios_data = app_data.dig("app", "ios") || {}
+    cert_type = options[:type] || "appstore"
+
+    ## Provide `match`'s repository passphrase from the usual key file
+    ## unless already set, so `match`/`match_nuke` don't prompt for it
+    ## interactively (the `check_ios_signing_secrets_are_available`
+    ## action that used to do this is disabled in `_setup_signing`).
+    if not ENV["MATCH_PASSWORD"]
+      match_password_path = ENV["MATCH_PASSWORD_PATH"] || "keys/ios/match_password"
+      if File.readable? match_password_path
+        ENV["MATCH_PASSWORD"] = File.read(match_password_path).chomp
+        UI.message "Using Match passphrase from '#{match_password_path}'."
+      end
+    end
+
+    ## Always set team and certificate-repository branch EXPLICITLY,
+    ## paired from the same release YAML entry: never rely on ambient
+    ## environment ($FASTLANE_TEAM_ID, $MATCH_GIT_BRANCH, Matchfile
+    ## defaults or Apple-ID interactive team selection), which could
+    ## silently target another team's certificates or another branch.
+    if ios_data["team_id"]
+      ## Currency-specific Apple team: certificates are stored in the
+      ## branch named after the app in the certificates repository.
+      common_options = {
+        team_id: ios_data["team_id"],
+        git_branch: app,
+      }
+    else
+      unless options[:force]
+        UI.user_error!(
+          "App '#{app}' lives on the shared default Apple team: nuking " +
+          "will delete the certificates and provisioning profiles of ALL " +
+          "the apps of this team (they'll need a regeneration through " +
+          "`match` or a new `build`). Provide 'force:true' to proceed."
+        )
+      end
+      common_options = {
+        team_id: DEFAULT_IOS_TEAM_ID,
+        git_branch: "master",
+      }
+    end
+
+    UI.important(
+      "Renewing '#{cert_type}' certificates of '#{app}' for Apple " +
+      "team #{common_options[:team_id]} " +
+      "(certificate repository branch: #{common_options[:git_branch]})"
+    )
+    ## `match_nuke` below asks its own (itemized) confirmation before
+    ## deleting anything, so this pre-check is opt-in only (pass
+    ## `confirm_team:true`).
+    if options[:confirm_team] && !UI.confirm("Is this the expected team and branch ?")
+      UI.user_error! "Aborted."
+    end
+
+    ## Revoke on the Apple portal and remove from the certificates
+    ## repository (frees up the certificate slots on the portal).
+    ## Interactive: match_nuke lists every certificate and profile it
+    ## is about to delete for THIS team and asks a last confirmation:
+    ## review that list carefully before accepting.
+    ## Note: `type` takes the same values as `match`'s ('appstore' is
+    ## mapped internally to the distribution certificate type).
+    match_nuke(
+      type: cert_type,
+      **common_options,
+    )
+
+    ## Regenerate certificate and provisioning profile.
+    match(
+      type: cert_type,
+      app_identifier: lane_context[SharedValues::APP_ID],
+      readonly: false,
+      **common_options,
+    )
   end
 
   private_lane :_store_resolutions do |options|
@@ -710,6 +883,7 @@ platform :ios do
     ## Publish screenshots that have been taken
     for app in _setup_targets options
       load_app_data app: app
+      select_store_team_for_current_app
 
       send_store_screenshots_appstore(
         devices_ios_resolution: devices_ios_resolution
@@ -747,6 +921,14 @@ platform :ios do
 
     app_id = lane_context[SharedValues::APP_ID]
 
+    ## Per-app Apple team (from the release YAML's `app.ios.team_id`),
+    ## defaulting to Lokavaluto's team. The `team_id` action sets
+    ## $FASTLANE_TEAM_ID, used by `prepare_mobile_package`
+    ## (DEVELOPMENT_TEAM) and by `match`.
+    app_data = lane_context[SharedValues::APP_DATA] || {}
+    ios_data = app_data.dig("app", "ios") || {}
+    team_id(ios_data["team_id"] || DEFAULT_IOS_TEAM_ID)
+
 
     file_name = "#{app}_#{version_name}_#{version_code}"
     bundle_file_name = "#{file_name}.ipa"
@@ -772,7 +954,20 @@ platform :ios do
 
     ## Create temporary keychain for CI
     setup_ci if ENV['CI']
-    match(type: "appstore", app_identifier: app_id, readonly: true)
+    match_options = {type: "appstore", app_identifier: app_id, readonly: true}
+    if ios_data["team_id"]
+      ## Currency-specific Apple team: certificates are stored in the
+      ## branch named after the app in the certificates repository.
+      match_options[:team_id] = ios_data["team_id"]
+      match_options[:git_branch] = app
+    else
+      ## Be explicit rather than relying on ambient environment
+      ## ($MATCH_GIT_BRANCH, ...) that could target another team's
+      ## certificates.
+      match_options[:team_id] = DEFAULT_IOS_TEAM_ID
+      match_options[:git_branch] = "master"
+    end
+    match(**match_options)
 
     build_app(
       workspace: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/App.xcworkspace",

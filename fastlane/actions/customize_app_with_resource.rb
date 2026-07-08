@@ -9,7 +9,12 @@ module Fastlane
         app_data = Actions.lane_context[SharedValues::APP_DATA]
 
         url = params[:url] || app_data["data"]
-        app_id = params[:app_id] || app_data["app"]["id"]
+        ## APP_ID is platform-resolved by `load_app_data` (iOS may
+        ## use a specific bundle identifier, see `app.ios.id` in the
+        ## release YAML).
+        app_id = params[:app_id] ||
+                 Actions.lane_context[SharedValues::APP_ID] ||
+                 app_data["app"]["id"]
         app_name = params[:app_name] || app_data["app"]["name"]
 
         UI.message "App id: '#{app_id}', name: #{app_name}"
