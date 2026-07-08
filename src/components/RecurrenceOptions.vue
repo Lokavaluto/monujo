@@ -11,7 +11,7 @@
           <span class="slider round"></span>
         </label>
       </div>
-      <div class="ml-2 switch-centered">
+      <div class="ml-2 switch-centered recurrence-toggle-label">
         <fa-icon icon="sync" class="mr-2" />
         {{ label }}
       </div>
@@ -20,61 +20,74 @@
     <!-- Recurrence fields -->
     <div v-if="enabled" class="recurrence-fields mt-3">
       <div class="field">
-        <label class="label is-size-7">{{ $gettext("Frequency") }}</label>
+        <label class="label recurrence-field-label">{{ $gettext("Frequency") }}</label>
         <div class="is-flex is-align-items-center">
-          <div class="control mr-2" style="width: 80px">
-            <input
-              :value="interval"
-              @input="$emit('update:interval', parseInt($event.target.value) || 1)"
-              type="number"
-              min="1"
-              class="input"
-              :placeholder="$gettext('1')"
+          <NumberInputStepper
+            :modelValue="interval"
+            :min="1"
+            class="mr-2"
+            :placeholder="$gettext('1')"
+            :input-aria-label="$gettext('Frequency interval')"
+            :decrement-aria-label="$gettext('Decrease frequency')"
+            :increment-aria-label="$gettext('Increase frequency')"
+            @update:modelValue="$emit('update:interval', $event)"
+          />
+          <div class="control is-expanded recurrence-frequency-select">
+            <DropdownButton
+              :options="[
+                { value: 'daily', label: $gettext('Day(s)') },
+                { value: 'weekly', label: $gettext('Week(s)') },
+                { value: 'monthly', label: $gettext('Month(s)') },
+                { value: 'yearly', label: $gettext('Year(s)') },
+              ]"
+              :modelValue="ruleType"
+              customWidth="100%"
+              @update:modelValue="$emit('update:ruleType', $event)"
             />
-          </div>
-          <div class="control is-expanded">
-            <div class="select is-fullwidth">
-              <select
-                :value="ruleType"
-                @change="$emit('update:ruleType', $event.target.value)"
-              >
-                <option value="daily">{{ $gettext("Day(s)") }}</option>
-                <option value="weekly">{{ $gettext("Week(s)") }}</option>
-                <option value="monthly">{{ $gettext("Month(s)") }}</option>
-                <option value="yearly">{{ $gettext("Year(s)") }}</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
 
       <div class="field mt-3">
-        <label class="label is-size-7">{{ $gettext("Start date") }}</label>
-        <div class="control">
-          <input
-            :value="startDate"
-            @input="$emit('update:startDate', $event.target.value)"
-            type="date"
-            class="input"
-            :min="minStartDate"
+        <label class="label recurrence-field-label">{{ $gettext("Start date") }}</label>
+        <div class="control recurrence-datepicker">
+          <date-picker
+            :value="startDate || ''"
+            @change="$emit('update:startDate', $event || '')"
+            prefix-class="xmx"
+            value-type="format"
+            format="YYYY-MM-DD"
+            :editable="false"
+            :clearable="false"
+            :disabled-date="disabledStartDates"
+            :popup-style="startDatePopupStyle"
+            ref="startDatePicker"
+            @open="setDatePickerPopupStyle('start')"
+            :placeholder="$gettext('Start date')"
           />
         </div>
       </div>
 
       <div class="field mt-3">
-        <label class="label is-size-7">
+        <label class="label recurrence-field-label">
           {{ $gettext("End date") }}
-          <span class="has-text-grey is-size-7">{{
+          <span class="has-text-grey">{{
             $gettext("(optional)")
           }}</span>
         </label>
-        <div class="control">
-          <input
-            :value="endDate"
-            @input="$emit('update:endDate', $event.target.value)"
-            type="date"
-            class="input"
-            :min="startDate || minStartDate"
+        <div class="control recurrence-datepicker">
+          <date-picker
+            :value="endDate || ''"
+            @change="$emit('update:endDate', $event || '')"
+            prefix-class="xmx"
+            value-type="format"
+            format="YYYY-MM-DD"
+            :editable="false"
+            :disabled-date="disabledEndDates"
+            :popup-style="endDatePopupStyle"
+            ref="endDatePicker"
+            @open="setDatePickerPopupStyle('end')"
+            :placeholder="$gettext('End date')"
           />
         </div>
       </div>
@@ -84,9 +97,26 @@
 
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
+  import DatePicker from "vue-datepicker-next"
+  import DropdownButton from "./DropdownButton.vue"
+  import NumberInputStepper from "./NumberInputStepper.vue"
+
+  import "vue-datepicker-next/index.css"
+  import "@/assets/datepicker.scss"
 
   @Options({
     name: "RecurrenceOptions",
+    components: {
+      DatePicker,
+      DropdownButton,
+      NumberInputStepper,
+    },
+    data() {
+      return {
+        startDatePopupStyle: {},
+        endDatePopupStyle: {},
+      }
+    },
     props: {
       enabled: {
         type: Boolean,
@@ -135,6 +165,38 @@
           this.$emit("update:startDate", this.minStartDate)
         }
       },
+      disabledStartDates(date: Date): boolean {
+        return this.isBeforeDate(date, this.minStartDate)
+      },
+      disabledEndDates(date: Date): boolean {
+        return this.isBeforeDate(date, this.startDate || this.minStartDate)
+      },
+      setDatePickerPopupStyle(picker: string): void {
+        const refName =
+          picker === "start" ? "startDatePicker" : "endDatePicker"
+        const datePicker = this.$refs[refName] as any
+        const datePickerElement = datePicker?.$el as HTMLElement | undefined
+        if (!datePickerElement) return
+
+        const rect = datePickerElement.getBoundingClientRect()
+        const popupStyle = {
+          top: window.pageYOffset + rect.bottom + 1 + "px",
+          zIndex: 3000,
+        }
+
+        if (picker === "start") {
+          this.startDatePopupStyle = popupStyle
+        } else {
+          this.endDatePopupStyle = popupStyle
+        }
+      },
+      isBeforeDate(date: Date, minDate: string): boolean {
+        const normalizedDate = new Date(date)
+        normalizedDate.setHours(0, 0, 0, 0)
+
+        const normalizedMinDate = new Date(minDate + "T00:00:00")
+        return normalizedDate < normalizedMinDate
+      },
     },
   })
   export default class RecurrenceOptions extends Vue {}
@@ -158,5 +220,42 @@
   .switch-centered {
     display: flex;
     align-items: center;
+  }
+
+  .recurrence-field-label,
+  .recurrence-toggle-label {
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .recurrence-frequency-select {
+    :deep(.transaction-download-dropdown) {
+      display: block;
+      width: 100%;
+    }
+
+    :deep(.transaction-list-download) {
+      height: 2.5em;
+      width: 100%;
+    }
+
+    :deep(.dropdown-menu) {
+      width: 100%;
+      z-index: 3000;
+    }
+  }
+
+  .recurrence-datepicker {
+    :deep(.xmx-datepicker) {
+      width: 100%;
+    }
+
+    :deep(.xmx-input) {
+      height: 2.5em;
+      box-shadow: inset 0 0.0625em 0.125em rgba(10, 10, 10, 0.05);
+    }
   }
 </style>
