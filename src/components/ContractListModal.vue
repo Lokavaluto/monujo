@@ -110,7 +110,7 @@
               </date-picker>
             </div>
             <div class="mb-1 mt-3">
-              <strong>{{ $gettext("Select recipient:") }}</strong>
+              <strong>{{ $gettext("Select contact:") }}</strong>
             </div>
             <div class="recipient-filter is-flex is-flex-direction-row">
               <div class="recipient-filter-input">
