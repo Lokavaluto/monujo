@@ -203,6 +203,7 @@
   import "@/assets/datepicker.scss"
 
   import { mapModuleState } from "@/utils/vuex"
+  import { getUserAccount } from "@/utils/account"
   import UseBatchLoading from "@/services/UseBatchLoading"
 
   import { showSpinnerMethod } from "@/utils/showSpinner"
@@ -252,12 +253,7 @@
     },
 
     created() {
-      let account
-      if (this.account._obj?.getTransactions) {
-        account = this.account._obj
-      } else {
-        account = this.account._obj.parent
-      }
+      const account = getUserAccount(this.account)
       const backend = account.parent
       const searchRecipients = backend.searchRecipients
       this.recipientBatchLoader = UseBatchLoading({
@@ -336,16 +332,11 @@
 
     methods: {
       async *getTransactions() {
-        const account = this.account
-        let gen
+        const account = getUserAccount(this.account)
         const genOpts = { showTxListForDisabledAccount: this.showAll }
         let selectedRecipientName = null
 
-        if (account._obj?.getTransactions) {
-          gen = account._obj.getTransactions(genOpts)
-        } else {
-          gen = account._obj.parent.getTransactions(genOpts)
-        }
+        const gen = account.getTransactions(genOpts)
         selectedRecipientName =
           this.recipientBatchLoader.elements[this.selectedRecipientIdx]?.name
 
@@ -514,9 +505,7 @@
 
         let reportContactInfo
         if (this.caller) {
-          const targetUserAccount = this.account._obj?.getTransactions
-            ? this.account._obj
-            : this.account._obj.parent
+          const targetUserAccount = getUserAccount(this.account)
           reportContactInfo = await targetUserAccount.getContactInformation(
             this.caller
           )

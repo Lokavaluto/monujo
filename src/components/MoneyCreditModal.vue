@@ -68,6 +68,7 @@
   import { UIError } from "../exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import { debounceMethod } from "@/utils/debounce"
+  import { getUserAccount } from "@/utils/account"
   import applyDecorators from "@/utils/applyDecorators"
 
   import MoneyTransaction from "./MoneyTransaction.vue"
@@ -93,12 +94,10 @@
     created() {
       const [opts] = this.$modal.args.value
       const { account } = opts
-      let subAccounts
-      if (account._obj?.getAccounts) {
-        subAccounts = account.subAccounts
-      } else {
-        subAccounts = [account]
-      }
+      const subAccounts =
+        getUserAccount(account) === account._obj
+          ? account.subAccounts
+          : [account]
       this.creditableMoneyAccounts = subAccounts.filter(
         (a: any) => a.creditable
       )

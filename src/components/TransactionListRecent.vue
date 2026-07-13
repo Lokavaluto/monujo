@@ -58,6 +58,7 @@
   import { Options, Vue } from "vue-class-component"
   import TransactionItem from "./TransactionItem.vue"
   import { mapModuleState } from "@/utils/vuex"
+  import { getUserAccount } from "@/utils/account"
   import { showSpinnerMethod, replaceWithLoader } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
 
@@ -126,11 +127,7 @@
         }
       ),
       resetTransactionsGen() {
-        if (this.account._obj?.getTransactions) {
-          this.transactionGen = this.account._obj.getTransactions()
-        } else {
-          this.transactionGen = this.account._obj.parent.getTransactions()
-        }
+        this.transactionGen = getUserAccount(this.account).getTransactions()
         this.$nextTick(() => this.getNextFilteredTransactions())
       },
     },

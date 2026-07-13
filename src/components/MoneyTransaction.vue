@@ -162,6 +162,7 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapModuleState } from "@/utils/vuex"
+  import { getUserAccount } from "@/utils/account"
   import RecipientItem from "@/components/RecipientItem.vue"
   import BankAccountItem from "@/components/BankAccountItem.vue"
   import {
@@ -216,11 +217,7 @@
       if (this.transactionType === "requestPay") {
         this.isCopyMemo = false
       }
-      if (this.account._obj?.getTransactions) {
-        this.backend = this.account._obj.parent
-      } else {
-        this.backend = this.account._obj.parent.parent
-      }
+      this.backend = getUserAccount(this.account).parent
     },
     computed: {
       hasSplitMemoSupport() {

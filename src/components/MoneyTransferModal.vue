@@ -123,6 +123,7 @@
   import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
 
   import { makeUIProxyBackend } from "@/services/lokapiService"
+  import { getUserAccount } from "@/utils/account"
   import MoneyTransaction from "./MoneyTransaction.vue"
   import TransactionItem from "./TransactionItem.vue"
 
@@ -157,13 +158,8 @@
     },
     created() {
       const [opts] = this.$modal.args.value
-      let { account } = opts
+      const account = getUserAccount(opts.account)
 
-      if (account._obj?.getTransactions) {
-        account = account._obj
-      } else {
-        account = account._obj.parent
-      }
       this.account = account
       // No need to declare in data, no live mechanism required here
       this.selectedBackend = makeUIProxyBackend(account.parent, this.$gettext)
