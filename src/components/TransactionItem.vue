@@ -18,7 +18,9 @@
     <div class="amount-col is-flex-direction-column left">
       <h3
         :class="[
-          transaction.isPaymentRequest && transaction.isSender
+          transaction.isPaymentRequest && transaction.state === 'refused'
+            ? 'custom-card-related has-text-grey'
+            : transaction.isPaymentRequest && transaction.isSender
             ? 'custom-card-related has-text-danger'
             : transaction.amount.toString().charAt(0) == '-'
             ? 'custom-card-related has-text-danger'
@@ -319,6 +321,7 @@
 
       &.refused {
         background-color: $tx-refused-bg-color;
+        opacity: 0.65;
       }
     }
 
@@ -406,8 +409,8 @@
     }
 
     &.refused {
-      background-color: #f8d7da;
-      color: #721c24;
+      background-color: #e2e3e5;
+      color: #383d41;
     }
 
     &.cancelled {

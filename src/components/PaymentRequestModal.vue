@@ -90,7 +90,11 @@
             <span>{{ $gettext("Refuse") }}</span>
           </button>
           <button
-            v-if="paymentRequest.isCreator && (paymentRequest.state === 'open' || paymentRequest.state === 'refused')"
+            v-if="
+              paymentRequest.isCreator &&
+              (paymentRequest.state === 'open' ||
+                paymentRequest.state === 'refused')
+            "
             class="button custom-button-modal has-text-weight-medium"
             @click="startCancel()"
           >
