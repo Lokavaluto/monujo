@@ -1,5 +1,5 @@
 <template>
-  <div class="modal is-active">
+  <div class="modal is-active" ref="paymentRequest">
     <div class="modal-background"></div>
 
     <!-- Step 1: Payment request details -->
@@ -7,7 +7,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Payment request") }}
+            {{ $gettext("Payment request details") }}
           </p>
           <button
             class="delete"
@@ -17,75 +17,69 @@
         </header>
         <section class="modal-card-body">
           <div class="body-content is-size-4">
+            <!-- Status title -->
+            <p class="custom-card-title has-text-weight-bold">
+              {{ statusTitle }}
+            </p>
+
             <!-- Status icon -->
-            <div class="status-icon-container mb-3">
+            <div class="confirm-icon-container">
               <fa-icon
-                v-if="paymentRequest.state === 'open'"
-                icon="clock"
-                class="status-icon pending"
-              />
-              <fa-icon
-                v-else-if="paymentRequest.state === 'refused'"
-                icon="times-circle"
-                class="status-icon refused"
-              />
-              <fa-icon
-                v-else-if="paymentRequest.state === 'paid'"
-                icon="check-circle"
-                class="status-icon paid"
-              />
-              <fa-icon
-                v-else-if="paymentRequest.state === 'cancelled'"
-                icon="ban"
-                class="status-icon cancelled"
+                :icon="statusIcon"
+                class="confirm-icon fa-thin"
+                :class="paymentRequest.state"
               />
             </div>
 
-            <!-- Status label -->
-            <p class="status-label mb-2" :class="paymentRequest.state">
-              {{ stateLabel }}
-            </p>
-
             <!-- Amount -->
-            <p class="amount has-text-weight-bold is-size-3 mb-3">
-              {{ numericFormat(parseFloat(paymentRequest.amount)) }}
-              <span class="currency">{{ currency }}</span>
+            <p class="amount has-text-weight-bold is-size-4">
+              {{ amountSentence }}
             </p>
 
-            <!-- Message if present -->
-            <p v-if="paymentRequest.message" class="message-text mb-3">
-              « {{ paymentRequest.message }} »
-            </p>
-
-            <!-- From / To -->
-            <div class="parties mb-3">
-              <p class="frame3-sub-title">{{ $gettext("from") }}</p>
-              <p class="party-name has-text-weight-bold is-size-5">
+            <!-- Sender and receiver -->
+            <div>
+              <h2 class="frame3-sub-title">{{ $gettext("from") }}</h2>
+              <p
+                class="frame3-sub-title has-text-weight-bold is-size-3 hide-overflow"
+              >
                 {{ paymentRequest.jsonData.sender_name }}
               </p>
-              <p class="frame3-sub-title mt-2">{{ $gettext("to") }}</p>
-              <p class="party-name has-text-weight-bold is-size-5">
+            </div>
+            <div>
+              <h2 class="frame3-sub-title">{{ $gettext("to") }}</h2>
+              <p
+                class="frame3-sub-title has-text-weight-bold is-size-3 hide-overflow"
+              >
                 {{ paymentRequest.jsonData.receiver_name }}
               </p>
             </div>
 
+            <!-- Description if present -->
+            <div v-if="paymentRequest.message" class="request-message">
+              <h2 class="frame3-sub-title">{{ $gettext("Description") }}</h2>
+              <p class="message-text">
+                “{{ paymentRequest.message }}”
+              </p>
+            </div>
+
             <!-- Date and creator -->
-            <p class="frame3-sub-title date-info">
-              {{ $gettext("Created on") }} {{ dateFormat(paymentRequest.date) }}
-              {{ $gettext("by") }} {{ paymentRequest.creatorName }}
+            <p class="frame3-sub-title mb-3">
+              <template v-if="paymentRequest.creatorName">
+                {{ createdBySentence }}<br />
+              </template>
+              {{ createdOnSentence }}
             </p>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        >
           <button
             v-if="paymentRequest.isSender && paymentRequest.state === 'open'"
             class="button custom-button-modal has-text-weight-medium"
             :disabled="isPaymentInProgress"
             @click="pay()"
           >
-            <span class="icon">
-              <fa-icon icon="paper-plane" />
-            </span>
             <span>{{ $gettext("Pay") }}</span>
           </button>
           <button
@@ -93,9 +87,6 @@
             class="button custom-button-modal has-text-weight-medium"
             @click="startRefuse()"
           >
-            <span class="icon">
-              <fa-icon icon="times" />
-            </span>
             <span>{{ $gettext("Refuse") }}</span>
           </button>
           <button
@@ -103,9 +94,6 @@
             class="button custom-button-modal has-text-weight-medium"
             @click="startCancel()"
           >
-            <span class="icon">
-              <fa-icon icon="ban" />
-            </span>
             <span>{{ $gettext("Cancel") }}</span>
           </button>
           <button
@@ -159,7 +147,9 @@
             </p>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        >
           <button
             class="button custom-button-modal has-text-weight-medium"
             :disabled="!canConfirmAction"
@@ -176,6 +166,8 @@
 <script lang="ts">
   import { Options, Vue } from "vue-class-component"
   import { mapGetters } from "vuex"
+  import { e as LokapiExc } from "@lokavaluto/lokapi-browser"
+  import moment from "moment"
   import { UIError } from "../exception"
   import { makeUIProxyBackend } from "@/services/lokapiService"
   import { getUserAccount } from "@/utils/account"
@@ -198,8 +190,11 @@
       this.account = account
       this.selectedBackend = makeUIProxyBackend(account.parent, this.$gettext)
     },
+    mounted() {
+      this.$refs.paymentRequest.focus()
+    },
     computed: {
-      ...mapGetters(["dateFormat", "numericFormat"]),
+      ...mapGetters(["numericFormat"]),
 
       paymentRequest() {
         return this.$modal.args.value[0].paymentRequest
@@ -209,14 +204,46 @@
         return this.$modal.args.value[0].account?.curr || ""
       },
 
-      stateLabel() {
-        const stateTranslations: { [key: string]: string } = {
-          open: this.$gettext("pending"),
-          paid: this.$gettext("paid"),
-          refused: this.$gettext("refused"),
-          cancelled: this.$gettext("cancelled"),
+      statusTitle() {
+        const titles: Record<string, string> = {
+          open: this.$gettext("Payment requested"),
+          paid: this.$gettext("Payment request paid"),
+          refused: this.$gettext("Payment request refused"),
+          cancelled: this.$gettext("Payment request cancelled"),
         }
-        return stateTranslations[this.paymentRequest.state] || this.paymentRequest.state
+        return titles[this.paymentRequest.state] || this.$gettext("Payment request")
+      },
+
+      statusIcon() {
+        const icons: Record<string, string> = {
+          open: "clock",
+          paid: "fa-check",
+          refused: "times-circle",
+          cancelled: "ban",
+        }
+        return icons[this.paymentRequest.state] || "clock"
+      },
+
+      amountSentence() {
+        return this.$gettext("Requested %{amount} %{currency}", {
+          amount: this.numericFormat(parseFloat(this.paymentRequest.amount)),
+          currency: this.currency,
+        })
+      },
+
+      createdOnSentence() {
+        const date = moment(this.paymentRequest.date).format(
+          "YYYY-MM-DD HH:mm:ssZ"
+        )
+        return this.paymentRequest.creatorName
+          ? date
+          : this.$gettext("Created on %{date}", { date })
+      },
+
+      createdBySentence() {
+        return this.$gettext("Created by %{creator}", {
+          creator: this.paymentRequest.creatorName,
+        })
       },
 
       isReasonRequired() {
@@ -348,15 +375,15 @@
     text-align: center;
   }
 
-  .status-icon-container {
+  .confirm-icon-container {
     width: fit-content;
     margin: auto;
   }
 
-  .status-icon {
+  .confirm-icon {
     font-size: 4em;
 
-    &.pending {
+    &.open {
       color: #856404;
     }
 
@@ -373,58 +400,21 @@
     }
   }
 
-  .status-label {
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-
-    &.open {
-      color: #856404;
-    }
-
-    &.paid {
-      color: #155724;
-    }
-
-    &.refused {
-      color: #721c24;
-    }
-
-    &.cancelled {
-      color: #383d41;
-    }
+  .hide-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .amount {
-    .currency {
-      font-size: 0.7em;
-      opacity: 0.8;
-    }
+  .request-message {
+    margin-bottom: 0.75rem;
   }
 
   .message-text {
     font-style: italic;
     color: #666;
     font-size: 1rem;
-  }
-
-  .parties {
-    .frame3-sub-title {
-      color: #888;
-      font-size: 0.9rem;
-    }
-
-    .party-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  .date-info {
-    color: #888;
-    font-size: 0.85rem;
+    overflow-wrap: anywhere;
   }
 
   .textarea {

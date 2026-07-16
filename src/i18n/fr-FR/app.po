@@ -477,6 +477,7 @@ msgid "Can be updated:"
 msgstr "Peut être mis à jour :"
 
 #: src/components/InspectRecipientModal.vue:159
+#: src/components/PaymentRequestModal.vue:86
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -617,6 +618,7 @@ msgstr "Débit"
 msgid "Delete"
 msgstr "Supprimer"
 
+#: src/components/PaymentRequestModal.vue:59
 #: src/components/TransactionList.vue:426 src/utils/pdf.ts:178
 msgid "Description"
 msgstr "Description"
@@ -767,7 +769,9 @@ msgstr "pour le compte %{ name }"
 msgid "Forgot password ?"
 msgstr "Mot de passe oublié ?"
 
-#: src/components/ConfirmPaymentModal.vue:449 src/components/TransactionItem.vue:226
+#: src/components/ConfirmPaymentModal.vue:449
+#: src/components/PaymentRequestModal.vue:41
+#: src/components/TransactionItem.vue:226
 msgid "from"
 msgstr "De"
 
@@ -1016,6 +1020,7 @@ msgstr "Pas encore adhérent ?"
 #: src/components/ConfirmPaymentModal.vue:147
 #: src/components/ConfirmPaymentModal.vue:164
 #: src/components/ConfirmPaymentModal.vue:167
+#: src/components/PaymentRequestModal.vue:93
 msgid "Ok"
 msgstr "Ok"
 
@@ -1072,6 +1077,7 @@ msgstr "Le mot de passe entré n'est pas identique"
 #: src/components/TheDashboardFooter.vue:39
 #: src/components/TheDashboardFooter.vue:43
 #: src/components/TheDashboardFooter.vue:47
+#: src/components/PaymentRequestModal.vue:72
 msgid "Pay"
 msgstr "Payer"
 
@@ -1169,7 +1175,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/PaymentRequestModal.vue:158
+#: src/components/PaymentRequestModal.vue:135
 msgid "Please enter at least 10 characters"
 msgstr "Veuillez saisir au moins 10 caractères."
 
@@ -1748,7 +1754,9 @@ msgstr ""
 "Ce portefeuille appartient à la monnaie « %{ currency } » qui n'est pas "
 "disponible sur ce serveur."
 
-#: src/components/ConfirmPaymentModal.vue:448 src/components/TransactionItem.vue:225
+#: src/components/ConfirmPaymentModal.vue:448
+#: src/components/PaymentRequestModal.vue:49
+#: src/components/TransactionItem.vue:225
 msgid "to"
 msgstr "à"
 
@@ -1865,6 +1873,7 @@ msgid "Transaction sent"
 msgstr "Opération envoyée"
 
 #: src/components/MoneyTransferModal.vue:430
+#: src/components/PaymentRequestModal.vue:344
 msgid "Transaction was refused due to insufficient balance"
 msgstr "Transaction refusée en raison de fonds insuffisants"
 
@@ -2177,3 +2186,121 @@ msgid "Your top-up request is waiting for you to pay it or delete it"
 msgstr ""
 "Votre demande de rechargement est en attente d'être payée ou supprimée par "
 "vous"
+
+#: src/components/PaymentRequestModal.vue:299
+msgid "An error occurred while searching recipient"
+msgstr "Une erreur est survenue lors de la recherche du destinataire"
+
+#: src/components/PaymentRequestModal.vue:330
+msgid "An error occurred while preparing the payment"
+msgstr "Une erreur est survenue lors de la préparation du paiement"
+
+#: src/components/PaymentRequestModal.vue:323
+msgid "An unexpected issue occurred while preparing the payment."
+msgstr "Une erreur inattendue est survenue lors de la préparation du paiement."
+
+#: src/components/PaymentRequestModal.vue:352
+msgid "An unexpected issue occurred during the money transfer."
+msgstr "Une erreur inattendue est survenue pendant le transfert."
+
+#: src/components/PaymentRequestModal.vue:111
+msgid "Cancel payment request"
+msgstr "Annuler la demande de paiement"
+
+#: src/components/PaymentRequestModal.vue:147
+msgid "Cancel request"
+msgstr "Annuler la demande"
+
+#: src/components/PaymentRequestModal.vue:240
+msgid "Created on %{date}"
+msgstr "Créée le %{date}"
+
+#: src/components/PaymentRequestModal.vue:244
+msgid "Created by %{creator}"
+msgstr "Créée par %{creator}"
+
+#: src/components/PaymentRequestModal.vue:315
+msgid "Insufficient balance. You don't have enough funds to pay this request."
+msgstr ""
+"Solde insuffisant. Vous ne disposez pas de fonds suffisants pour payer cette "
+"demande."
+
+#: src/components/PaymentRequestModal.vue:368
+msgid ""
+"Payment completed but failed to update the request status. Please contact "
+"your administrator."
+msgstr ""
+"Le paiement a été effectué, mais le statut de la demande n'a pas pu être mis "
+"à jour. Veuillez contacter votre administrateur."
+
+#: src/components/PaymentRequestModal.vue:376
+msgid "Payment completed successfully"
+msgstr "Paiement effectué avec succès"
+
+#: src/components/PaymentRequestModal.vue:202
+msgid "Payment request"
+msgstr "Demande de paiement"
+
+#: src/components/PaymentRequestModal.vue:200
+#: src/components/PaymentRequestModal.vue:409
+msgid "Payment request cancelled"
+msgstr "Demande de paiement annulée"
+
+#: src/components/PaymentRequestModal.vue:10
+msgid "Payment request details"
+msgstr "Détails de la demande de paiement"
+
+#: src/components/PaymentRequestModal.vue:198
+msgid "Payment request paid"
+msgstr "Demande de paiement payée"
+
+#: src/components/PaymentRequestModal.vue:199
+#: src/components/PaymentRequestModal.vue:406
+msgid "Payment request refused"
+msgstr "Demande de paiement refusée"
+
+#: src/components/PaymentRequestModal.vue:419
+msgid ""
+"Payment request status update failed, please retry or contact your "
+"administrator."
+msgstr ""
+"La mise à jour du statut de la demande de paiement a échoué. Veuillez "
+"réessayer ou contacter votre administrateur."
+
+#: src/components/PaymentRequestModal.vue:197
+msgid "Payment requested"
+msgstr "Paiement demandé"
+
+#: src/components/PaymentRequestModal.vue:278
+msgid "Please explain why you are refusing this payment request..."
+msgstr "Veuillez expliquer pourquoi vous refusez cette demande de paiement..."
+
+#: src/components/PaymentRequestModal.vue:273
+msgid "Reason for cancellation (optional)"
+msgstr "Motif de l'annulation (facultatif)"
+
+#: src/components/PaymentRequestModal.vue:271
+msgid "Reason for refusal"
+msgstr "Motif du refus"
+
+#: src/components/PaymentRequestModal.vue:79
+#: src/components/PaymentRequestModal.vue:147
+msgid "Refuse"
+msgstr "Refuser"
+
+#: src/components/PaymentRequestModal.vue:111
+msgid "Refuse payment request"
+msgstr "Refuser la demande de paiement"
+
+#: src/components/PaymentRequestModal.vue:228
+msgid "Requested %{amount} %{currency}"
+msgstr "Montant demandé : %{amount} %{currency}"
+
+#: src/components/PaymentRequestModal.vue:132
+msgid "This field is required"
+msgstr "Ce champ est obligatoire"
+
+#: src/components/PaymentRequestModal.vue:280
+msgid "You can explain why you are cancelling this payment request..."
+msgstr ""
+"Vous pouvez expliquer pourquoi vous annulez cette demande de paiement..."

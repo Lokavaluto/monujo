@@ -57,7 +57,12 @@
         </h4>
 
         <h5
-          v-if="!transaction.isTopUp && !transaction.isReconversion && !transaction.isRecurrentContract"
+          v-if="
+            !transaction.isTopUp &&
+            !transaction.isReconversion &&
+            !transaction.isRecurrentContract &&
+            transaction.description
+          "
           class="has-text-grey-light transaction-desc"
         >
           {{ transaction.description }}
@@ -222,8 +227,8 @@
         }
 
         const direction = this.transaction.isSender
-          ? this.$gettext("to")
-          : this.$gettext("from")
+          ? this.$gettext("from")
+          : this.$gettext("to")
 
         return direction + " " + this.transaction.related
       },
