@@ -69,6 +69,11 @@
               </template>
               {{ createdOnSentence }}
             </p>
+
+            <!-- Purpose and available actions -->
+            <p class="payment-request-guidance is-size-5 mb-3">
+              {{ paymentRequestGuidance }}
+            </p>
           </div>
         </section>
         <footer
@@ -250,6 +255,34 @@
         })
       },
 
+      paymentRequestGuidance() {
+        if (this.paymentRequest.state === "open") {
+          if (this.paymentRequest.isSender) {
+            return this.$gettext(
+              "This payment request is waiting for you to pay or refuse it."
+            )
+          }
+          if (this.paymentRequest.isCreator) {
+            return this.$gettext(
+              "Your payment request is waiting for the payer's response. You can cancel it."
+            )
+          }
+          return this.$gettext(
+            "This payment request is waiting for the payer's response."
+          )
+        }
+        const messages: Record<string, string> = {
+          paid: this.$gettext("This payment request has been paid."),
+          refused: this.$gettext(
+            "This payment request has been refused and can no longer be paid."
+          ),
+          cancelled: this.$gettext(
+            "This payment request has been cancelled and can no longer be paid."
+          ),
+        }
+        return messages[this.paymentRequest.state] || ""
+      },
+
       isReasonRequired() {
         return this.actionType === "refuse"
       },
@@ -412,6 +445,11 @@
 
   .request-message {
     margin-bottom: 0.75rem;
+  }
+
+  .payment-request-guidance {
+    color: #666;
+    font-style: italic;
   }
 
   .message-text {

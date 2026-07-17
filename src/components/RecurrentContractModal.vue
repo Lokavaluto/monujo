@@ -1,5 +1,5 @@
 <template>
-  <div class="modal is-active">
+  <div class="modal is-active" ref="recurrentContract">
     <div class="modal-background"></div>
 
     <!-- Step 1: Contract details -->
@@ -10,7 +10,7 @@
             {{
               isCreateMode
                 ? $gettext("Create recurrent contract")
-                : $gettext("Recurrent contract")
+                : $gettext("Recurrent contract details")
             }}
           </p>
           <button
@@ -21,39 +21,61 @@
         </header>
         <section class="modal-card-body">
           <div class="body-content is-size-4">
+            <!-- Status title -->
+            <p class="custom-card-title has-text-weight-bold">
+              {{ statusTitle }}
+            </p>
+
             <!-- Status icon -->
-            <div class="status-icon-container mb-3">
+            <div class="confirm-icon-container">
               <fa-icon
-                v-if="isCreateMode || contractData.state === 'open'"
-                icon="sync"
-                class="status-icon active"
-              />
-              <fa-icon
-                v-else-if="contractData.state === 'cancelled'"
-                icon="ban"
-                class="status-icon cancelled"
-              />
-              <fa-icon
-                v-else
-                icon="file-alt"
-                class="status-icon default"
+                :icon="statusIcon"
+                class="confirm-icon fa-thin"
+                :class="isCreateMode ? 'new' : contractData.state"
               />
             </div>
 
-            <!-- Status label -->
-            <p class="status-label mb-2" :class="isCreateMode ? 'new' : contractData.state">
-              {{ stateLabel }}
-            </p>
+            <!-- From / To -->
+            <div>
+              <h2 class="frame3-sub-title">{{ $gettext("from") }}</h2>
+              <p
+                class="frame3-sub-title has-text-weight-bold is-size-3 hide-overflow"
+              >
+                {{ contractData.senderName }}
+              </p>
+            </div>
+            <div>
+              <h2 class="frame3-sub-title">{{ $gettext("to") }}</h2>
+              <p
+                class="frame3-sub-title has-text-weight-bold is-size-3 hide-overflow"
+              >
+                {{ contractData.receiverName }}
+              </p>
+            </div>
 
             <!-- Amount -->
-            <p class="amount has-text-weight-bold is-size-3 mb-1">
-              {{ numericFormat(parseFloat(contractData.amount)) }}
-              <span class="currency">{{ currency }}</span>
-            </p>
+            <div class="amount-details mb-3">
+              <p class="frame3-sub-title">{{ $gettext("Amount") }}</p>
+              <p class="amount is-size-6">
+                {{ numericFormat(parseFloat(contractData.amount)) }}
+                {{ currency }}
+              </p>
+            </div>
+
+            <!-- Description if present -->
+            <div v-if="contractData.message" class="contract-description">
+              <h2 class="frame3-sub-title">{{ $gettext("Description") }}</h2>
+              <p class="message-text">“{{ contractData.message }}”</p>
+            </div>
 
             <!-- Next execution date (only in view mode) -->
-            <p v-if="!isCreateMode && contractData.nextExecutionDate" class="next-execution mb-3">
-              {{ $gettext("Next:") }} {{ formatDate(contractData.nextExecutionDate) }} - {{ relativeDate(contractData.nextExecutionDate) }}
+            <p
+              v-if="!isCreateMode && contractData.nextExecutionDate"
+              class="next-execution mb-3"
+            >
+              {{ $gettext("Next:") }}
+              {{ formatDate(contractData.nextExecutionDate) }} -
+              {{ relativeDate(contractData.nextExecutionDate) }}
             </p>
 
             <!-- Recurrence info -->
@@ -61,23 +83,6 @@
               <fa-icon icon="calendar-alt" class="mr-2" />
               {{ recurrenceLabel }}
             </p>
-
-            <!-- Message if present -->
-            <p v-if="contractData.message" class="message-text mb-3">
-              {{ contractData.message }}
-            </p>
-
-            <!-- From / To -->
-            <div class="parties mb-3">
-              <p class="frame3-sub-title">{{ $gettext("from") }}</p>
-              <p class="party-name has-text-weight-bold is-size-5">
-                {{ contractData.senderName }}
-              </p>
-              <p class="frame3-sub-title mt-2">{{ $gettext("to") }}</p>
-              <p class="party-name has-text-weight-bold is-size-5">
-                {{ contractData.receiverName }}
-              </p>
-            </div>
 
             <!-- Date range -->
             <div class="date-range mb-3">
@@ -95,42 +100,50 @@
               </p>
             </div>
 
-            <!-- Date and creator (only in view mode) -->
-            <p v-if="!isCreateMode" class="frame3-sub-title date-info">
-              {{ $gettext("Created on") }} {{ dateFormat(contractData.date) }}
-              {{ $gettext("by") }} {{ contractData.creatorName }}
+            <!-- Date and creator -->
+            <p class="frame3-sub-title mb-3">
+              <template v-if="contractData.creatorName">
+                {{ createdBySentence }}<br v-if="!isCreateMode" />
+              </template>
+              <template v-if="!isCreateMode">
+                {{ createdOnSentence }}
+              </template>
             </p>
-            <!-- Creator info (only in create mode) -->
-            <p v-else class="frame3-sub-title date-info">
-              {{ $gettext("Created by") }} {{ contractData.creatorName }}
+
+            <!-- Purpose and available action -->
+            <p class="contract-guidance is-size-5 mb-3">
+              {{ contractGuidance }}
             </p>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        >
           <button
             v-if="isCreateMode"
-            class="button custom-button-modal button-modal has-text-weight-medium"
+            class="button custom-button-modal has-text-weight-medium"
             :disabled="isCreating"
             @click="createContract()"
           >
             <span v-if="isCreating" class="icon">
               <fa-icon icon="circle-notch" class="refreshing" />
             </span>
-            <span v-else class="icon">
-              <fa-icon icon="sync" />
-            </span>
             <span>{{ $gettext("Create recurrent contract") }}</span>
           </button>
           <!-- View mode: Delete button -->
           <button
             v-else-if="contractData.isCreator && contractData.state === 'open'"
-            class="button custom-button-modal button-modal has-text-weight-medium action btn-danger"
+            class="button custom-button-modal has-text-weight-medium"
             @click="startDelete()"
           >
-            <span class="icon">
-              <fa-icon icon="trash" />
-            </span>
             <span>{{ $gettext("Delete") }}</span>
+          </button>
+          <button
+            v-else-if="contractData.state === 'cancelled'"
+            class="button custom-button-modal has-text-weight-medium"
+            @click="$modal.close()"
+          >
+            <span>{{ $gettext("Ok") }}</span>
           </button>
         </footer>
       </div>
@@ -167,15 +180,11 @@
             </p>
           </div>
         </section>
-        <footer class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end">
+        <footer
+          class="modal-card-foot custom-modal-card-foot is-justify-content-flex-end"
+        >
           <button
-            class="button custom-button-modal button-modal has-text-weight-medium"
-            @click="$modal.back()"
-          >
-            {{ $gettext("Cancel") }}
-          </button>
-          <button
-            class="button custom-button-modal button-modal has-text-weight-medium btn-danger"
+            class="button custom-button-modal has-text-weight-medium"
             :disabled="isDeleting"
             @click="confirmDelete()"
           >
@@ -206,8 +215,11 @@
         isCreating: false,
       }
     },
+    mounted() {
+      this.$refs.recurrentContract.focus()
+    },
     computed: {
-      ...mapGetters(["dateFormat", "numericFormat"]),
+      ...mapGetters(["numericFormat"]),
       ...mapModuleState("lokapi", ["userProfile"]),
 
       mode() {
@@ -260,15 +272,63 @@
         return this.$modal.args.value[0].account?.curr || ""
       },
 
-      stateLabel() {
+      statusTitle() {
         if (this.isCreateMode) {
-          return this.$gettext("new")
+          return this.$gettext("New recurrent contract")
         }
-        const stateTranslations: { [key: string]: string } = {
-          open: this.$gettext("active"),
-          cancelled: this.$gettext("cancelled"),
+        const titles: Record<string, string> = {
+          open: this.$gettext("Active recurrent contract"),
+          cancelled: this.$gettext("Recurrent contract cancelled"),
         }
-        return stateTranslations[this.contractData.state] || this.contractData.state
+        return (
+          titles[this.contractData.state] ||
+          this.$gettext("Recurrent contract")
+        )
+      },
+
+      statusIcon() {
+        if (this.isCreateMode) return "sync"
+        const icons: Record<string, string> = {
+          open: "sync",
+          cancelled: "ban",
+        }
+        return icons[this.contractData.state] || "file-alt"
+      },
+
+      createdOnSentence() {
+        const date = moment(this.contractData.date).format(
+          "YYYY-MM-DD HH:mm:ssZ"
+        )
+        return this.contractData.creatorName
+          ? date
+          : this.$gettext("Created on %{date}", { date })
+      },
+
+      createdBySentence() {
+        return this.$gettext("Created by %{creator}", {
+          creator: this.contractData.creatorName,
+        })
+      },
+
+      contractGuidance() {
+        if (this.isCreateMode) {
+          return this.$gettext(
+            "This operation will be automatically repeated at the selected frequency."
+          )
+        }
+        if (this.contractData.state === "cancelled") {
+          return this.$gettext(
+            "This recurrent contract has been cancelled. This operation will no longer be repeated."
+          )
+        }
+        if (this.contractData.isCreator) {
+          return this.$gettext(
+            "This operation is automatically repeated at the selected frequency. You can delete this contract to stop future operations."
+          )
+        }
+        return this.$gettext(
+          "This operation is automatically repeated at the selected frequency."
+        )
       },
 
       recurrenceLabel() {
@@ -428,15 +488,16 @@
     text-align: center;
   }
 
-  .status-icon-container {
+  .confirm-icon-container {
     width: fit-content;
     margin: auto;
   }
 
-  .status-icon {
+  .confirm-icon {
     font-size: 4em;
 
-    &.active {
+    &.open,
+    &.new {
       color: $color-2;
     }
 
@@ -449,30 +510,10 @@
     }
   }
 
-  .status-label {
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-
-    &.open {
-      color: $color-2;
-    }
-
-    &.new {
-      color: $color-2;
-    }
-
-    &.cancelled {
-      color: #383d41;
-    }
-  }
-
-  .amount {
-    .currency {
-      font-size: 0.7em;
-      opacity: 0.8;
-    }
+  .hide-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .next-execution {
@@ -493,50 +534,24 @@
     font-style: italic;
     color: #666;
     font-size: 1rem;
+    overflow-wrap: anywhere;
   }
 
-  .parties {
-    .frame3-sub-title {
-      color: #888;
-      font-size: 0.9rem;
-    }
-
-    .party-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  .contract-description {
+    margin-bottom: 0.75rem;
   }
 
+  .contract-guidance {
+    color: #666;
+    font-style: italic;
+  }
+
+  .amount-details,
   .date-range {
     .frame3-sub-title {
       color: #888;
       font-size: 0.9rem;
     }
-  }
-
-  .date-info {
-    color: #888;
-    font-size: 0.85rem;
-  }
-
-  .modal-card-foot {
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .button.action {
-    white-space: normal;
-    height: auto;
-
-    .icon {
-      margin-right: 0.3em;
-    }
-  }
-
-  .btn-danger {
-    background-color: #cc0f35 !important;
-    color: white !important;
   }
 
   .warning-icon {

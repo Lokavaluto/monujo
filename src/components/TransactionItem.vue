@@ -62,7 +62,6 @@
           v-if="
             !transaction.isTopUp &&
             !transaction.isReconversion &&
-            !transaction.isRecurrentContract &&
             transaction.description
           "
           class="has-text-grey-light transaction-desc"
