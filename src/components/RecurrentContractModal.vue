@@ -1,16 +1,14 @@
 <template>
   <div class="modal is-active" ref="recurrentContract">
     <div class="modal-background"></div>
-
-    <!-- Step 1: Contract details -->
     <template v-if="$modal.step.value == 1">
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title is-title-shrink">
             {{
               isCreateMode
-                ? $gettext("Create recurrent contract")
-                : $gettext("Recurrent contract details")
+                ? $gettext("Create recurrent payment")
+                : $gettext("Recurrent payment details")
             }}
           </p>
           <button
@@ -21,12 +19,9 @@
         </header>
         <section class="modal-card-body">
           <div class="body-content is-size-4">
-            <!-- Status title -->
             <p class="custom-card-title has-text-weight-bold">
               {{ statusTitle }}
             </p>
-
-            <!-- Status icon -->
             <div class="confirm-icon-container">
               <fa-icon
                 :icon="statusIcon"
@@ -34,8 +29,13 @@
                 :class="isCreateMode ? 'new' : contractData.state"
               />
             </div>
+            <div class="amount-details mb-3">
+              <p class="amount is-size-3 has-text-weight-bold">
+                {{ numericFormat(parseFloat(contractData.amount)) }}
+                {{ currency }}
+              </p>
+            </div>
 
-            <!-- From / To -->
             <div>
               <h2 class="frame3-sub-title">{{ $gettext("from") }}</h2>
               <p
@@ -52,42 +52,23 @@
                 {{ contractData.receiverName }}
               </p>
             </div>
-
-            <!-- Amount -->
-            <div class="amount-details mb-3">
-              <p class="frame3-sub-title">{{ $gettext("Amount") }}</p>
-              <p class="amount is-size-6">
-                {{ numericFormat(parseFloat(contractData.amount)) }}
-                {{ currency }}
-              </p>
-            </div>
-
-            <!-- Description if present -->
+            <hr class="participant-divider" />
             <div v-if="contractData.message" class="contract-description">
-              <h2 class="frame3-sub-title">{{ $gettext("Description") }}</h2>
-              <p class="message-text">“{{ contractData.message }}”</p>
+              <p class="message-text is-size-5">“{{ contractData.message }}”</p>
             </div>
 
-            <!-- Next execution date (only in view mode) -->
             <p
-              v-if="!isCreateMode && contractData.nextExecutionDate"
-              class="next-execution mb-3"
+              v-if="nextOccurrenceDate"
+              class="contract-summary is-size-5 mb-3"
             >
               {{ $gettext("Next:") }}
-              {{ formatDate(contractData.nextExecutionDate) }} -
-              {{ relativeDate(contractData.nextExecutionDate) }}
+              {{ formatDate(nextOccurrenceDate) }}
+              <span class="recurrence-payment">
+                ({{ recurrencePaymentLabel }})
+              </span>
             </p>
-
-            <!-- Recurrence info -->
-            <p class="recurrence-info mb-3">
-              <fa-icon icon="calendar-alt" class="mr-2" />
-              {{ recurrenceLabel }}
-            </p>
-
-            <!-- Date range -->
-            <div class="date-range mb-3">
-              <p class="frame3-sub-title">{{ $gettext("Period") }}</p>
-              <p class="is-size-6">
+            <div class="contract-summary date-range mb-3">
+              <p class="is-size-5">
                 <span v-if="contractData.dateStart">
                   {{ $gettext("From") }} {{ formatDate(contractData.dateStart) }}
                 </span>
@@ -95,24 +76,18 @@
                   {{ " " }}{{ $gettext("to") }} {{ formatDate(contractData.dateEnd) }}
                 </span>
                 <span v-else>
-                  {{ $gettext("(no end date)") }}
+                  {{ " " }}{{ $gettext("(no end date)") }}
                 </span>
               </p>
             </div>
-
-            <!-- Date and creator -->
-            <p class="frame3-sub-title mb-3">
-              <template v-if="contractData.creatorName">
-                {{ createdBySentence }}<br v-if="!isCreateMode" />
-              </template>
-              <template v-if="!isCreateMode">
-                {{ createdOnSentence }}
-              </template>
+            <p
+              v-if="!isCreateMode"
+              class="contract-summary is-size-5 mb-3"
+            >
+              {{ createdOnSentence }}
             </p>
-
-            <!-- Purpose and available action -->
             <p class="contract-guidance is-size-5 mb-3">
-              {{ contractGuidance }}
+              <em>{{ contractGuidance }}</em>
             </p>
           </div>
         </section>
@@ -128,9 +103,8 @@
             <span v-if="isCreating" class="icon">
               <fa-icon icon="circle-notch" class="refreshing" />
             </span>
-            <span>{{ $gettext("Create recurrent contract") }}</span>
+            <span>{{ $gettext("Create recurrent payment") }}</span>
           </button>
-          <!-- View mode: Delete button -->
           <button
             v-else-if="contractData.isCreator && contractData.state === 'open'"
             class="button custom-button-modal has-text-weight-medium"
@@ -148,8 +122,6 @@
         </footer>
       </div>
     </template>
-
-    <!-- Step 2: Delete confirmation -->
     <template v-if="$modal.step.value == 2">
       <div class="modal-card">
         <header class="modal-card-head">
@@ -161,7 +133,7 @@
             </a>
           </span>
           <p class="modal-card-title is-title-shrink">
-            {{ $gettext("Delete contract") }}
+            {{ $gettext("Delete recurrent payment") }}
           </p>
           <button
             class="delete"
@@ -173,7 +145,7 @@
           <div class="body-content has-text-centered">
             <fa-icon icon="exclamation-triangle" class="warning-icon mb-4" />
             <p class="is-size-5 mb-4">
-              {{ $gettext("Are you sure you want to delete this recurrent contract?") }}
+              {{ $gettext("Are you sure you want to delete this recurrent payment?") }}
             </p>
             <p class="is-size-6 has-text-grey">
               {{ $gettext("This action cannot be undone.") }}
@@ -274,15 +246,15 @@
 
       statusTitle() {
         if (this.isCreateMode) {
-          return this.$gettext("New recurrent contract")
+          return this.$gettext("New recurrent payment")
         }
         const titles: Record<string, string> = {
-          open: this.$gettext("Active recurrent contract"),
-          cancelled: this.$gettext("Recurrent contract cancelled"),
+          open: this.$gettext("Active recurrent payment"),
+          cancelled: this.$gettext("Recurrent payment cancelled"),
         }
         return (
           titles[this.contractData.state] ||
-          this.$gettext("Recurrent contract")
+          this.$gettext("Recurrent payment")
         )
       },
 
@@ -299,15 +271,7 @@
         const date = moment(this.contractData.date).format(
           "YYYY-MM-DD HH:mm:ssZ"
         )
-        return this.contractData.creatorName
-          ? date
-          : this.$gettext("Created on %{date}", { date })
-      },
-
-      createdBySentence() {
-        return this.$gettext("Created by %{creator}", {
-          creator: this.contractData.creatorName,
-        })
+        return this.$gettext("Created on %{date}", { date })
       },
 
       contractGuidance() {
@@ -318,17 +282,29 @@
         }
         if (this.contractData.state === "cancelled") {
           return this.$gettext(
-            "This recurrent contract has been cancelled. This operation will no longer be repeated."
+            "This recurrent payment has been cancelled. This operation will no longer be repeated."
           )
         }
         if (this.contractData.isCreator) {
           return this.$gettext(
-            "This operation is automatically repeated at the selected frequency. You can delete this contract to stop future operations."
+            "This operation is automatically repeated at the selected frequency. You can delete this recurrent payment to stop future operations."
           )
         }
         return this.$gettext(
           "This operation is automatically repeated at the selected frequency."
         )
+      },
+
+      nextOccurrenceDate() {
+        return (
+          this.contractData.nextExecutionDate || this.contractData.dateStart
+        )
+      },
+
+      recurrencePaymentLabel() {
+        return this.$gettext("%{ recurrence } payments", {
+          recurrence: this.recurrenceLabel,
+        })
       },
 
       recurrenceLabel() {
@@ -378,7 +354,7 @@
         try {
           const success = await this.contract.delete()
           if (success) {
-            this.$msg.success(this.$gettext("Contract deleted successfully"))
+            this.$msg.success(this.$gettext("Recurrent payment deleted successfully"))
             // Refresh contracts list
             const { refreshContracts } = this.$modal.args.value[0]
             if (refreshContracts) refreshContracts()
@@ -389,7 +365,7 @@
           }
         } catch (err) {
           throw new UIError(
-            this.$gettext("Failed to delete contract. Please try again or contact your administrator."),
+            this.$gettext("Failed to delete recurrent payment. Please try again or contact your administrator."),
             err
           )
         } finally {
@@ -410,7 +386,7 @@
           this.isCreating = false
           throw new UIError(
             this.$gettext(
-              "Failed to create recurrent contract. Please try again or contact your administrator."
+              "Failed to create recurrent payment. Please try again or contact your administrator."
             ),
             err
           )
@@ -447,7 +423,7 @@
           this.isCreating = false
           throw new UIError(
             this.$gettext(
-              "Failed to create recurrent contract. Please try again or contact your administrator."
+              "Failed to create recurrent payment. Please try again or contact your administrator."
             ),
             err
           )
@@ -457,7 +433,7 @@
           this.isCreating = false
           throw new UIError(
             this.$gettext(
-              "Failed to create recurrent contract. Please try again or contact your administrator."
+              "Failed to create recurrent payment. Please try again or contact your administrator."
             ),
             new Error("No contract ID returned")
           )
@@ -465,7 +441,7 @@
 
         // Success
         this.$msg.success(
-          this.$gettext("Recurrent contract created successfully")
+          this.$gettext("Recurrent payment created successfully")
         )
 
         // Refresh data if callbacks provided
@@ -516,19 +492,6 @@
     text-overflow: ellipsis;
   }
 
-  .next-execution {
-    font-size: 1rem;
-    color: #666;
-  }
-
-  .recurrence-info {
-    font-size: 1.1rem;
-    color: #666;
-    background-color: #f5f5f5;
-    padding: 0.5em 1em;
-    border-radius: 0.5em;
-    display: inline-block;
-  }
 
   .message-text {
     font-style: italic;
@@ -539,6 +502,23 @@
 
   .contract-description {
     margin-bottom: 0.75rem;
+  }
+
+  .participant-divider {
+    width: 70%;
+    height: 1px;
+    margin: 0.75rem auto;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0.14);
+  }
+
+  .contract-summary {
+    color: hsl(0, 0%, 21%);
+  }
+
+  .recurrence-payment {
+    margin-left: 0.25rem;
+    white-space: nowrap;
   }
 
   .contract-guidance {

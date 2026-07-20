@@ -4,12 +4,12 @@
       id="the-contract-list"
       v-if="hasFinishedFirstLoading"
       :isFolded="isFolded"
-      :title="$gettext('Recurrent contracts')"
+      :title="$gettext('Recurring payments')"
       :count="contractsCount"
     >
       <p class="top-up-info">
         {{
-          $gettext("The following recurrent contracts are active.")
+          $gettext("The following recurring payments are active.")
         }}
       </p>
       <div
@@ -37,7 +37,7 @@
         v-else-if="contracts?.length === 0"
         class="notification is-default"
       >
-        {{ $gettext("No recurrent contracts.") }}
+        {{ $gettext("No recurring payments.") }}
       </p>
       <div v-else>
         <TransactionItem

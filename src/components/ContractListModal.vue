@@ -8,7 +8,7 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title is-title-shrink">
-          <span class="ml-2">{{ $gettext("All recurrent contracts") }}</span>
+          <span class="ml-2">{{ $gettext("All recurring payments") }}</span>
         </p>
         <button
           class="delete"

@@ -20,7 +20,8 @@
         :class="[
           transaction.isPaymentRequest && transaction.state === 'refused'
             ? 'custom-card-related has-text-grey'
-            : transaction.isPaymentRequest && transaction.isSender
+            : (transaction.isPaymentRequest || transaction.isRecurrentContract) &&
+              transaction.isSender
             ? 'custom-card-related has-text-danger'
             : transaction.amount.toString().charAt(0) == '-'
             ? 'custom-card-related has-text-danger'
@@ -31,7 +32,8 @@
           <span class="amount">
             <template
               v-if="
-                transaction.isPaymentRequest &&
+                (transaction.isPaymentRequest ||
+                  transaction.isRecurrentContract) &&
                 transaction.isSender &&
                 transaction.amount.toString().charAt(0) !== '-'
               "
@@ -228,8 +230,8 @@
         }
 
         const direction = this.transaction.isSender
-          ? this.$gettext("from")
-          : this.$gettext("to")
+          ? this.$gettext("to")
+          : this.$gettext("from")
 
         return direction + " " + this.transaction.related
       },

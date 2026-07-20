@@ -1591,8 +1591,20 @@ msgid "The administrative backend is not up to date."
 msgstr "Le serveur administratif n'est pas à jour."
 
 #: src/components/ContractListRecent.vue:12
-msgid "The following recurrent contracts are active."
-msgstr "Les contrats récurrents suivants sont actifs."
+msgid "The following recurring payments are active."
+msgstr "Les paiements récurrents suivants sont actifs."
+
+#: src/components/ContractListModal.vue:11
+msgid "All recurring payments"
+msgstr "Tous les paiements récurrents"
+
+#: src/components/ContractListRecent.vue:40
+msgid "No recurring payments."
+msgstr "Aucun paiement récurrent."
+
+#: src/components/ContractListRecent.vue:7
+msgid "Recurring payments"
+msgstr "Paiements récurrents"
 
 #: src/components/PendingTopUp.vue:33 src/components/PendingTopUp.vue:34
 #: src/components/PendingTopUp.vue:56
@@ -2222,7 +2234,7 @@ msgstr "Annuler la demande"
 #: src/components/PaymentRequestModal.vue:240
 #: src/components/RecurrentContractModal.vue:316
 msgid "Created on %{date}"
-msgstr "Créée le %{date}"
+msgstr "Date de création : %{date}"
 
 #: src/components/PaymentRequestModal.vue:244
 #: src/components/RecurrentContractModal.vue:320
@@ -2316,49 +2328,53 @@ msgstr ""
 "Vous pouvez expliquer pourquoi vous annulez cette demande de paiement..."
 
 #: src/components/RecurrentContractModal.vue:292
-msgid "Active recurrent contract"
-msgstr "Contrat récurrent actif"
+msgid "Active recurrent payment"
+msgstr "Paiement récurrent actif"
 
 #: src/components/RecurrentContractModal.vue:168
-msgid "Are you sure you want to delete this recurrent contract?"
-msgstr "Voulez-vous vraiment supprimer ce contrat récurrent ?"
+msgid "Are you sure you want to delete this recurrent payment?"
+msgstr "Voulez-vous vraiment supprimer ce paiement récurrent ?"
 
 #: src/components/RecurrentContractModal.vue:372
-msgid "Contract deleted successfully"
-msgstr "Contrat supprimé avec succès"
+msgid "Recurrent payment deleted successfully"
+msgstr "Paiement récurrent supprimé avec succès"
 
 #: src/components/RecurrentContractModal.vue:12
 #: src/components/RecurrentContractModal.vue:123
-msgid "Create recurrent contract"
-msgstr "Créer un contrat récurrent"
+msgid "Create recurrent payment"
+msgstr "Créer un paiement récurrent"
 
 #: src/components/RecurrentContractModal.vue:327
 msgid "Daily"
 msgstr "Quotidien"
 
 #: src/components/RecurrentContractModal.vue:156
-msgid "Delete contract"
-msgstr "Supprimer le contrat"
+msgid "Delete recurrent payment"
+msgstr "Supprimer le paiement récurrent"
 
 #: src/components/RecurrentContractModal.vue:344
 msgid "Every %{ interval } %{ unit }"
 msgstr "Tous les %{ interval } %{ unit }"
 
+#: src/components/RecurrentContractModal.vue:332
+msgid "%{ recurrence } payment"
+msgstr "Paiement %{ recurrence }"
+
 #: src/components/RecurrentContractModal.vue:403
 #: src/components/RecurrentContractModal.vue:440
 #: src/components/RecurrentContractModal.vue:450
 msgid ""
-"Failed to create recurrent contract. Please try again or contact your "
+"Failed to create recurrent payment. Please try again or contact your "
 "administrator."
 msgstr ""
-"La création du contrat récurrent a échoué. Veuillez réessayer ou contacter "
+"La création du paiement récurrent a échoué. Veuillez réessayer ou contacter "
 "votre administrateur."
 
 #: src/components/RecurrentContractModal.vue:383
 msgid ""
-"Failed to delete contract. Please try again or contact your administrator."
+"Failed to delete recurrent payment. Please try again or contact your administrator."
 msgstr ""
-"La suppression du contrat a échoué. Veuillez réessayer ou contacter votre "
+"La suppression du paiement récurrent a échoué. Veuillez réessayer ou contacter votre "
 "administrateur."
 
 #: src/components/RecurrentContractModal.vue:329
@@ -2366,32 +2382,32 @@ msgid "Monthly"
 msgstr "Mensuel"
 
 #: src/components/RecurrentContractModal.vue:289
-msgid "New recurrent contract"
-msgstr "Nouveau contrat récurrent"
+msgid "New recurrent payment"
+msgstr "Nouveau paiement récurrent"
 
 #: src/components/RecurrentContractModal.vue:73
-msgid "Next:"
-msgstr "Prochaine exécution :"
+msgid "Next occurrence:"
+msgstr "Prochaine occurrence :"
 
 #: src/components/RecurrentContractModal.vue:86
 msgid "Period"
 msgstr "Période"
 
 #: src/components/RecurrentContractModal.vue:297
-msgid "Recurrent contract"
-msgstr "Contrat récurrent"
+msgid "Recurrent payment"
+msgstr "Paiement récurrent"
 
 #: src/components/RecurrentContractModal.vue:293
-msgid "Recurrent contract cancelled"
-msgstr "Contrat récurrent annulé"
+msgid "Recurrent payment cancelled"
+msgstr "Paiement récurrent annulé"
 
 #: src/components/RecurrentContractModal.vue:459
-msgid "Recurrent contract created successfully"
-msgstr "Contrat récurrent créé avec succès"
+msgid "Recurrent payment created successfully"
+msgstr "Paiement récurrent créé avec succès"
 
 #: src/components/RecurrentContractModal.vue:13
-msgid "Recurrent contract details"
-msgstr "Détails du contrat récurrent"
+msgid "Recurrent payment details"
+msgstr "Détails du paiement récurrent"
 
 #: src/components/RecurrentContractModal.vue:171
 msgid "This action cannot be undone."
@@ -2411,10 +2427,10 @@ msgstr "(sans date de fin)"
 
 #: src/components/RecurrentContractModal.vue:338
 msgid ""
-"This recurrent contract has been cancelled. This operation will no longer "
+"This recurrent payment has been cancelled. This operation will no longer "
 "be repeated."
 msgstr ""
-"Ce contrat récurrent a été annulé. Cette opération ne sera plus répétée."
+"Ce paiement récurrent a été annulé. Cette opération ne sera plus répétée."
 
 #: src/components/RecurrentContractModal.vue:347
 msgid ""
@@ -2425,10 +2441,11 @@ msgstr ""
 #: src/components/RecurrentContractModal.vue:343
 msgid ""
 "This operation is automatically repeated at the selected frequency. You "
-"can delete this contract to stop future operations."
+"can delete this recurrent payment to stop future operations."
 msgstr ""
 "Cette opération est automatiquement répétée à la fréquence sélectionnée. "
-"Vous pouvez supprimer ce contrat pour arrêter les prochaines opérations."
+"Vous pouvez supprimer ce paiement récurrent pour arrêter les prochaines "
+"opérations."
 
 #: src/components/RecurrentContractModal.vue:333
 msgid ""
