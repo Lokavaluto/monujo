@@ -17,11 +17,11 @@
           directionTransfer="receive"
           :account="account"
           :selectedRecipient="selectedRecipient"
-          :config="config"
+          :config="form"
           transactionType="createRequestPay"
-          @update:amount="(x) => (amount = x)"
-          @update:senderMemo="(x) => (senderMemo = x)"
-          @update:recipientMemo="(x) => (recipientMemo = x)"
+          @update:amount="form.amount = $event"
+          @update:senderMemo="form.senderMemo = $event"
+          @update:recipientMemo="form.recipientMemo = $event"
           @update:isValid="(x) => (isValid = x)"
         />
       </section>
@@ -58,11 +58,12 @@
     data() {
       return {
         account: null,
-        amount: null,
-        senderMemo: null,
-        recipientMemo: null,
         isValid: false,
-        config: {},
+        form: {
+          amount: null,
+          senderMemo: null,
+          recipientMemo: null,
+        },
       }
     },
     created() {
@@ -74,35 +75,18 @@
     computed: {
       ...mapModuleState("lokapi", ["userProfile"]),
     },
-    watch: {
-      senderMemo: {
-        handler(newVal, oldVal) {
-          this.config.senderMemo = newVal
-        },
-      },
-      recipientMemo: {
-        handler(newVal, oldVal) {
-          this.config.recipientMemo = newVal
-        },
-      },
-      amount: {
-        handler(newVal, oldVal) {
-          this.config.amount = newVal
-        },
-      },
-    },
     methods: {
       openQrCode() {
         let name = this.$gettext(
           "QR code - Payment request to %{ name } of %{ amount } %{ currency }",
           {
             name: this.userProfile.name,
-            amount: this.amount,
+            amount: this.form.amount,
             currency: this.account?.curr,
           }
         )
-        if (this.recipientMemo) {
-          name += " (" + this.recipientMemo + ")"
+        if (this.form.recipientMemo) {
+          name += " (" + this.form.recipientMemo + ")"
         }
         this.$modal.open("QrCodeModal", {
           title: this.$gettext("Request money"),
@@ -111,14 +95,14 @@
           data: {
             rp: this.userProfile.id,
             rpb: this.account.id,
-            amount: this.amount,
-            senderMemo: this.senderMemo,
-            recipientMemo: this.recipientMemo,
+            amount: this.form.amount,
+            senderMemo: this.form.senderMemo,
+            recipientMemo: this.form.recipientMemo,
           },
         })
       },
       close() {
-        this.amount = 0
+        this.form.amount = 0
         this.$modal.close()
       },
       setFocus(refLabel: string) {

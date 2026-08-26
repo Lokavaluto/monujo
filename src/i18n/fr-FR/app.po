@@ -1169,7 +1169,7 @@ msgstr ""
 "Attention, ce mot de passe n'est pas récupérable, alors veillez à le garder "
 "dans un endroit sûr et accessible."
 
-#: src/components/MoneyRequestModal.vue:109 src/main.ts:376
+#: src/components/MoneyRequestModal.vue:93 src/main.ts:376
 msgid "Please scan the QR code above to proceed"
 msgstr "Veuillez scanner le code QR ci-dessus pour continuer"
 
@@ -1213,7 +1213,7 @@ msgstr "Gestionnaire des attributs"
 msgid "QR code"
 msgstr "Code QR"
 
-#: src/components/MoneyRequestModal.vue:96
+#: src/components/MoneyRequestModal.vue:80
 msgid "QR code - Payment request to %{ name } of %{ amount } %{ currency }"
 msgstr "Code QR - demande de paiement à %{ name } de %{ amount } %{ currency }"
 
@@ -1313,10 +1313,10 @@ msgstr "Recevoir"
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
-#: src/components/MoneyRequestModal.vue:108
 #: src/components/MoneyRequestModal.vue:11
 #: src/components/MoneyRequestModal.vue:6
 #: src/components/MoneyRequestModal.vue:7
+#: src/components/MoneyRequestModal.vue:92
 msgid "Request money"
 msgstr "Recevoir"
 
