@@ -280,7 +280,7 @@
               : this.$gettext("Transaction processed"),
           paymentConfirmation: () => this.$gettext("Payment sent"),
           topup: () =>
-            this.isTopUpAwaitingAdminApproval
+            this.isTopUpRequest
               ? this.$gettext("Top-up requested")
               : this.$gettext("Top-up received"),
           reconversion: () =>
@@ -313,12 +313,16 @@
           (tx.cancel !== undefined || tx.pending === true) && tx.paid === false
         )
       },
+      isTopUpRequest() {
+        // CreditRequest has a cancel method, including before it is paid.
+        // Completed top-up transactions from history do not.
+        return (
+          (this.isTopUp || this.isPendingApproval) &&
+          this.transactions[0].cancel !== undefined
+        )
+      },
       isTopUpAwaitingAdminApproval() {
-        const tx = this.transactions[0]
-        // A top-up is received if:
-        // It doesn't have a cancel method (CreditRequest from getPendingTopUp)
-        // AND it's paid
-        return tx.cancel !== undefined && tx.paid === true
+        return this.isTopUpRequest && this.isTopUpPaid
       },
       isOwnTopUpRequest() {
         const requester = this.transactions[0].requester
@@ -339,6 +343,8 @@
           )
         }
 
+        if (!this.isTopUp) return ""
+
         if (this.isTopUpAwaitingAdminApproval) {
           return this.$gettext(
             "This top-up request is waiting for an administrator of your local currency to validate it"
@@ -358,8 +364,8 @@
       showRequesterInfo() {
         const requester = this.transactions[0].requester
         return (
-          this.isPendingApproval ||
-          (requester !== undefined && requester.id !== this.userProfile.id)
+          requester !== undefined &&
+          (this.isPendingApproval || requester.id !== this.userProfile.id)
         )
       },
       requesterName() {
@@ -390,7 +396,7 @@
         )}] ${currency}`
 
         let translatedFullSentence: string
-        if (this.isTopUpAwaitingAdminApproval) {
+        if (this.isTopUpRequest) {
           translatedFullSentence = this.$gettext("Requested %{amount}", {
             amount: amountPreGettext,
           })
@@ -437,8 +443,7 @@
         // XXXvlab: 2026-03-02 comparison by name is much weaker than by id
         return (
           (this.isPendingApproval &&
-            requester !== undefined &&
-            requester.name !== recipient) ||
+            (requester === undefined || requester.name !== recipient)) ||
           (!this.isReconversion && !this.transactions[0].isTopUp)
         )
       },
@@ -455,7 +460,8 @@
         return (
           this.$config.disableReconversionStatusDisplay !== true &&
           this.transactions[0].isReconversion &&
-          this.reconversionStatuses.indexOf(this.reconversionStatus) !== -1
+          this.reconversionStatus !== "" &&
+          this.reconversionStatuses.split("|").includes(this.reconversionStatus)
         )
       },
       hasMultipleTransactions() {
