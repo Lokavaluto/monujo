@@ -453,6 +453,9 @@
   }
 
   div.related.small {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
     text-align: left;
     padding-left: 1em;
     flex: 2;

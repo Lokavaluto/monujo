@@ -53,7 +53,7 @@
                 frame3-sub-title
                 has-text-weight-bold
                 is-size-3
-                hide-overflow
+                transaction-party-name
               "
             >
               {{ requesterName }}
@@ -68,7 +68,7 @@
                 frame3-sub-title
                 has-text-weight-bold
                 is-size-3
-                hide-overflow
+                transaction-party-name
               "
             >
               {{ recipientName }}
@@ -626,10 +626,9 @@
   .body-content {
     text-align: center;
   }
-  .hide-overflow {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .transaction-party-name {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   #delete {
     background-color: #cc0f35;
