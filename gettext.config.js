@@ -4,5 +4,6 @@ module.exports = {
     path: "./src/i18n",
     jsonPath: "../../public/i18n/",
     splitJson: true,
+    obsolete: false,
   },
 };
