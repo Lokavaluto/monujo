@@ -401,7 +401,15 @@
     text-align: left;
   }
   .tx-item.mode-small {
-    padding: 0.2em !important;
+    flex-wrap: wrap;
+    row-gap: 0.25em;
+    padding: 0.5em 0.2em !important;
+
+    .related.small {
+      order: -1;
+      flex: 0 0 100%;
+      padding-left: 0;
+    }
   }
 
   .tx-item.cm .left div.amount {
