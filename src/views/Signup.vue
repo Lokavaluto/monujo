@@ -239,7 +239,7 @@
         if (this.email === "") {
           this.errors.email = this.$gettext("This fiels can not be empty.")
         } else if (
-          !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,}$/.test(this.email)
+          !/^[\w+-]+(\.[\w+-]+)*@([\w-]+\.)+[a-zA-Z]{2,}$/.test(this.email)
         ) {
           this.errors.email = this.$gettext("Invalid email.")
         } else {
