@@ -81,6 +81,7 @@
   "currenciesRefreshInterval": 60,
   "disableReconversion": false,
   "disableTopUp": false,
+  "signUpUrl": "",
   "disableSplitMemo": false,
   "disableBadges": false,
   "disableImportWallet": false,
