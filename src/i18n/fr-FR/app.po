@@ -248,8 +248,8 @@ msgstr "Tous les paiements récurrents"
 msgid "All transactions"
 msgstr "Toutes les opérations"
 
-#: src/views/Signup.vue:103 src/views/Signup.vue:107 src/views/Signup.vue:161
-#: src/views/Signup.vue:98 src/views/Signup.vue:99
+#: src/views/Signup.vue:100 src/views/Signup.vue:105 src/views/Signup.vue:109
+#: src/views/Signup.vue:163 src/views/Signup.vue:99
 msgid "Already have an account ?"
 msgstr "Avez-vous déjà créé un compte ?"
 
@@ -555,13 +555,17 @@ msgstr "Voulez-vous vraiment supprimer ce paiement récurrent ?"
 msgid "as %{ id }"
 msgstr "soit %{ id }"
 
-#: src/views/Login.vue:206
+#: src/views/Login.vue:213
 msgid "Ask me later"
 msgstr "Plus tard"
 
 #: src/components/AuthChallenge.vue:7 src/components/AuthChallenge.vue:8
 msgid "Authentication"
 msgstr "Authentification"
+
+#: src/components/MemberRegistrationForm.vue:67
+msgid "Back to login"
+msgstr "Retour à la connexion"
 
 #: src/components/RecipientTechnicalDetails.vue:4
 #: src/components/RecipientTechnicalDetails.vue:5
@@ -580,7 +584,7 @@ msgstr "Avant l’importation"
 msgid "Biometric login successfully disabled"
 msgstr "Identification biométrique désactivée"
 
-#: src/views/Login.vue:239
+#: src/views/Login.vue:246
 msgid "Biometric login successfully set up"
 msgstr "Identification biométrique mise en place"
 
@@ -687,12 +691,12 @@ msgstr "Configurer le code PIN"
 msgid "confirm"
 msgstr "valider"
 
-#: src/views/Signup.vue:120 src/views/Signup.vue:126 src/views/Signup.vue:72
-#: src/views/Signup.vue:73 src/views/Signup.vue:77 src/views/Signup.vue:81
+#: src/views/Signup.vue:122 src/views/Signup.vue:128 src/views/Signup.vue:73
+#: src/views/Signup.vue:74 src/views/Signup.vue:79 src/views/Signup.vue:83
 msgid "Confirm password"
 msgstr "Confirmez votre mot de passe"
 
-#: src/views/Login.vue:163
+#: src/views/Login.vue:170
 msgid "Connection successful"
 msgstr "Connection réussie"
 
@@ -990,8 +994,8 @@ msgid "Edits were successfully saved"
 msgstr "Modifications enregistrées"
 
 #: src/views/Login.vue:18 src/views/ResetPassword.vue:24
-#: src/views/Signup.vue:19 src/views/Signup.vue:20 src/views/Signup.vue:24
-#: src/views/Signup.vue:28 src/views/Signup.vue:33
+#: src/views/Signup.vue:20 src/views/Signup.vue:21 src/views/Signup.vue:26
+#: src/views/Signup.vue:30 src/views/Signup.vue:35
 msgid "Email"
 msgstr "Courriel"
 
@@ -999,7 +1003,7 @@ msgstr "Courriel"
 msgid "Email sent"
 msgstr "Courriel envoyé"
 
-#: src/views/Login.vue:199
+#: src/views/Login.vue:206
 msgid "Enable biometric login"
 msgstr "Activer le login biométrique"
 
@@ -1137,8 +1141,8 @@ msgstr "Fichier validé avec succès"
 msgid "Filter by status:"
 msgstr "Filtrer par statut :"
 
-#: src/views/Signup.vue:32 src/views/Signup.vue:33 src/views/Signup.vue:37
-#: src/views/Signup.vue:41 src/views/Signup.vue:48 src/views/Signup.vue:53
+#: src/views/Signup.vue:33 src/views/Signup.vue:34 src/views/Signup.vue:39
+#: src/views/Signup.vue:43 src/views/Signup.vue:50 src/views/Signup.vue:55
 msgid "Firstname"
 msgstr "Prénom"
 
@@ -1268,11 +1272,11 @@ msgstr ""
 "Colonnes invalides. Colonnes attendues : %{ expected }. Colonnes trouvées : "
 "%{ actual }."
 
-#: src/views/Login.vue:175
+#: src/views/Login.vue:182
 msgid "Invalid credentials"
 msgstr "Identifiant ou mot de passe incorrect"
 
-#: src/views/Signup.vue:244
+#: src/views/Signup.vue:250
 msgid "Invalid email."
 msgstr "E-mail invalide."
 
@@ -1290,8 +1294,8 @@ msgstr "facturée"
 msgid "Language settings"
 msgstr "Préférences de langue"
 
-#: src/views/Signup.vue:45 src/views/Signup.vue:46 src/views/Signup.vue:50
-#: src/views/Signup.vue:54 src/views/Signup.vue:72 src/views/Signup.vue:77
+#: src/views/Signup.vue:46 src/views/Signup.vue:47 src/views/Signup.vue:52
+#: src/views/Signup.vue:56 src/views/Signup.vue:74 src/views/Signup.vue:79
 msgid "Lastname"
 msgstr "Nom"
 
@@ -1453,7 +1457,7 @@ msgstr "Période du prochain paiement :"
 msgid "Next:"
 msgstr "Prochaine exécution :"
 
-#: src/views/Login.vue:205
+#: src/views/Login.vue:212
 msgid "No"
 msgstr "Non"
 
@@ -1729,8 +1733,8 @@ msgstr ""
 "vous enverrons un e-mail avec des instructions pour réinitialiser votre mot "
 "de passe."
 
-#: src/views/Signup.vue:12 src/views/Signup.vue:16 src/views/Signup.vue:7
-#: src/views/Signup.vue:8
+#: src/views/Signup.vue:14 src/views/Signup.vue:18 src/views/Signup.vue:8
+#: src/views/Signup.vue:9
 msgid ""
 "Please fill in all the required fields below and click on Signup to create "
 "your account."
@@ -1966,7 +1970,7 @@ msgstr "Répéter tous les"
 msgid "Request"
 msgstr "Recevoir"
 
-#: src/views/Login.vue:179
+#: src/views/Login.vue:186
 msgid "Request failed to remote server."
 msgstr "La requête a échoué, impossible de joindre le serveur distant."
 
@@ -1982,7 +1986,7 @@ msgstr "La requête a échoué, impossible de joindre le serveur distant."
 msgid "Request money"
 msgstr "Recevoir"
 
-#: src/views/Login.vue:169
+#: src/views/Login.vue:176
 msgid "Request refused by remote server. Contact your administrator"
 msgstr "Refus du serveur distant, contactez votre administrateur"
 
@@ -2221,12 +2225,12 @@ msgstr "Se connecter"
 msgid "Sign out"
 msgstr "Déconnexion"
 
-#: src/views/Signup.vue:145 src/views/Signup.vue:86 src/views/Signup.vue:87
-#: src/views/Signup.vue:91 src/views/Signup.vue:95
+#: src/views/Signup.vue:147 src/views/Signup.vue:87 src/views/Signup.vue:88
+#: src/views/Signup.vue:93 src/views/Signup.vue:97
 msgid "Sign up"
 msgstr "Créer un compte"
 
-#: src/router/index.ts:50
+#: src/components/MemberRegistrationForm.vue:19 src/router/index.ts:50
 msgid "Sign-Up"
 msgstr "Créer un compte"
 
@@ -2430,7 +2434,7 @@ msgstr "Le montant à créditer doit être égal ou supérieur à %{ amount }"
 msgid "The other party's wallet address"
 msgstr "Adresse du portefeuille de l’autre partie"
 
-#: src/views/Signup.vue:275
+#: src/views/Signup.vue:281
 msgid "The password and the password confirmation must be equal."
 msgstr ""
 "Le mot de passe et la confirmation du mot de passe doivent être identiques."
@@ -2472,7 +2476,7 @@ msgstr ""
 msgid "This action cannot be undone."
 msgstr "Cette action est irréversible."
 
-#: src/views/Signup.vue:240 src/views/Signup.vue:251 src/views/Signup.vue:258
+#: src/views/Signup.vue:246 src/views/Signup.vue:257 src/views/Signup.vue:264
 msgid "This fiels can not be empty."
 msgstr "Ce champs est obligatoire."
 
@@ -2709,9 +2713,22 @@ msgstr "Transaction refusée en raison de fonds insuffisants"
 msgid "Transactions"
 msgstr "Opérations"
 
+#: src/components/MemberRegistrationForm.vue:5
+#: src/components/MemberRegistrationForm.vue:6
+msgid ""
+"Unable to open the registration form. Please contact your administrator."
+msgstr ""
+"Impossible d’ouvrir le formulaire d’inscription. Veuillez contacter votre "
+"administrateur."
+
 #: src/components/RecipientSelector.vue:210
 msgid "Unable to read QR code"
 msgstr "Impossible de lire le code QR."
+
+#: src/components/MemberRegistrationForm.vue:11
+#: src/components/MemberRegistrationForm.vue:12
+msgid "Unable to return to login. Please try again."
+msgstr "Impossible de revenir à la connexion. Veuillez réessayer."
 
 #: src/components/CurrencyItem.vue:4 src/components/CurrencyItem.vue:5
 #: src/components/CurrencyItem.vue:9
@@ -2755,14 +2772,14 @@ msgstr ""
 msgid "Unexpected format of file"
 msgstr "Erreure Inattendue"
 
-#: src/views/Login.vue:231
+#: src/views/Login.vue:238
 msgid "Unexpected issue occurred while saving your credentials"
 msgstr ""
 "Une erreur inattendue est survenue pendant l'enregistrement de vos "
 "identifiants"
 
-#: src/views/Login.vue:182 src/views/ResetPassword.vue:80
-#: src/views/Signup.vue:224
+#: src/views/Login.vue:189 src/views/ResetPassword.vue:80
+#: src/views/Signup.vue:230
 msgid "Unexpected issue when attempting to connect to remote server."
 msgstr ""
 "La requête s'est terminée de façon inattendue, impossible de joindre le "
@@ -2857,7 +2874,7 @@ msgstr ""
 msgid "User account"
 msgstr "vos comptes"
 
-#: src/views/Signup.vue:222
+#: src/views/Signup.vue:228
 msgid "User or email already exist."
 msgstr "Utilisateur ou e-mail existe déjà."
 
@@ -2928,7 +2945,7 @@ msgstr "Semaine(s)"
 msgid "Weekly"
 msgstr "Hebdomadaire"
 
-#: src/views/Login.vue:200
+#: src/views/Login.vue:207
 msgid ""
 "Would you like to use your device's biometric (fingerprint, face "
 "recognition, ...) capability to login ?"
@@ -2956,7 +2973,7 @@ msgstr "Année(s)"
 msgid "Yearly"
 msgstr "Annuel"
 
-#: src/views/Login.vue:204
+#: src/views/Login.vue:211
 msgid "Yes"
 msgstr "Oui"
 
@@ -3025,7 +3042,7 @@ msgstr "Vous ne pouvez pas envoyer de l'argent vers ce compte."
 msgid "You don't have any wallet yet."
 msgstr "Vous n'avez pas encore de portefeuille."
 
-#: src/views/Signup.vue:234
+#: src/views/Signup.vue:240
 msgid "Your account has been created successfully."
 msgstr "Votre compte a été créé avec succès."
 

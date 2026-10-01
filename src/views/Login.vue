@@ -85,6 +85,7 @@
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
   import { debounceMethod } from "@/utils/debounce"
+  import { takeSurveyReturn } from "@/utils/surveyReturn"
 
   @Options({
     name: "Login",
@@ -106,20 +107,26 @@
     async mounted() {
       ;(this.$el as HTMLElement).focus()
       const savedLoginEmail = this.$persistentStore.get("loginEmail")
-      if (savedLoginEmail) this.email = savedLoginEmail
+      const surveyReturn = takeSurveyReturn()
+      if (surveyReturn?.email) this.email = surveyReturn.email
+      else if (savedLoginEmail) this.email = savedLoginEmail
 
       this.getCanResetPassword()
       if (!this.$config.hideAccountCreate && !this.$config.signUpUrl)
         this.getCanSignup()
-      ;(await this.getHasBiometricCredentialsEnabled()) &&
+      // Keep manual biometric login available, but never auto-login when the
+      // participant deliberately returns from the registration form.
+      if (
+        (await this.getHasBiometricCredentialsEnabled()) &&
         (await this.getHasBiometricCredentialsAvailable()) &&
-        (await this.requestBiometricAuthentication())
+        !surveyReturn
+      ) {
+        await this.requestBiometricAuthentication()
+      }
     },
     methods: {
       onClickSignUp() {
-        this.$config.signUpUrl
-          ? window.open(this.$config.signUpUrl)
-          : this.$router.push({ name: "Signup" })
+        this.$router.push({ name: "Signup" })
       },
       async getCanResetPassword() {
         this.canResetPassword = await this.$lokapi.canResetPassword()
