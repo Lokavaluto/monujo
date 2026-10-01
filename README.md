@@ -98,7 +98,65 @@ npm run serve
 ```
 
 You'll need to provide a `public/config.json` along the live assets.
-Yon can find an example in `public/config.example.json`.
+You can find an example in `public/config.sample.json`.
+
+##### Membership registration
+
+Set `signUpUrl` in `config.json` to the complete registration form URL, for example:
+
+```json
+"signUpUrl": "https://example.org/survey/start/YOUR_SURVEY_ACCESS_TOKEN"
+```
+
+When `signUpUrl` is set, the "Not a member yet ?" link opens
+`/#/signup`, which embeds this URL in an iframe. This is the only registration
+URL setting, reusing the existing `signUpUrl` key. Existing configured URLs now
+open inside Monujo rather than in a separate tab/window; the target page must
+allow embedding in an iframe.
+
+When `signUpUrl` is empty or absent, the link opens the regular
+account registration form if Odoo allows public signup.
+`hideAccountCreate` hides the link in all cases. Visiting `/#/signup` directly
+shows the regular form when no `signUpUrl` is configured.
+
+A complete `signUpUrl` uses its own host. Relative URLs are resolved
+against `lokapiHost`, using HTTPS when that host has no scheme. HTTPS deployments
+must use an HTTPS form URL. Invalid URLs show an error instead of a blank iframe.
+Monujo adds no return button around the iframe. The return button is provided
+by Odoo only after the survey is completed.
+If your server sets a Content Security Policy, allow the Odoo origin in
+`frame-src`. Odoo's `frame-ancestors` policy and any `X-Frame-Options` header
+must permit embedding by Monujo.
+
+For native Odoo surveys, install `lcc_custom_survey` on Odoo. No recipient
+allowlist is required: any embedding HTTP(S) origin can receive the mapped email
+when the participant clicks the return button. Other survey fields are never
+included, even if they have a completion payload key.
+Monujo adds `parent_origin` and a `return_label` to the iframe URL. There is no
+mode selector or destination URL. Without `parent_origin`, Odoo shows no extra
+completion button.
+
+After completing the survey, clicking the button sends an `odoo:survey:return`
+message. Monujo checks both the configured Odoo origin and the current iframe's
+window before returning to the `Login` route. Completing the survey alone does
+not navigate. Outside an iframe, the Odoo completion button stays hidden.
+
+To prefill login, a survey manager sets the email question's **Options → Completion
+payload key** to `email`. The message contains
+`{ type: "odoo:survey:return", payload: { email: "alice@example.org" } }`.
+If the email answer is unmapped, invalid, blank or skipped, the payload is `{}` and the
+return still works without email prefill.
+Odoo and Monujo trim and validate the email (maximum 254 characters). Monujo
+passes it to Login through a one-time in-memory value, never URL parameters or
+persistent storage. Reloading the app clears an unconsumed suggestion. The field
+remains editable and no password is supplied. Every return from the form,
+including an empty payload, skips biometric auto-login; manual
+biometric login remains available.
+
+The old `return_mode` and `return_url` parameters are no longer used. Standalone
+URL redirects and prefill from ordinary URL query parameters are not supported.
+A completion message does not establish that an account, membership, payment,
+or mandate was created.
 
 ##### Compiles and minifies for production (web or mobile)
 

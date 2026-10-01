@@ -1,5 +1,7 @@
 <template>
+  <MemberRegistrationForm v-if="$config.signUpUrl" />
   <section
+    v-else
     id="signup"
     tabindex="0"
     @keyup.enter="isFormValid ? submit() : null"
@@ -173,6 +175,7 @@
   import { RestExc } from "@lokavaluto/lokapi-browser"
   import PasswordUtilsFactory from "@/utils/password"
   import PasswordField from "@/components/PasswordField.vue"
+  import MemberRegistrationForm from "@/components/MemberRegistrationForm.vue"
   import { UIError } from "../exception"
   import { showSpinnerMethod } from "@/utils/showSpinner"
   import applyDecorators from "@/utils/applyDecorators"
@@ -181,6 +184,7 @@
     name: "Signup",
     components: {
       PasswordField,
+      MemberRegistrationForm,
     },
     data() {
       return {
@@ -204,7 +208,9 @@
       },
     },
     mounted() {
-      ;(this.$el as HTMLElement).focus()
+      if (!this.$config.signUpUrl) {
+        ;(this.$el as HTMLElement).focus()
+      }
     },
     methods: {
       submit: applyDecorators(
