@@ -163,6 +163,10 @@ class PdfDocument {
         if (/^0x[0-9a-f]{40,40}$/.test(tx.related))
           return {
             fontName: "courier",
+            // Fits the 42 chars of an address on one line within
+            // ``maxWidth``. Explicit size is also required for
+            // line-splitting to measure with the size used to draw.
+            fontSize: 5.5,
           }
         return {}
       },
@@ -1583,7 +1587,7 @@ class PdfDocument {
 
   getCellFontSpec(col: any) {
     return {
-      fontName: col.fontStyle || this.defaultCell.fontName,
+      fontName: col.fontName || this.defaultCell.fontName,
       fontStyle: col.fontStyle || this.defaultCell.fontStyle,
       fontSize: col.fontSize || this.defaultCell.fontSize,
     }

@@ -71,19 +71,19 @@ msgstr[1] "%{ pinLength } chiffres"
 msgid "%{ recurrence } payments"
 msgstr "Fréquence : %{ recurrence }"
 
-#: src/utils/pdf.ts:939
+#: src/utils/pdf.ts:943
 msgid "%{nbReconversion} reconversion"
 msgid_plural "%{nbReconversion} reconversions"
 msgstr[0] "%{ nbReconversion } reconversion"
 msgstr[1] "%{ nbReconversion } reconversions"
 
-#: src/utils/pdf.ts:948
+#: src/utils/pdf.ts:952
 msgid "%{nbTopUp} top-up"
 msgid_plural "%{nbTopUp} top-ups"
 msgstr[0] "%{nbTopUp} rechargement"
 msgstr[1] "%{nbTopUp} rechargements"
 
-#: src/utils/pdf.ts:1042
+#: src/utils/pdf.ts:1046
 msgid "%{nbTransactions} transactions"
 msgstr "%{nbTransactions} opérations"
 
@@ -102,7 +102,7 @@ msgstr "À propos de %{ appName }"
 msgid "Account"
 msgstr "Compte"
 
-#: src/utils/pdf.ts:713
+#: src/utils/pdf.ts:717
 msgid "Account %{ accountName }"
 msgstr "Compte %{ accountName }"
 
@@ -115,7 +115,7 @@ msgstr "Actions du compte"
 msgid "Account creations waiting for approval"
 msgstr "Comptes en attente de validation"
 
-#: src/utils/pdf.ts:1411 src/utils/pdf.ts:430
+#: src/utils/pdf.ts:1415 src/utils/pdf.ts:434
 msgid "Account Statements in %{currency}"
 msgstr "Relevés de compte en %{currency}"
 
@@ -652,7 +652,7 @@ msgstr ""
 msgid "Close"
 msgstr "Fermer"
 
-#: src/utils/pdf.ts:754
+#: src/utils/pdf.ts:758
 msgid "Closing balance"
 msgstr "Solde de clôture"
 
@@ -700,7 +700,7 @@ msgstr "Connection réussie"
 msgid "Contact your administrator if it fails to show up."
 msgstr "Contactez votre administrateur si elle ne s'affiche pas"
 
-#: src/utils/pdf.ts:1415
+#: src/utils/pdf.ts:1419
 msgid "continued"
 msgstr "suite"
 
@@ -800,7 +800,7 @@ msgstr "Date de création : %{date}"
 msgid "Creating..."
 msgstr "Création en cours…"
 
-#: src/utils/pdf.ts:230
+#: src/utils/pdf.ts:234
 msgid "Credit"
 msgstr "Crédit"
 
@@ -863,7 +863,7 @@ msgstr[1] "jours"
 msgid "Day(s)"
 msgstr "Jour(s)"
 
-#: src/utils/pdf.ts:193
+#: src/utils/pdf.ts:197
 msgid "Debit"
 msgstr "Débit"
 
@@ -899,7 +899,7 @@ msgstr "Supprimer le paiement récurrent"
 #: src/components/PaymentRequestModal.vue:57
 #: src/components/PaymentRequestModal.vue:61
 #: src/components/PaymentRequestModal.vue:69
-#: src/components/TransactionList.vue:417 src/utils/pdf.ts:178
+#: src/components/TransactionList.vue:417 src/utils/pdf.ts:182
 msgid "Description"
 msgstr "Description"
 
@@ -1530,7 +1530,7 @@ msgstr "Pas encore adhérent ?"
 msgid "Ok"
 msgstr "Ok"
 
-#: src/utils/pdf.ts:753
+#: src/utils/pdf.ts:757
 msgid "Opening balance"
 msgstr "Solde d'ouverture"
 
@@ -2658,7 +2658,7 @@ msgstr "Votre demande de rechargement a été créé avec succès."
 msgid "Top-up requested"
 msgstr "Rechargement demandé"
 
-#: src/utils/pdf.ts:875
+#: src/utils/pdf.ts:879
 msgid "Totals"
 msgstr "Totaux"
 
