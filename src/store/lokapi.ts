@@ -49,7 +49,11 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
           }
           throw err
         }
-        dispatch("fetchAccounts")
+        // Backend caches were just filled by the login (or are empty
+        // on startup): flushing them would only re-fetch the same
+        // data, minus what only the login response carries (as the
+        // Cyclos session token).
+        dispatch("fetchAccounts", { flushBackendCaches: false })
         commit("auth_success")
         await dispatch("setBackends")
         await Promise.all([
@@ -59,10 +63,13 @@ export function lokapiStoreFactory(lokApiService: any, passwordUtils: any) {
         ])
         commit("setAdminRightsLoaded", true)
       },
-      async fetchAccounts({ commit, state }: any) {
+      async fetchAccounts(
+        { commit, state }: any,
+        { flushBackendCaches = true }: { flushBackendCaches?: boolean } = {}
+      ) {
         commit("setAccountsLoading", true)
         commit("setAccountsLoadingErrors", [])
-        lokApiService.flushBackendCaches()
+        if (flushBackendCaches) lokApiService.flushBackendCaches()
         let virtualAccountTreeArtifacts
         try {
           virtualAccountTreeArtifacts =
