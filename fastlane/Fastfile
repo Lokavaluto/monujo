@@ -24,6 +24,117 @@ DEFAULT_IOS_ITC_TEAM_ID = "122170227"
 DEFAULT_APPLE_ID = "valentin.lab@kalysto.org"
 
 
+## Drop the App Store Connect API key from the current session and
+## lane context, so that following Spaceship-based actions authenticate
+## with the Apple ID.
+##
+## The API key (if set) is Lokavaluto's, scoped to the default team:
+## apps having their own Apple team must not use it, as it would
+## bypass cookie-based team selection (in the current session, but also
+## in downstream actions like `match` or `upload_to_testflight` that
+## prefer the lane-context API key).
+## Note: the API key was stored with `set_sensitive` (see
+## `check_ios_signing_secrets_are_available`), and the sensitive
+## context takes precedence on reads: clear it the same way.
+def use_apple_id_authentication
+  Spaceship::ConnectAPI.token = nil
+  Actions.lane_context.set_sensitive(
+    Fastlane::Actions::SharedValues::APP_STORE_CONNECT_API_KEY, nil)
+  Actions.lane_context[Fastlane::Actions::SharedValues::APP_STORE_CONNECT_API_KEY] = nil
+end
+
+
+## Signing location (Apple team and branch of the certificates
+## repository) of the app currently loaded in lane context (see
+## `load_app_data`), as `match` options.
+##
+## Always set EXPLICITLY, paired from the same release YAML entry:
+## never rely on ambient environment ($FASTLANE_TEAM_ID,
+## $MATCH_GIT_BRANCH, Matchfile defaults or Apple-ID interactive team
+## selection), which could silently target another team's
+## certificates or another branch.
+def ios_signing_location
+  app = Actions.lane_context[Fastlane::Actions::SharedValues::APP_NAME]
+  app_data = Actions.lane_context[Fastlane::Actions::SharedValues::APP_DATA] || {}
+  team_id = app_data.dig("app", "ios", "team_id")
+  if team_id
+    ## Currency-specific Apple team: certificates are stored in the
+    ## branch named after the app in the certificates repository.
+    {team_id: team_id, git_branch: app}
+  else
+    {team_id: DEFAULT_IOS_TEAM_ID, git_branch: "master"}
+  end
+end
+
+
+## Provide `match`'s repository passphrase from the usual key file
+## unless already set, so `match`/`match_nuke` don't prompt for it
+## interactively (the `check_ios_signing_secrets_are_available`
+## action that used to do this is disabled in `_setup_signing`).
+##
+## Relative paths are resolved from the project root, as actions do
+## (Fastfile code itself runs from within the `fastlane` folder).
+def load_match_password
+  return if ENV["MATCH_PASSWORD"]
+  project_root = File.expand_path("..", FastlaneCore::FastlaneFolder.path)
+  match_password_path = File.expand_path(
+    ENV["MATCH_PASSWORD_PATH"] || "keys/ios/match_password", project_root)
+  if File.readable? match_password_path
+    ENV["MATCH_PASSWORD"] = File.read(match_password_path).chomp
+    UI.message "Using Match passphrase from '#{match_password_path}'."
+  else
+    UI.important(
+      "Match passphrase file '#{match_password_path}' not readable: " +
+      "relying on $MATCH_PASSWORD or the local keychain.")
+  end
+end
+
+
+## Provide the Apple ID app-specific password (required by Apple to
+## upload builds with an Apple ID instead of an API key) from the usual
+## key file unless already set. Create it on https://account.apple.com
+## (Sign-In and Security > App-Specific Passwords).
+def load_app_specific_password
+  env_name = "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"
+  return if ENV[env_name]
+  project_root = File.expand_path("..", FastlaneCore::FastlaneFolder.path)
+  path = File.expand_path(
+    ENV["APP_SPECIFIC_PASSWORD_PATH"] || "keys/ios/app_specific_password", project_root)
+  if File.readable? path
+    ENV[env_name] = File.read(path).chomp
+    UI.message "Using Apple ID app-specific password from '#{path}'."
+  else
+    UI.important(
+      "App-specific password file '#{path}' not readable: you'll be " +
+      "asked for it (the normal Apple ID password is refused for uploads).")
+  end
+end
+
+
+## `match` failures that `ensure_ios_signing` knows how to repair,
+## recognized by their message (match only raises generic errors).
+## Checked against fastlane 2.220 and 2.237.
+IOS_SIGNING_PROBLEMS = {
+  ## readonly mode, nothing in the certificates repository branch
+  missing: /cannot create a new one because you enabled `readonly`/,
+  ## the stored certificate is past its end date (any mode)
+  expired: /is not valid, please check end date and renew it/,
+  ## the stored certificate is unknown to the developer portal,
+  ## typically revoked (only detected when not readonly)
+  revoked: /use the `fastlane match nuke` feature/,
+  ## the bundle identifier isn't registered on the Apple team (only
+  ## detected when not readonly): not ours to create
+  no_bundle_id: /Couldn't find bundle identifier/,
+}
+
+def ios_signing_problem(message)
+  IOS_SIGNING_PROBLEMS.each do |problem, pattern|
+    return problem if message =~ pattern
+  end
+  nil
+end
+
+
 ## Select the right App Store Connect team for the app currently
 ## loaded in lane context (see `load_app_data`).
 ##
@@ -43,17 +154,7 @@ def select_store_team_for_current_app
 
   itc_team_id = DEFAULT_IOS_ITC_TEAM_ID
   if ios_data["team_id"]
-    ## The (default team scoped) API key, if set, would bypass
-    ## cookie-based team selection (in the current session, but also
-    ## in downstream actions like `upload_to_testflight` that prefer
-    ## the lane-context API key): force Apple-ID authentication.
-    ## Note: the API key was stored with `set_sensitive` (see
-    ## `check_ios_signing_secrets_are_available`), and the sensitive
-    ## context takes precedence on reads: clear it the same way.
-    Spaceship::ConnectAPI.token = nil
-    Actions.lane_context.set_sensitive(
-      Fastlane::Actions::SharedValues::APP_STORE_CONNECT_API_KEY, nil)
-    Actions.lane_context[Fastlane::Actions::SharedValues::APP_STORE_CONNECT_API_KEY] = nil
+    use_apple_id_authentication
     username = ENV["FASTLANE_USER"] || ENV["MATCH_USERNAME"] || DEFAULT_APPLE_ID
     ## `login` performs its own team selection and would prompt
     ## interactively without a pre-set team: log in on the default
@@ -425,6 +526,8 @@ end
 desc "Publish Store"
 private_lane :_publish_store do |options|
   _setup_store options
+  ## See ios `_ensure_ios_signing`
+  options[:check_signing_on_portal] = true
   _prepublish options unless publish_metadata.entries.length != 0
   send_store options
 end
@@ -730,6 +833,19 @@ platform :ios do
     _publish_store options
   end
 
+  desc "Make sure the signing certificate and provisioning profile of " +
+       "given app exist and are usable (right team and certificate " +
+       "repository branch are inferred from the release YAML): creates " +
+       "them if missing, renews them if expired or revoked. " +
+       "Also done automatically by 'build' and 'publish_store'."
+  lane :setup_certs do |options|
+    app = options[:app]
+    UI.user_error! "Please provide an 'app:NAME' argument." unless app
+    releases_data = load_releases_data unless releases_data
+    load_app_data app: app
+    _ensure_ios_signing check_portal: true
+  end
+
   desc "Renew signing certificates for given app (right team and " +
        "certificate repository branch are inferred from the release YAML). " +
        "Revokes the type's certificates and profiles (portal and " +
@@ -741,54 +857,86 @@ platform :ios do
     UI.user_error! "Please provide an 'app:NAME' argument." unless app
     releases_data = load_releases_data unless releases_data
     load_app_data app: app
+    _renew_ios_signing(
+      type: options[:type] || "appstore",
+      force: options[:force],
+      confirm_team: options[:confirm_team],
+    )
+  end
 
-    app_data = lane_context[SharedValues::APP_DATA]
-    ios_data = app_data.dig("app", "ios") || {}
-    cert_type = options[:type] || "appstore"
+  ## Get usable signing material for the app loaded in lane context,
+  ## creating or renewing it when needed.
+  ##
+  ## Without `check_portal`, `match` is first run readonly: it needs
+  ## no Apple login, but can't detect a revoked certificate. With
+  ## `check_portal` (when we are publishing, and so logging in on Apple
+  ## anyway), `match` checks the stored certificate and profile against
+  ## the developer portal, and creates what's missing.
+  private_lane :_ensure_ios_signing do |options|
+    app = lane_context[SharedValues::APP_NAME]
+    location = ios_signing_location
+    own_team = location[:git_branch] != "master"
+    match_options = {
+      type: "appstore",
+      app_identifier: lane_context[SharedValues::APP_ID],
+      **location,
+    }
+    load_match_password
+    use_apple_id_authentication if own_team && options[:check_portal]
 
-    ## Provide `match`'s repository passphrase from the usual key file
-    ## unless already set, so `match`/`match_nuke` don't prompt for it
-    ## interactively (the `check_ios_signing_secrets_are_available`
-    ## action that used to do this is disabled in `_setup_signing`).
-    if not ENV["MATCH_PASSWORD"]
-      match_password_path = ENV["MATCH_PASSWORD_PATH"] || "keys/ios/match_password"
-      if File.readable? match_password_path
-        ENV["MATCH_PASSWORD"] = File.read(match_password_path).chomp
-        UI.message "Using Match passphrase from '#{match_password_path}'."
-      end
+    problem = nil
+    begin
+      match(**match_options, readonly: !options[:check_portal])
+    rescue FastlaneCore::Interface::FastlaneException => e
+      problem = ios_signing_problem(e.message)
+      raise unless problem
     end
+    next unless problem
 
-    ## Always set team and certificate-repository branch EXPLICITLY,
-    ## paired from the same release YAML entry: never rely on ambient
-    ## environment ($FASTLANE_TEAM_ID, $MATCH_GIT_BRANCH, Matchfile
-    ## defaults or Apple-ID interactive team selection), which could
-    ## silently target another team's certificates or another branch.
-    if ios_data["team_id"]
-      ## Currency-specific Apple team: certificates are stored in the
-      ## branch named after the app in the certificates repository.
-      common_options = {
-        team_id: ios_data["team_id"],
-        git_branch: app,
-      }
-    else
-      unless options[:force]
-        UI.user_error!(
-          "App '#{app}' lives on the shared default Apple team: nuking " +
-          "will delete the certificates and provisioning profiles of ALL " +
-          "the apps of this team (they'll need a regeneration through " +
-          "`match` or a new `build`). Provide 'force:true' to proceed."
-        )
-      end
-      common_options = {
-        team_id: DEFAULT_IOS_TEAM_ID,
-        git_branch: "master",
-      }
+    UI.important(
+      "Signing material of '#{app}' (Apple team #{location[:team_id]}, " +
+      "certificate repository branch: #{location[:git_branch]}) " +
+      "is #{problem.to_s.tr("_", " ")}."
+    )
+    case problem
+    when :missing
+      use_apple_id_authentication if own_team
+      match(**match_options, readonly: false)
+    when :expired, :revoked
+      _renew_ios_signing(type: "appstore")
+    when :no_bundle_id
+      UI.user_error!(
+        "Bundle identifier '#{match_options[:app_identifier]}' is not " +
+        "registered on Apple team #{location[:team_id]}: it must be " +
+        "created by the currency when creating its app in App Store " +
+        "Connect (or check 'app.ios.id' and 'app.ios.team_id' of " +
+        "'#{app}' in the release YAML)."
+      )
+    end
+  end
+
+  ## Revoke the signing material of the app loaded in lane context
+  ## (portal and certificate repository), then regenerate it.
+  private_lane :_renew_ios_signing do |options|
+    app = lane_context[SharedValues::APP_NAME]
+    location = ios_signing_location
+    own_team = location[:git_branch] != "master"
+    cert_type = options[:type]
+
+    if !own_team && !options[:force]
+      UI.user_error!(
+        "App '#{app}' lives on the shared default Apple team: nuking " +
+        "will delete the certificates and provisioning profiles of ALL " +
+        "the apps of this team (they'll need a regeneration through " +
+        "`match` or a new `build`). Use 'fastlane ios renew_certs " +
+        "app:#{app} force:true' to proceed."
+      )
     end
 
     UI.important(
       "Renewing '#{cert_type}' certificates of '#{app}' for Apple " +
-      "team #{common_options[:team_id]} " +
-      "(certificate repository branch: #{common_options[:git_branch]})"
+      "team #{location[:team_id]} " +
+      "(certificate repository branch: #{location[:git_branch]})"
     )
     ## `match_nuke` below asks its own (itemized) confirmation before
     ## deleting anything, so this pre-check is opt-in only (pass
@@ -796,6 +944,9 @@ platform :ios do
     if options[:confirm_team] && !UI.confirm("Is this the expected team and branch ?")
       UI.user_error! "Aborted."
     end
+
+    load_match_password
+    use_apple_id_authentication if own_team
 
     ## Revoke on the Apple portal and remove from the certificates
     ## repository (frees up the certificate slots on the portal).
@@ -806,7 +957,7 @@ platform :ios do
     ## mapped internally to the distribution certificate type).
     match_nuke(
       type: cert_type,
-      **common_options,
+      **location,
     )
 
     ## Regenerate certificate and provisioning profile.
@@ -814,7 +965,7 @@ platform :ios do
       type: cert_type,
       app_identifier: lane_context[SharedValues::APP_ID],
       readonly: false,
-      **common_options,
+      **location,
     )
   end
 
@@ -878,10 +1029,17 @@ platform :ios do
         )
         next
       end
-      upload_to_testflight(
+      upload_options = {
         app_identifier: lane_context[SharedValues::APP_ID],
         ipa: path,
-      )
+      }
+      if ios_signing_location[:git_branch] != "master"
+        ## Own Apple team: no API key, upload with the Apple ID, which
+        ## Apple only accepts with an app-specific password.
+        upload_options[:username] = ENV["FASTLANE_USER"] || DEFAULT_APPLE_ID
+        load_app_specific_password
+      end
+      upload_to_testflight(**upload_options)
     end
 
     ## Publish screenshots that have been taken
@@ -958,20 +1116,10 @@ platform :ios do
 
     ## Create temporary keychain for CI
     setup_ci if ENV['CI']
-    match_options = {type: "appstore", app_identifier: app_id, readonly: true}
-    if ios_data["team_id"]
-      ## Currency-specific Apple team: certificates are stored in the
-      ## branch named after the app in the certificates repository.
-      match_options[:team_id] = ios_data["team_id"]
-      match_options[:git_branch] = app
-    else
-      ## Be explicit rather than relying on ambient environment
-      ## ($MATCH_GIT_BRANCH, ...) that could target another team's
-      ## certificates.
-      match_options[:team_id] = DEFAULT_IOS_TEAM_ID
-      match_options[:git_branch] = "master"
-    end
-    match(**match_options)
+    ## Fetch signing material, creating or renewing it when needed.
+    ## Check it against the developer portal only when publishing to
+    ## the store (we log in on Apple anyway in that case).
+    _ensure_ios_signing check_portal: options[:check_signing_on_portal]
 
     build_app(
       workspace: "#{Actions.lane_context[SharedValues::SANDBOX_PATH]}/ios/App/App.xcworkspace",
