@@ -1,6 +1,7 @@
 // Enabling the simplified authentication (PIN code) asks for the
 // wallet password, which is checked by unlocking the wallet of each
-// account listed in the preferences.
+// account listed in the preferences.  This must work whether or not
+// the dashboard had a chance to load the account balances first.
 //
 // Requires an account owning a Comchain wallet with no PIN code
 // configured yet on this browser, its login given through the
@@ -15,6 +16,19 @@ function goToPreferences() {
     win.location.hash = "#/preferences"
   })
   cy.get("#simplified-auth", { timeout: 20000 }).should("exist")
+}
+
+// The wallet can only be decrypted once a Comchain server was
+// selected, which the account balances loading triggers in the
+// background.  Holding back the server health check makes sure the
+// password gets submitted before that selection is done, instead of
+// depending on how fast the Comchain servers answer.
+function delayComchainServerSelection() {
+  cy.intercept({ url: /\/dbcheck\.php/ }, (req) => {
+    req.on("response", (res) => {
+      res.setDelay(5000)
+    })
+  })
 }
 
 function enableSimplifiedAuth() {
@@ -49,6 +63,14 @@ describe("PIN code setup", () => {
 
   it("accepts the wallet password right after login", () => {
     goToPreferences()
+    enableSimplifiedAuth()
+    shouldAcceptWalletPassword()
+  })
+
+  it("accepts the wallet password when the app starts on preferences", () => {
+    goToPreferences()
+    delayComchainServerSelection()
+    cy.reload()
     enableSimplifiedAuth()
     shouldAcceptWalletPassword()
   })
