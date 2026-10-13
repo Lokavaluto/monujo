@@ -230,6 +230,7 @@
       isRecurrentPaymentAllowed(): boolean {
         return (
           this.transactionType !== "paymentRequest" &&
+          this.transactionType !== "adminCredit" &&
           this.ownSelectedAccount?.isPaymentRequestAllowed === true
         )
       },
