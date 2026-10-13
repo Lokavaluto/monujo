@@ -14,7 +14,7 @@
     "preinstall": "./autogen.sh"
   },
   "dependencies": {
-    "@0k/cache": "^0.2.0",
+    "@0k/cache": "^0.3.0",
     "@0k/types-request": "^1.0.1",
     "@capacitor/camera": "^5.0.10",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
