@@ -32,9 +32,15 @@ function makeRecipient() {
   return {
     backendId: "comchain:test",
     getSymbol: vi.fn(async () => "LKC"),
-    prepareTransfer: vi.fn(async (..._args: unknown[]) => []),
+    prepareTransfer: vi.fn<unknown[], Promise<unknown[]>>(async () => []),
     preparePledge: vi.fn(async () => []),
   }
+}
+
+type ModalVm = {
+  isValid: boolean
+  transactionType: string | null
+  handleClickRecipient: (config: unknown) => Promise<void>
 }
 
 async function mountModal(transactionType?: string) {
@@ -72,7 +78,7 @@ async function mountModal(transactionType?: string) {
     },
   })
   if (!transactionType) {
-    await (wrapper.vm as any).handleClickRecipient({ recipient })
+    await (wrapper.vm as unknown as ModalVm).handleClickRecipient({ recipient })
   }
   await flushPromises()
   return { wrapper, recipient, msg }
@@ -98,7 +104,7 @@ describe("MoneyTransferModal", () => {
       expect(rejections).toEqual([])
       expect(recipient.prepareTransfer).not.toHaveBeenCalled()
       expect(msg.error).not.toHaveBeenCalled()
-      expect((wrapper.vm as any).isValid).toBe(false)
+      expect((wrapper.vm as unknown as ModalVm).isValid).toBe(false)
     })
 
     it("still re-checks the transfer when the description changes after a valid amount", async () => {
@@ -127,7 +133,9 @@ describe("MoneyTransferModal", () => {
 
     it("is not offered when an administrator credits an account", async () => {
       const { wrapper } = await mountModal("adminCredit")
-      expect((wrapper.vm as any).transactionType).toBe("adminCredit")
+      expect((wrapper.vm as unknown as ModalVm).transactionType).toBe(
+        "adminCredit"
+      )
       expect(wrapper.findComponent(RecurrenceOptionsStub).exists()).toBe(false)
     })
   })
