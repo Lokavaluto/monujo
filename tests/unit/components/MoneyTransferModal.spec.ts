@@ -32,7 +32,7 @@ function makeRecipient() {
   return {
     backendId: "comchain:test",
     getSymbol: vi.fn(async () => "LKC"),
-    prepareTransfer: vi.fn(async () => []),
+    prepareTransfer: vi.fn(async (..._args: unknown[]) => []),
     preparePledge: vi.fn(async () => []),
   }
 }
@@ -79,6 +79,46 @@ async function mountModal(transactionType?: string) {
 }
 
 describe("MoneyTransferModal", () => {
+  describe("description typed before the amount", () => {
+    it("does not check the transfer nor report an error", async () => {
+      const { wrapper, recipient, msg } = await mountModal()
+      const tx = wrapper.findComponent(MoneyTransactionStub)
+      const rejections: unknown[] = []
+      const onRejection = (reason: unknown) => rejections.push(reason)
+      process.on("unhandledRejection", onRejection)
+      try {
+        tx.vm.$emit("update:senderMemo", "A description before any amount")
+        tx.vm.$emit("update:recipientMemo", "A reference before any amount")
+        await flushPromises()
+        await new Promise((resolve) => setTimeout(resolve, 0))
+      } finally {
+        process.off("unhandledRejection", onRejection)
+      }
+
+      expect(rejections).toEqual([])
+      expect(recipient.prepareTransfer).not.toHaveBeenCalled()
+      expect(msg.error).not.toHaveBeenCalled()
+      expect((wrapper.vm as any).isValid).toBe(false)
+    })
+
+    it("still re-checks the transfer when the description changes after a valid amount", async () => {
+      const { wrapper, recipient, msg } = await mountModal()
+      const tx = wrapper.findComponent(MoneyTransactionStub)
+
+      tx.vm.$emit("update:amount", "10")
+      await flushPromises()
+      tx.vm.$emit("update:senderMemo", "Rent")
+      await flushPromises()
+
+      expect(recipient.prepareTransfer).toHaveBeenCalledTimes(2)
+      expect(recipient.prepareTransfer.mock.lastCall?.slice(0, 2)).toEqual([
+        "10",
+        "Rent",
+      ])
+      expect(msg.error).not.toHaveBeenCalled()
+    })
+  })
+
   describe("recurring payment option", () => {
     it("is offered for a regular payment when the account allows it", async () => {
       const { wrapper } = await mountModal()

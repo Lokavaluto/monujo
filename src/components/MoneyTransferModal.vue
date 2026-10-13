@@ -59,9 +59,11 @@
             :parentErrors="errors"
             :transactionType="transactionType"
             @update:amount="(x) => ((amount = x), checkTransaction(true))"
-            @update:senderMemo="(x) => ((senderMemo = x), checkTransaction(x))"
+            @update:senderMemo="
+              (x) => ((senderMemo = x), checkTransaction(isValid))
+            "
             @update:recipientMemo="
-              (x) => ((recipientMemo = x), checkTransaction(x))
+              (x) => ((recipientMemo = x), checkTransaction(isValid))
             "
             @update:isValid="checkTransaction"
             @change="
@@ -276,7 +278,12 @@
           this.prepareTransactionSignalHandler.abort()
           this.prepareTransactionSignalHandler = null
         }
-        if (!isValid || this.errors) {
+        if (
+          !isValid ||
+          this.errors ||
+          this.amount == null ||
+          this.amount === ""
+        ) {
           this.isValid = false
           this.plannedTransactions = []
           return false

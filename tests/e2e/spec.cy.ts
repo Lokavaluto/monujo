@@ -74,6 +74,20 @@ describe("General processes when logged in", () => {
     cy.amountSendInput().type("wrong amount")
     cy.errorMessage().should("be.visible")
 
+    // Regression: filling the description while the amount is still empty
+    // must not raise an exception nor the generic "checking transfer" error
+    // (previously `checkTransaction` received the memo string as its
+    // `isValid` argument and reached `null.toString()`).
+    cy.amountSendInput().clear()
+    cy.on("uncaught:exception", () => {
+      // fail the test loudly if the bug regresses (any uncaught exception)
+      throw new Error("Unexpected uncaught exception while typing description")
+    })
+    cy.descriptionSendInput().should("be.visible")
+    cy.descriptionSendInput().type("A description typed before any amount")
+    cy.contains("Unexpected error while checking transfer").should("not.exist")
+    cy.sendMoneyButton().should("be.disabled")
+
     // close modal
     cy.closeModal()
     cy.modal().should("not.exist")

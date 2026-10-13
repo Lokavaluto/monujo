@@ -95,6 +95,9 @@ Cypress.Commands.add("errorMessage", () => {
 Cypress.Commands.add("amountSendInput", () => {
   return cy.get("#send-amount-input")
 })
+Cypress.Commands.add("descriptionSendInput", () => {
+  return cy.get("textarea.custom-textarea").first()
+})
 
 Cypress.Commands.add("topUpAccount", () => {
   return cy.get("div.custom-amount-input").find("div.account-selector").first()
@@ -249,6 +252,7 @@ declare global {
       sendMoneyButton(): Chainable<JQuery<HTMLElement>>
       errorMessage(): Chainable<JQuery<HTMLElement>>
       amountSendInput(): Chainable<JQuery<HTMLElement>>
+      descriptionSendInput(): Chainable<JQuery<HTMLElement>>
       firstSearchedRecipient(): Chainable<JQuery<HTMLElement>>
       searchRecipient(recipient: string): Chainable<JQuery<HTMLElement>>
       topUpAccount(): Chainable<JQuery<HTMLElement>>
