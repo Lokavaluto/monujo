@@ -131,6 +131,11 @@ module Fastlane
         if languages.length == 0
           UI.user_error! "No language selected!"
         end
+
+        ## Installed on first actual cypress launch only, so dry runs and
+        ## already existing screenshots don't trigger a download.
+        browser = nil
+
         languages.each do |current_language|
 
           resolution.each do |r|
@@ -197,11 +202,13 @@ module Fastlane
             }
             UI.important "Current #{config_path}:\n#{File.read(config_path)}"
 
+            browser ||= other_action.screenshot_browser
+
             Dir.chdir(Actions.lane_context[SharedValues::SANDBOX_PATH]) do
               sh ("npx cypress run --spec tests/e2e/spec.cy.ts " +
                   "--env #{Shellwords.escape(cypress_params.to_json)} " +
                   "--config #{Shellwords.escape(cypress_config.to_json)} " +
-                  "--browser chrome"
+                  "--browser #{Shellwords.escape(browser)}"
                  )
             end
 

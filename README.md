@@ -352,26 +352,40 @@ This will run the tests and if everything went well, should produce the
 screenshots in the directory `.cypress/screenshots/spec.cy.ts/`.
 
 To provide a scale factor, you must add an environment variable
-`scaleFactor` (which default is `1`), and force the browser to be
-`chrome`, for instance:
+`scaleFactor` (which default is `1`), and use the
+`chrome-headless-shell` browser installed by `fastlane`, for instance:
 
 ```shell
 npx cypress run \
     --config viewportWidth=375,viewportHeight=667,defaultCommandTimeout=20000 \
     --env screenshot=true,scaleFactor=2 \
     --spec tests/e2e/spec.cy.ts \
-    --browser chrome
+    --browser "$(FASTLANE_DISABLE_COLORS=1 \
+                     bundle exec fastlane run screenshot_browser |
+                 sed -n 's/.*Result: //p')"
 ```
 
-**Note:** Screenshot generation requires Google Chrome to be installed
-on the system. Chrome is the only browser that supports the
+**Note:** Chrome is the only browser that supports the
 `--force-device-scale-factor` flag needed for proper resolution
 control. Other browsers (Electron, Firefox) will produce an error when
 a scale factor other than 1 is requested.
 
-Be aware that some Chrome versions produce screenshots with incorrect
-resolution or visual artifacts (e.g. mirroring). Google Chrome 127 is
-a known version that produces correct results.
+But since version 132, Google Chrome only has the "new" headless mode,
+which ignores the requested window height: pages taller than the
+window are then captured in several scrolled parts stitched together,
+repeating part of the page at the bottom of the screenshot, and
+pages fitting in the window give too short screenshots. The "old"
+headless mode, which honors the window size, is now released
+separately as `chrome-headless-shell`.
+
+So the `fastlane` action `screenshot_browser` downloads (once) a
+pinned version of `chrome-headless-shell` from [Chrome for
+Testing](https://googlechromelabs.github.io/chrome-for-testing/) in
+`~/.cache/monujo/chrome-headless-shell/` (or under `$XDG_CACHE_HOME`),
+and returns the path of a wrapper script to give to `cypress run
+--browser`. The `screenshot` lane of `fastlane` uses it automatically.
+To change the pinned version, edit `CHROME_HEADLESS_SHELL_VERSION` in
+`fastlane/actions/screenshot_browser.rb`.
 
 ### Translation
 
